@@ -637,7 +637,7 @@
         Too many extensions
 */
 
-//#include "Precompiled.h"
+#include "precompiled.h"
 
 #include <stdio.h>
 #include <stdlib.h>

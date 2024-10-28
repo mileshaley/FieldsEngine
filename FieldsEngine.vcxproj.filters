@@ -6,15 +6,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Main.cpp">
+    <ClCompile Include="Source\main.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
+    <ClCompile Include="Source\application.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\precompiled.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h">
+    <ClInclude Include="Source\application.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\precompiled.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
