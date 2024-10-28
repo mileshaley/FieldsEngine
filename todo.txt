@@ -1,0 +1,1 @@
+utility to convert between cases like SCREAMING_SNAKE_CASE <-> snake_case <-> PascalCase
