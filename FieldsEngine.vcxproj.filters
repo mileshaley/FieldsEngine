@@ -6,7 +6,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Source\Main.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
