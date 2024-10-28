@@ -7,6 +7,8 @@
 #include "imGui/imgui_impl_glfw.h"
 #include "imGui/imgui_impl_opengl3.h"
 
+#include "input.h"
+
 #ifdef _glfw3_h_
 
 static void gl_error_callback(int errorCode, const char* message) {
@@ -49,19 +51,19 @@ bool fields_engine::application::startup()
 	ImGui_ImplGlfw_InitForOpenGL(windowHandle_, true);
 	ImGui_ImplOpenGL3_Init();
 
-	//glfwSetKeyCallback(windowHandle_, );
-	//glfwSetCursorPosCallback(windowHandle_, );
-	//glfwSetMouseButtonCallback(windowHandle_, );
-	//glfwSetScrollCallback(windowHandle_, );
+	input::detail::initialize_callbacks(windowHandle_);
 	//glfwSetWindowFocusCallback(windowHandle_, );
 
 
 	return true;
 }
 
-bool fields_engine::application::shutdown()
-{
-	return false;
+bool fields_engine::application::shutdown() {
+	return true;
+}
+
+void fields_engine::application::run() {
+
 }
 
 #endif

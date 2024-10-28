@@ -11,7 +11,6 @@ namespace fields_engine {
 
 		bool startup();
 		bool shutdown();
-		//friend bool InitializeGLFW(application& app);
 
 
 	private:
