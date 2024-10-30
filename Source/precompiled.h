@@ -15,4 +15,5 @@ using json = nlohmann::json;
 using string = std::string;
 using string_view = std::string_view;
 
+namespace fields_engine {}
 namespace fe = fields_engine;

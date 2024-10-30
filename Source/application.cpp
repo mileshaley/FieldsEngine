@@ -3,13 +3,16 @@
 
 #include <iostream>
 #include "glad/glad.h"
-#include "imGui/imgui.h"
-#include "imGui/imgui_impl_glfw.h"
-#include "imGui/imgui_impl_opengl3.h"
+#include "glfw/glfw3.h"
 
+//#include "imGui/imgui.h"
+//#include "imGui/imgui_impl_glfw.h"
+//#include "imGui/imgui_impl_opengl3.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 #include "input.h"
 
-#ifdef _glfw3_h_
+#if defined(_glfw3_h_) or 1
 
 static void gl_error_callback(int errorCode, const char* message) {
 	std::cerr << "gl error [" << errorCode << "]: \"" << message << "\"" << std::endl;
@@ -49,7 +52,7 @@ bool fields_engine::application::startup()
 	ImGui::CreateContext();
 
 	ImGui_ImplGlfw_InitForOpenGL(windowHandle_, true);
-	ImGui_ImplOpenGL3_Init();
+	ImGui_ImplOpenGL3_Init("#version 430");
 
 	input::detail::initialize_callbacks(windowHandle_);
 	//glfwSetWindowFocusCallback(windowHandle_, );
@@ -59,10 +62,21 @@ bool fields_engine::application::startup()
 }
 
 bool fields_engine::application::shutdown() {
+
+	ImGui::DestroyContext();
+
 	return true;
 }
 
 void fields_engine::application::run() {
+	
+	while (!glfwWindowShouldClose(windowHandle_)) {
+		glfwPollEvents();
+
+
+
+		glfwSwapBuffers(windowHandle_);
+	}
 
 }
 

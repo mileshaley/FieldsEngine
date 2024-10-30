@@ -1,7 +1,7 @@
 #pragma once
 
-#include "glfw/glfw3.h"
 
+struct GLFWwindow;
 namespace fields_engine {
 
 	class application {
@@ -12,6 +12,7 @@ namespace fields_engine {
 		bool startup();
 		bool shutdown();
 
+		void run();
 
 	private:
 		GLFWwindow* windowHandle_;

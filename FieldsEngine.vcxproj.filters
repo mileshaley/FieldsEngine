@@ -4,24 +4,102 @@
     <Filter Include="Core">
       <UniqueIdentifier>{c9feb04c-22c4-4f6c-80f2-6845e622cf26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Stubs">
+      <UniqueIdentifier>{f5aa492d-fbbf-40eb-be82-3f0ebd1a1ff8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries">
+      <UniqueIdentifier>{705c18de-5c57-4fb6-a4eb-0ba08965f4b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\imgui">
+      <UniqueIdentifier>{5c8faf03-bf2c-44df-b5a2-f7cb2459cd98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\main.cpp">
+    <ClCompile Include="source\main.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application.cpp">
+    <ClCompile Include="source\application.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Source\precompiled.cpp">
+    <ClCompile Include="source\precompiled.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="source\input.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\includes\imGui\imgui.cpp">
+      <Filter>libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\includes\imGui\imgui_demo.cpp">
+      <Filter>libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\includes\imGui\imgui_draw.cpp">
+      <Filter>libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\includes\imGui\imgui_impl_glfw.cpp">
+      <Filter>libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\includes\imGui\imgui_impl_opengl3.cpp">
+      <Filter>libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\includes\imGui\imgui_stdlib.cpp">
+      <Filter>libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\includes\imGui\imgui_tables.cpp">
+      <Filter>libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\includes\imGui\imgui_widgets.cpp">
+      <Filter>libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\glad.cpp">
+      <Filter>libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="source\stubs\stub.cpp">
+      <Filter>Stubs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\application.h">
+    <ClInclude Include="source\application.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\precompiled.h">
+    <ClInclude Include="source\precompiled.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="source\input.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\includes\imGui\imconfig.h">
+      <Filter>libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\includes\imGui\imgui.h">
+      <Filter>libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\includes\imGui\imgui_impl_glfw.h">
+      <Filter>libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\includes\imGui\imgui_impl_opengl3.h">
+      <Filter>libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\includes\imGui\imgui_impl_opengl3_loader.h">
+      <Filter>libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\includes\imGui\imgui_internal.h">
+      <Filter>libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\includes\imGui\imgui_stdlib.h">
+      <Filter>libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\includes\imGui\imstb_rectpack.h">
+      <Filter>libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\includes\imGui\imstb_textedit.h">
+      <Filter>libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\includes\imGui\imstb_truetype.h">
+      <Filter>libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="source\stubs\stub.h">
+      <Filter>Stubs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

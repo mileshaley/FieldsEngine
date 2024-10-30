@@ -14,13 +14,11 @@ int main() {
 	
 	{
 		fe::application app;
-		if (!app.startup()) {
+		if (!app.startup()) { return 1; }
 
-		}
+		app.run();
 
-		if (!app.shutdown()) {
-
-		}
+		if (!app.shutdown()) { return 1; }
 	}
 
 	return 0;
