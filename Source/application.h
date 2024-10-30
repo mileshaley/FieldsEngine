@@ -1,7 +1,7 @@
 #pragma once
 
+#include "editor.h"
 
-struct GLFWwindow;
 namespace fields_engine {
 
 	class application {
@@ -15,7 +15,8 @@ namespace fields_engine {
 		void run();
 
 	private:
-		GLFWwindow* windowHandle_;
+		window window_;
+		unique_ptr<editor> editor_;
 	};
 
 } // End namespace fields_engine

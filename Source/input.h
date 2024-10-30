@@ -1,12 +1,11 @@
 #pragma once
 
-struct GLFWwindow;
+#include "window.h"
 
 namespace fields_engine::input {
 
-
 	namespace detail {
+		void initialize_callbacks(window& windowHandle);
+	} // namespace detail
 
-		void initialize_callbacks(GLFWwindow* windowHandle);
-	} // End detail
-} // End fields_engine::input
+} // namespace fields_engine::input

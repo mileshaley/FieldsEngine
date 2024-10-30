@@ -29,6 +29,7 @@
     <ClCompile Include="libraries\includes\imGui\imgui_tables.cpp" />
     <ClCompile Include="libraries\includes\imGui\imgui_widgets.cpp" />
     <ClCompile Include="source\application.cpp" />
+    <ClCompile Include="source\editor.cpp" />
     <ClCompile Include="source\input.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\precompiled.cpp">
@@ -39,6 +40,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="source\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h" />
@@ -52,9 +54,12 @@
     <ClInclude Include="libraries\includes\imGui\imstb_textedit.h" />
     <ClInclude Include="libraries\includes\imGui\imstb_truetype.h" />
     <ClInclude Include="source\application.h" />
+    <ClInclude Include="source\editor.h" />
+    <ClInclude Include="source\common.h" />
     <ClInclude Include="source\input.h" />
     <ClInclude Include="source\precompiled.h" />
     <ClInclude Include="source\stubs\stub.h" />
+    <ClInclude Include="source\window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

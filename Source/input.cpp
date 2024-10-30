@@ -24,14 +24,14 @@ namespace fields_engine::input::detail {
 	}
 
 
-	void initialize_callbacks(GLFWwindow* windowHandle) {
-		glfwSetKeyCallback(windowHandle, key_callback);
-		glfwSetCursorPosCallback(windowHandle, cursor_move_callback);
-		glfwSetMouseButtonCallback(windowHandle, mouse_button_callback);
-		glfwSetScrollCallback(windowHandle, scroll_callback);
+	void initialize_callbacks(window& win) {
+		glfwSetKeyCallback(win.handle, key_callback);
+		glfwSetCursorPosCallback(win.handle, cursor_move_callback);
+		glfwSetMouseButtonCallback(win.handle, mouse_button_callback);
+		glfwSetScrollCallback(win.handle, scroll_callback);
 	}
 
-} // End fields_engine::input::detail
+} // namespace fields_engine::input::detail
 
 
 

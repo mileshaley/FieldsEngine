@@ -57,6 +57,8 @@
     <ClCompile Include="source\stubs\stub.cpp">
       <Filter>Stubs</Filter>
     </ClCompile>
+    <ClCompile Include="source\editor.cpp" />
+    <ClCompile Include="source\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\application.h">
@@ -101,5 +103,8 @@
     <ClInclude Include="source\stubs\stub.h">
       <Filter>Stubs</Filter>
     </ClInclude>
+    <ClInclude Include="source\editor.h" />
+    <ClInclude Include="source\window.h" />
+    <ClInclude Include="source\common.h" />
   </ItemGroup>
 </Project>
