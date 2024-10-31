@@ -32,5 +32,7 @@ void fields_engine::editor::update() {
 }
 
 fields_engine::editor::~editor() {
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 }
