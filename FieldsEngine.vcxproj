@@ -37,6 +37,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="source\shader.cpp" />
     <ClCompile Include="source\stubs\stub.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -60,6 +61,7 @@
     <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\input.h" />
     <ClInclude Include="source\precompiled.h" />
+    <ClInclude Include="source\shader.h" />
     <ClInclude Include="source\stubs\stub.h" />
     <ClInclude Include="source\window.h" />
   </ItemGroup>

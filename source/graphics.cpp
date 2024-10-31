@@ -28,9 +28,19 @@ void fields_engine::graphics::gl_error_callback(int errorCode, const char* messa
 	std::cerr << "gl error [" << errorCode << "]: \"" << message << "\"" << std::endl;
 }
 
-void fields_engine::graphics::detail::initialize() {
-	glClearColor(0.5f, 0.5f, 1.0f, 1.0f);
+void fields_engine::graphics::resize_viewport(int width, int height)
+{
+
+}
+
+void fields_engine::graphics::fill_background(glm::vec4 const& color)
+{
+	glClearColor(color.r, color.g, color.b, color.a);
 	GL_CHECK;
+}
+
+void fields_engine::graphics::detail::initialize() {
 	glEnable(GL_DEPTH_TEST);
 	GL_CHECK;
+	fill_background({ 0.5f, 0.5f, 1.0f, 1.0f });
 }

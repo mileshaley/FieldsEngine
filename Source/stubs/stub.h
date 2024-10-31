@@ -5,3 +5,9 @@
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
+
+namespace fields_engine {
+
+
+
+} // namespace fields_engine

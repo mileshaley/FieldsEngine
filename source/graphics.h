@@ -6,16 +6,21 @@
 
 #pragma once
 
+#include "glm/glm.hpp"
+
 #define GL_CHECK ::fields_engine::graphics::check_graphics_error(__FILE__, __LINE__);
 
 
 namespace fields_engine::graphics {
 
-	static void check_graphics_error(string_view file = "", int line = 0);
-	static void gl_error_callback(int errorCode, const char* message);
+	void check_graphics_error(string_view file = "", int line = 0);
+	void gl_error_callback(int errorCode, const char* message);
+	void resize_viewport(int width, int height);
+
+	void fill_background(glm::vec4 const& color = {1, 1, 1, 1});
 
 	namespace detail {
-		static void initialize();
+		void initialize();
 	}
 
 } // namespace fields_engine::graphics

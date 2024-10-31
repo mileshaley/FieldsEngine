@@ -22,10 +22,12 @@ bool fields_engine::application::startup()
 	glfwSetErrorCallback(graphics::gl_error_callback);
 	glfwInit();
 	// Use OpenGL version 3.3
+
+	glfwWindowHint(GLFW_RESIZABLE, 1);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 0);
 	window_.handle = glfwCreateWindow(1920, 1080, "FieldsEngine", nullptr, nullptr);
 
 	if (!window_.handle) { 
@@ -47,6 +49,9 @@ bool fields_engine::application::startup()
 
 	graphics::detail::initialize();
 
+	glfwSetFramebufferSizeCallback(window_.handle, 
+		[](GLFWwindow* wind, int w, int h) { graphics::resize_viewport(w, h); }
+	);
 
 	return true;
 }
