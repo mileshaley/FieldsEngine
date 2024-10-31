@@ -37,7 +37,7 @@ void fields_engine::graphics::clear_background(glm::vec4 const& color)
 {
 	glClearColor(color.r, color.g, color.b, color.a);
 	GL_CHECK;
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);// | GL_DEPTH_BUFFER_BIT);
 	GL_CHECK;
 }
 

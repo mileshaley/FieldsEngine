@@ -15,6 +15,11 @@ fields_engine::editor::editor(window& wind)
 	: context_(ImGui::CreateContext())
 {
 	ImGui::SetCurrentContext(context_);
+	ImGuiIO& io = ImGui::GetIO();
+
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 	ImGui_ImplGlfw_InitForOpenGL(wind.handle, true);
 	ImGui_ImplOpenGL3_Init("#version 430");
 	ImVec2 wSize(300.0f, 500.0f);
@@ -26,6 +31,7 @@ void fields_engine::editor::update() {
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
+	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
 
 	if (ImGui::Begin("glung")) {
 		ImGui::Text("Hello, World!");
@@ -39,29 +45,19 @@ void fields_engine::editor::update() {
 	}
 	ImGui::End();
 
-	//ImGui::Render();
-	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-
-	//PGE::FrameBuffer::UnbindFrameBuffer();
-
 	graphics::clear_background();
 
 	ImGui::Render();
 
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	//PGE::FrameBuffer::BindFrameBuffer();
 
-	//ImGuiIO& io = ImGui::GetIO();
-	//
-	//if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	//{
-	//	GLFWwindow* context = glfwGetCurrentContext();
-	//	ImGui::UpdatePlatformWindows();
-	//	ImGui::RenderPlatformWindowsDefault();
-	//	glfwMakeContextCurrent(backup_current_context);
-	//}
+	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+		GLFWwindow* context = glfwGetCurrentContext();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		glfwMakeContextCurrent(context);
+	}
 }
 
 fields_engine::editor::~editor() {
