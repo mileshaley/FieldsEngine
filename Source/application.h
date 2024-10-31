@@ -1,6 +1,7 @@
 #pragma once
 
 #include "editor.h"
+#include "shader.h"
 
 namespace fields_engine {
 
@@ -15,6 +16,7 @@ namespace fields_engine {
 		void run();
 
 	private:
+		unique_ptr<graphics::shader> shader_; /// TODO: remove
 		window window_;
 		unique_ptr<editor> editor_;
 	};

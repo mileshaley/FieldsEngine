@@ -42,9 +42,22 @@ bool fields_engine::application::startup()
 		return false;
 	}
 
-	editor_ = make_unique<editor>(window_);
+	/// TODO: remove
+	shader_ = make_unique<graphics::shader>();
+	shader_->add("lighting.vert", GL_VERTEX_SHADER);
+	shader_->add("lighting.frag", GL_FRAGMENT_SHADER);
+	glBindAttribLocation(shader_->id(), 0, "vertex");
+	glBindAttribLocation(shader_->id(), 1, "vertexNormal");
+	glBindAttribLocation(shader_->id(), 2, "vertexTexture");
+	glBindAttribLocation(shader_->id(), 3, "vertexTangent");
+	shader_->finalize();
+
+	///
 
 	input::detail::initialize_callbacks(window_);
+
+	editor_ = make_unique<editor>(window_);
+
 	//glfwSetWindowFocusCallback(window_, );
 
 	graphics::detail::initialize();

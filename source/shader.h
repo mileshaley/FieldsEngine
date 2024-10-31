@@ -17,7 +17,7 @@ namespace fields_engine::graphics {
 		void use() const;
 		void unuse() const;
 	
-	
+		int id() const;
 	private:
 		int programID_;
 	};

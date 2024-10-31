@@ -105,3 +105,7 @@ void fields_engine::graphics::shader::use() const {
 void fields_engine::graphics::shader::unuse() const {
 	glUseProgram(0);
 }
+
+int fields_engine::graphics::shader::id() const {
+    return programID_;
+}
