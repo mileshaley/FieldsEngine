@@ -1,8 +1,14 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE															 *
  *~-------------------------------------------------------------------------~*
- * File: precompiled.cpp													 *
- * Brief: File that generated precompiled header precompiled.h				 *
+ * File: log.cpp															 *
 \*~-------------------------------------------------------------------------~*/
 
 #include "precompiled.h"
+#include "log.h"
+
+namespace fields_engine {
+
+
+	logger log{};
+}

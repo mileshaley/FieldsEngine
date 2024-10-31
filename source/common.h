@@ -9,9 +9,9 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <memory>
-#include <glm/fwd.hpp>
+#include <glm/glm.hpp>
 
-namespace fields_engine {
+namespace fields_engine::common {
 
 /*~-------------------------------------------------------------------------~*\
  * Primitive Type Aliases													 *
@@ -60,14 +60,7 @@ namespace fields_engine {
 	template<typename T>
 	using nullable_ptr = T*;
 
-	template<typename T>
-	using not_null = T;
-	template<typename T>
-	using not_null_ptr = T*;
-
 	using std::unique_ptr;
 	using std::make_unique;
-	//template<typename T>
-	//using unique_ptr = std::unique_ptr<T>;
 
-} // fields_engine
+} // fields_engine::common

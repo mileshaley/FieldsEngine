@@ -1,25 +1,19 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE															 *
  *~-------------------------------------------------------------------------~* 
- * File: editor.h															 *
+ * File: log.h																 *
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
 
-#include "window.h"
+#include <ostream>
 
-struct ImGuiContext;
-namespace fields_engine{
-	
+namespace fields_engine {
 
-	class editor {
-	public:
-		editor(window& windowHandle);
-		void update();
-		~editor();
-	private:
-		vec4 clor_;
-		ImGuiContext* context_;
+	class logger /*: std::ostream*/ {
+		//logger& operator<< ()
+		//void print() const;
 	};
 
+	extern logger log;
 } // namespace fields_engine

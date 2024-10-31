@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE															 *
  *~-------------------------------------------------------------------------~*
- * File: shaderID.cpp															 *
+ * File: shader.cpp														 *
 \*~-------------------------------------------------------------------------~*/
 
 #include "precompiled.h"
@@ -11,34 +11,6 @@
 #include <fstream>
 #include <sstream>
 #include "graphics.h"
-
-namespace fields_engine::graphics {
-    enum class shader_error_type {
-        program,
-        shader,
-    };
-
-    static void report_shader_error(shader_error_type type, int id, const char* filename) {
-        int length = 0;
-        if (type == shader_error_type::program) {
-            glGetProgramiv(id, GL_INFO_LOG_LENGTH, &length);
-        } else if (type == shader_error_type::shader) {
-            glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-        }
-        GL_CHECK;
-        unique_ptr<char[]> buffer = make_unique<char[]>(size_t(length));
-        if (type == shader_error_type::program) {
-            glGetProgramInfoLog(id, length, nullptr, buffer.get());
-
-        } else if (type == shader_error_type::shader) {
-            glGetShaderInfoLog(id, length, nullptr, buffer.get());
-        }
-        GL_CHECK;
-        /// TODO: use proper error logger
-        std::cerr << "Operation failed for shader \""
-            << filename << "\": " << buffer << std::endl;
-    }
-} // namespace fields_engine::graphics
 
 fields_engine::graphics::shader::shader()
 	: programID_(glCreateProgram())

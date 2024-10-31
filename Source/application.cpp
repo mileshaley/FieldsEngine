@@ -7,7 +7,7 @@
 #include "input.h"
 #include "graphics.h"
 
-fields_engine::application* fields_engine::g_application = nullptr;
+fe::application* fe::g_application = nullptr;
 
 
 fields_engine::application::application() 
@@ -31,7 +31,7 @@ bool fields_engine::application::startup()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 0);
 	//const ivec2 winSize{ 1920, 1080 };
-	const ivec2 winSize{600, 400};
+	const ivec2 winSize{1000, 800};
 
 	window_.handle = glfwCreateWindow(winSize.x, winSize.y, "FieldsEngine", nullptr, nullptr);
 
@@ -83,7 +83,7 @@ bool fields_engine::application::shutdown() {
 void fields_engine::application::run() {
 	
 	while (window_.is_running()) {
-		graphics::clear_background();
+		//graphics::clear_background({0.5, 0.5, 1.0, 1.0});
 		glfwPollEvents();
 
 		editor_->update();

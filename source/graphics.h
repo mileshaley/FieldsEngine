@@ -17,7 +17,8 @@ namespace fields_engine::graphics {
 	void gl_error_callback(int errorCode, const char* message);
 	void resize_viewport(int width, int height);
 
-	void clear_background(glm::vec4 const& color = {1, 1, 1, 1});
+	void clear_background();
+	void clear_background(glm::vec4 const& color);
 
 	namespace detail {
 		void initialize();

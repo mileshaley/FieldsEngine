@@ -44,9 +44,12 @@ void fields_engine::editor::update() {
 			two = false;
 		}
 	}
+
+	ImGui::ColorPicker4("", &clor_.r);
+
 	ImGui::End();
 
-	graphics::clear_background();
+	//graphics::clear_background(clor_);
 
 	ImGui::Render();
 

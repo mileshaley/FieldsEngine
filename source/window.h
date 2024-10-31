@@ -14,7 +14,7 @@ namespace fields_engine {
 		
 		bool is_running() const;
 
-		not_null_ptr<GLFWwindow> handle;
+		GLFWwindow* handle;
 	};
 
 } // namespace fields_engine

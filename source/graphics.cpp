@@ -28,21 +28,23 @@ void fields_engine::graphics::gl_error_callback(int errorCode, const char* messa
 	std::cerr << "gl error [" << errorCode << "]: \"" << message << "\"" << std::endl;
 }
 
-void fields_engine::graphics::resize_viewport(int width, int height)
-{
-
+void fields_engine::graphics::resize_viewport(int width, int height) {
+	glViewport(0, 0, width, height);
 }
 
-void fields_engine::graphics::clear_background(glm::vec4 const& color)
-{
+void fields_engine::graphics::clear_background() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GL_CHECK;
+}
+
+void fields_engine::graphics::clear_background(glm::vec4 const& color) {
 	glClearColor(color.r, color.g, color.b, color.a);
 	GL_CHECK;
-	glClear(GL_COLOR_BUFFER_BIT);// | GL_DEPTH_BUFFER_BIT);
-	GL_CHECK;
+	clear_background();
 }
 
 void fields_engine::graphics::detail::initialize() {
 	glEnable(GL_DEPTH_TEST);
 	GL_CHECK;
-	clear_background({ 0.5f, 0.5f, 1.0f, 1.0f });
+	clear_background({ 1.5f, 0.5f, 1.0f, 1.0f });
 }
