@@ -33,14 +33,16 @@ void fields_engine::graphics::resize_viewport(int width, int height)
 
 }
 
-void fields_engine::graphics::fill_background(glm::vec4 const& color)
+void fields_engine::graphics::clear_background(glm::vec4 const& color)
 {
 	glClearColor(color.r, color.g, color.b, color.a);
+	GL_CHECK;
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GL_CHECK;
 }
 
 void fields_engine::graphics::detail::initialize() {
 	glEnable(GL_DEPTH_TEST);
 	GL_CHECK;
-	fill_background({ 0.5f, 0.5f, 1.0f, 1.0f });
+	clear_background({ 0.5f, 0.5f, 1.0f, 1.0f });
 }

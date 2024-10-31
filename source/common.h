@@ -9,6 +9,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <memory>
+#include <glm/fwd.hpp>
 
 namespace fields_engine {
 
@@ -28,6 +29,24 @@ namespace fields_engine {
 
 	using f32 = float;
 	using f64 = double;
+
+/*~-------------------------------------------------------------------------~*\
+ * GLM Type Aliases															 *
+\*~-------------------------------------------------------------------------~*/
+
+	using glm::vec1;
+	using glm::vec2;
+	using glm::vec3;
+	using glm::vec4;
+
+	using glm::mat2;
+	using glm::mat3;
+	using glm::mat4;
+
+	using glm::ivec1;
+	using glm::ivec2;
+	using glm::ivec3;
+	using glm::ivec4;
 
 /*~-------------------------------------------------------------------------~*\
  * Pointer Intention Aliases												 *

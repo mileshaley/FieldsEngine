@@ -28,7 +28,10 @@ bool fields_engine::application::startup()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 0);
-	window_.handle = glfwCreateWindow(1920, 1080, "FieldsEngine", nullptr, nullptr);
+	//const ivec2 winSize{ 1920, 1080 };
+	const ivec2 winSize{600, 400};
+
+	window_.handle = glfwCreateWindow(winSize.x, winSize.y, "FieldsEngine", nullptr, nullptr);
 
 	if (!window_.handle) { 
 		return false; 
@@ -78,6 +81,7 @@ bool fields_engine::application::shutdown() {
 void fields_engine::application::run() {
 	
 	while (window_.is_running()) {
+		graphics::clear_background();
 		glfwPollEvents();
 
 		editor_->update();

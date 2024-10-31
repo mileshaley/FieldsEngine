@@ -45,7 +45,7 @@ void fields_engine::editor::update() {
 
 	//PGE::FrameBuffer::UnbindFrameBuffer();
 
-	graphics::fill_background();
+	graphics::clear_background();
 
 	ImGui::Render();
 
