@@ -10,6 +10,7 @@
 #include "imgui_impl_opengl3.h"
 #include "graphics.h"
 #include "glfw/glfw3.h"
+#include "application.h"
 
 fields_engine::editor::editor(window& wind) 
 	: context_(ImGui::CreateContext())
@@ -53,10 +54,11 @@ void fields_engine::editor::update() {
 
 
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-		GLFWwindow* context = glfwGetCurrentContext();
+		//GLFWwindow* context = glfwGetCurrentContext();
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
-		glfwMakeContextCurrent(context);
+		//glfwMakeContextCurrent(context);
+		g_application->reinstate();
 	}
 }
 

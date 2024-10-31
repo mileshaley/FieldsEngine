@@ -13,12 +13,15 @@ int main() {
 
 	
 	{
-		fe::application app;
-		if (!app.startup()) { return 1; }
+		fe::g_application = new fe::application();
+		
+		if (!fe::g_application->startup()) { return 1; }
 
-		app.run();
+		fe::g_application->run();
 
-		if (!app.shutdown()) { return 1; }
+		if (!fe::g_application->shutdown()) { return 1; }
+
+		delete fe::g_application;
 	}
 
 	return 0;

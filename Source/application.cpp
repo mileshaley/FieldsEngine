@@ -7,6 +7,8 @@
 #include "input.h"
 #include "graphics.h"
 
+fields_engine::application* fields_engine::g_application = nullptr;
+
 
 fields_engine::application::application() 
 	: window_{nullptr}
@@ -59,7 +61,7 @@ bool fields_engine::application::startup()
 
 	input::detail::initialize_callbacks(window_);
 
-	editor_ = make_unique<editor>(window_);
+	editor_ = make_unique<fe::editor>(window_);
 
 	//glfwSetWindowFocusCallback(window_, );
 
@@ -89,6 +91,14 @@ void fields_engine::application::run() {
 		glfwSwapBuffers(window_.handle);
 	}
 
+}
+
+void fields_engine::application::reinstate() const {
+	glfwMakeContextCurrent(window_.handle);
+}
+
+fe::nullable_ptr<fe::editor> fields_engine::application::editor() {
+	return editor_.get();
 }
 
 
