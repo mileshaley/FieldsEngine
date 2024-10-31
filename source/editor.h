@@ -9,7 +9,7 @@
 #include "window.h"
 
 struct ImGuiContext;
-namespace fields_engine::editor{
+namespace fields_engine{
 	
 
 	class editor {
@@ -21,4 +21,4 @@ namespace fields_engine::editor{
 		ImGuiContext* context_;
 	};
 
-} // namespace fields_engine::editor
+} // namespace fields_engine
