@@ -13,6 +13,7 @@ fields_engine::editor_window::editor_window(string_view name, callback_fn callba
 	, strID_()
 	, callback_(callback)
 	, icon_(icon)
+	, open_(true)
 {
 	string_view iconStrv(icon);
 	if (!iconStrv.empty()) {
@@ -24,7 +25,11 @@ fields_engine::editor_window::editor_window(string_view name, callback_fn callba
 	strID_ += name;
 }
 
-bool fields_engine::editor_window::display() const {
+bool fields_engine::editor_window::display() {
+	return open_ && force_display();
+}
+
+bool fields_engine::editor_window::force_display() {
 	bool result = false;
 	if (callback_) {
 		if (begin_window()) {
@@ -35,12 +40,19 @@ bool fields_engine::editor_window::display() const {
 	return result;
 }
 
-bool fields_engine::editor_window::begin_window() const {
-	return ImGui::Begin(strID_.c_str());
+bool fields_engine::editor_window::begin_window() {
+	return ImGui::Begin(strID_.c_str(), &open_);
 }
 
 void fields_engine::editor_window::end_window() const {
 	ImGui::End();
+}
+
+void fields_engine::editor_window::menu_item() {
+	if (ImGui::MenuItem(strID_.c_str(), nullptr, &open_)) {
+		open_ = true;
+		/// Bring to top
+	}
 }
 
 fe::editor_window::callback_fn fields_engine::editor_window::callback() const {

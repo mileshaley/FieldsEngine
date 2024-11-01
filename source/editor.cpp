@@ -83,7 +83,9 @@ void fields_engine::editor::update(float dt) {
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window")) {
-
+			for (auto const& window : windows_) {
+				window->menu_item();
+			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
