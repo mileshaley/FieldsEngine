@@ -63,4 +63,4 @@ namespace fields_engine::common {
 	using std::unique_ptr;
 	using std::make_unique;
 
-} // fields_engine::common
+} // namespace fields_engine::common

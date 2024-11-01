@@ -47,7 +47,7 @@ bool fields_engine::application::startup()
 		return false;
 	}
 
-	/// TODO: remove
+	/// TODO: relocate
 	shader_ = make_unique<graphics::shader>();
 	shader_->add("lighting.vert", GL_VERTEX_SHADER);
 	shader_->add("lighting.frag", GL_FRAGMENT_SHADER);
@@ -83,14 +83,19 @@ bool fields_engine::application::shutdown() {
 void fields_engine::application::run() {
 	
 	while (window_.is_running()) {
+		/// TODO: use real delta time
+		const float dt = 1.0f / 60.0f;
 		//graphics::clear_background({0.5, 0.5, 1.0, 1.0});
 		glfwPollEvents();
 
-		editor_->update();
+		/// update logic goes here
+
+		/// render logic goes here
+
+		editor_->update(dt);
 
 		glfwSwapBuffers(window_.handle);
 	}
-
 }
 
 void fields_engine::application::reinstate() const {

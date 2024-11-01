@@ -16,6 +16,7 @@ using json = nlohmann::json;
 using string = std::string;
 using string_cr = string const&;
 using string_view = std::string_view;
+using std::vector;
 
 
 
