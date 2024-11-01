@@ -2,7 +2,7 @@
 
 #include "editor.h"
 #include "shader.h"
-
+#include "window.h"
 
 namespace fields_engine {
 

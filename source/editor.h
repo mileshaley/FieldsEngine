@@ -6,11 +6,12 @@
 
 #pragma once
 
-#include "window.h"
+#include "editor_icons.h"
 
 struct ImGuiContext;
 namespace fields_engine{
-	
+
+	class window;
 
 	class editor {
 	public:

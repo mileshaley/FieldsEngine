@@ -59,6 +59,7 @@
     <ClInclude Include="source\application.h" />
     <ClInclude Include="source\editor.h" />
     <ClInclude Include="source\common.h" />
+    <ClInclude Include="source\editor_icons.h" />
     <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\input.h" />
     <ClInclude Include="source\log.h" />

@@ -112,5 +112,6 @@
     <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\shader.h" />
     <ClInclude Include="source\log.h" />
+    <ClInclude Include="source\editor_icons.h" />
   </ItemGroup>
 </Project>
