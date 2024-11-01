@@ -146,7 +146,7 @@ void fields_engine::editor::reset_style() const {
 	style.IndentSpacing		= 25;
 	style.ScrollbarSize		= 15;
 	style.GrabMinSize		= 10;
-	static constexpr float borderSize = 1.0f;
+	static constexpr float borderSize = 0.0f;
 	style.WindowBorderSize	= 0;// = borderSize;
 	style.ChildBorderSize	= borderSize;
 	style.PopupBorderSize	= borderSize;

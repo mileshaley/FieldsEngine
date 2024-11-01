@@ -62,6 +62,7 @@
     <ClCompile Include="source\graphics.cpp" />
     <ClCompile Include="source\shader.cpp" />
     <ClCompile Include="source\log.cpp" />
+    <ClCompile Include="source\editor_window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\application.h">
@@ -113,5 +114,6 @@
     <ClInclude Include="source\shader.h" />
     <ClInclude Include="source\log.h" />
     <ClInclude Include="source\editor_icons.h" />
+    <ClInclude Include="source\editor_window.h" />
   </ItemGroup>
 </Project>

@@ -6,7 +6,8 @@
 
 #pragma once
 
-#include "editor_icons.h"
+#include "editor_icons.h" // Ease of use
+#include "editor_window.h" // windows_
 
 struct ImGuiContext;
 struct ImFont;
@@ -23,7 +24,7 @@ namespace fields_engine{
 		void reset_style() const;
 	private:
 		vec4 clor_; /// TODO: remove
-		
+		vector<unique_ptr<editor_window>> windows_;
 		ImGuiContext* context_;
 		vector<ImFont*> fonts_;
 	};
