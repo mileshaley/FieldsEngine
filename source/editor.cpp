@@ -51,6 +51,8 @@ fields_engine::editor::editor(window& wind)
 	ImGui_ImplGlfw_InitForOpenGL(wind.handle, true);
 	ImGui_ImplOpenGL3_Init("#version 430");
 
+	reset_style();
+
 	const ImVec2 winSize(300.0f, 500.0f);
 	ImGui::SetNextWindowSize(winSize);
 }
@@ -120,6 +122,15 @@ fields_engine::editor::~editor() {
 	ImGui::DestroyContext();
 }
 
+static ImVec4 rgb(int r, int g, int b) {
+	return ImVec4{
+		r / 255.0f,
+		g / 255.0f,
+		b / 255.0f,
+		1.0f
+	};
+}
+
 void fields_engine::editor::reset_style() const {
 	ImGuiStyle& style = ImGui::GetStyle();
 	ImVec4* colors = style.Colors;
@@ -135,7 +146,7 @@ void fields_engine::editor::reset_style() const {
 	style.IndentSpacing		= 25;
 	style.ScrollbarSize		= 15;
 	style.GrabMinSize		= 10;
-	static constexpr float borderSize = 0.0f;
+	static constexpr float borderSize = 2.0f;
 	style.WindowBorderSize	= borderSize;
 	style.ChildBorderSize	= borderSize;
 	style.PopupBorderSize	= borderSize;
@@ -150,59 +161,121 @@ void fields_engine::editor::reset_style() const {
 	style.TabRounding		= rounding;
 	style.ScrollbarRounding = rounding * 8;
 
-    colors[ImGuiCol_Text]                  = {1.00f, 1.00f, 1.00f, 1.00f};
-    colors[ImGuiCol_TextDisabled]          = {0.50f, 0.50f, 0.50f, 1.00f};
-    colors[ImGuiCol_TextSelectedBg]        = {0.20f, 0.22f, 0.23f, 1.00f};
-    colors[ImGuiCol_WindowBg]              = {0.10f, 0.10f, 0.10f, 1.00f};
-    colors[ImGuiCol_ChildBg]               = {0.00f, 0.00f, 0.00f, 0.00f};
-    colors[ImGuiCol_PopupBg]               = {0.14f, 0.14f, 0.14f, 0.95f};
-    colors[ImGuiCol_Border]                = {0.39f, 0.39f, 0.39f, 0.39f};
-    colors[ImGuiCol_BorderShadow]          = {0.00f, 0.00f, 0.00f, 0.24f};
-    colors[ImGuiCol_FrameBg]               = {0.20f, 0.20f, 0.20f, 0.54f};
-    colors[ImGuiCol_FrameBgHovered]        = {0.19f, 0.19f, 0.19f, 0.54f};
-    colors[ImGuiCol_FrameBgActive]         = {0.20f, 0.22f, 0.23f, 1.00f};
-    colors[ImGuiCol_TitleBg]               = {0.00f, 0.00f, 0.00f, 1.00f};
-    colors[ImGuiCol_TitleBgActive]         = {0.06f, 0.06f, 0.06f, 1.00f};
-    colors[ImGuiCol_TitleBgCollapsed]      = {0.00f, 0.00f, 0.00f, 1.00f};
-    colors[ImGuiCol_MenuBarBg]             = {0.14f, 0.14f, 0.14f, 1.00f};
-    colors[ImGuiCol_ScrollbarBg]           = {0.05f, 0.05f, 0.05f, 0.54f};
-    colors[ImGuiCol_ScrollbarGrab]         = {0.34f, 0.34f, 0.34f, 0.54f};
-    colors[ImGuiCol_ScrollbarGrabHovered]  = {0.40f, 0.40f, 0.40f, 0.54f};
-    colors[ImGuiCol_ScrollbarGrabActive]   = {0.56f, 0.56f, 0.56f, 0.54f};
-    colors[ImGuiCol_CheckMark]             = {0.33f, 0.67f, 0.86f, 1.00f};
-    colors[ImGuiCol_SliderGrab]            = {0.34f, 0.34f, 0.34f, 0.54f};
-    colors[ImGuiCol_SliderGrabActive]      = {0.56f, 0.56f, 0.56f, 0.54f};
-    colors[ImGuiCol_Button]                = {0.05f, 0.05f, 0.05f, 0.54f};
-    colors[ImGuiCol_ButtonHovered]         = {0.19f, 0.19f, 0.19f, 0.54f};
-    colors[ImGuiCol_ButtonActive]          = {0.20f, 0.22f, 0.23f, 1.00f};
-    colors[ImGuiCol_Header]                = {0.00f, 0.00f, 0.00f, 0.52f};
-    colors[ImGuiCol_HeaderHovered]         = {0.00f, 0.00f, 0.00f, 0.36f};
-    colors[ImGuiCol_HeaderActive]          = {0.20f, 0.22f, 0.23f, 0.33f};
-    colors[ImGuiCol_Separator]             = {0.28f, 0.28f, 0.28f, 0.29f};
-    colors[ImGuiCol_SeparatorHovered]      = {0.44f, 0.44f, 0.44f, 0.29f};
-    colors[ImGuiCol_SeparatorActive]       = {0.40f, 0.44f, 0.47f, 1.00f};
-    colors[ImGuiCol_ResizeGrip]            = {0.28f, 0.28f, 0.28f, 0.29f};
-    colors[ImGuiCol_ResizeGripHovered]     = {0.44f, 0.44f, 0.44f, 0.29f};
-    colors[ImGuiCol_ResizeGripActive]      = {0.40f, 0.44f, 0.47f, 1.00f};
-    colors[ImGuiCol_Tab]                   = {0.00f, 0.00f, 0.00f, 0.52f};
-    colors[ImGuiCol_TabHovered]            = {0.14f, 0.14f, 0.14f, 1.00f};
-    colors[ImGuiCol_TabActive]             = {0.20f, 0.20f, 0.20f, 0.36f};
-    colors[ImGuiCol_TabUnfocused]          = {0.00f, 0.00f, 0.00f, 0.52f};
-    colors[ImGuiCol_TabUnfocusedActive]    = {0.14f, 0.14f, 0.14f, 1.00f};
-    colors[ImGuiCol_DockingPreview]        = {0.33f, 0.67f, 0.86f, 1.00f};
-    colors[ImGuiCol_DockingEmptyBg]        = {0.14f, 0.14f, 0.14f, 1.00f};
-    colors[ImGuiCol_PlotLines]             = {0.28f, 0.28f, 0.28f, 1.00f};
-    colors[ImGuiCol_PlotLinesHovered]      = {0.28f, 0.28f, 0.28f, 1.00f};
-    colors[ImGuiCol_PlotHistogram]         = {0.28f, 0.28f, 0.28f, 1.00f};
-    colors[ImGuiCol_PlotHistogramHovered]  = {0.28f, 0.28f, 0.28f, 1.00f};
-    colors[ImGuiCol_TableHeaderBg]         = {0.00f, 0.00f, 0.00f, 0.52f};
-    colors[ImGuiCol_TableBorderStrong]     = {0.00f, 0.00f, 0.00f, 0.52f};
-    colors[ImGuiCol_TableBorderLight]      = {0.28f, 0.28f, 0.28f, 0.29f};
-    colors[ImGuiCol_TableRowBg]            = {0.00f, 0.00f, 0.00f, 0.00f};
-    colors[ImGuiCol_TableRowBgAlt]         = {1.00f, 1.00f, 1.00f, 0.06f};
-    colors[ImGuiCol_DragDropTarget]        = {0.33f, 0.67f, 0.86f, 1.00f};
-    colors[ImGuiCol_NavHighlight]          = {0.28f, 0.28f, 0.28f, 0.29f};
-    colors[ImGuiCol_NavWindowingHighlight] = {0.28f, 0.28f, 0.28f, 0.29f};
-    colors[ImGuiCol_NavWindowingDimBg]     = {0.28f, 0.28f, 0.28f, 0.29f};
-    colors[ImGuiCol_ModalWindowDimBg]      = {0.28f, 0.28f, 0.28f, 0.29f};
+	static const ImVec4 A = rgb(9, 38, 53);
+	static const ImVec4 B = rgb(27, 66, 66); 
+	static const ImVec4 C = rgb(92, 131, 116);
+	static const ImVec4 D = rgb(158, 200, 185);
+	static const ImVec4 E = {1, 1, 1, 1};
+
+	colors[ImGuiCol_Text]                  = E;
+	colors[ImGuiCol_TextDisabled]          = D;
+	colors[ImGuiCol_TextSelectedBg]        = C;
+	colors[ImGuiCol_WindowBg]              = A;
+	colors[ImGuiCol_ChildBg]               = A;
+	colors[ImGuiCol_PopupBg]               = A;
+	colors[ImGuiCol_Border]                = B;
+	colors[ImGuiCol_BorderShadow]          = A;
+	colors[ImGuiCol_FrameBg]               = A;
+	colors[ImGuiCol_FrameBgHovered]        = B;
+	colors[ImGuiCol_FrameBgActive]         = C;
+	colors[ImGuiCol_TitleBg]               = A;
+	colors[ImGuiCol_TitleBgActive]         = B;
+	colors[ImGuiCol_TitleBgCollapsed]      = A;
+	colors[ImGuiCol_MenuBarBg]             = C;
+	colors[ImGuiCol_ScrollbarBg]           = B;
+	colors[ImGuiCol_ScrollbarGrab]         = C;
+	colors[ImGuiCol_ScrollbarGrabHovered]  = D;
+	colors[ImGuiCol_ScrollbarGrabActive]   = D;
+	colors[ImGuiCol_CheckMark]             = C;
+	colors[ImGuiCol_SliderGrab]            = C;
+	colors[ImGuiCol_SliderGrabActive]      = D;
+	colors[ImGuiCol_Button]                = B;
+	colors[ImGuiCol_ButtonHovered]         = C;
+	colors[ImGuiCol_ButtonActive]          = D;
+	colors[ImGuiCol_Header]                = B;
+	colors[ImGuiCol_HeaderHovered]         = C;
+	colors[ImGuiCol_HeaderActive]          = D;
+	colors[ImGuiCol_Separator]             = B;
+	colors[ImGuiCol_SeparatorHovered]      = C;
+	colors[ImGuiCol_SeparatorActive]       = D;
+	colors[ImGuiCol_ResizeGrip]            = B;
+	colors[ImGuiCol_ResizeGripHovered]     = C;
+	colors[ImGuiCol_ResizeGripActive]      = D;
+	colors[ImGuiCol_Tab]                   = B;
+	colors[ImGuiCol_TabHovered]            = C;
+	colors[ImGuiCol_TabActive]             = D;
+	colors[ImGuiCol_TabUnfocused]          = C;
+	colors[ImGuiCol_TabUnfocusedActive]    = D;
+	colors[ImGuiCol_DockingPreview]        = B;
+	colors[ImGuiCol_DockingEmptyBg]        = A;
+	colors[ImGuiCol_PlotLines]             = B;
+	colors[ImGuiCol_PlotLinesHovered]      = C;
+	colors[ImGuiCol_PlotHistogram]         = B;
+	colors[ImGuiCol_PlotHistogramHovered]  = C;
+	colors[ImGuiCol_TableHeaderBg]         = A;
+	colors[ImGuiCol_TableBorderStrong]     = D;
+	colors[ImGuiCol_TableBorderLight]      = C;
+	colors[ImGuiCol_TableRowBg]            = C;
+	colors[ImGuiCol_TableRowBgAlt]         = D;
+	colors[ImGuiCol_DragDropTarget]        = E;
+	colors[ImGuiCol_NavHighlight]          = D;
+	colors[ImGuiCol_NavWindowingHighlight] = D;
+	colors[ImGuiCol_NavWindowingDimBg]     = B;
+	colors[ImGuiCol_ModalWindowDimBg]      = B;
+
+    //colors[ImGuiCol_Text]                  = {1.00f, 1.00f, 1.00f, 1.00f};
+    //colors[ImGuiCol_TextDisabled]          = {0.50f, 0.50f, 0.50f, 1.00f};
+    //colors[ImGuiCol_TextSelectedBg]        = {0.20f, 0.22f, 0.23f, 1.00f};
+    //colors[ImGuiCol_WindowBg]              = {0.10f, 0.10f, 0.10f, 1.00f};
+    //colors[ImGuiCol_ChildBg]               = {0.00f, 0.00f, 0.00f, 0.00f};
+    //colors[ImGuiCol_PopupBg]               = {0.14f, 0.14f, 0.14f, 0.95f};
+    //colors[ImGuiCol_Border]                = {0.39f, 0.39f, 0.39f, 0.39f};
+    //colors[ImGuiCol_BorderShadow]          = {0.00f, 0.00f, 0.00f, 0.24f};
+    //colors[ImGuiCol_FrameBg]               = {0.20f, 0.20f, 0.20f, 0.54f};
+    //colors[ImGuiCol_FrameBgHovered]        = {0.19f, 0.19f, 0.19f, 0.54f};
+    //colors[ImGuiCol_FrameBgActive]         = {0.20f, 0.22f, 0.23f, 1.00f};
+    //colors[ImGuiCol_TitleBg]               = {0.00f, 0.00f, 0.00f, 1.00f};
+    //colors[ImGuiCol_TitleBgActive]         = {0.06f, 0.06f, 0.06f, 1.00f};
+    //colors[ImGuiCol_TitleBgCollapsed]      = {0.00f, 0.00f, 0.00f, 1.00f};
+    //colors[ImGuiCol_MenuBarBg]             = {0.14f, 0.14f, 0.14f, 1.00f};
+    //colors[ImGuiCol_ScrollbarBg]           = {0.05f, 0.05f, 0.05f, 0.54f};
+    //colors[ImGuiCol_ScrollbarGrab]         = {0.34f, 0.34f, 0.34f, 0.54f};
+    //colors[ImGuiCol_ScrollbarGrabHovered]  = {0.40f, 0.40f, 0.40f, 0.54f};
+    //colors[ImGuiCol_ScrollbarGrabActive]   = {0.56f, 0.56f, 0.56f, 0.54f};
+    //colors[ImGuiCol_CheckMark]             = {0.33f, 0.67f, 0.86f, 1.00f};
+    //colors[ImGuiCol_SliderGrab]            = {0.34f, 0.34f, 0.34f, 0.54f};
+    //colors[ImGuiCol_SliderGrabActive]      = {0.56f, 0.56f, 0.56f, 0.54f};
+    //colors[ImGuiCol_Button]                = {0.05f, 0.05f, 0.05f, 0.54f};
+    //colors[ImGuiCol_ButtonHovered]         = {0.19f, 0.19f, 0.19f, 0.54f};
+    //colors[ImGuiCol_ButtonActive]          = {0.20f, 0.22f, 0.23f, 1.00f};
+    //colors[ImGuiCol_Header]                = {0.00f, 0.00f, 0.00f, 0.52f};
+    //colors[ImGuiCol_HeaderHovered]         = {0.00f, 0.00f, 0.00f, 0.36f};
+    //colors[ImGuiCol_HeaderActive]          = {0.20f, 0.22f, 0.23f, 0.33f};
+    //colors[ImGuiCol_Separator]             = {0.28f, 0.28f, 0.28f, 0.29f};
+    //colors[ImGuiCol_SeparatorHovered]      = {0.44f, 0.44f, 0.44f, 0.29f};
+    //colors[ImGuiCol_SeparatorActive]       = {0.40f, 0.44f, 0.47f, 1.00f};
+    //colors[ImGuiCol_ResizeGrip]            = {0.28f, 0.28f, 0.28f, 0.29f};
+    //colors[ImGuiCol_ResizeGripHovered]     = {0.44f, 0.44f, 0.44f, 0.29f};
+    //colors[ImGuiCol_ResizeGripActive]      = {0.40f, 0.44f, 0.47f, 1.00f};
+    //colors[ImGuiCol_Tab]                   = {0.00f, 0.00f, 0.00f, 0.52f};
+    //colors[ImGuiCol_TabHovered]            = {0.14f, 0.14f, 0.14f, 1.00f};
+    //colors[ImGuiCol_TabActive]             = {0.20f, 0.20f, 0.20f, 0.36f};
+    //colors[ImGuiCol_TabUnfocused]          = {0.00f, 0.00f, 0.00f, 0.52f};
+    //colors[ImGuiCol_TabUnfocusedActive]    = {0.14f, 0.14f, 0.14f, 1.00f};
+    //colors[ImGuiCol_DockingPreview]        = {0.33f, 0.67f, 0.86f, 1.00f};
+    //colors[ImGuiCol_DockingEmptyBg]        = {0.14f, 0.14f, 0.14f, 1.00f};
+    //colors[ImGuiCol_PlotLines]             = {0.28f, 0.28f, 0.28f, 1.00f};
+    //colors[ImGuiCol_PlotLinesHovered]      = {0.28f, 0.28f, 0.28f, 1.00f};
+    //colors[ImGuiCol_PlotHistogram]         = {0.28f, 0.28f, 0.28f, 1.00f};
+    //colors[ImGuiCol_PlotHistogramHovered]  = {0.28f, 0.28f, 0.28f, 1.00f};
+    //colors[ImGuiCol_TableHeaderBg]         = {0.00f, 0.00f, 0.00f, 0.52f};
+    //colors[ImGuiCol_TableBorderStrong]     = {0.00f, 0.00f, 0.00f, 0.52f};
+    //colors[ImGuiCol_TableBorderLight]      = {0.28f, 0.28f, 0.28f, 0.29f};
+    //colors[ImGuiCol_TableRowBg]            = {0.00f, 0.00f, 0.00f, 0.00f};
+    //colors[ImGuiCol_TableRowBgAlt]         = {1.00f, 1.00f, 1.00f, 0.06f};
+    //colors[ImGuiCol_DragDropTarget]        = {0.33f, 0.67f, 0.86f, 1.00f};
+    //colors[ImGuiCol_NavHighlight]          = {0.28f, 0.28f, 0.28f, 0.29f};
+    //colors[ImGuiCol_NavWindowingHighlight] = {0.28f, 0.28f, 0.28f, 0.29f};
+    //colors[ImGuiCol_NavWindowingDimBg]     = {0.28f, 0.28f, 0.28f, 0.29f};
+    //colors[ImGuiCol_ModalWindowDimBg]      = {0.28f, 0.28f, 0.28f, 0.29f};
 }
