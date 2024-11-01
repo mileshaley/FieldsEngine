@@ -125,16 +125,16 @@ void fields_engine::editor::reset_style() const {
 	ImVec4* colors = style.Colors;
 
 	// Style Attributes
-	style.WindowPadding = ImVec2(8.00f, 8.00f);
-	style.FramePadding = ImVec2(5.00f, 2.00f);
-	style.CellPadding = ImVec2(6.00f, 6.00f);
-	style.ItemSpacing = ImVec2(6.00f, 6.00f);
-	style.ItemInnerSpacing = ImVec2(6.00f, 6.00f);
-	style.TouchExtraPadding = ImVec2(0.00f, 0.00f);
+	style.WindowPadding		= {8.00f, 8.00f};
+	style.FramePadding		= {5.00f, 2.00f};
+	style.CellPadding		= {6.00f, 6.00f};
+	style.ItemSpacing		= {6.00f, 6.00f};
+	style.ItemInnerSpacing	= {6.00f, 6.00f};
+	style.TouchExtraPadding = {0.00f, 0.00f};
 	style.LogSliderDeadzone = 4;
-	style.IndentSpacing = 25;
-	style.ScrollbarSize = 15;
-	style.GrabMinSize = 10;
+	style.IndentSpacing		= 25;
+	style.ScrollbarSize		= 15;
+	style.GrabMinSize		= 10;
 	static constexpr float borderSize = 0.0f;
 	style.WindowBorderSize	= borderSize;
 	style.ChildBorderSize	= borderSize;
