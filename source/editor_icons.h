@@ -5,6 +5,10 @@
 
 #pragma once
 
+namespace fields_engine {
+	using editor_icon = const char*;
+}
+
 #define FA_SOLID_FONT_ICON_FILENAME "fa-solid-900.ttf"
 
 #define FA_ICON_FONT_MIN 0xe005

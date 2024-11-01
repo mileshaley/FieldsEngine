@@ -53,8 +53,9 @@ fields_engine::editor::editor(window& wind)
 
 	reset_style();
 
-	const ImVec2 winSize(300.0f, 500.0f);
-	ImGui::SetNextWindowSize(winSize);
+	ImGui::SetNextWindowSize({ 300.0f, 500.0f });
+
+	windows_.emplace_back()
 }
 
 void fields_engine::editor::update(float dt) {
@@ -82,9 +83,10 @@ void fields_engine::editor::update(float dt) {
 
 			ImGui::EndMenu();
 		}
-
 		ImGui::EndMainMenuBar();
 	}
+
+
 	if (ImGui::Begin(ICON_FLOPPY_DISK" Glung")) {
 		ImGui::Text("Hello, World!");
 		static bool two = false;
