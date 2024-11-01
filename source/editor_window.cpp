@@ -10,16 +10,17 @@
 
 fields_engine::editor_window::editor_window(string_view name, callback_fn callback, editor_icon icon)
 	: name_(name)
-	, strID_(name)
+	, strID_()
 	, callback_(callback)
 	, icon_(icon)
 {
 	string_view iconStrv(icon);
-	strID_ += "###";
 	if (!iconStrv.empty()) {
 		strID_ += iconStrv;
 		strID_ += " ";
 	}
+	strID_ += name;
+	strID_ += "###";
 	strID_ += name;
 }
 

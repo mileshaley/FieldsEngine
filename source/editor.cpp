@@ -55,7 +55,10 @@ fields_engine::editor::editor(window& wind)
 
 	ImGui::SetNextWindowSize({ 300.0f, 500.0f });
 
-	windows_.emplace_back()
+	windows_.emplace_back(make_unique<editor_window>("Glungo", []() {
+			ImGui::Text(ICON_CAR" feab???");
+			return false;
+		}, ICON_FACE_SMILE));
 }
 
 void fields_engine::editor::update(float dt) {
@@ -86,21 +89,21 @@ void fields_engine::editor::update(float dt) {
 		ImGui::EndMainMenuBar();
 	}
 
+	windows_[0]->display();
+	//if (ImGui::Begin(ICON_FLOPPY_DISK" Glung")) {
+	//	ImGui::Text("Hello, World!");
+	//	static bool two = false;
+	//	if (ImGui::Button("two")) {
+	//		two = true;
+	//	}
+	//	if (two && ImGui::Button("one")) {
+	//		two = false;
+	//	}
+	//}
 
-	if (ImGui::Begin(ICON_FLOPPY_DISK" Glung")) {
-		ImGui::Text("Hello, World!");
-		static bool two = false;
-		if (ImGui::Button("two")) {
-			two = true;
-		}
-		if (two && ImGui::Button("one")) {
-			two = false;
-		}
-	}
+	//ImGui::ColorPicker4("", &clor_.r);
 
-	ImGui::ColorPicker4("", &clor_.r);
-
-	ImGui::End();
+	//ImGui::End();
 
 	//graphics::clear_background(clor_);
 
