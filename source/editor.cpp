@@ -36,8 +36,9 @@ fields_engine::editor::editor(window& wind)
 	fonts_.emplace_back(io.Fonts->AddFontFromFileTTF(
 		(fontsPath / "RobotoMono-Regular.ttf").string().c_str(), fontSize
 	));
-
-	const ImWchar iconRanges[3] = { 
+	
+	// MUST have persistent lifetime, hence static
+	static constexpr ImWchar iconRanges[3] = { 
 		FA_ICON_FONT_MIN, FA_ICON_FONT_MAX_16, 0 
 	};
 
