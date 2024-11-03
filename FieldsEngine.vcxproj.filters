@@ -78,6 +78,7 @@
     <ClCompile Include="source\precompiled.cpp">
       <Filter>fields_engine</Filter>
     </ClCompile>
+    <ClCompile Include="Source\editor_icons.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -146,5 +147,6 @@
     <ClInclude Include="source\precompiled.h">
       <Filter>fields_engine</Filter>
     </ClInclude>
+    <ClInclude Include="Source\editor_icons_all.h" />
   </ItemGroup>
 </Project>

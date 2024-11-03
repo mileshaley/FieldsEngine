@@ -7,7 +7,14 @@
 
 namespace fields_engine {
 	using editor_icon = const char*;
-}
+
+	namespace detail {
+		void generate_all_icons_file(
+			const char* destFilename = "Source/editor_icons_all.h", 
+			const char* srcFilename = __FILE__
+		);
+	} // namespace detail
+} // namespace fields_engine
 
 #define FA_SOLID_FONT_ICON_FILENAME "fa-solid-900.ttf"
 

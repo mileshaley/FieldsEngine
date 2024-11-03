@@ -30,6 +30,7 @@
     <ClCompile Include="libraries\includes\imGui\imgui_widgets.cpp" />
     <ClCompile Include="source\application.cpp" />
     <ClCompile Include="source\editor.cpp" />
+    <ClCompile Include="Source\editor_icons.cpp" />
     <ClCompile Include="source\editor_window.cpp" />
     <ClCompile Include="source\graphics.cpp" />
     <ClCompile Include="source\input.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="source\editor.h" />
     <ClInclude Include="source\common.h" />
     <ClInclude Include="source\editor_icons.h" />
+    <ClInclude Include="Source\editor_icons_all.h" />
     <ClInclude Include="source\editor_window.h" />
     <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\input.h" />
@@ -164,7 +166,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>

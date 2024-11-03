@@ -13,8 +13,7 @@
 #include "application.h"
 #include <filesystem>
 #include "imgui_stdlib.h"
-
-#include <iostream>
+#include "editor_icons_all.h"
 
 fields_engine::editor::editor(window& wind)
 	: context_(ImGui::CreateContext())
@@ -346,6 +345,15 @@ bool fields_engine::editor::root_window() {
 			newWindowBuffer_, do_nothing, ICON_ARROW_UP_RIGHT_DOTS));
 		newWindowBuffer_.clear();
 		res = true;
+	}
+
+	static int cols = 6;
+	ImGui::DragInt("Columns", &cols, 1, 1, all_editor_icons_count;);
+	for (int i = 0; i < all_editor_icons_count; ++i) {
+		ImGui::Text(all_editor_icons[i]);
+		if (i % cols != 0) {
+			ImGui::SameLine();
+		}
 	}
 	return res;
 }

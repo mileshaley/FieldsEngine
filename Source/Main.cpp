@@ -9,27 +9,30 @@
 #include "imGui/imgui.h"
 #include "application.h"
 
-	int main() {
-		std::cout << "Fields Engine Startup" << std::endl;
+#include "editor_icons.h"
+int main() {
+	//fe::detail::generate_all_icons_file();
+	//return 0;
 
-		
-		fe::g_application = new fe::application();
+	std::cout << "Fields Engine Startup" << std::endl;
+	
+	fe::g_application = new fe::application();
 
-		if (!fe::g_application->startup()) {
-			delete fe::g_application;
-			return 1;
-		}
-
-		fe::g_application->run();
-
-		if (!fe::g_application->shutdown()) {
-			delete fe::g_application;
-			return 1;
-		}
-
+	if (!fe::g_application->startup()) {
 		delete fe::g_application;
-		
-		std::cout << "Fields Engine Shutdown" << std::endl;
-		return 0;
+		return 1;
 	}
+
+	fe::g_application->run();
+
+	if (!fe::g_application->shutdown()) {
+		delete fe::g_application;
+		return 1;
+	}
+
+	delete fe::g_application;
+	
+	std::cout << "Fields Engine Shutdown" << std::endl;
+	return 0;
+}
 
