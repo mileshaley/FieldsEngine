@@ -7,6 +7,7 @@
 #include "precompiled.h"
 #include "editor_icons.h"
 #include <fstream>
+#include "text.h"
 
 namespace fields_engine::detail {
 	void generate_all_icons_file(const char* destFilename, const char* srcFilename) {
@@ -18,7 +19,9 @@ namespace fields_engine::detail {
 			if (inStr[0] == 'I') {
 
 				iconsStr += "\t\t" + inStr + ",\n";
-				namesStr += "\t\t\"" + inStr + "\",\n";
+				//inStr.replace()
+				;
+				namesStr += "\t\t\"" + text::find_replace(text::make_lower(inStr), "icon_", "") + "\",\n";
 			}
 		}
 
