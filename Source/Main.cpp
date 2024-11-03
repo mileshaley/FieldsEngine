@@ -11,8 +11,8 @@
 
 #include "editor_icons.h"
 int main() {
-	//fe::detail::generate_all_icons_file();
-	//return 0;
+	fe::detail::generate_all_icons_file();
+	return 0;
 
 	std::cout << "Fields Engine Startup" << std::endl;
 	

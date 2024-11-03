@@ -348,7 +348,7 @@ bool fields_engine::editor::root_window() {
 	}
 
 	static int cols = 6;
-	ImGui::DragInt("Columns", &cols, 1, 1, all_editor_icons_count;);
+	ImGui::DragInt("Columns", &cols, 1, 1, all_editor_icons_count);
 	for (int i = 0; i < all_editor_icons_count; ++i) {
 		ImGui::Text(all_editor_icons[i]);
 		if (i % cols != 0) {
