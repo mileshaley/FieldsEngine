@@ -16,4 +16,7 @@ namespace fields_engine::text {
 	// Returns the amount of replacements
 	int find_replace(string& str, string_view find, string_view replace);
 
+	// Case-insensitive find
+	NO_DISCARD bool is_relevant(string_view str, string_view substr) noexcept;
+
 } // namespace fields_engine::text

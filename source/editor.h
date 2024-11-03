@@ -23,11 +23,13 @@ namespace fields_engine{
 
 		void reset_style() const;
 
+		static void open_icon_selector();
 		static bool icon_selector_popup(editor_icon& current);
 	private:
 		bool root_window();
 
 		string newWindowBuffer_;
+		editor_icon newWindowIcon_ = ICON_ELLIPSIS_VERTICAL;
 		vec4 clor_; /// TODO: remove
 		vector<unique_ptr<editor_window>> windows_;
 		ImGuiContext* context_;

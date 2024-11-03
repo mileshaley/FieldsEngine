@@ -3,3 +3,5 @@
 
 - Utility to convert between cases like SCREAMING_SNAKE_CASE <-> snake_case <-> PascalCase
 - File system watcher
+
+- Context accessor friend macro: allow certain things to be uniformly accessed for a single context with context() and the context accessor/manager would handle setting the pointer

@@ -14,6 +14,7 @@
 #include <filesystem>
 #include "imgui_stdlib.h"
 #include "editor_icons_all.h"
+#include "text.h"
 
 fields_engine::editor::editor(window& wind)
 	: context_(ImGui::CreateContext())
@@ -65,10 +66,6 @@ fields_engine::editor::editor(window& wind)
 		&editor::root_window, this);
 	windows_.emplace_back(new editor_window(
 		"Root", rootFn, ICON_FACE_SMILE));
-
-	//windows_.emplace_back(make_unique<editor_window>("Root2", [&]() {
-	//	return false;
-	//	}, ICON_FACE_FROWN));
 }
 
 void fields_engine::editor::update(float dt) {
@@ -332,32 +329,41 @@ void fields_engine::editor::reset_style() const {
     colors[ImGuiCol_ModalWindowDimBg]      = {0.28f, 0.28f, 0.28f, 0.29f};
 }
 
-
-
 static bool do_nothing() {
 	return false;
 }
 
+void fields_engine::editor::open_icon_selector() {
+	ImGui::OpenPopup("icon_selector_popup");
+}
+
+// static
 bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
 
 	const float width = ImGui::GetContentRegionAvail().x;
-	constexpr float minWidth = 80;
+	constexpr float minWidth = 20;
 	const int numCols = int(std::ceilf(width / minWidth));
-
 	bool changed = false;
-	if (ImGui::BeginPopup("Select Icon")) {
+	if (ImGui::BeginPopup("icon_selector_popup")) {
+		static string search = "";
+		ImGui::InputTextWithHint("###Search Icon", "Search for an icon", &search);
 		if (ImGui::BeginTable("Icon Selection Table", numCols, ImGuiTableFlags_SizingStretchSame)) {
+			int pos = 0;
 			for (int i = 0; i < all_editor_icons.size(); ++i) {
-				const int mod = i % numCols;
+				editor_icon_info const& iconInfo = all_editor_icons[i];
+				if (!text::is_relevant(iconInfo.name, search)) {
+					continue;
+				}
+				const int mod = pos++ % numCols;
 				if (mod == 0) {
 					ImGui::TableNextRow();
 				}
 				ImGui::TableSetColumnIndex(mod);
-				editor_icon_info const& iconInfo = all_editor_icons[i];
 				// The const char* == const char* is jank but won't break anything if it doesn't work as intended
 				if (ImGui::Selectable(iconInfo.icon, selected == iconInfo.icon/*, ImGuiSelectableFlags_AllowOverlap*/)) {
 					selected = iconInfo.icon;
 					ImGui::CloseCurrentPopup();
+					changed = true;
 				}
 				if (ImGui::BeginItemTooltip()) {
 					ImGui::Text("%s %s", iconInfo.icon, iconInfo.name);
@@ -374,27 +380,18 @@ bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
 bool fields_engine::editor::root_window() {
 	bool res = ImGui::InputTextWithHint(
 		"###root_enter_new_window_name", "Enter Window Name", &newWindowBuffer_);
+
+	if (ImGui::Button(newWindowIcon_)) {
+		open_icon_selector();
+	}
+	icon_selector_popup(newWindowIcon_);
+
 	if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
 		windows_.emplace_back(make_unique<editor_window>(
-			newWindowBuffer_, do_nothing, ICON_ARROW_UP_RIGHT_DOTS));
+			newWindowBuffer_, do_nothing, newWindowIcon_));
 		newWindowBuffer_.clear();
 		res = true;
 	}
 
-	static editor_icon selection = ICON_ELLIPSIS;
-	if (ImGui::Button(selection)) {
-		ImGui::OpenPopup("Select Icon");
-	}
-	icon_selector_popup(selection);
-
-
-	//static int cols = 6;
-	//ImGui::DragInt("Columns", &cols, 1, 1, all_editor_icons_count);
-	//for (int i = 0; i < all_editor_icons_count; ++i) {
-	//	ImGui::Text(all_editor_icons[i]);
-	//	if (i % cols != 0) {
-	//		ImGui::SameLine();
-	//	}
-	//}
 	return res;
 }
