@@ -339,21 +339,36 @@ static bool do_nothing() {
 }
 
 bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
+
+	const float width = ImGui::GetContentRegionAvail().x;
+	constexpr float minWidth = 80;
+	const int numCols = int(std::ceilf(width / minWidth));
+
 	bool changed = false;
 	if (ImGui::BeginPopup("Select Icon")) {
-		static int cols = 6;
-		ImGui::DragInt("Columns", &cols, 1, 1, all_editor_icons_count);
+		//static int cols = 6;
+		//ImGui::DragInt("Columns", &cols, 1, 1, all_editor_icons_count);
+		if (ImGui::BeginTable("Icon Selection Table", numCols, ImGuiTableFlags_SizingStretchSame)) {
 
-		for (int i = 0; i < all_editor_icons_count; ++i) {
-			//if (ImGui::Selectable(all_editor_icons[i], selected == all_editor_icons[i], ImGuiSelectableFlags_AllowOverlap)) {
-			if (ImGui::Button(all_editor_icons[i])) {
-				selected = all_editor_icons[i];
-				ImGui::CloseCurrentPopup();
+			for (int i = 0; i < all_editor_icons_count; ++i) {
+
+				int mod = i % numCols;
+				if (mod == 0) {
+					ImGui::TableNextRow();
+				}
+				ImGui::TableSetColumnIndex(mod);
+
+				if (ImGui::Selectable(all_editor_icons[i], selected == all_editor_icons[i]/*, ImGuiSelectableFlags_AllowOverlap*/)) {
+				//if (ImGui::Button(all_editor_icons[i])) {
+					selected = all_editor_icons[i];
+					ImGui::CloseCurrentPopup();
+				}
+
+
 			}
-			if (i % cols != 0) {
-				ImGui::SameLine();
-			}
+			ImGui::EndTable();
 		}
+
 		ImGui::EndPopup();
 	}
 	return changed;
