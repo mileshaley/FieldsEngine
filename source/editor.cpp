@@ -37,7 +37,7 @@ fields_engine::editor::editor(window& wind)
 		(fontsPath / "RobotoMono-Regular.ttf").string().c_str(), fontSize
 	));
 
-	static constexpr ImWchar iconRanges[] = { 
+	const ImWchar iconRanges[3] = { 
 		FA_ICON_FONT_MIN, FA_ICON_FONT_MAX_16, 0 
 	};
 
