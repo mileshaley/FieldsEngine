@@ -13,20 +13,11 @@
     <Filter Include="libraries\imgui">
       <UniqueIdentifier>{5c8faf03-bf2c-44df-b5a2-f7cb2459cd98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="fields_engine">
+      <UniqueIdentifier>{9d518fa3-b6d7-462a-8e20-705f9ea5ffc5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\main.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="source\application.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="source\precompiled.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="source\input.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="libraries\includes\imGui\imgui.cpp">
       <Filter>libraries\imgui</Filter>
     </ClCompile>
@@ -57,23 +48,38 @@
     <ClCompile Include="source\stubs\stub.cpp">
       <Filter>Stubs</Filter>
     </ClCompile>
-    <ClCompile Include="source\editor.cpp" />
-    <ClCompile Include="source\window.cpp" />
-    <ClCompile Include="source\graphics.cpp" />
-    <ClCompile Include="source\shader.cpp" />
-    <ClCompile Include="source\log.cpp" />
-    <ClCompile Include="source\editor_window.cpp" />
+    <ClCompile Include="source\editor.cpp">
+      <Filter>fields_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\editor_window.cpp">
+      <Filter>fields_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\graphics.cpp">
+      <Filter>fields_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\log.cpp">
+      <Filter>fields_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\shader.cpp">
+      <Filter>fields_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\window.cpp">
+      <Filter>fields_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\application.cpp">
+      <Filter>fields_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\input.cpp">
+      <Filter>fields_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\main.cpp">
+      <Filter>fields_engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\precompiled.cpp">
+      <Filter>fields_engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\application.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="source\precompiled.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="source\input.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
@@ -107,13 +113,38 @@
     <ClInclude Include="source\stubs\stub.h">
       <Filter>Stubs</Filter>
     </ClInclude>
-    <ClInclude Include="source\editor.h" />
-    <ClInclude Include="source\window.h" />
-    <ClInclude Include="source\common.h" />
-    <ClInclude Include="source\graphics.h" />
-    <ClInclude Include="source\shader.h" />
-    <ClInclude Include="source\log.h" />
-    <ClInclude Include="source\editor_icons.h" />
-    <ClInclude Include="source\editor_window.h" />
+    <ClInclude Include="source\common.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor_icons.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\editor_window.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\graphics.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\log.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\shader.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\window.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\application.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\input.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\precompiled.h">
+      <Filter>fields_engine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

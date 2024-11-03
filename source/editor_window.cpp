@@ -8,7 +8,7 @@
 #include "editor_window.h"
 #include "imgui.h"
 
-fields_engine::editor_window::editor_window(string_view name, callback_fn callback, editor_icon icon)
+fields_engine::editor_window::editor_window(string_view name, callback_t const& callback, editor_icon icon)
 	: name_(name)
 	, strID_()
 	, callback_(callback)
@@ -55,10 +55,10 @@ void fields_engine::editor_window::menu_item() {
 	}
 }
 
-fe::editor_window::callback_fn fields_engine::editor_window::callback() const {
+fe::editor_window::callback_t const& fields_engine::editor_window::callback() const {
 	return callback_;
 }
 
-void fields_engine::editor_window::callback(callback_fn newCallback) {
+void fields_engine::editor_window::callback(callback_t const& newCallback) {
 	callback_ = newCallback;
 }

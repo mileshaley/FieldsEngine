@@ -23,6 +23,7 @@ namespace fields_engine{
 
 		void reset_style() const;
 	private:
+		string newWindowBuffer_;
 		vec4 clor_; /// TODO: remove
 		vector<unique_ptr<editor_window>> windows_;
 		ImGuiContext* context_;

@@ -9,19 +9,15 @@
 #include "imGui/imgui.h"
 #include "application.h"
 
+	int main() {
+		std::cout << "Fields Engine Startup" << std::endl;
 
-int main() {
-	json js;
-	js["twelve"] = 5;
-	std::cout << js << std::endl;
-	std::cout << "Hello, world!" << std::endl;
-
-	{
-		fe::g_application = new fe::application();
 		
-		if (!fe::g_application->startup()) { 
+		fe::g_application = new fe::application();
+
+		if (!fe::g_application->startup()) {
 			delete fe::g_application;
-			return 1; 
+			return 1;
 		}
 
 		fe::g_application->run();
@@ -32,7 +28,8 @@ int main() {
 		}
 
 		delete fe::g_application;
+		
+		std::cout << "Fields Engine Shutdown" << std::endl;
+		return 0;
 	}
 
-	return 0;
-}

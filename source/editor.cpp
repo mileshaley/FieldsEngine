@@ -12,6 +12,7 @@
 #include "glfw/glfw3.h"
 #include "application.h"
 #include <filesystem>
+#include "imgui_stdlib.h"
 
 fields_engine::editor::editor(window& wind)
 	: context_(ImGui::CreateContext())
@@ -55,8 +56,14 @@ fields_engine::editor::editor(window& wind)
 
 	ImGui::SetNextWindowSize({ 300.0f, 500.0f });
 
-	windows_.emplace_back(make_unique<editor_window>("Glungo", []() {
+	windows_.emplace_back(make_unique<editor_window>("Root", [&]() {
 			ImGui::Text(ICON_CAR" feab???");
+			ImGui::InputTextWithHint("###root_enter_new_window_name", "Enter Window Name", &newWindowBuffer_);
+			if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
+				windows_.emplace_back(make_unique<editor_window>(newWindowBuffer_, 
+					[size = windows_.size()]() { ImGui::Text("%llu", size); return false; }, ICON_ARROW_UP_RIGHT_DOTS));
+				newWindowBuffer_.clear();
+			}
 			return false;
 		}, ICON_FACE_SMILE));
 }
@@ -83,7 +90,7 @@ void fields_engine::editor::update(float dt) {
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window")) {
-			for (auto const& window : windows_) {
+			for (unique_ptr<editor_window> const& window : windows_) {
 				window->menu_item();
 			}
 			ImGui::EndMenu();
@@ -91,7 +98,12 @@ void fields_engine::editor::update(float dt) {
 		ImGui::EndMainMenuBar();
 	}
 
-	windows_[0]->display();
+	for (unique_ptr<editor_window> const& window : windows_) {
+		//if (windows_.size() == 3) {
+		//}
+		window->display();
+	}
+
 	//if (ImGui::Begin(ICON_FLOPPY_DISK" Glung")) {
 	//	ImGui::Text("Hello, World!");
 	//	static bool two = false;
