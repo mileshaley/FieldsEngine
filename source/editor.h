@@ -30,7 +30,6 @@ namespace fields_engine{
 
 		string newWindowBuffer_;
 		editor_icon newWindowIcon_ = ICON_ELLIPSIS_VERTICAL;
-		vec4 clor_; /// TODO: remove
 		vector<unique_ptr<editor_window>> windows_;
 		ImGuiContext* context_;
 		vector<ImFont*> fonts_;

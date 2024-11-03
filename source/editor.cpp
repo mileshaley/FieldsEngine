@@ -15,11 +15,12 @@
 #include "imgui_stdlib.h"
 #include "editor_icons_all.h"
 #include "text.h"
+#include "imGui/imgui_internal.h"
 
 fields_engine::editor::editor(window& wind)
 	: context_(ImGui::CreateContext())
-	, clor_(1, 0, 1, 1)
 	, fonts_()
+	, windows_()
 {
 	ImGui::SetCurrentContext(context_);
 	ImGuiIO& io = ImGui::GetIO();
@@ -57,15 +58,23 @@ fields_engine::editor::editor(window& wind)
 	reset_style();
 
 	ImGui::SetNextWindowSize({ 300.0f, 500.0f });
-	//windows_.reserve(5);
 
 	//ImGui::Text(ICON_CAR" feab???");
-	//std::function<void(int)> gk([](int num) { std::cout << num; }, 12);
-	/*std::function<bool(editor&)>*/ 
+
 	std::function<bool(void)> rootFn = std::bind(
 		&editor::root_window, this);
-	windows_.emplace_back(new editor_window(
+	windows_.emplace_back(make_unique<editor_window>(
 		"Root", rootFn, ICON_FACE_SMILE));
+
+	// Add the window and then set its callback after since it needs to access data inside the window
+	windows_.emplace_back(make_unique<editor_window>(
+		"ImGui Demo", editor_window::callback_t{}, ICON_INFO));
+	editor_window* demoWindow = windows_.back().get();
+	demoWindow->callback([demoWindow]() {
+		ImGui::SetWindowHiddendAndSkipItemsForCurrentFrame(ImGui::GetCurrentWindow());
+		ImGui::ShowDemoWindow(&demoWindow->open_);
+		return false; 
+	});
 }
 
 void fields_engine::editor::update(float dt) {
@@ -360,7 +369,7 @@ bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
 				}
 				ImGui::TableSetColumnIndex(mod);
 				// The const char* == const char* is jank but won't break anything if it doesn't work as intended
-				if (ImGui::Selectable(iconInfo.icon, selected == iconInfo.icon/*, ImGuiSelectableFlags_AllowOverlap*/)) {
+				if (ImGui::Selectable(iconInfo.icon, selected == iconInfo.icon)) {
 					selected = iconInfo.icon;
 					ImGui::CloseCurrentPopup();
 					changed = true;

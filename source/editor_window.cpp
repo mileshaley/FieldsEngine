@@ -8,7 +8,7 @@
 #include "editor_window.h"
 #include "imgui.h"
 
-fields_engine::editor_window::editor_window(string_view name, std::function<bool(void)> callback, editor_icon icon)
+fields_engine::editor_window::editor_window(string_view name, callback_t const& callback, editor_icon icon)
 	: name_(name)
 	, strID_()
 	, callback_(callback)
@@ -58,7 +58,7 @@ void fields_engine::editor_window::end_window() const {
 
 void fields_engine::editor_window::menu_item() {
 	if (ImGui::MenuItem(strID_.c_str(), nullptr, &open_)) {
-		open_ = true;
+		//open_ = !open_;
 		/// Bring to top
 	}
 }
@@ -67,6 +67,10 @@ fe::editor_window::callback_t const& fields_engine::editor_window::callback() co
 	return callback_;
 }
 
-void fields_engine::editor_window::callback(callback_t newCallback) {
+void fields_engine::editor_window::callback(callback_t const& newCallback) {
 	callback_ = newCallback;
+}
+
+string const& fields_engine::editor_window::strID() const {
+	return strID_;
 }

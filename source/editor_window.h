@@ -15,7 +15,7 @@ namespace fields_engine {
 	class editor_window {
 	public:
 		using callback_t = std::function<bool(void)>;
-		editor_window(string_view name, std::function<bool(void)> callback, editor_icon icon = "");
+		editor_window(string_view name, callback_t const& callback, editor_icon icon = "");
 		editor_window(editor_window const& other);
 		bool display();
 		bool force_display();
@@ -26,10 +26,12 @@ namespace fields_engine {
 		void menu_item();
 
 		callback_t const& callback() const;
-		void callback(callback_t newCallback = {});
+		void callback(callback_t const& newCallback = {});
 
-	private:
+		string const& strID() const;
+
 		bool open_;
+	private:
 		string name_;
 		string strID_; // Trade some memory for time by precomputing the string ID
 		callback_t callback_;
