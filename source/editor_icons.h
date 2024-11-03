@@ -8,15 +8,21 @@
 namespace fields_engine {
 	using editor_icon = const char*;
 
+	struct editor_icon_info {
+		// These used to be string views but that made all icons info ~40,000 bytes
+		editor_icon icon;
+		const char* name;
+	};
+
 	namespace detail {
 		void generate_all_icons_file(
-			const char* destFilename = "Source/editor_icons_all.h", 
+			const char* destPathname = "editor_icons_all", 
 			const char* srcFilename = __FILE__
 		);
 	} // namespace detail
 } // namespace fields_engine
 
-#define FA_SOLID_FONT_ICON_FILENAME "fa-solid-900.ttf"
+#define FA_SOLID_ICON_FONT_FILENAME "fa-solid-900.ttf"
 
 #define FA_ICON_FONT_MIN 0xe005
 #define FA_ICON_FONT_MAX_16 0xf8ff

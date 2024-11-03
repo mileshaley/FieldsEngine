@@ -31,6 +31,7 @@
     <ClCompile Include="source\application.cpp" />
     <ClCompile Include="source\editor.cpp" />
     <ClCompile Include="Source\editor_icons.cpp" />
+    <ClCompile Include="Source\editor_icons_all.cpp" />
     <ClCompile Include="source\editor_window.cpp" />
     <ClCompile Include="source\graphics.cpp" />
     <ClCompile Include="source\input.cpp" />

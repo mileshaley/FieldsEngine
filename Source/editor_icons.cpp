@@ -10,34 +10,50 @@
 #include "text.h"
 
 namespace fields_engine::detail {
-	void generate_all_icons_file(const char* destFilename, const char* srcFilename) {
+	void generate_all_icons_file(const char* destPathname, const char* srcFilename) {
 		std::ifstream in(srcFilename);
-		string inStr = "";
-		string iconsStr = "";
-		string namesStr = "";
-		while (in >> inStr) {
-			if (inStr[0] == 'I') {
-
-				iconsStr += "\t\t" + inStr + ",\n";
-				//inStr.replace()
-				;
-				namesStr += "\t\t\"" + text::find_replace(text::make_lower(inStr), "icon_", "") + "\",\n";
+		string token = "";
+		string infoStr = "";
+		//string namesStr = "";
+		constexpr string_view iconPrefix("ICON_");
+		int count = 0;
+		while (in >> token) {
+			// If the token begins (pos 0) with iconPrefix 
+			if (token.find(iconPrefix) == 0) {
+				infoStr += "\t\teii{ " + token + ", ";
+				// Modify token in place (both)
+				text::find_replace(token, iconPrefix, "");
+				text::make_lower(token);
+				infoStr += "\"" + token + "\" },\n";
+				count += 1;
 			}
 		}
 
 		in.close();
-		std::ofstream out(destFilename);
+		string destName(destPathname);
+		string destHeader(destName + ".h");
+		std::ofstream out("Source/" + destHeader);
+
 		out <<
+			"// Generated\n"
 			"#pragma once\n\n"
 			"#include \"editor_icons.h\"\n\n"
 			"namespace fields_engine {\n"
-				"\tinline editor_icon all_editor_icons[] = {\n"
-					<< iconsStr <<
+				"\textern const std::array<editor_icon_info, "
+					<< count << "> all_editor_icons;\n"
+			"} // namespace fields_editor\n";
+		out.close();
+		out.open("Source/" + destName + ".cpp");
+		out <<
+			"// Generated\n"
+			"#include \"precompiled.h\"\n"
+			"#include \"" << destHeader << "\"\n\n"
+			"namespace fields_engine {\n"
+				"\tusing eii = editor_icon_info;\n"
+				"\tconst std::array<editor_icon_info, "
+					<< count << "> all_editor_icons = {\n"
+				<< infoStr <<
 				"\t};\n"
-				"\tinline const char* all_editor_icon_names[] = {\n"
-					<< namesStr <<
-				"\t};\n"
-				"\tinline size_t all_editor_icons_count = sizeof(all_editor_icons) / sizeof(all_editor_icons[0]);\n"
-			"} // namespace fields_editor";
+			"} // namespace fields_editor\n";
 	}
 } // namespace fields_engine::detail

@@ -46,7 +46,7 @@ fields_engine::editor::editor(window& wind)
 	iconConfig.GlyphOffset.y = 1.0f;
 
 	fonts_.emplace_back(io.Fonts->AddFontFromFileTTF(
-		(fontsPath / FA_SOLID_FONT_ICON_FILENAME).string().c_str(),
+		(fontsPath / FA_SOLID_ICON_FONT_FILENAME).string().c_str(),
 		fontSize, &iconConfig, iconRanges
 	));
 
@@ -346,29 +346,22 @@ bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
 
 	bool changed = false;
 	if (ImGui::BeginPopup("Select Icon")) {
-		//static int cols = 6;
-		//ImGui::DragInt("Columns", &cols, 1, 1, all_editor_icons_count);
 		if (ImGui::BeginTable("Icon Selection Table", numCols, ImGuiTableFlags_SizingStretchSame)) {
-
-			for (int i = 0; i < all_editor_icons_count; ++i) {
-
-				int mod = i % numCols;
+			for (int i = 0; i < all_editor_icons.size(); ++i) {
+				const int mod = i % numCols;
 				if (mod == 0) {
 					ImGui::TableNextRow();
 				}
 				ImGui::TableSetColumnIndex(mod);
-
-				if (ImGui::Selectable(all_editor_icons[i], selected == all_editor_icons[i]/*, ImGuiSelectableFlags_AllowOverlap*/)) {
+				// The const char* == const char* is that way because it won't cause any issues even if it breaks
+				if (ImGui::Selectable(all_editor_icons[i].icon, selected == all_editor_icons[i].icon/*, ImGuiSelectableFlags_AllowOverlap*/)) {
 				//if (ImGui::Button(all_editor_icons[i])) {
-					selected = all_editor_icons[i];
+					selected = all_editor_icons[i].icon;
 					ImGui::CloseCurrentPopup();
 				}
-
-
 			}
 			ImGui::EndTable();
 		}
-
 		ImGui::EndPopup();
 	}
 	return changed;

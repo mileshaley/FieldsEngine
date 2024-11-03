@@ -80,6 +80,7 @@
     </ClCompile>
     <ClCompile Include="Source\editor_icons.cpp" />
     <ClCompile Include="Source\text.cpp" />
+    <ClCompile Include="Source\editor_icons_all.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">

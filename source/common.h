@@ -31,7 +31,7 @@ namespace fields_engine::common {
 	using f64 = double;
 
 /*~-------------------------------------------------------------------------~*\
- * GLM Type Aliases															 *
+ * Math Type Aliases															 *
 \*~-------------------------------------------------------------------------~*/
 
 	using glm::vec1;
@@ -53,14 +53,17 @@ namespace fields_engine::common {
 \*~-------------------------------------------------------------------------~*/
 
 	template<typename T>
-	using _ptr = T*;
-
-	template<typename T>
 	using nullable = T;
 	template<typename T>
 	using nullable_ptr = T*;
 
 	using std::unique_ptr;
+
 	using std::make_unique;
+
+	template<typename T>
+	using unique_r = unique_ptr<T>&;
+	template<typename T>
+	using unique_cr = unique_ptr<T> const&;
 
 } // namespace fields_engine::common
