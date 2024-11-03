@@ -23,6 +23,8 @@ namespace fields_engine{
 
 		void reset_style() const;
 	private:
+		bool root_window();
+
 		string newWindowBuffer_;
 		vec4 clor_; /// TODO: remove
 		vector<unique_ptr<editor_window>> windows_;

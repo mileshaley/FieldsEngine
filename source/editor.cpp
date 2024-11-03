@@ -14,6 +14,8 @@
 #include <filesystem>
 #include "imgui_stdlib.h"
 
+#include <iostream>
+
 fields_engine::editor::editor(window& wind)
 	: context_(ImGui::CreateContext())
 	, clor_(1, 0, 1, 1)
@@ -55,17 +57,19 @@ fields_engine::editor::editor(window& wind)
 	reset_style();
 
 	ImGui::SetNextWindowSize({ 300.0f, 500.0f });
+	//windows_.reserve(5);
 
-	windows_.emplace_back(make_unique<editor_window>("Root", [&]() {
-			ImGui::Text(ICON_CAR" feab???");
-			ImGui::InputTextWithHint("###root_enter_new_window_name", "Enter Window Name", &newWindowBuffer_);
-			if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
-				windows_.emplace_back(make_unique<editor_window>(newWindowBuffer_, 
-					[size = windows_.size()]() { ImGui::Text("%llu", size); return false; }, ICON_ARROW_UP_RIGHT_DOTS));
-				newWindowBuffer_.clear();
-			}
-			return false;
-		}, ICON_FACE_SMILE));
+	//ImGui::Text(ICON_CAR" feab???");
+	//std::function<void(int)> gk([](int num) { std::cout << num; }, 12);
+	/*std::function<bool(editor&)>*/ 
+	std::function<bool(void)> rootFn = std::bind(
+		&editor::root_window, this);
+	windows_.emplace_back(new editor_window(
+		"Root", rootFn, ICON_FACE_SMILE));
+
+	//windows_.emplace_back(make_unique<editor_window>("Root2", [&]() {
+	//	return false;
+	//	}, ICON_FACE_FROWN));
 }
 
 void fields_engine::editor::update(float dt) {
@@ -90,18 +94,16 @@ void fields_engine::editor::update(float dt) {
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window")) {
-			for (unique_ptr<editor_window> const& window : windows_) {
-				window->menu_item();
+			for (int i = 0; i < windows_.size(); ++i) {
+				windows_[i]->menu_item();
 			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
 	}
 
-	for (unique_ptr<editor_window> const& window : windows_) {
-		//if (windows_.size() == 3) {
-		//}
-		window->display();
+	for (int i = 0; i < windows_.size(); ++i) {
+		windows_[i]->display();
 	}
 
 	//if (ImGui::Begin(ICON_FLOPPY_DISK" Glung")) {
@@ -329,4 +331,21 @@ void fields_engine::editor::reset_style() const {
     colors[ImGuiCol_NavWindowingHighlight] = {0.28f, 0.28f, 0.28f, 0.29f};
     colors[ImGuiCol_NavWindowingDimBg]     = {0.28f, 0.28f, 0.28f, 0.29f};
     colors[ImGuiCol_ModalWindowDimBg]      = {0.28f, 0.28f, 0.28f, 0.29f};
+}
+
+static bool do_nothing() {
+	return false;
+}
+
+
+bool fields_engine::editor::root_window() {
+	bool res = ImGui::InputTextWithHint(
+		"###root_enter_new_window_name", "Enter Window Name", &newWindowBuffer_);
+	if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
+		windows_.emplace_back(make_unique<editor_window>(
+			newWindowBuffer_, do_nothing, ICON_ARROW_UP_RIGHT_DOTS));
+		newWindowBuffer_.clear();
+		res = true;
+	}
+	return res;
 }

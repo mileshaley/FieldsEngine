@@ -8,7 +8,7 @@
 #include "editor_window.h"
 #include "imgui.h"
 
-fields_engine::editor_window::editor_window(string_view name, callback_t const& callback, editor_icon icon)
+fields_engine::editor_window::editor_window(string_view name, std::function<bool(void)> callback, editor_icon icon)
 	: name_(name)
 	, strID_()
 	, callback_(callback)
@@ -24,6 +24,14 @@ fields_engine::editor_window::editor_window(string_view name, callback_t const& 
 	strID_ += "###";
 	strID_ += name;
 }
+
+fields_engine::editor_window::editor_window(editor_window const& other)
+	: name_(other.name_)
+	, strID_(other.strID_)
+	, callback_(other.callback_)
+	, icon_(other.icon_)
+	, open_(other.open_)
+{}
 
 bool fields_engine::editor_window::display() {
 	return open_ && force_display();
@@ -59,6 +67,6 @@ fe::editor_window::callback_t const& fields_engine::editor_window::callback() co
 	return callback_;
 }
 
-void fields_engine::editor_window::callback(callback_t const& newCallback) {
+void fields_engine::editor_window::callback(callback_t newCallback) {
 	callback_ = newCallback;
 }
