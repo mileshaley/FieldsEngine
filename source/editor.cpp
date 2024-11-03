@@ -353,11 +353,15 @@ bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
 					ImGui::TableNextRow();
 				}
 				ImGui::TableSetColumnIndex(mod);
-				// The const char* == const char* is that way because it won't cause any issues even if it breaks
-				if (ImGui::Selectable(all_editor_icons[i].icon, selected == all_editor_icons[i].icon/*, ImGuiSelectableFlags_AllowOverlap*/)) {
-				//if (ImGui::Button(all_editor_icons[i])) {
-					selected = all_editor_icons[i].icon;
+				editor_icon_info const& iconInfo = all_editor_icons[i];
+				// The const char* == const char* is jank but won't break anything if it doesn't work as intended
+				if (ImGui::Selectable(iconInfo.icon, selected == iconInfo.icon/*, ImGuiSelectableFlags_AllowOverlap*/)) {
+					selected = iconInfo.icon;
 					ImGui::CloseCurrentPopup();
+				}
+				if (ImGui::BeginItemTooltip()) {
+					ImGui::Text("%s %s", iconInfo.icon, iconInfo.name);
+					ImGui::EndTooltip();
 				}
 			}
 			ImGui::EndTable();
