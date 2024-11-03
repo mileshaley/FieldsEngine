@@ -332,10 +332,32 @@ void fields_engine::editor::reset_style() const {
     colors[ImGuiCol_ModalWindowDimBg]      = {0.28f, 0.28f, 0.28f, 0.29f};
 }
 
+
+
 static bool do_nothing() {
 	return false;
 }
 
+bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
+	bool changed = false;
+	if (ImGui::BeginPopup("Select Icon")) {
+		static int cols = 6;
+		ImGui::DragInt("Columns", &cols, 1, 1, all_editor_icons_count);
+
+		for (int i = 0; i < all_editor_icons_count; ++i) {
+			//if (ImGui::Selectable(all_editor_icons[i], selected == all_editor_icons[i], ImGuiSelectableFlags_AllowOverlap)) {
+			if (ImGui::Button(all_editor_icons[i])) {
+				selected = all_editor_icons[i];
+				ImGui::CloseCurrentPopup();
+			}
+			if (i % cols != 0) {
+				ImGui::SameLine();
+			}
+		}
+		ImGui::EndPopup();
+	}
+	return changed;
+}
 
 bool fields_engine::editor::root_window() {
 	bool res = ImGui::InputTextWithHint(
@@ -347,13 +369,20 @@ bool fields_engine::editor::root_window() {
 		res = true;
 	}
 
-	static int cols = 6;
-	ImGui::DragInt("Columns", &cols, 1, 1, all_editor_icons_count);
-	for (int i = 0; i < all_editor_icons_count; ++i) {
-		ImGui::Text(all_editor_icons[i]);
-		if (i % cols != 0) {
-			ImGui::SameLine();
-		}
+	static editor_icon selection = ICON_ELLIPSIS;
+	if (ImGui::Button(selection)) {
+		ImGui::OpenPopup("Select Icon");
 	}
+	icon_selector_popup(selection);
+
+
+	//static int cols = 6;
+	//ImGui::DragInt("Columns", &cols, 1, 1, all_editor_icons_count);
+	//for (int i = 0; i < all_editor_icons_count; ++i) {
+	//	ImGui::Text(all_editor_icons[i]);
+	//	if (i % cols != 0) {
+	//		ImGui::SameLine();
+	//	}
+	//}
 	return res;
 }
