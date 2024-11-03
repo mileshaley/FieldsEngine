@@ -24,7 +24,7 @@ using std::vector;
 #define IF_CONSTEXPR if constexpr
 #define CONSTEXPR constexpr
 #define INLINE inline
-#define NODISCARD [[nodiscard]]
+#define NO_DISCARD [[nodiscard]]
 #define FALLTHROUGH [[fallthrough]]
 
 #include "common.h"

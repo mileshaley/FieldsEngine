@@ -45,6 +45,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Source\text.cpp" />
     <ClCompile Include="source\window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +71,7 @@
     <ClInclude Include="source\precompiled.h" />
     <ClInclude Include="source\shader.h" />
     <ClInclude Include="source\stubs\stub.h" />
+    <ClInclude Include="Source\text.h" />
     <ClInclude Include="source\window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
