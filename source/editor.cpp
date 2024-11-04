@@ -38,6 +38,7 @@ fields_engine::editor::editor(window& wind)
 	));
 	
 	// MUST have persistent lifetime, hence static
+	// We want to treat this like a const wchar_t*
 	static constexpr ImWchar iconRanges[3] = { 
 		FA_ICON_FONT_MIN, FA_ICON_FONT_MAX_16, 0 
 	};
@@ -361,7 +362,7 @@ bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
 			int pos = 0;
 			for (int i = 0; i < all_editor_icons.size(); ++i) {
 				editor_icon_info const& iconInfo = all_editor_icons[i];
-				if (!text::is_relevant(iconInfo.name, search)) {
+				if (!text::is_relevant(iconInfo.prettyName, search)) {
 					continue;
 				}
 				const int mod = pos++ % numCols;
@@ -376,7 +377,7 @@ bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
 					changed = true;
 				}
 				if (ImGui::BeginItemTooltip()) {
-					ImGui::Text("%s %s", iconInfo.icon, iconInfo.name);
+					ImGui::Text("%s %s", iconInfo.icon, iconInfo.prettyName);
 					ImGui::EndTooltip();
 				}
 			}

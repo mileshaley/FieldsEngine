@@ -24,7 +24,9 @@ namespace fields_engine::detail {
 				// Modify token in place (both)
 				text::find_replace(token, iconPrefix, "");
 				text::make_lower(token);
-				infoStr += "\"" + token + "\" },\n";
+				infoStr += "\"" + token + "\", \"";
+				text::make_pretty(token);
+				infoStr += token + "\" },\n";
 				count += 1;
 			}
 		}

@@ -8,6 +8,44 @@
 #include "text.h"
 
 namespace fields_engine::text {
+/*~-------------------------------------------------------------------------~*\
+ * Char Utilities															 *
+\*~-------------------------------------------------------------------------~*/
+
+	NO_DISCARD constexpr char is_upper(char c) noexcept {
+		return c >= 'A' && c <= 'Z';
+	}
+
+	NO_DISCARD constexpr char is_lower(char c) noexcept {
+		return c >= 'a' && c <= 'z';
+	}
+
+	NO_DISCARD constexpr char to_upper(char c) noexcept {
+		if (is_lower(c)) {
+			return c - ('a' - 'A');
+		}
+		return c;
+	}
+
+	NO_DISCARD constexpr char to_lower(char c) noexcept {
+		if (is_upper(c)) {
+			return c + ('a' - 'A');
+		}
+		return c;
+	}
+
+	void make_upper(char& c) noexcept {
+		c = to_upper(c);
+	}
+
+	void make_lower(char& c) noexcept {
+		c = to_lower(c);
+	}
+
+/*~-------------------------------------------------------------------------~*\
+ * String Utilities															 *
+\*~-------------------------------------------------------------------------~*/
+
 	string to_upper(string_view str) {
 		string result(str);
 		make_upper(result);
@@ -16,9 +54,7 @@ namespace fields_engine::text {
 
 	string& make_upper(string& str) noexcept {
 		for (char& c : str) {
-			if (c >= 'a' && c <= 'z') {
-				c -= 'a' - 'A';
-			}
+			make_upper(c);
 		}
 		return str;
 	}
@@ -31,9 +67,7 @@ namespace fields_engine::text {
 
 	string& make_lower(string& str) noexcept {
 		for (char& c : str) {
-			if (c >= 'A' && c <= 'Z') {
-				c += 'a' - 'A';
-			}
+			make_lower(c);
 		}
 		return str;
 	}
@@ -54,6 +88,39 @@ namespace fields_engine::text {
 	NO_DISCARD bool is_relevant(string_view str, string_view substr) noexcept {
 		// Redundant empty check but saves 2 to_lower()
 		return substr.empty() || to_lower(str).find(to_lower(substr)) != string::npos;
+	}
+
+	NO_DISCARD string to_pretty(string_view str) {
+		string pretty;
+		pretty.reserve(str.length());
+		char prev = ' ';
+		bool capitalize = true;
+		for (int i = 0; i < str.length(); ++i) {
+			char c = str[i];
+			if (c == '_' || c== ' ') {
+				if (prev == ' ') {
+					capitalize = true;
+				} else {
+					pretty.push_back(' ');
+				}
+			} else {
+				if (capitalize) {
+					pretty.push_back(to_upper(c));
+				} else if (is_upper(c) && is_lower(prev)) {
+					pretty.push_back(' ');
+					pretty.push_back(c);
+				} else {
+					pretty.push_back(to_lower(c));
+				}
+				capitalize = false;
+			}
+			prev = c;
+		}
+		return pretty;
+	}
+
+	void make_pretty(string& str) {
+		str = to_pretty(str);
 	}
 
 } // namespace fields_engine::text

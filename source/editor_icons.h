@@ -12,6 +12,7 @@ namespace fields_engine {
 		// These used to be string views but that made all icons info ~40,000 bytes
 		editor_icon icon;
 		const char* name;
+		const char* prettyName;
 	};
 
 	namespace detail {
