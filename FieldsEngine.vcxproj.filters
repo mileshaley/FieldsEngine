@@ -109,5 +109,6 @@
     <ClInclude Include="source\shader.h" />
     <ClInclude Include="source\text.h" />
     <ClInclude Include="source\window.h" />
+    <ClInclude Include="source\context.h" />
   </ItemGroup>
 </Project>

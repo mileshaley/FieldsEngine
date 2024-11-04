@@ -8,6 +8,7 @@
 
 #include "editor_icons.h" // editor_icon
 #include "editor_window.h" // windows_
+#include "context.h"
 
 struct ImGuiContext;
 struct ImFont;
@@ -34,5 +35,9 @@ namespace fields_engine{
 		ImGuiContext* context_;
 		vector<ImFont*> fonts_;
 	};
+
+	GENERATE_GLOBAL_CONTEXT_FOR_TYPE(editor);
+
+
 
 } // namespace fields_engine

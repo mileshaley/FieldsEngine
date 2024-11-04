@@ -140,7 +140,7 @@ void fields_engine::editor::update(float dt) {
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
 		//glfwMakeContextCurrent(context);
-		g_application->reinstate();
+		context<application>().reinstate();
 	}
 }
 

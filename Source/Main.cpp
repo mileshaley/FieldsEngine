@@ -8,29 +8,26 @@
 #include <iostream>
 #include "imGui/imgui.h"
 #include "application.h"
+#include "context.h"
 
-#include "editor_icons.h"
 int main() {
+	using namespace fields_engine;
 	//fe::detail::generate_all_icons_file();
 	//return 0;
 
 	std::cout << "Fields Engine Startup" << std::endl;
-	
-	fe::g_application = new fe::application();
-
-	if (!fe::g_application->startup()) {
-		delete fe::g_application;
+	context_ownership<application> app = make_unique<application>();
+	if (!app->startup()) {
 		return 1;
 	}
 
-	fe::g_application->run();
+	app->run();
 
-	if (!fe::g_application->shutdown()) {
-		delete fe::g_application;
+	if (!app->shutdown()) {
 		return 1;
 	}
 
-	delete fe::g_application;
+	app.reset();
 	
 	std::cout << "Fields Engine Shutdown" << std::endl;
 	return 0;

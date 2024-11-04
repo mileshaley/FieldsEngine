@@ -28,6 +28,7 @@ using std::vector;
 #define FALLTHROUGH [[fallthrough]]
 
 #include "common.h"
+#include "context.h"
 
 namespace fields_engine {
 	using namespace common;

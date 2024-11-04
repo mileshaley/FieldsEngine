@@ -7,7 +7,7 @@
 #include "input.h"
 #include "graphics.h"
 
-fe::application* fe::g_application = nullptr;
+//fe::application* fe::g_application = nullptr;
 
 
 fields_engine::application::application() 

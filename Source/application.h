@@ -3,6 +3,7 @@
 #include "editor.h"
 #include "shader.h"
 #include "window.h"
+#include "context.h"
 
 namespace fields_engine {
 
@@ -27,7 +28,9 @@ namespace fields_engine {
 		unique_ptr<fe::editor> editor_;
 	};
 
-	extern application* g_application;
+	GENERATE_GLOBAL_CONTEXT_FOR_TYPE(application);
+
+	//extern application* g_application;
 
 } // End namespace fields_engine
 
