@@ -6,6 +6,7 @@
 
 #pragma once
 
+
 // context<application>().run();
 
 #define GENERATE_GLOBAL_CONTEXT_FOR_TYPE(mp_type)   \
@@ -29,8 +30,8 @@ namespace fields_engine {
 	} // namespace detail
 
 	template<class T>
-	inline NO_DISCARD T& context() {
-		return **detail::context_ptr<T>();
+	inline NO_DISCARD T* context() {
+		return *detail::context_ptr<T>();
 	}
 
 	//template<class T>
@@ -38,11 +39,12 @@ namespace fields_engine {
 	//	*detail::context_ptr<T>() = newCurrentContext;
 	//}
 
-
+	using namespace fields_engine;
 	template<class T>
 	class context_ownership {
 	public:
-		context_ownership(unique_ptr<T>&& ptr = nullptr) 
+
+		context_ownership(std::unique_ptr<T>&& ptr = nullptr) 
 			: ptr_(std::move(ptr))
 		{
 			T*& current = *detail::context_ptr<T>();
@@ -70,6 +72,7 @@ namespace fields_engine {
 
 		void reset(T* newPtr = nullptr) {
 			*this = unique_ptr<T>(newPtr);
+			int i;
 		}
 
 		bool is_current_context() const noexcept {

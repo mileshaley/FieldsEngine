@@ -16,18 +16,17 @@ int main() {
 	//return 0;
 
 	std::cout << "Fields Engine Startup" << std::endl;
-	context_ownership<application> app = make_unique<application>();
-	if (!app->startup()) {
-		return 1;
+	{
+		context_ownership<application> app = make_unique<application>();
+		if (!app->startup()) {
+			return 1;
+		}
+		app->run();
+
+		if (!app->shutdown()) {
+			return 1;
+		}
 	}
-
-	app->run();
-
-	if (!app->shutdown()) {
-		return 1;
-	}
-
-	app.reset();
 	
 	std::cout << "Fields Engine Shutdown" << std::endl;
 	return 0;

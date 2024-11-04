@@ -58,8 +58,8 @@ namespace fields_engine::common {
 	using nullable_ptr = T*;
 
 	using std::unique_ptr;
-
 	using std::make_unique;
+	using std::move;
 
 	template<typename T>
 	using unique_r = unique_ptr<T>&;
