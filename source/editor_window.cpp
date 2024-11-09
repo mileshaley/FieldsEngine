@@ -63,12 +63,16 @@ void fields_engine::editor_window::menu_item() {
 	}
 }
 
-bool fields_engine::editor_window::open() const {
+bool fields_engine::editor_window::is_open() const {
 	return m_open;
 }
 
-void fields_engine::editor_window::open(bool is_open) {
-	m_open = is_open;
+void fields_engine::editor_window::open() {
+	m_open = true;
+}
+
+void fields_engine::editor_window::close() {
+	m_open = false;
 }
 
 bool& fields_engine::editor_window::open_ref() {

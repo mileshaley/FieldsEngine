@@ -77,7 +77,7 @@ fields_engine::editor::editor(window& win)
 		ImGui::ShowDemoWindow(&demo_window->open_ref());
 		return false; 
 	});
-	demo_window->open();
+	demo_window->close();
 }
 
 void fields_engine::editor::update(float dt) {
