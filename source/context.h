@@ -82,22 +82,22 @@ namespace fields_engine {
 			return *this;
 		}
 
-		void reset(T* new_ptr = nullptr) {
+		inline void reset(T* new_ptr = nullptr) {
 			*this = unique_ptr<T>(new_ptr);
 		}
 
-		void use() {
+		inline void use() {
 			detail::context_storage<T>::ptr = m_ptr.get();
 		}
 
-		FE_NODISCARD T& operator*() const noexcept(noexcept(*m_ptr)) {
+		FE_NODISCARD inline T& operator*() const noexcept(noexcept(*m_ptr)) {
 			return *m_ptr;
 		}
-		FE_NODISCARD T* operator->() const noexcept {
+		FE_NODISCARD inline T* operator->() const noexcept {
 			return m_ptr.get();
 		}
 
-		FE_NODISCARD T* get() const noexcept {
+		FE_NODISCARD inline T* get() const noexcept {
 			return m_ptr.get();
 		}
 
@@ -127,15 +127,22 @@ namespace fields_engine {
 			}
 		}
 
-		void use() {
+		inline void use() {
 			detail::context_storage<T>::ptr = &m_data;
 		}
 
-		FE_NODISCARD T* operator->() const noexcept {
+		FE_NODISCARD inline T* operator->() noexcept {
 			return &m_data;
 		}
 
-		FE_NODISCARD T& get() const noexcept {
+		FE_NODISCARD inline T const* operator->() const noexcept {
+			return &m_data;
+		}
+
+		FE_NODISCARD inline T& get() noexcept {
+			return m_data;
+		}
+		FE_NODISCARD inline T const& get() const noexcept {
 			return m_data;
 		}
 

@@ -14,11 +14,10 @@ int main() {
 	using namespace fields_engine;
 	//fe::detail::generate_all_icons_file();
 	//return 0;
-	json j;
 
 	std::cout << "Fields Engine Startup" << std::endl;
 	{
-		unique_context<application> app = make_unique<application>();
+		local_context<application> app{};
 		if (!app->startup()) {
 			return 1;
 		}
