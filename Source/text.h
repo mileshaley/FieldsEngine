@@ -9,17 +9,17 @@
 namespace fields_engine::text {
 
 
-	NO_DISCARD constexpr char is_upper(char c) noexcept;
-	NO_DISCARD constexpr char is_lower(char c) noexcept;
-	NO_DISCARD constexpr char to_upper(char c) noexcept;
-	NO_DISCARD constexpr char to_lower(char c) noexcept;
+	FE_NODISCARD constexpr char is_upper(char c) noexcept;
+	FE_NODISCARD constexpr char is_lower(char c) noexcept;
+	FE_NODISCARD constexpr char to_upper(char c) noexcept;
+	FE_NODISCARD constexpr char to_lower(char c) noexcept;
 	void make_upper(char& c) noexcept;
 	void make_lower(char& c) noexcept;
 
 
-	NO_DISCARD string to_upper(string_view str);
+	FE_NODISCARD string to_upper(string_view str);
 	string& make_upper(string& str) noexcept;
-	NO_DISCARD string to_lower(string_view str);
+	FE_NODISCARD string to_lower(string_view str);
 	string& make_lower(string& str) noexcept;
 
 	// Returns the amount of replacements
@@ -27,9 +27,9 @@ namespace fields_engine::text {
 
 	/// TODO: improve by tokenizing substr and ignoring spaces, maybe give support for literals
 	// Case-insensitive find
-	NO_DISCARD bool is_relevant(string_view str, string_view substr) noexcept;
+	FE_NODISCARD bool is_relevant(string_view str, string_view substr) noexcept;
 
-	NO_DISCARD string to_pretty(string_view str);
+	FE_NODISCARD string to_pretty(string_view str);
 	void make_pretty(string& str);
 
 } // namespace fields_engine::text

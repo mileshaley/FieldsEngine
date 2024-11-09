@@ -18,7 +18,7 @@ int main() {
 
 	std::cout << "Fields Engine Startup" << std::endl;
 	{
-		context_ownership<application> app = make_unique<application>();
+		unique_context<application> app = make_unique<application>();
 		if (!app->startup()) {
 			return 1;
 		}

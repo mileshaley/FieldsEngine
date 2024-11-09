@@ -12,22 +12,22 @@ namespace fields_engine::text {
  * Char Utilities															 *
 \*~-------------------------------------------------------------------------~*/
 
-	NO_DISCARD constexpr char is_upper(char c) noexcept {
+	FE_NODISCARD constexpr char is_upper(char c) noexcept {
 		return c >= 'A' && c <= 'Z';
 	}
 
-	NO_DISCARD constexpr char is_lower(char c) noexcept {
+	FE_NODISCARD constexpr char is_lower(char c) noexcept {
 		return c >= 'a' && c <= 'z';
 	}
 
-	NO_DISCARD constexpr char to_upper(char c) noexcept {
+	FE_NODISCARD constexpr char to_upper(char c) noexcept {
 		if (is_lower(c)) {
 			return c - ('a' - 'A');
 		}
 		return c;
 	}
 
-	NO_DISCARD constexpr char to_lower(char c) noexcept {
+	FE_NODISCARD constexpr char to_lower(char c) noexcept {
 		if (is_upper(c)) {
 			return c + ('a' - 'A');
 		}
@@ -85,12 +85,12 @@ namespace fields_engine::text {
 		return count;
 	}
 
-	NO_DISCARD bool is_relevant(string_view str, string_view substr) noexcept {
+	FE_NODISCARD bool is_relevant(string_view str, string_view substr) noexcept {
 		// Redundant empty check but saves 2 to_lower()
 		return substr.empty() || to_lower(str).find(to_lower(substr)) != string::npos;
 	}
 
-	NO_DISCARD string to_pretty(string_view str) {
+	FE_NODISCARD string to_pretty(string_view str) {
 		string pretty;
 		pretty.reserve(str.length());
 		char prev = ' ';

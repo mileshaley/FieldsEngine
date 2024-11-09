@@ -25,7 +25,7 @@ namespace fields_engine {
 	private:
 		unique_ptr<graphics::shader> shader_; /// TODO: remove
 		fe::window window_;
-		context_ownership<fe::editor> editor_;
+		unique_context<fe::editor> editor_;
 	};
 
 	GENERATE_GLOBAL_CONTEXT_FOR_TYPE(application);

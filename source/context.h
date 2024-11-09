@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 // context<application>().run();
 
 #define GENERATE_GLOBAL_CONTEXT_FOR_TYPE(mp_type)   \
@@ -18,10 +17,11 @@
 		}                                           \
 	} // namespace (fields_engine)::detail
 
+	//static_assert(0, "Use GENERATE_GLOBAL_CONTEXT_FOR_TYPE()");
+
 
 namespace fields_engine {
 
-	//static_assert(0, "Use GENERATE_GLOBAL_CONTEXT_FOR_TYPE()");
 
 	namespace detail {
 		template<class T>
@@ -30,7 +30,7 @@ namespace fields_engine {
 	} // namespace detail
 
 	template<class T>
-	inline NO_DISCARD T* context() {
+	inline FE_NODISCARD T* context() {
 		return *detail::context_ptr<T>();
 	}
 
@@ -41,70 +41,92 @@ namespace fields_engine {
 
 	using namespace fields_engine;
 	template<class T>
-	class context_ownership {
+	class unique_context {
 	public:
 
-		context_ownership(std::unique_ptr<T>&& ptr = nullptr) 
-			: ptr_(std::move(ptr))
+		unique_context(std::unique_ptr<T>&& ptr) 
+			: m_ptr(std::move(ptr))
 		{
 			T*& current = *detail::context_ptr<T>();
 			if (current == nullptr) {
-				current = ptr_.get();
+				current = m_ptr.get();
 			}
 		}
 
-		~context_ownership() {
-			if (is_current_context()) {
+		~unique_context() {
+			T*& current = *detail::context_ptr<T>();
+			if (m_ptr.get() == current) {
 				*detail::context_ptr<T>() = nullptr;
 			}
 		}
 
-		context_ownership& operator=(unique_ptr<T>&& rhs) {
-			if (ptr_.get() == rhs.get()) {
-				return *this;
-			}
+		unique_context& operator=(unique_ptr<T>&& rhs) {
 			T*& current = *detail::context_ptr<T>();
-			if (ptr_.get() == current || current == nullptr) {
+			if (current == m_ptr.get() || current == nullptr) {
 				current = rhs.get();
-				ptr_ = move(rhs);
 			}
+			m_ptr = move(rhs);
 			return *this;
 		}
 
-		void reset(T* newPtr = nullptr) {
-			*this = unique_ptr<T>(newPtr);
-		}
-
-		bool is_current_context() const noexcept {
-			return *detail::context_ptr<T>() == ptr_.get();
+		void reset(T* new_ptr = nullptr) {
+			*this = unique_ptr<T>(new_ptr);
 		}
 
 		void use() {
-			*detail::context_ptr<T> = ptr_.get();
+			*detail::context_ptr<T> = m_ptr.get();
 		}
 
-		NO_DISCARD T& operator*() {
-			return *ptr_;
+		FE_NODISCARD T& operator*() const {
+			return *m_ptr;
 		}
-		NO_DISCARD T const& operator*() const {
-			return *ptr_;
-		}
-		NO_DISCARD T* operator->() {
-			return ptr_.operator->();
-		}
-		NO_DISCARD T const* operator->() const {
-			return ptr_.operator->();
+		FE_NODISCARD T* operator->() const {
+			return m_ptr.get();
 		}
 
-		NO_DISCARD T* get() {
-			return ptr_.get();
-		}
-		T const* get() const {
-			return ptr_.get();
+		FE_NODISCARD T* get() const {
+			return m_ptr.get();
 		}
 
 	private:
-		unique_ptr<T> ptr_;
+		unique_ptr<T> m_ptr;
+	};
+
+	template<class T>
+	class local_context {
+	public:
+
+		template<typename... Ts>
+		local_context(Ts&&... args) 
+			: m_data(std::forward<Ts>(args)...)
+		{
+			T*& current = *detail::context_ptr<T>();
+			if (current == nullptr) {
+				current = &m_data;
+			}
+		}
+
+		~local_context() {
+			T*& current = *detail::context_ptr<T>();
+			if (&m_data == current) {
+				*detail::context_ptr<T>() = nullptr;
+			}
+		}
+
+		void use() {
+			*detail::context_ptr<T> = &m_data;
+		}
+
+		FE_NODISCARD T* operator->() const {
+			return &m_data;
+		}
+
+		FE_NODISCARD T& get() const {
+			return m_data;
+		}
+
+	private:
+		T m_data;
 	};
 
 } // namespace fields_engine
