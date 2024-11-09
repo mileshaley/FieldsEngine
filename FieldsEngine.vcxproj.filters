@@ -56,7 +56,7 @@
     <ClCompile Include="source\graphics.cpp" />
     <ClCompile Include="source\input.cpp" />
     <ClCompile Include="source\log.cpp" />
-    <ClCompile Include="source\Main.cpp" />
+    <ClCompile Include="source\main_.cpp" />
     <ClCompile Include="source\precompiled.cpp" />
     <ClCompile Include="source\shader.cpp" />
     <ClCompile Include="source\text.cpp" />
