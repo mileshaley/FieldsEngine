@@ -12,13 +12,13 @@ namespace fields_engine {
 		// These used to be string views but that made all icons info ~40,000 bytes
 		editor_icon icon;
 		const char* name;
-		const char* prettyName;
+		const char* pretty_name;
 	};
 
 	namespace detail {
 		void generate_all_icons_file(
-			const char* destPathname = "editor_icons_all", 
-			const char* srcFilename = __FILE__
+			const char* dest_pathname = "editor_icons_all", 
+			const char* src_filename = __FILE__
 		);
 	} // namespace detail
 } // namespace fields_engine

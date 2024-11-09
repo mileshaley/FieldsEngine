@@ -23,9 +23,9 @@ namespace fields_engine {
 		editor* editor();
 
 	private:
-		unique_ptr<graphics::shader> shader_; /// TODO: remove
-		fe::window window_;
-		unique_context<fe::editor> editor_;
+		unique_ptr<graphics::shader> m_shader; /// TODO: remove
+		fe::window m_window;
+		unique_context<fe::editor> m_editor;
 	};
 
 } // End namespace fields_engine

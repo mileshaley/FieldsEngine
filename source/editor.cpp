@@ -17,24 +17,24 @@
 #include "text.h"
 #include "imGui/imgui_internal.h"
 
-fields_engine::editor::editor(window& wind)
-	: context_(ImGui::CreateContext())
-	, fonts_()
-	, windows_()
+fields_engine::editor::editor(window& win)
+	: m_gui_context(ImGui::CreateContext())
+	, m_fonts()
+	, m_windows()
 {
-	ImGui::SetCurrentContext(context_);
+	ImGui::SetCurrentContext(m_gui_context);
 	ImGuiIO& io = ImGui::GetIO();
 
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	// Setup fonts with icon font
-	std::filesystem::path fontsPath("assets");
-	fontsPath /= "fonts";
-	const float fontSize = 17.0f;
+	std::filesystem::path fonts_path("assets");
+	fonts_path /= "fonts";
+	const float font_size = 17.0f;
 	// Add default font so we can merge in icon font
-	fonts_.emplace_back(io.Fonts->AddFontFromFileTTF(
-		(fontsPath / "RobotoMono-Regular.ttf").string().c_str(), fontSize
+	m_fonts.emplace_back(io.Fonts->AddFontFromFileTTF(
+		(fonts_path / "RobotoMono-Regular.ttf").string().c_str(), font_size
 	));
 	
 	// MUST have persistent lifetime, hence static
@@ -43,18 +43,18 @@ fields_engine::editor::editor(window& wind)
 		FA_ICON_FONT_MIN, FA_ICON_FONT_MAX_16, 0 
 	};
 
-	ImFontConfig iconConfig;
-	iconConfig.MergeMode = true;
-	iconConfig.PixelSnapH = true;
-	iconConfig.GlyphMinAdvanceX = fontSize;
-	iconConfig.GlyphOffset.y = 1.0f;
+	ImFontConfig icon_config;
+	icon_config.MergeMode = true;
+	icon_config.PixelSnapH = true;
+	icon_config.GlyphMinAdvanceX = font_size;
+	icon_config.GlyphOffset.y = 1.0f;
 
-	fonts_.emplace_back(io.Fonts->AddFontFromFileTTF(
-		(fontsPath / FA_SOLID_ICON_FONT_FILENAME).string().c_str(),
-		fontSize, &iconConfig, iconRanges
+	m_fonts.emplace_back(io.Fonts->AddFontFromFileTTF(
+		(fonts_path / FA_SOLID_ICON_FONT_FILENAME).string().c_str(),
+		font_size, &icon_config, iconRanges
 	));
 
-	ImGui_ImplGlfw_InitForOpenGL(wind.handle, true);
+	ImGui_ImplGlfw_InitForOpenGL(win.handle, true);
 	ImGui_ImplOpenGL3_Init("#version 430");
 
 	reset_style();
@@ -63,18 +63,18 @@ fields_engine::editor::editor(window& wind)
 
 	//ImGui::Text(ICON_CAR" feab???");
 
-	std::function<bool(void)> rootFn = std::bind(
+	std::function<bool(void)> root_fn = std::bind(
 		&editor::root_window, this);
-	windows_.emplace_back(make_unique<editor_window>(
-		"Root", rootFn, ICON_FACE_SMILE));
+	m_windows.emplace_back(make_unique<editor_window>(
+		"Root", root_fn, ICON_FACE_SMILE));
 
 	// Add the window and then set its callback after since it needs to access data inside the window
-	windows_.emplace_back(make_unique<editor_window>(
+	m_windows.emplace_back(make_unique<editor_window>(
 		"ImGui Demo", editor_window::callback_t{}, ICON_INFO));
-	editor_window* demoWindow = windows_.back().get();
-	demoWindow->callback([demoWindow]() {
+	editor_window* demo_window = m_windows.back().get();
+	demo_window->callback([demo_window]() {
 		ImGui::SetWindowHiddendAndSkipItemsForCurrentFrame(ImGui::GetCurrentWindow());
-		ImGui::ShowDemoWindow(&demoWindow->open_);
+		ImGui::ShowDemoWindow(&demo_window->open_);
 		return false; 
 	});
 }
@@ -101,16 +101,16 @@ void fields_engine::editor::update(float dt) {
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window")) {
-			for (int i = 0; i < windows_.size(); ++i) {
-				windows_[i]->menu_item();
+			for (int i = 0; i < m_windows.size(); ++i) {
+				m_windows[i]->menu_item();
 			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
 	}
 
-	for (int i = 0; i < windows_.size(); ++i) {
-		windows_[i]->display();
+	for (int i = 0; i < m_windows.size(); ++i) {
+		m_windows[i]->display();
 	}
 
 	//if (ImGui::Begin(ICON_FLOPPY_DISK" Glung")) {
@@ -350,32 +350,32 @@ void fields_engine::editor::open_icon_selector() {
 bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
 
 	const float width = ImGui::GetContentRegionAvail().x;
-	constexpr float minWidth = 20;
-	const int numCols = int(std::ceilf(width / minWidth));
+	constexpr float min_width = 20;
+	const int num_cols = int(std::ceilf(width / min_width));
 	bool changed = false;
 	if (ImGui::BeginPopup("icon_selector_popup")) {
 		static string search = "";
 		ImGui::InputTextWithHint("###Search Icon", "Search for an icon", &search);
-		if (ImGui::BeginTable("Icon Selection Table", numCols, ImGuiTableFlags_SizingStretchSame)) {
+		if (ImGui::BeginTable("Icon Selection Table", num_cols, ImGuiTableFlags_SizingStretchSame)) {
 			int pos = 0;
 			for (int i = 0; i < all_editor_icons.size(); ++i) {
-				editor_icon_info const& iconInfo = all_editor_icons[i];
-				if (!text::is_relevant(iconInfo.prettyName, search)) {
+				editor_icon_info const& icon_info = all_editor_icons[i];
+				if (!text::is_relevant(icon_info.pretty_name, search)) {
 					continue;
 				}
-				const int mod = pos++ % numCols;
+				const int mod = pos++ % num_cols;
 				if (mod == 0) {
 					ImGui::TableNextRow();
 				}
 				ImGui::TableSetColumnIndex(mod);
 				// The const char* == const char* is jank but won't break anything if it doesn't work as intended
-				if (ImGui::Selectable(iconInfo.icon, selected == iconInfo.icon)) {
-					selected = iconInfo.icon;
+				if (ImGui::Selectable(icon_info.icon, selected == icon_info.icon)) {
+					selected = icon_info.icon;
 					ImGui::CloseCurrentPopup();
 					changed = true;
 				}
 				if (ImGui::BeginItemTooltip()) {
-					ImGui::Text("%s %s", iconInfo.icon, iconInfo.prettyName);
+					ImGui::Text("%s %s", icon_info.icon, icon_info.pretty_name);
 					ImGui::EndTooltip();
 				}
 			}
@@ -388,17 +388,17 @@ bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
 
 bool fields_engine::editor::root_window() {
 	bool res = ImGui::InputTextWithHint(
-		"###root_enter_new_window_name", "Enter Window Name", &newWindowBuffer_);
+		"###root_enter_new_window_name", "Enter Window Name", &m_new_window_buf);
 
-	if (ImGui::Button(newWindowIcon_)) {
+	if (ImGui::Button(m_new_window_icon)) {
 		open_icon_selector();
 	}
-	icon_selector_popup(newWindowIcon_);
+	icon_selector_popup(m_new_window_icon);
 
 	if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
-		windows_.emplace_back(make_unique<editor_window>(
-			newWindowBuffer_, do_nothing, newWindowIcon_));
-		newWindowBuffer_.clear();
+		m_windows.emplace_back(make_unique<editor_window>(
+			m_new_window_buf, do_nothing, m_new_window_icon));
+		m_new_window_buf.clear();
 		res = true;
 	}
 

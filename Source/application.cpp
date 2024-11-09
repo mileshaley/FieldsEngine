@@ -11,8 +11,8 @@
 
 
 fields_engine::application::application() 
-	: window_{nullptr}
-	, editor_{nullptr}
+	: m_window{nullptr}
+	, m_editor{nullptr}
 {}
 
 fields_engine::application::~application() {
@@ -30,16 +30,16 @@ bool fields_engine::application::startup()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, 1);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 0);
-	//const ivec2 winSize{ 1920, 1080 };
-	const ivec2 winSize{1000, 800};
+	//const ivec2 win_size{ 1920, 1080 };
+	const ivec2 win_size{1000, 800};
 
-	window_.handle = glfwCreateWindow(winSize.x, winSize.y, "FieldsEngine", nullptr, nullptr);
+	m_window.handle = glfwCreateWindow(win_size.x, win_size.y, "FieldsEngine", nullptr, nullptr);
 
-	if (!window_.handle) { 
+	if (!m_window.handle) { 
 		return false; 
 	}
 
-	glfwMakeContextCurrent(window_.handle);
+	glfwMakeContextCurrent(m_window.handle);
 	// Set vsync on
 	glfwSwapInterval(1);
 
@@ -48,26 +48,26 @@ bool fields_engine::application::startup()
 	}
 
 	/// TODO: relocate
-	shader_ = make_unique<graphics::shader>();
-	shader_->add("lighting.vert", GL_VERTEX_SHADER);
-	shader_->add("lighting.frag", GL_FRAGMENT_SHADER);
-	glBindAttribLocation(shader_->id(), 0, "vertex");
-	glBindAttribLocation(shader_->id(), 1, "vertexNormal");
-	glBindAttribLocation(shader_->id(), 2, "vertexTexture");
-	glBindAttribLocation(shader_->id(), 3, "vertexTangent");
-	shader_->finalize();
+	m_shader = make_unique<graphics::shader>();
+	m_shader->add("lighting.vert", GL_VERTEX_SHADER);
+	m_shader->add("lighting.frag", GL_FRAGMENT_SHADER);
+	glBindAttribLocation(m_shader->id(), 0, "vertex");
+	glBindAttribLocation(m_shader->id(), 1, "vertexNormal");
+	glBindAttribLocation(m_shader->id(), 2, "vertexTexture");
+	glBindAttribLocation(m_shader->id(), 3, "vertexTangent");
+	m_shader->finalize();
 
 	///
 
-	input::detail::initialize_callbacks(window_);
+	input::detail::initialize_callbacks(m_window);
 
-	editor_ = make_unique<fe::editor>(window_);
+	m_editor = make_unique<fe::editor>(m_window);
 
-	//glfwSetWindowFocusCallback(window_, );
+	//glfwSetWindowFocusCallback(m_window, );
 
 	graphics::detail::initialize();
 
-	glfwSetFramebufferSizeCallback(window_.handle, 
+	glfwSetFramebufferSizeCallback(m_window.handle, 
 		[](GLFWwindow* wind, int w, int h) { graphics::resize_viewport(w, h); }
 	);
 
@@ -75,14 +75,14 @@ bool fields_engine::application::startup()
 }
 
 bool fields_engine::application::shutdown() {
-	editor_.reset();
+	m_editor.reset();
 	glfwTerminate();
 	return true;
 }
 
 void fields_engine::application::run() {
 	
-	while (window_.is_running()) {
+	while (m_window.is_running()) {
 		/// TODO: use real delta time
 		const float dt = 1.0f / 60.0f;
 		//graphics::clear_background({0.5, 0.5, 1.0, 1.0});
@@ -92,22 +92,22 @@ void fields_engine::application::run() {
 
 		/// render logic goes here
 
-		editor_->update(dt);
+		m_editor->update(dt);
 
-		glfwSwapBuffers(window_.handle);
+		glfwSwapBuffers(m_window.handle);
 	}
 }
 
 void fields_engine::application::reinstate() const {
-	glfwMakeContextCurrent(window_.handle);
+	glfwMakeContextCurrent(m_window.handle);
 }
 
 fe::window& fields_engine::application::window() {
-	return window_;
+	return m_window;
 }
 
 fe::nullable_ptr<fe::editor> fields_engine::application::editor() {
-	return editor_.get();
+	return m_editor.get();
 }
 
 

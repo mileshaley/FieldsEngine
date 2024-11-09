@@ -7,7 +7,7 @@
 #pragma once
 
 #include "editor_icons.h" // editor_icon
-#include "editor_window.h" // windows_
+#include "editor_window.h" // m_windows
 #include "context.h"
 
 struct ImGuiContext;
@@ -18,7 +18,7 @@ namespace fields_engine{
 
 	class editor {
 	public:
-		editor(window& windowHandle);
+		editor(window& win);
 		void update(float dt);
 		~editor();
 
@@ -29,11 +29,11 @@ namespace fields_engine{
 	private:
 		bool root_window();
 
-		string newWindowBuffer_;
-		editor_icon newWindowIcon_ = ICON_ELLIPSIS_VERTICAL;
-		vector<unique_ptr<editor_window>> windows_;
-		ImGuiContext* context_;
-		vector<ImFont*> fonts_;
+		string m_new_window_buf;
+		editor_icon m_new_window_icon = ICON_ELLIPSIS_VERTICAL;
+		vector<unique_ptr<editor_window>> m_windows;
+		ImGuiContext* m_gui_context;
+		vector<ImFont*> m_fonts;
 	};
 
 } // namespace fields_engine
