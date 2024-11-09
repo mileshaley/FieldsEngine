@@ -138,7 +138,7 @@ void fields_engine::editor::update(float dt) {
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
-		context<application>()->reinstate();
+		context<application>().reinstate();
 	}
 }
 

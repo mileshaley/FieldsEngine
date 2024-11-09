@@ -6,64 +6,77 @@
 
 #pragma once
 
-// context<application>().run();
-
-#define GENERATE_GLOBAL_CONTEXT_FOR_TYPE(mp_type)   \
-	namespace detail {             \
-		template<>               \
-		inline mp_type** context_ptr<mp_type>() {					\
-			static mp_type* ptr;					\
-			return &ptr;                             \
-		}                                           \
-	} // namespace (fields_engine)::detail
-
-	//static_assert(0, "Use GENERATE_GLOBAL_CONTEXT_FOR_TYPE()");
-
+#include "error.h"
 
 namespace fields_engine {
-
-
 	namespace detail {
-		template<class T>
-		inline T** context_ptr(void) {
-		}
+		template<typename T>
+		struct context_storage {
+			static inline T* ptr;
+
+			static inline void initialize() {
+#ifdef DEBUG
+				initialized_src() = true;
+#endif // DEBUG
+			}
+
+			static inline void verify() {
+#ifdef DEBUG
+				if (ptr == nullptr) {
+					if (initialized_src()) {
+						FE_FAILED_ASSERT("Context was once established became null at some point before accessing");
+					}
+					else {
+						FE_FAILED_ASSERT("Context was never established, check that the type is correct");
+					}
+				}
+#endif // DEBUG
+			}
+		private:
+#ifdef DEBUG
+			static bool& initialized_src() {
+				static bool initialized = false;
+				return initialized;
+			}
+#endif // DEBUG
+		};
 	} // namespace detail
+	
 
 	template<class T>
-	inline FE_NODISCARD T* context() {
-		return *detail::context_ptr<T>();
+	inline FE_NODISCARD T& context() noexcept(noexcept(*std::declval<T*>())) {
+		detail::context_storage<T>::verify();
+		return *detail::context_storage<T>::ptr;
 	}
-
-	//template<class T>
-	//void set_context_ptr(T* newCurrentContext) {
-	//	*detail::context_ptr<T>() = newCurrentContext;
-	//}
 
 	using namespace fields_engine;
 	template<class T>
 	class unique_context {
 	public:
-
 		unique_context(std::unique_ptr<T>&& ptr) 
 			: m_ptr(std::move(ptr))
 		{
-			T*& current = *detail::context_ptr<T>();
+			T*& current = detail::context_storage<T>::ptr;
 			if (current == nullptr) {
 				current = m_ptr.get();
+				detail::context_storage<T>::initialize();
 			}
 		}
 
 		~unique_context() {
-			T*& current = *detail::context_ptr<T>();
-			if (m_ptr.get() == current) {
-				*detail::context_ptr<T>() = nullptr;
+			T*& current = detail::context_storage<T>::ptr;
+			if (current == m_ptr.get()) {
+				current = nullptr;
 			}
 		}
 
 		unique_context& operator=(unique_ptr<T>&& rhs) {
-			T*& current = *detail::context_ptr<T>();
-			if (current == m_ptr.get() || current == nullptr) {
+			T*& current = detail::context_storage<T>::ptr;
+			if (current == m_ptr.get()) {
 				current = rhs.get();
+			} else if (current == nullptr) {
+				current = rhs.get();
+				detail::context_storage<T>::initialize();
 			}
 			m_ptr = move(rhs);
 			return *this;
@@ -74,17 +87,17 @@ namespace fields_engine {
 		}
 
 		void use() {
-			*detail::context_ptr<T> = m_ptr.get();
+			detail::context_storage<T>::ptr = m_ptr.get();
 		}
 
-		FE_NODISCARD T& operator*() const {
+		FE_NODISCARD T& operator*() const noexcept(noexcept(*m_ptr)) {
 			return *m_ptr;
 		}
-		FE_NODISCARD T* operator->() const {
+		FE_NODISCARD T* operator->() const noexcept {
 			return m_ptr.get();
 		}
 
-		FE_NODISCARD T* get() const {
+		FE_NODISCARD T* get() const noexcept {
 			return m_ptr.get();
 		}
 
@@ -95,33 +108,34 @@ namespace fields_engine {
 	template<class T>
 	class local_context {
 	public:
-
+		
 		template<typename... Ts>
 		local_context(Ts&&... args) 
 			: m_data(std::forward<Ts>(args)...)
 		{
-			T*& current = *detail::context_ptr<T>();
+			T*& current = detail::context_storage<T>::ptr;
 			if (current == nullptr) {
 				current = &m_data;
+				detail::context_storage<T>::initialize();
 			}
 		}
 
 		~local_context() {
-			T*& current = *detail::context_ptr<T>();
-			if (&m_data == current) {
-				*detail::context_ptr<T>() = nullptr;
+			T*& current = detail::context_storage<T>::ptr;
+			if (current == &m_data) {
+				current = nullptr;
 			}
 		}
 
 		void use() {
-			*detail::context_ptr<T> = &m_data;
+			detail::context_storage<T>::ptr = &m_data;
 		}
 
-		FE_NODISCARD T* operator->() const {
+		FE_NODISCARD T* operator->() const noexcept {
 			return &m_data;
 		}
 
-		FE_NODISCARD T& get() const {
+		FE_NODISCARD T& get() const noexcept {
 			return m_data;
 		}
 

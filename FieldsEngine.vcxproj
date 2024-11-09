@@ -67,6 +67,7 @@
     <ClInclude Include="source\editor_icons.h" />
     <ClInclude Include="source\editor_icons_all.h" />
     <ClInclude Include="source\editor_window.h" />
+    <ClInclude Include="source\error.h" />
     <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\input.h" />
     <ClInclude Include="source\log.h" />
@@ -188,7 +189,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>

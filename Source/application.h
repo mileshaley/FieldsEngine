@@ -28,7 +28,5 @@ namespace fields_engine {
 		unique_context<fe::editor> editor_;
 	};
 
-	GENERATE_GLOBAL_CONTEXT_FOR_TYPE(application);
-
 } // End namespace fields_engine
 

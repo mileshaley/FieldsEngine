@@ -36,8 +36,4 @@ namespace fields_engine{
 		vector<ImFont*> fonts_;
 	};
 
-	GENERATE_GLOBAL_CONTEXT_FOR_TYPE(editor);
-
-
-
 } // namespace fields_engine
