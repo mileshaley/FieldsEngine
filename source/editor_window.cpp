@@ -87,6 +87,6 @@ void fields_engine::editor_window::callback(callback_t const& new_callback) {
 	m_callback = new_callback;
 }
 
-string const& fields_engine::editor_window::std_id() const {
+fe::string const& fields_engine::editor_window::std_id() const {
 	return m_str_id;
 }
