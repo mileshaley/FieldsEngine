@@ -28,10 +28,12 @@ namespace fields_engine{
 		static bool icon_selector_popup(editor_icon& current);
 	private:
 		bool root_window();
+		editor_window& add_window(unique_ptr<editor_window>&& new_win);
 
 		string m_new_window_buf;
 		editor_icon m_new_window_icon = ICON_ELLIPSIS_VERTICAL;
 		vector<unique_ptr<editor_window>> m_windows;
+		vector<int> m_recent_windows;
 		ImGuiContext* m_gui_context;
 		vector<ImFont*> m_fonts;
 	};

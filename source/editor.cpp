@@ -61,17 +61,13 @@ fields_engine::editor::editor(window& win)
 
 	ImGui::SetNextWindowSize({ 300.0f, 500.0f });
 
-	//ImGui::Text(ICON_CAR" feab???");
-
-	std::function<bool(void)> root_fn = std::bind(
-		&editor::root_window, this);
-	m_windows.emplace_back(make_unique<editor_window>(
-		"Root", root_fn, ICON_FACE_SMILE));
+	add_window(make_unique<editor_window>(
+		"Root", std::bind(&editor::root_window, this), ICON_FACE_SMILE));
 
 	// Add the window and then set its callback after since it needs to access data inside the window
-	m_windows.emplace_back(make_unique<editor_window>(
+	
+	editor_window* demo_window = &add_window(make_unique<editor_window>(
 		"ImGui Demo", editor_window::callback_t{}, ICON_INFO));
-	editor_window* demo_window = m_windows.back().get();
 	demo_window->callback([demo_window]() {
 		ImGui::SetWindowHiddendAndSkipItemsForCurrentFrame(ImGui::GetCurrentWindow());
 		ImGui::ShowDemoWindow(&demo_window->open_ref());
@@ -102,6 +98,13 @@ void fields_engine::editor::update(float dt) {
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window")) {
+			
+			ImGui::SeparatorText("Recent");
+			const int recent_amt = std::min(5, int(m_recent_windows.size()));
+			for (int i = 0; i < recent_amt; ++i) {
+				m_windows[m_recent_windows[i]]->menu_item();
+			}
+			ImGui::SeparatorText("All");
 			for (int i = 0; i < m_windows.size(); ++i) {
 				m_windows[i]->menu_item();
 			}
@@ -404,4 +407,9 @@ bool fields_engine::editor::root_window() {
 	}
 
 	return res;
+}
+
+fe::editor_window& fields_engine::editor::add_window(unique_ptr<editor_window>&& new_win) {
+	m_recent_windows.emplace_back(m_windows.size());
+	return *m_windows.emplace_back(move(new_win));
 }

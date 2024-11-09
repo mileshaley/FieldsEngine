@@ -56,11 +56,14 @@ void fields_engine::editor_window::end_window() const {
 	ImGui::End();
 }
 
-void fields_engine::editor_window::menu_item() {
+bool fields_engine::editor_window::menu_item() {
+	//bool was_open = m_open;
 	if (ImGui::MenuItem(m_str_id.c_str(), nullptr, &m_open)) {
+		return true;
 		//m_open = !m_open;
 		/// Bring to top
 	}
+	return false;
 }
 
 bool fields_engine::editor_window::is_open() const {

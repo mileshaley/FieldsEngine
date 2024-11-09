@@ -7,7 +7,7 @@
 #pragma once
 
 #include "editor_icons.h" // fe::editor_icon
-#include <functional>
+#include <functional> // callback_t
 
 class editor;
 namespace fields_engine {
@@ -24,18 +24,20 @@ namespace fields_engine {
 		bool begin_window();
 		void end_window() const;
 
-		void menu_item();
+		/// TODO: Add shortcut support integrated with input
 
-		bool is_open() const;
+		bool menu_item();
+
 		void open();
 		void close();
-		bool& open_ref();
+		FE_NODISCARD bool is_open() const;
+		FE_NODISCARD bool& open_ref();
 
 
-		callback_t const& callback() const;
+		FE_NODISCARD callback_t const& callback() const;
 		void callback(callback_t const& new_callback = {});
 
-		string const& std_id() const;
+		FE_NODISCARD string const& std_id() const;
 
 	private:
 		bool m_open;
