@@ -25,17 +25,21 @@ namespace fields_engine {
 
 		void menu_item();
 
+		bool open() const;
+		void open(bool is_open);
+		bool& open_ref();
+
 		callback_t const& callback() const;
-		void callback(callback_t const& newCallback = {});
+		void callback(callback_t const& new_callback = {});
 
-		string const& strID() const;
+		string const& std_id() const;
 
-		bool open_;
 	private:
-		string name_;
-		string strID_; // Trade some memory for time by precomputing the string ID
-		callback_t callback_;
-		editor_icon icon_;
+		bool m_open;
+		string m_name;
+		string m_str_id; // Trade some memory for time by precomputing the string ID
+		callback_t m_callback;
+		editor_icon m_icon;
 	};
 
 } // namespace fields_engine

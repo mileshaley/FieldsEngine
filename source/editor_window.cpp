@@ -9,39 +9,39 @@
 #include "imgui.h"
 
 fields_engine::editor_window::editor_window(string_view name, callback_t const& callback, editor_icon icon)
-	: name_(name)
-	, strID_()
-	, callback_(callback)
-	, icon_(icon)
-	, open_(true)
+	: m_name(name)
+	, m_str_id()
+	, m_callback(callback)
+	, m_icon(icon)
+	, m_open(true)
 {
-	string_view iconStrv(icon);
-	if (!iconStrv.empty()) {
-		strID_ += iconStrv;
-		strID_ += " ";
+	string_view icon_strv(icon);
+	if (!icon_strv.empty()) {
+		m_str_id += icon_strv;
+		m_str_id += " ";
 	}
-	strID_ += name;
-	strID_ += "###";
-	strID_ += name;
+	m_str_id += name;
+	m_str_id += "###";
+	m_str_id += name;
 }
 
 fields_engine::editor_window::editor_window(editor_window const& other)
-	: name_(other.name_)
-	, strID_(other.strID_)
-	, callback_(other.callback_)
-	, icon_(other.icon_)
-	, open_(other.open_)
+	: m_name(other.m_name)
+	, m_str_id(other.m_str_id)
+	, m_callback(other.m_callback)
+	, m_icon(other.m_icon)
+	, m_open(other.m_open)
 {}
 
 bool fields_engine::editor_window::display() {
-	return open_ && force_display();
+	return m_open && force_display();
 }
 
 bool fields_engine::editor_window::force_display() {
 	bool result = false;
-	if (callback_) {
+	if (m_callback) {
 		if (begin_window()) {
-			result = callback_();
+			result = m_callback();
 		}
 		end_window();
 	}
@@ -49,7 +49,7 @@ bool fields_engine::editor_window::force_display() {
 }
 
 bool fields_engine::editor_window::begin_window() {
-	return ImGui::Begin(strID_.c_str(), &open_);
+	return ImGui::Begin(m_str_id.c_str(), &m_open);
 }
 
 void fields_engine::editor_window::end_window() const {
@@ -57,20 +57,32 @@ void fields_engine::editor_window::end_window() const {
 }
 
 void fields_engine::editor_window::menu_item() {
-	if (ImGui::MenuItem(strID_.c_str(), nullptr, &open_)) {
-		//open_ = !open_;
+	if (ImGui::MenuItem(m_str_id.c_str(), nullptr, &m_open)) {
+		//m_open = !m_open;
 		/// Bring to top
 	}
 }
 
+bool fields_engine::editor_window::open() const {
+	return m_open;
+}
+
+void fields_engine::editor_window::open(bool is_open) {
+	m_open = is_open;
+}
+
+bool& fields_engine::editor_window::open_ref() {
+	return m_open;
+}
+
 fe::editor_window::callback_t const& fields_engine::editor_window::callback() const {
-	return callback_;
+	return m_callback;
 }
 
-void fields_engine::editor_window::callback(callback_t const& newCallback) {
-	callback_ = newCallback;
+void fields_engine::editor_window::callback(callback_t const& new_callback) {
+	m_callback = new_callback;
 }
 
-string const& fields_engine::editor_window::strID() const {
-	return strID_;
+string const& fields_engine::editor_window::std_id() const {
+	return m_str_id;
 }

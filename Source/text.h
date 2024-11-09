@@ -27,7 +27,7 @@ namespace fields_engine::text {
 
 	/// TODO: improve by tokenizing substr and ignoring spaces, maybe give support for literals
 	// Case-insensitive find
-	FE_NODISCARD bool is_relevant(string_view str, string_view substr) noexcept;
+	FE_NODISCARD bool is_relevant(string_view str, string_view substr);
 
 	FE_NODISCARD string to_pretty(string_view str);
 	void make_pretty(string& str);

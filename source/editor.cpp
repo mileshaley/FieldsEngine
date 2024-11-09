@@ -74,9 +74,10 @@ fields_engine::editor::editor(window& win)
 	editor_window* demo_window = m_windows.back().get();
 	demo_window->callback([demo_window]() {
 		ImGui::SetWindowHiddendAndSkipItemsForCurrentFrame(ImGui::GetCurrentWindow());
-		ImGui::ShowDemoWindow(&demo_window->open_);
+		ImGui::ShowDemoWindow(&demo_window->open_ref());
 		return false; 
 	});
+	demo_window->open();
 }
 
 void fields_engine::editor::update(float dt) {

@@ -68,7 +68,7 @@ bool fields_engine::application::startup()
 	graphics::detail::initialize();
 
 	glfwSetFramebufferSizeCallback(m_window.handle, 
-		[](GLFWwindow* wind, int w, int h) { graphics::resize_viewport(w, h); }
+		[](GLFWwindow* win, int w, int h) { graphics::resize_viewport(w, h); }
 	);
 
 	return true;

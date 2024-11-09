@@ -24,8 +24,8 @@ void fields_engine::graphics::check_graphics_error(string_view file, int line) {
 	}
 }
 
-void fields_engine::graphics::gl_error_callback(int errorCode, const char* message) {
-	std::cerr << "gl error [" << errorCode << "]: \"" << message << "\"" << std::endl;
+void fields_engine::graphics::gl_error_callback(int error_code, const char* message) {
+	std::cerr << "Graphical error [" << error_code << "]: \"" << message << "\"" << std::endl;
 }
 
 void fields_engine::graphics::resize_viewport(int width, int height) {

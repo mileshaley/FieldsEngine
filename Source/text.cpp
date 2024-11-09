@@ -73,23 +73,24 @@ namespace fields_engine::text {
 	}
 
 	int find_replace(string& str, string_view find, string_view replace) {
-		const size_t findLen = find.length();
-		if (findLen == 0) { return 0; }
+		const size_t find_length = find.length();
+		if (find_length == 0) { return 0; }
 		size_t pos = 0; // Keep track of how far we are from the start of str
 		int count = 0;
 		while ((pos = str.find(find, pos)) != str.npos) {
-			str.replace(pos, findLen, replace);
+			str.replace(pos, find_length, replace);
 			pos += replace.length();
 			count += 1;
 		}
 		return count;
 	}
 
-	FE_NODISCARD bool is_relevant(string_view str, string_view substr) noexcept {
-		// Redundant empty check but saves 2 to_lower()
+	FE_NODISCARD bool is_relevant(string_view str, string_view substr) {
+		// Redundant empty check but saves 2 to_lower() calls
 		return substr.empty() || to_lower(str).find(to_lower(substr)) != string::npos;
 	}
 
+	/// TODO: generalize this
 	FE_NODISCARD string to_pretty(string_view str) {
 		string pretty;
 		pretty.reserve(str.length());

@@ -12,7 +12,7 @@
 
 namespace fields_engine::input::detail {
 	// GLFWkeyFun
-	static void key_callback(GLFWwindow* window, int key, int scanCode, int action, int mods) {
+	static void key_callback(GLFWwindow* win, int key, int scan_code, int action, int mods) {
 		// actions: 
 		// 0 - released
 		// 1 - triggered
@@ -25,25 +25,25 @@ namespace fields_engine::input::detail {
 		}
 
 		std::cout << "key: '" << static_cast<char>(key) 
-				  << "', scan code: " << scanCode << ", action: " 
+				  << "', scan code: " << scan_code << ", action: " 
 				  << action << ", mods: " << mods << std::endl;
 	}
 	// GLFWmousebuttonfun
-	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+	static void mouse_button_callback(GLFWwindow* win, int button, int action, int mods) {
 		if (ImGui::GetIO().WantCaptureMouse) {
 			return;
 		}
 
 	}
 	// GLFWcursorposfun
-	static void cursor_move_callback(GLFWwindow* window, double x, double y) {
+	static void cursor_move_callback(GLFWwindow* win, double x, double y) {
 		if (ImGui::GetIO().WantCaptureMouse) {
 			return;
 		}
 
 	}
 	// GLFWscrollfun
-	static void scroll_callback(GLFWwindow* window, double x, double y) {
+	static void scroll_callback(GLFWwindow* win, double x, double y) {
 		if (ImGui::GetIO().WantCaptureMouse) {
 			return;
 		}

@@ -13,7 +13,7 @@
 #include "graphics.h"
 
 fields_engine::graphics::shader::shader()
-	: programID_(glCreateProgram())
+	: m_program_id(glCreateProgram())
 {}
 
 void fields_engine::graphics::shader::add(const char* filename, int type) const {
@@ -24,26 +24,26 @@ void fields_engine::graphics::shader::add(const char* filename, int type) const 
     ss << file.rdbuf();
     string source = ss.str();
     // Array of one const char* to get const char**
-    const char* sourcePtr[1] = { source.c_str() };
+    const char* source_ptr[1] = { source.c_str() };
 
-    int shaderID = glCreateShader(type);
-    glAttachShader(programID_, shaderID);
+    int shader_id = glCreateShader(type);
+    glAttachShader(m_program_id, shader_id);
     GL_CHECK;
-    glShaderSource(shaderID, 1, sourcePtr, nullptr);
+    glShaderSource(shader_id, 1, source_ptr, nullptr);
     GL_CHECK;
-    glCompileShader(shaderID);
+    glCompileShader(shader_id);
     GL_CHECK;
 
     int status = 0;
-    glGetShaderiv(shaderID, GL_COMPILE_STATUS, &status);
+    glGetShaderiv(shader_id, GL_COMPILE_STATUS, &status);
     GL_CHECK;
     // Something went wrong, log an error
     if (status != 1) {
         int length = 0;
-        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &length);
+        glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &length);
         GL_CHECK;
         unique_ptr<char[]> buffer = make_unique<char[]>(size_t(length));
-        glGetShaderInfoLog(shaderID, length, nullptr, buffer.get());
+        glGetShaderInfoLog(shader_id, length, nullptr, buffer.get());
         GL_CHECK;
         /// TODO: use proper error logger
         std::cerr << "Addition failed for shader \""
@@ -52,18 +52,18 @@ void fields_engine::graphics::shader::add(const char* filename, int type) const 
 }
 
 void fields_engine::graphics::shader::finalize() const {
-    glLinkProgram(programID_);
+    glLinkProgram(m_program_id);
     GL_CHECK;
     int status = 0;
-    glGetProgramiv(programID_, GL_LINK_STATUS, &status);
+    glGetProgramiv(m_program_id, GL_LINK_STATUS, &status);
     GL_CHECK;
     // Something went wrong, log an error
     if (status != 1) {
         int length = 0;
-        glGetProgramiv(programID_, GL_INFO_LOG_LENGTH, &length);
+        glGetProgramiv(m_program_id, GL_INFO_LOG_LENGTH, &length);
         GL_CHECK;
         unique_ptr<char[]> buffer = make_unique<char[]>(size_t(length));
-        glGetProgramInfoLog(programID_, length, nullptr, buffer.get());
+        glGetProgramInfoLog(m_program_id, length, nullptr, buffer.get());
         GL_CHECK;
         /// TODO: use proper error logger
         std::cerr << "Finalization failed for shader: " << buffer << std::endl;
@@ -71,7 +71,7 @@ void fields_engine::graphics::shader::finalize() const {
 }
 
 void fields_engine::graphics::shader::use() const {
-	glUseProgram(programID_);
+	glUseProgram(m_program_id);
 }
 
 void fields_engine::graphics::shader::unuse() const {
@@ -79,5 +79,5 @@ void fields_engine::graphics::shader::unuse() const {
 }
 
 int fields_engine::graphics::shader::id() const {
-    return programID_;
+    return m_program_id;
 }

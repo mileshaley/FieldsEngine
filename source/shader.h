@@ -19,7 +19,7 @@ namespace fields_engine::graphics {
 	
 		int id() const;
 	private:
-		int programID_;
+		int m_program_id;
 	};
 
 } // namespace fields_engine::graphics

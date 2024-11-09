@@ -11,7 +11,7 @@
 namespace fields_engine::input {
 
 	namespace detail {
-		void initialize_callbacks(window& windowHandle);
+		void initialize_callbacks(window& win);
 	} // namespace detail
 
 } // namespace fields_engine::input
