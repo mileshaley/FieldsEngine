@@ -4,7 +4,7 @@
 
 namespace fields_engine {
 	using eii = editor_icon_info;
-	const std::array<editor_icon_info, 1350> all_editor_icons = {
+	const std::array<editor_icon_info, 1347> all_editor_icons = {
 		eii{ ICON_ADDRESS_BOOK, "address_book", "Address book" },
 		eii{ ICON_ADDRESS_CARD, "address_card", "Address card" },
 		eii{ ICON_ALIGN_CENTER, "align_center", "Align center" },
@@ -80,7 +80,6 @@ namespace fields_engine {
 		eii{ ICON_ARROWS_UP_DOWN, "arrows_up_down", "Arrows up down" },
 		eii{ ICON_ARROWS_UP_DOWN_LEFT_RIGHT, "arrows_up_down_left_right", "Arrows up down left right" },
 		eii{ ICON_ARROWS_UP_TO_LINE, "arrows_up_to_line", "Arrows up to line" },
-		eii{ ICON_ASTERISK, "asterisk", "Asterisk" },
 		eii{ ICON_ATOM, "atom", "Atom" },
 		eii{ ICON_AUDIO_DESCRIPTION, "audio_description", "Audio description" },
 		eii{ ICON_AUSTRAL_SIGN, "austral_sign", "Austral sign" },
@@ -396,7 +395,6 @@ namespace fields_engine {
 		eii{ ICON_DIVIDE, "divide", "Divide" },
 		eii{ ICON_DNA, "dna", "Dna" },
 		eii{ ICON_DOG, "dog", "Dog" },
-		eii{ ICON_DOLLAR_SIGN, "dollar_sign", "Dollar sign" },
 		eii{ ICON_DOLLY, "dolly", "Dolly" },
 		eii{ ICON_DONG_SIGN, "dong_sign", "Dong sign" },
 		eii{ ICON_DOOR_CLOSED, "door_closed", "Door closed" },
@@ -442,7 +440,6 @@ namespace fields_engine {
 		eii{ ICON_EYE_DROPPER, "eye_dropper", "Eye dropper" },
 		eii{ ICON_EYE_LOW_VISION, "eye_low_vision", "Eye low vision" },
 		eii{ ICON_EYE_SLASH, "eye_slash", "Eye slash" },
-		eii{ ICON_F, "f", "F" },
 		eii{ ICON_FACE_ANGRY, "face_angry", "Face angry" },
 		eii{ ICON_FACE_DIZZY, "face_dizzy", "Face dizzy" },
 		eii{ ICON_FACE_FLUSHED, "face_flushed", "Face flushed" },

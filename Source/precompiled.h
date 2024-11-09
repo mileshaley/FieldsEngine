@@ -68,11 +68,6 @@ namespace fields_engine::common {
  * Pointer Intention Aliases                                                 *
 \*~-------------------------------------------------------------------------~*/
 
-	template<typename T>
-	using nullable = T;
-	template<typename T>
-	using nullable_ptr = T*;
-
 	using std::unique_ptr;
 	using std::make_unique;
 	using std::move;

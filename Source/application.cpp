@@ -33,13 +33,13 @@ bool fields_engine::application::startup()
 	//const ivec2 win_size{ 1920, 1080 };
 	const ivec2 win_size{1000, 800};
 
-	m_window.handle = glfwCreateWindow(win_size.x, win_size.y, "FieldsEngine", nullptr, nullptr);
+	m_window->handle = glfwCreateWindow(win_size.x, win_size.y, "FieldsEngine", nullptr, nullptr);
 
-	if (!m_window.handle) { 
+	if (!m_window->handle) { 
 		return false; 
 	}
 
-	glfwMakeContextCurrent(m_window.handle);
+	glfwMakeContextCurrent(m_window->handle);
 	// Set vsync on
 	glfwSwapInterval(1);
 
@@ -61,13 +61,13 @@ bool fields_engine::application::startup()
 
 	input::detail::initialize_callbacks(m_window);
 
-	m_editor = make_unique<fe::editor>(m_window);
+	m_editor = make_unique<fe::editor>(m_window.get());
 
 	//glfwSetWindowFocusCallback(m_window, );
 
 	graphics::detail::initialize();
 
-	glfwSetFramebufferSizeCallback(m_window.handle, 
+	glfwSetFramebufferSizeCallback(m_window->handle, 
 		[](GLFWwindow* win, int w, int h) { graphics::resize_viewport(w, h); }
 	);
 
@@ -82,7 +82,7 @@ bool fields_engine::application::shutdown() {
 
 void fields_engine::application::run() {
 	
-	while (m_window.is_running()) {
+	while (m_window->is_running()) {
 		/// TODO: use real delta time
 		const float dt = 1.0f / 60.0f;
 		//graphics::clear_background({0.5, 0.5, 1.0, 1.0});
@@ -94,19 +94,19 @@ void fields_engine::application::run() {
 
 		m_editor->update(dt);
 
-		glfwSwapBuffers(m_window.handle);
+		glfwSwapBuffers(m_window->handle);
 	}
 }
 
 void fields_engine::application::reinstate() const {
-	glfwMakeContextCurrent(m_window.handle);
+	glfwMakeContextCurrent(m_window->handle);
 }
 
 fe::window& fields_engine::application::window() {
-	return m_window;
+	return m_window.get();
 }
 
-fe::nullable_ptr<fe::editor> fields_engine::application::editor() {
+fe::editor* fields_engine::application::editor() {
 	return m_editor.get();
 }
 

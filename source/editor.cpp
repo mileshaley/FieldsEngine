@@ -400,7 +400,7 @@ bool fields_engine::editor::root_window() {
 	icon_selector_popup(m_new_window_icon);
 
 	if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
-		m_windows.emplace_back(make_unique<editor_window>(
+		add_window(make_unique<editor_window>(
 			m_new_window_buf, do_nothing, m_new_window_icon));
 		m_new_window_buf.clear();
 		res = true;

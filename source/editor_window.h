@@ -12,6 +12,8 @@
 class editor;
 namespace fields_engine {
 
+	/// TODO: Add support for grouping windows by category
+
 	class editor_window {
 	public:
 		using callback_t = std::function<bool(void)>;

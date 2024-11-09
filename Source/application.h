@@ -24,7 +24,7 @@ namespace fields_engine {
 
 	private:
 		unique_ptr<graphics::shader> m_shader; /// TODO: remove
-		fe::window m_window;
+		local_context<fe::window> m_window;
 		unique_context<fe::editor> m_editor;
 	};
 

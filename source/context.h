@@ -139,6 +139,14 @@ namespace fields_engine {
 			return &m_data;
 		}
 
+		FE_NODISCARD inline operator T& () noexcept {
+			return m_data;
+		}
+
+		FE_NODISCARD inline operator T const& () const noexcept {
+			return m_data;
+		}
+
 		FE_NODISCARD inline T& get() noexcept {
 			return m_data;
 		}

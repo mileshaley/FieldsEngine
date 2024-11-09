@@ -7,10 +7,10 @@
 #pragma once
 #include <stdexcept>
 
-// TODO: )STL_VERIFY here is a placeholder, change it
+/// TODO: STL_ASSERT here is a placeholder, change it
 
-#define FE_ASSERT(cond, message) _STL_VERIFY(cond, message);
-#define FE_FAILED_ASSERT(message) _STL_VERIFY(false, message);
+#define FE_ASSERT(cond, message) _STL_ASSERT(cond, message);
+#define FE_FAILED_ASSERT(message) _STL_ASSERT(false, message);
 
 namespace fields_engine {
 

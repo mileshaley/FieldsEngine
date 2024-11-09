@@ -104,7 +104,6 @@ namespace fields_engine {
 #define ICON_ARROWS_UP_DOWN "\xef\x81\xbd"	// U+f07d
 #define ICON_ARROWS_UP_DOWN_LEFT_RIGHT "\xef\x81\x87"	// U+f047
 #define ICON_ARROWS_UP_TO_LINE "\xee\x93\x82"	// U+e4c2
-#define ICON_ASTERISK "*"	// U+002a
 #define ICON_ATOM "\xef\x97\x92"	// U+f5d2
 #define ICON_AUDIO_DESCRIPTION "\xef\x8a\x9e"	// U+f29e
 #define ICON_AUSTRAL_SIGN "\xee\x82\xa9"	// U+e0a9
@@ -420,7 +419,6 @@ namespace fields_engine {
 #define ICON_DIVIDE "\xef\x94\xa9"	// U+f529
 #define ICON_DNA "\xef\x91\xb1"	// U+f471
 #define ICON_DOG "\xef\x9b\x93"	// U+f6d3
-#define ICON_DOLLAR_SIGN "$"	// U+0024
 #define ICON_DOLLY "\xef\x91\xb2"	// U+f472
 #define ICON_DONG_SIGN "\xee\x85\xa9"	// U+e169
 #define ICON_DOOR_CLOSED "\xef\x94\xaa"	// U+f52a
@@ -466,7 +464,6 @@ namespace fields_engine {
 #define ICON_EYE_DROPPER "\xef\x87\xbb"	// U+f1fb
 #define ICON_EYE_LOW_VISION "\xef\x8a\xa8"	// U+f2a8
 #define ICON_EYE_SLASH "\xef\x81\xb0"	// U+f070
-#define ICON_F "F"	// U+0046
 #define ICON_FACE_ANGRY "\xef\x95\x96"	// U+f556
 #define ICON_FACE_DIZZY "\xef\x95\xa7"	// U+f567
 #define ICON_FACE_FLUSHED "\xef\x95\xb9"	// U+f579

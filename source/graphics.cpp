@@ -34,17 +34,17 @@ void fields_engine::graphics::resize_viewport(int width, int height) {
 
 void fields_engine::graphics::clear_background() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	GL_CHECK;
+	FE_GL_VERIFY;
 }
 
 void fields_engine::graphics::clear_background(glm::vec4 const& color) {
 	glClearColor(color.r, color.g, color.b, color.a);
-	GL_CHECK;
+	FE_GL_VERIFY;
 	clear_background();
 }
 
 void fields_engine::graphics::detail::initialize() {
 	glEnable(GL_DEPTH_TEST);
-	GL_CHECK;
+	FE_GL_VERIFY;
 	clear_background({ 1.5f, 0.5f, 1.0f, 1.0f });
 }

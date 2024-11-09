@@ -9,6 +9,7 @@
 #include "editor_icons.h" // editor_icon
 #include "editor_window.h" // m_windows
 #include "context.h"
+//#include <unordered_set>
 
 struct ImGuiContext;
 struct ImFont;
@@ -33,9 +34,11 @@ namespace fields_engine{
 		string m_new_window_buf;
 		editor_icon m_new_window_icon = ICON_ELLIPSIS_VERTICAL;
 		vector<unique_ptr<editor_window>> m_windows;
-		vector<int> m_recent_windows;
 		ImGuiContext* m_gui_context;
 		vector<ImFont*> m_fonts;
+
+		vector<int> m_recent_windows;
+		//std::unordered_set<int> m_recent_windows_set;
 	};
 
 } // namespace fields_engine
