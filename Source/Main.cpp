@@ -14,6 +14,7 @@ int main() {
 	using namespace fields_engine;
 	//fe::detail::generate_all_icons_file();
 	//return 0;
+	json j;
 
 	std::cout << "Fields Engine Startup" << std::endl;
 	{

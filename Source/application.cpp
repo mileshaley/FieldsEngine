@@ -23,12 +23,12 @@ bool fields_engine::application::startup()
 {
 	glfwSetErrorCallback(graphics::gl_error_callback);
 	glfwInit();
-	// Use OpenGL version 3.3
 
-	glfwWindowHint(GLFW_RESIZABLE, 1);
+	// Use OpenGL version 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_RESIZABLE, 1);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 0);
 	//const ivec2 winSize{ 1920, 1080 };
 	const ivec2 winSize{1000, 800};
@@ -100,6 +100,10 @@ void fields_engine::application::run() {
 
 void fields_engine::application::reinstate() const {
 	glfwMakeContextCurrent(window_.handle);
+}
+
+fe::window& fields_engine::application::window() {
+	return window_;
 }
 
 fe::nullable_ptr<fe::editor> fields_engine::application::editor() {

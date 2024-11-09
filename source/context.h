@@ -21,11 +21,11 @@
 
 namespace fields_engine {
 
+	//static_assert(0, "Use GENERATE_GLOBAL_CONTEXT_FOR_TYPE()");
 
 	namespace detail {
 		template<class T>
 		inline T** context_ptr(void) {
-			//static_assert(0, "Use GENERATE_GLOBAL_CONTEXT_FOR_TYPE()");
 		}
 	} // namespace detail
 
@@ -66,13 +66,13 @@ namespace fields_engine {
 			T*& current = *detail::context_ptr<T>();
 			if (ptr_.get() == current || current == nullptr) {
 				current = rhs.get();
+				ptr_ = move(rhs);
 			}
 			return *this;
 		}
 
 		void reset(T* newPtr = nullptr) {
 			*this = unique_ptr<T>(newPtr);
-			int i;
 		}
 
 		bool is_current_context() const noexcept {

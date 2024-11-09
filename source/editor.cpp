@@ -136,10 +136,8 @@ void fields_engine::editor::update(float dt) {
 
 
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-		//GLFWwindow* context = glfwGetCurrentContext();
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
-		//glfwMakeContextCurrent(context);
 		context<application>()->reinstate();
 	}
 }

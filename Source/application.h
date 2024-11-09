@@ -19,18 +19,16 @@ namespace fields_engine {
 
 		// Reinstate this window as the primary one
 		void reinstate() const;
-
-		nullable_ptr<editor> editor();
+		window& window();
+		editor* editor();
 
 	private:
 		unique_ptr<graphics::shader> shader_; /// TODO: remove
-		window window_;
-		unique_ptr<fe::editor> editor_;
+		fe::window window_;
+		context_ownership<fe::editor> editor_;
 	};
 
 	GENERATE_GLOBAL_CONTEXT_FOR_TYPE(application);
-
-	//extern application* g_application;
 
 } // End namespace fields_engine
 
