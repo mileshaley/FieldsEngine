@@ -78,6 +78,12 @@ void fields_engine::graphics::shader::unuse() const {
 	glUseProgram(0);
 }
 
+int fields_engine::graphics::shader::uniform_location(const char* name) const {
+    int loc = glGetUniformLocation(m_program_id, name);
+    FE_GL_VERIFY;
+    return loc;
+}
+
 int fields_engine::graphics::shader::id() const {
     return m_program_id;
 }

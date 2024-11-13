@@ -16,7 +16,8 @@ namespace fields_engine::graphics {
 	
 		void use() const;
 		void unuse() const;
-	
+
+		int uniform_location(const char* name) const;
 		int id() const;
 	private:
 		int m_program_id;

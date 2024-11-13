@@ -15,6 +15,10 @@
 #endif // ^^^ !defined(DEBUG)
 
 
+namespace fields_engine {
+	class mesh;
+}
+
 namespace fields_engine::graphics {
 
 	void check_graphics_error(string_view file = "", int line = 0);

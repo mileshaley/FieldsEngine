@@ -7,12 +7,15 @@
 #include "input.h"
 #include "graphics.h"
 
+#include "scene.h"
+
 //fe::application* fe::g_application = nullptr;
 
 
 fields_engine::application::application() 
 	: m_window{nullptr}
 	, m_editor{nullptr}
+	, m_scene{nullptr}
 {}
 
 fields_engine::application::~application() {
@@ -47,22 +50,10 @@ bool fields_engine::application::startup()
 		return false;
 	}
 
-	/// TODO: relocate
-	m_shader = make_unique<graphics::shader>();
-	m_shader->add("lighting.vert", GL_VERTEX_SHADER);
-	m_shader->add("lighting.frag", GL_FRAGMENT_SHADER);
-	glBindAttribLocation(m_shader->id(), 0, "vertex");
-	glBindAttribLocation(m_shader->id(), 1, "vertexNormal");
-	glBindAttribLocation(m_shader->id(), 2, "vertexTexture");
-	glBindAttribLocation(m_shader->id(), 3, "vertexTangent");
-	m_shader->finalize();
-
-	///
-
 	input::detail::initialize_callbacks(m_window);
 
+	m_scene = make_unique<fe::scene>();
 	m_editor = make_unique<fe::editor>(m_window.get());
-
 	//glfwSetWindowFocusCallback(m_window, );
 
 	graphics::detail::initialize();
@@ -89,6 +80,12 @@ void fields_engine::application::run() {
 		glfwPollEvents();
 
 		/// update logic goes here
+		glfwGetFramebufferSize(m_window->handle, &m_win_size.x, &m_win_size.y);
+		glViewport(0, 0, m_win_size.x, m_win_size.y);
+		FE_GL_VERIFY;
+		
+		m_scene->update(dt);
+		
 
 		/// render logic goes here
 
@@ -110,4 +107,6 @@ fe::editor* fields_engine::application::editor() {
 	return m_editor.get();
 }
 
-
+fe::ivec2 fields_engine::application::window_size() const {
+	return m_win_size;
+}

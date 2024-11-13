@@ -61,6 +61,8 @@
     <ClCompile Include="source\shader.cpp" />
     <ClCompile Include="source\text.cpp" />
     <ClCompile Include="source\window.cpp" />
+    <ClCompile Include="source\mesh.cpp" />
+    <ClCompile Include="source\scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -110,5 +112,7 @@
     <ClInclude Include="source\window.h" />
     <ClInclude Include="source\context.h" />
     <ClInclude Include="source\error.h" />
+    <ClInclude Include="source\mesh.h" />
+    <ClInclude Include="source\scene.h" />
   </ItemGroup>
 </Project>

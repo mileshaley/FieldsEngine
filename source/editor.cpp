@@ -16,6 +16,7 @@
 #include "editor_icons_all.h"
 #include "text.h"
 #include "imGui/imgui_internal.h"
+#include "scene.h"
 
 fields_engine::editor::editor(window& win)
 	: m_gui_context(ImGui::CreateContext())
@@ -74,6 +75,12 @@ fields_engine::editor::editor(window& win)
 		return false; 
 	});
 	demo_window->close();
+
+	add_window(make_unique<editor_window>(
+		"Scene", 
+		std::bind(&scene::display_window, &context<scene>()),
+		ICON_MOUNTAIN_SUN
+	));
 }
 
 void fields_engine::editor::update(float dt) {
@@ -82,7 +89,7 @@ void fields_engine::editor::update(float dt) {
 	ImGui::NewFrame();
 
 	// Begin dockspace
-	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
+	//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
@@ -410,6 +417,6 @@ bool fields_engine::editor::root_window() {
 }
 
 fe::editor_window& fields_engine::editor::add_window(unique_ptr<editor_window>&& new_win) {
-	m_recent_windows.emplace_back(m_windows.size());
+	m_recent_windows.push_back(int(m_windows.size()));
 	return *m_windows.emplace_back(move(new_win));
 }

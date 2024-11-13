@@ -37,10 +37,12 @@
     <ClCompile Include="source\input.cpp" />
     <ClCompile Include="source\log.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\mesh.cpp" />
     <ClCompile Include="source\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="source\scene.cpp" />
     <ClCompile Include="source\shader.cpp" />
     <ClCompile Include="source\stubs\stub.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -70,7 +72,9 @@
     <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\input.h" />
     <ClInclude Include="source\log.h" />
+    <ClInclude Include="source\mesh.h" />
     <ClInclude Include="source\precompiled.h" />
+    <ClInclude Include="source\scene.h" />
     <ClInclude Include="source\shader.h" />
     <ClInclude Include="source\stubs\stub.h" />
     <ClInclude Include="source\text.h" />

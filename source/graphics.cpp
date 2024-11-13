@@ -1,13 +1,19 @@
 /*~-------------------------------------------------------------------------~*\
- * FIELDS ENGINE															 *
+ * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~*
- * File: graphics.cpp															 *
+ * File: graphics.cpp                                                        *
 \*~-------------------------------------------------------------------------~*/
 
 #include "precompiled.h"
 #include "graphics.h"
 #include "glad/glad.h"
+#include "shader.h"
+#include "glm/gtc/matrix_transform.hpp"
 #include <iostream>
+#include "glm/gtx/transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "mesh.h"
+#include "error.h"
 
 void fields_engine::graphics::check_graphics_error(string_view file, int line) {
 	GLenum error = glGetError();
@@ -18,14 +24,14 @@ void fields_engine::graphics::check_graphics_error(string_view file, int line) {
 		}
 		else {
 			std::cerr << "Graphical error [" << error << "] in file "
-				<< file << "at line " << line << std::endl;
+				<< file << " at line " << line << std::endl;
 		}
-		assert(false);
+		FE_FAILED_ASSERT(":(");
 	}
 }
 
 void fields_engine::graphics::gl_error_callback(int error_code, const char* message) {
-	std::cerr << "Graphical error [" << error_code << "]: \"" << message << "\"" << std::endl;
+	std::cerr << "Graphical error (callback) [" << error_code << "]: \"" << message << "\"" << std::endl;
 }
 
 void fields_engine::graphics::resize_viewport(int width, int height) {
