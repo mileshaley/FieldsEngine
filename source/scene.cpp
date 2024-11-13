@@ -28,7 +28,7 @@ fields_engine::scene::scene() {
 	m_shader->finalize();
 
 	m_mesh = make_unique<fe::mesh>();
-	m_mesh->add_triangle({ 1, 1, 1 }, { 0, 0, 0 }, { 2, 2, 2 });
+	m_mesh->add_cube(2.0f);
 
 	m_mesh->generate();
 }
@@ -54,9 +54,9 @@ void fields_engine::scene::update(float dt) {
 	m_shader->use();
 
 	mat4 obj1
-		= glm::translate(glm::vec3{ 0,0,0 })
+		= glm::translate(glm::vec3{ 5,0,0 })
 		* glm::rotate(glm::radians(45.0f), glm::vec3{ 0,0,1 })
-		* glm::scale(glm::vec3{ 1, 1, 1 });
+		* glm::scale(glm::vec3{ 10, 10, 10 });
 
 	const glm::vec3 ambient(0.2f, 0.2f, 0.2f);
 	const glm::vec3 light(3.5f, 3.5f, 3.5f);
