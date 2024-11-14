@@ -39,7 +39,7 @@ fields_engine::scene::~scene() {
 
 void fields_engine::scene::update(float dt) {
 	
-	mat4 world_proj = glm::perspective(m_ratio.x, m_ratio.y, m_front, m_back);
+	mat4 world_proj = glm::perspective(90.0f, m_ratio.x / m_ratio.y, m_front, m_back);
 	m_world_view 
 		= glm::rotate(m_tilt - 90.0f, vec3{ 1, 0, 0 })
 		* glm::rotate(m_spin,		  vec3{ 0, 0, 1 })
@@ -54,9 +54,9 @@ void fields_engine::scene::update(float dt) {
 	m_shader->use();
 
 	mat4 obj1
-		= glm::translate(glm::vec3{ 5,0,0 })
-		* glm::rotate(glm::radians(45.0f), glm::vec3{ 0,0,1 })
-		* glm::scale(glm::vec3{ 10, 10, 10 });
+		= glm::translate(glm::vec3{ 0,5,0 })
+		* glm::rotate(glm::radians(45.0f), glm::vec3{0, 0, 1})
+		* glm::scale(glm::vec3{ 1, 1, 1 });
 
 	const glm::vec3 ambient(0.2f, 0.2f, 0.2f);
 	const glm::vec3 light(3.5f, 3.5f, 3.5f);

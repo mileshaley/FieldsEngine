@@ -158,6 +158,8 @@ void fields_engine::mesh::add_cube(float width) {
     constexpr float rot_90 = glm::radians(90.0f);
     constexpr vec3 i{ 1, 0, 0 };
     constexpr vec3 j{ 0, 1, 0 };
+    constexpr vec3 k{ 0, 0, 1 };
+
     const glm::mat4 face_mat(width * 0.5f);
 
     // Add 6 faces as rotations of face_mat 
