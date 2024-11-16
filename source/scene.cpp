@@ -27,9 +27,9 @@ fields_engine::scene::scene() {
 	glBindAttribLocation(m_shader->id(), 3, "vertexTangent");
 	m_shader->finalize();
 
+	
 	m_mesh = make_unique<fe::mesh>();
-	m_mesh->add_cube(2.0f);
-
+	m_mesh->add_cube();
 	m_mesh->generate();
 }
 
@@ -55,7 +55,8 @@ void fields_engine::scene::update(float dt) {
 
 	mat4 obj1
 		= glm::translate(glm::vec3{ 0,5,0 })
-		* glm::rotate(glm::radians(45.0f), glm::vec3{0, 0, 1})
+		* glm::rotate(glm::radians(m_obj1_rot_a), glm::vec3{ 0, 0, 1 })
+		* glm::rotate(glm::radians(m_obj1_rot_b), glm::vec3{ 0, 1, 0 })
 		* glm::scale(glm::vec3{ 1, 1, 1 });
 
 	const glm::vec3 ambient(0.2f, 0.2f, 0.2f);
@@ -130,6 +131,12 @@ void fields_engine::scene::update(float dt) {
 	glUniform1i(loc, 0);
 	FE_GL_VERIFY;
 
+
+	//for (int i = 0; i < 6; ++i) {
+	//	if (m_enabled[i]) {
+	//		m_mesh[i]->draw();
+	//	}
+	//}
 	m_mesh->draw();
 
 	m_shader->unuse();
@@ -137,6 +144,8 @@ void fields_engine::scene::update(float dt) {
 
 bool fields_engine::scene::display_window() {
 	bool res = false;
+	res |= ImGui::DragFloat("Rot A", &m_obj1_rot_a);
+	res |= ImGui::DragFloat("Rot B", &m_obj1_rot_b);
 	res |= ImGui::DragFloat("Spin", &m_spin);
 	res |= ImGui::DragFloat("Tilt", &m_tilt);
 	res |= ImGui::DragFloat("Front", &m_front);
@@ -144,6 +153,12 @@ bool fields_engine::scene::display_window() {
 	res |= ImGui::DragFloat2("Ratio", &m_ratio.x);
 	res |= ImGui::DragFloat3("Cam Pos", &m_cam_pos.x);
 	res |= ImGui::DragFloat3("Light Pos", &m_light_pos.x);
+
+	//for (int i = 0; i < 6; ++i) {
+	//	res |= ImGui::Checkbox((
+	//		"Show Face " + std::to_string(i)).c_str(), &m_enabled[i]);
+	//
+	//}
 	return res;
 }
 
