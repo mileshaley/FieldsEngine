@@ -109,14 +109,14 @@ void fields_engine::mesh::draw() const {
 }
 
 void fields_engine::mesh::add_plane(mat4 const& tr) {
-    constexpr int num_verts = 4;
-    constexpr vec4 verts[num_verts]{
+    constexpr int num_corners = 4;
+    constexpr vec4 verts[num_corners]{
         { 1.0f,  1.0f, 1.0f, 1.0f}, 
         {-1.0f,  1.0f, 1.0f, 1.0f}, 
         {-1.0f, -1.0f, 1.0f, 1.0f}, 
         { 1.0f, -1.0f, 1.0f, 1.0f}
     };
-    constexpr vec2 tex_coords[num_verts]{ 
+    constexpr vec2 tex_coords[num_corners]{ 
         {1.0f, 1.0f},  
         {0.0f, 1.0f},  
         {0.0f, 0.0f}, 
@@ -125,27 +125,25 @@ void fields_engine::mesh::add_plane(mat4 const& tr) {
 
     const vec3 normal{tr * vec4(0, 0, 1, 0)};
 
-    for (int i = 0; i < num_verts; ++i) {
+    int n = int(m_vertices.size());
+
+    for (int i = 0; i < num_corners; ++i) {
         m_vertices.emplace_back(tr * verts[i]);
         m_textures.emplace_back(tex_coords[i]);
         m_normals .emplace_back(normal);
     }
 
-    int n = int(m_vertices.size());
-    add_tris_for_quad({ n, n + 1, n + 2, n + 3 });
+    add_tris_for_quad({n, n + 1, n + 2, n + 3 });
 }
 
 void fields_engine::mesh::add_cube(float width) {
     constexpr float rot_90 = glm::radians(90.0f);
     constexpr vec3 i{ 1, 0, 0 };
     constexpr vec3 j{ 0, 1, 0 };
-    constexpr vec3 k{ 0, 0, 1 };
 
     const mat4 face_mat(width * 0.5f);
 
-    // Add 6 faces as rotations of face_mat 
-    add_plane(face_mat); // :(
-    
+    // Add 6 faces as rotations of face_mat
     add_plane(face_mat);
     add_plane(glm::rotate(face_mat, rot_90, i));
     add_plane(glm::rotate(face_mat, -rot_90, i));

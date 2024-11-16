@@ -38,7 +38,6 @@ fields_engine::scene::~scene() {
 }
 
 void fields_engine::scene::update(float dt) {
-	
 	mat4 world_proj = glm::perspective(90.0f, m_ratio.x / m_ratio.y, m_front, m_back);
 	m_world_view 
 		= glm::rotate(m_tilt - 90.0f, vec3{ 1, 0, 0 })
