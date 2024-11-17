@@ -63,6 +63,8 @@
     <ClCompile Include="source\window.cpp" />
     <ClCompile Include="source\mesh.cpp" />
     <ClCompile Include="source\scene.cpp" />
+    <ClCompile Include="source\entity.cpp" />
+    <ClCompile Include="source\transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -114,5 +116,8 @@
     <ClInclude Include="source\error.h" />
     <ClInclude Include="source\mesh.h" />
     <ClInclude Include="source\scene.h" />
+    <ClInclude Include="source\entity.h" />
+    <ClInclude Include="source\component.h" />
+    <ClInclude Include="source\transform.h" />
   </ItemGroup>
 </Project>

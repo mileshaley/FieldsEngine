@@ -33,6 +33,7 @@
     <ClCompile Include="source\editor_icons.cpp" />
     <ClCompile Include="source\editor_icons_all.cpp" />
     <ClCompile Include="source\editor_window.cpp" />
+    <ClCompile Include="source\entity.cpp" />
     <ClCompile Include="source\graphics.cpp" />
     <ClCompile Include="source\input.cpp" />
     <ClCompile Include="source\log.cpp" />
@@ -49,6 +50,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="source\text.cpp" />
+    <ClCompile Include="source\transform.cpp" />
     <ClCompile Include="source\window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -63,11 +65,13 @@
     <ClInclude Include="libraries\includes\imGui\imstb_textedit.h" />
     <ClInclude Include="libraries\includes\imGui\imstb_truetype.h" />
     <ClInclude Include="source\application.h" />
+    <ClInclude Include="source\component.h" />
     <ClInclude Include="source\context.h" />
     <ClInclude Include="source\editor.h" />
     <ClInclude Include="source\editor_icons.h" />
     <ClInclude Include="source\editor_icons_all.h" />
     <ClInclude Include="source\editor_window.h" />
+    <ClInclude Include="source\entity.h" />
     <ClInclude Include="source\error.h" />
     <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\input.h" />
@@ -78,6 +82,7 @@
     <ClInclude Include="source\shader.h" />
     <ClInclude Include="source\stubs\stub.h" />
     <ClInclude Include="source\text.h" />
+    <ClInclude Include="source\transform.h" />
     <ClInclude Include="source\window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

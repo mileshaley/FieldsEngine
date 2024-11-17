@@ -87,6 +87,9 @@ namespace fields_engine::common {
 	using std::string_view;
 	using std::vector;
 
+	template<typename T>
+	using dyn_arr = std::vector<T>;
+
 } // namespace fields_engine::common
 
 /*~-------------------------------------------------------------------------~*\
