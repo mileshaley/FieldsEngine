@@ -65,6 +65,7 @@
     <ClCompile Include="source\scene.cpp" />
     <ClCompile Include="source\entity.cpp" />
     <ClCompile Include="source\transform.cpp" />
+    <ClCompile Include="source\component.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">

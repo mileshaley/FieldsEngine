@@ -83,7 +83,7 @@ fields_engine::editor::editor(window& win)
 	));
 }
 
-void fields_engine::editor::update(float dt) {
+void fields_engine::editor::tick(float dt) {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();

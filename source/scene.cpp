@@ -16,6 +16,7 @@
 #include "context.h"
 #include "application.h"
 #include "imgui.h"
+#include "entity.h"
 
 fields_engine::scene::scene() {
 	m_shader = make_unique<graphics::shader>();
@@ -27,43 +28,57 @@ fields_engine::scene::scene() {
 	glBindAttribLocation(m_shader->id(), 3, "vertexTangent");
 	m_shader->finalize();
 
-	
-	m_mesh = make_unique<fe::mesh>();
-	m_mesh->add_cube();
-	m_mesh->generate();
+	{
+		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		unique_ptr<mesh> m = make_unique<mesh>();
+		m->add_cube();
+		m->generate();
+
+		ent->attach_component(move(m));
+		transform& tr = ent->ref_transform();
+		tr.set_position({ 0, 5, 0 });
+		tr.set_scale({ 1, 1, 1 });
+		tr.set_rotation({ 0, m_obj1_rot_a, m_obj1_rot_b });
+	}
+	{
+		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		unique_ptr<mesh> m = make_unique<mesh>();
+		m->add_cube();
+		m->generate();
+
+		ent->attach_component(move(m));
+		transform& tr = ent->ref_transform();
+		tr.set_position({ 0, -5, 0 });
+		tr.set_scale({ 2, 2, 2 });
+		tr.set_rotation({ 0, m_obj1_rot_a, m_obj1_rot_b });
+	}
 }
 
 fields_engine::scene::~scene() {
 
 }
 
-void fields_engine::scene::update(float dt) {
-	mat4 world_proj = glm::perspective(90.0f, m_ratio.x / m_ratio.y, m_front, m_back);
+static bool float_eq(float a, float b, float diff = 0.0001f) {
+	return std::abs(a - b) < diff;
+}
+
+void fields_engine::scene::tick(float dt) {
+	ivec2 win_size = context<application>().window_size();
+	mat4 world_proj = glm::perspective(90.0f, float(win_size.x) / win_size.y, m_front, m_back);
 	m_world_view 
 		= glm::rotate(glm::radians(m_tilt - 90.0f), vec3{ 1, 0, 0 })
 		* glm::rotate(glm::radians(m_spin),         vec3{ 0, 0, 1 })
 		* glm::translate(-m_cam_pos);
 
 	mat4 world_inverse = glm::inverse(m_world_view);
-	ivec2 win_size = context<application>().window_size();
-	m_ratio.x = m_ratio.y * win_size.x / win_size.y;
 
 
 	graphics::clear_background({ 0.5f, 1.0f, 1.0f, 1 });
 	m_shader->use();
 
-	mat4 obj1
-		= glm::translate(glm::vec3{ 0,5,0 })
-		* glm::rotate(glm::radians(m_obj1_rot_a), glm::vec3{ 0, 0, 1 })
-		* glm::rotate(glm::radians(m_obj1_rot_b), glm::vec3{ 0, 1, 0 })
-		* glm::scale(glm::vec3{ 1, 1, 1 });
-
 	const glm::vec3 ambient(0.2f, 0.2f, 0.2f);
 	const glm::vec3 light(3.5f, 3.5f, 3.5f);
-	const vec3 diffuse_color{ 1.0f, 0.5f, 0.2f };
-	const vec3 specular_color{ 0.5f, 0.5f, 0.1f };
-	const float shininess = 3.0f;
-	const glm::mat4 obj1_inv = glm::inverse(obj1);
+
 
 	GLint loc = m_shader->uniform_location("eyePos");
 	glUniform3fv(loc, 1, glm::value_ptr(m_cam_pos));
@@ -84,7 +99,6 @@ void fields_engine::scene::update(float dt) {
 	glUniform1i(loc, 0);
 	FE_GL_VERIFY;
 
-	// Object specific
 
 	loc = m_shader->uniform_location("Ambient");
 	glUniform3fv(loc, 1, glm::value_ptr(ambient));
@@ -93,50 +107,11 @@ void fields_engine::scene::update(float dt) {
 	glUniform3fv(loc, 1, glm::value_ptr(light));
 	FE_GL_VERIFY;
 
-	loc = m_shader->uniform_location("diffuse");
-	glUniform3fv(loc, 1, glm::value_ptr(diffuse_color));
-	FE_GL_VERIFY;
+	// Object specific
 
-	loc = m_shader->uniform_location("specular");
-	glUniform3fv(loc, 1, glm::value_ptr(specular_color));
-	FE_GL_VERIFY;
-	loc = m_shader->uniform_location("shininess");
-	glUniform1f(loc, shininess);
-	FE_GL_VERIFY;
-	loc = m_shader->uniform_location("objectId");
-	glUniform1i(loc, 5);
-	FE_GL_VERIFY;
-
-
-	loc = m_shader->uniform_location("ModelTr");
-	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(obj1));
-	FE_GL_VERIFY;
-	/// ???
-	loc = m_shader->uniform_location("NormalTr");
-	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(obj1_inv));
-	FE_GL_VERIFY;
-
-
-	loc = m_shader->uniform_location("texScale");
-	glUniform2fv(loc, 1, glm::value_ptr(vec2(1, 1)));
-	FE_GL_VERIFY;
-	loc = m_shader->uniform_location("texRot");
-	glUniform1f(loc, 1);
-	FE_GL_VERIFY;
-	loc = m_shader->uniform_location("hasTexture");
-	glUniform1i(loc, 0);
-	FE_GL_VERIFY;
-	loc = m_shader->uniform_location("hasNormal");
-	glUniform1i(loc, 0);
-	FE_GL_VERIFY;
-
-
-	//for (int i = 0; i < 6; ++i) {
-	//	if (m_enabled[i]) {
-	//		m_mesh[i]->draw();
-	//	}
-	//}
-	m_mesh->draw();
+	for (auto const& ent : m_entities) {
+		ent->render(*m_shader);
+	}
 
 	m_shader->unuse();
 }
@@ -149,15 +124,9 @@ bool fields_engine::scene::display_window() {
 	res |= ImGui::DragFloat("Tilt", &m_tilt);
 	res |= ImGui::DragFloat("Front", &m_front);
 	res |= ImGui::DragFloat("Back", &m_back);
-	res |= ImGui::DragFloat2("Ratio", &m_ratio.x);
 	res |= ImGui::DragFloat3("Cam Pos", &m_cam_pos.x);
 	res |= ImGui::DragFloat3("Light Pos", &m_light_pos.x);
 
-	//for (int i = 0; i < 6; ++i) {
-	//	res |= ImGui::Checkbox((
-	//		"Show Face " + std::to_string(i)).c_str(), &m_enabled[i]);
-	//
-	//}
 	return res;
 }
 

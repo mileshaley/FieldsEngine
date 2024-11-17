@@ -11,14 +11,15 @@
  * Component Definitions                                                     *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::component<Subclass>::component() {
+fields_engine::component::component()
+	: m_owner(nullptr)
+	, m_parent(nullptr)
+{
 
 }
 
-fields_engine::component<Subclass>::~component() {
-
+fields_engine::component::component(component const& other) 
+	: m_owner(nullptr)
+	, m_parent(nullptr)
+{
 }
-
-
-
-

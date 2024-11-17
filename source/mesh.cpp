@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
- * FIELDS ENGINE                                                             *
- *~-------------------------------------------------------------------------~*
- * File: mesh.cpp                                                            *
+ * FIELDS ENGINE                                                             * 
+ *~-------------------------------------------------------------------------~* 
+ * File: mesh.cpp                                                            * 
 \*~-------------------------------------------------------------------------~*/
 
 #include "precompiled.h"
@@ -15,10 +15,26 @@ namespace fields_engine {
 } // namespace fields_engine
 
 fields_engine::mesh::mesh()
-	: m_vertices()
+	: component()
+    , m_vertices()
 	, m_triangles()
+    , m_textures()
+    , m_normals()
 	, m_vao_id(0)
 {}
+
+fields_engine::mesh::mesh(mesh const& other)
+    : component(other)
+    , m_vertices(other.m_vertices)
+    , m_triangles(other.m_triangles)
+    , m_textures(other.m_textures)
+    , m_normals(other.m_normals)
+    , m_vao_id(0)
+{
+    if (other.m_vao_id != 0) {
+        generate();
+    }
+}
 
 void fields_engine::mesh::generate() {
     // Give this mesh a vertex object array
@@ -96,12 +112,12 @@ void fields_engine::mesh::generate() {
     FE_GL_VERIFY;
 }
 
-void fields_engine::mesh::draw() const {
+void fields_engine::mesh::render() const {
     glBindVertexArray(m_vao_id);
     FE_GL_VERIFY;
-    glDrawElements(GL_TRIANGLES, 
-        GLsizei(m_triangles.size() * 3), 
-        GL_UNSIGNED_INT, 
+    glDrawElements(GL_TRIANGLES,
+        GLsizei(m_triangles.size() * 3),
+        GL_UNSIGNED_INT,
         0);
     FE_GL_VERIFY;
     glBindVertexArray(0);

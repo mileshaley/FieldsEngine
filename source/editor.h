@@ -20,7 +20,7 @@ namespace fields_engine{
 	class editor {
 	public:
 		editor(window& win);
-		void update(float dt);
+		void tick(float dt);
 		~editor();
 
 		void reset_style() const;

@@ -6,15 +6,23 @@
 
 #pragma once
 
+#include "component.h"
+
 namespace fields_engine {
 
-	class mesh {
+	class mesh : public component {
 	public:
-		
+
 		mesh();
+		mesh(mesh const& other);
+
+		virtual unique_ptr<component> clone() const override {
+			return make_unique<mesh>(*this);
+		}
+
 		void generate();
 
-		void draw() const;
+		virtual void render() const override;
 		void add_plane(mat4 const& transform);
 		void add_cube(float width = 1.0f);
 

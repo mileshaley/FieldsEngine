@@ -84,12 +84,12 @@ void fields_engine::application::run() {
 		glViewport(0, 0, m_win_size.x, m_win_size.y);
 		FE_GL_VERIFY;
 		
-		m_scene->update(dt);
+		m_scene->tick(dt);
 		
 
 		/// render logic goes here
 
-		m_editor->update(dt);
+		m_editor->tick(dt);
 
 		glfwSwapBuffers(m_window->handle);
 	}
