@@ -14,6 +14,10 @@
 
 namespace fields_engine {
 	class entity;
+	/// TODO: remove
+	namespace graphics {
+		class shader;
+	}
 } // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
@@ -30,7 +34,7 @@ namespace fields_engine {
 		virtual unique_ptr<component> clone() const = 0;
 		
 		virtual void tick(float dt) {}
-		virtual void render() const {}
+		virtual void render(graphics::shader const& shader) const {}
 
 		transform      & ref_transform()       { return m_transform; }
 		transform const& ref_transform() const { return m_transform; }

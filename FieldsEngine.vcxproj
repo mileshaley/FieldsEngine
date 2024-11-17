@@ -39,6 +39,7 @@
     <ClCompile Include="source\input.cpp" />
     <ClCompile Include="source\log.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\material.cpp" />
     <ClCompile Include="source\mesh.cpp" />
     <ClCompile Include="source\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -77,6 +78,7 @@
     <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\input.h" />
     <ClInclude Include="source\log.h" />
+    <ClInclude Include="source\material.h" />
     <ClInclude Include="source\mesh.h" />
     <ClInclude Include="source\precompiled.h" />
     <ClInclude Include="source\scene.h" />

@@ -8,7 +8,9 @@
 #include "mesh.h"
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include "graphics.h"
+#include "shader.h"
 
 namespace fields_engine {
     using namespace graphics;
@@ -112,7 +114,20 @@ void fields_engine::mesh::generate() {
     FE_GL_VERIFY;
 }
 
-void fields_engine::mesh::render() const {
+void fields_engine::mesh::render(graphics::shader const& shader) const {
+    // Material settings for shader
+    GLint loc = shader.uniform_location("diffuse");
+    glUniform3fv(loc, 1, glm::value_ptr(m_material.m_diffuse_color));
+    FE_GL_VERIFY;
+
+    loc = shader.uniform_location("specular");
+    glUniform3fv(loc, 1, glm::value_ptr(m_material.m_specular_color));
+    FE_GL_VERIFY;
+    loc = shader.uniform_location("shininess");
+    glUniform1f(loc, m_material.m_shininess);
+    FE_GL_VERIFY;
+
+    // Mesh render
     glBindVertexArray(m_vao_id);
     FE_GL_VERIFY;
     glDrawElements(GL_TRIANGLES,
@@ -152,12 +167,12 @@ void fields_engine::mesh::add_plane(mat4 const& tr) {
     add_tris_for_quad({n, n + 1, n + 2, n + 3 });
 }
 
-void fields_engine::mesh::add_cube(float width) {
+void fields_engine::mesh::add_cube() {
     constexpr float rot_90 = glm::radians(90.0f);
     constexpr vec3 i{ 1, 0, 0 };
     constexpr vec3 j{ 0, 1, 0 };
 
-    const mat4 face_mat(width * 0.5f);
+    constexpr mat4 face_mat(1);
 
     // Add 6 faces as rotations of face_mat
     add_plane(face_mat);

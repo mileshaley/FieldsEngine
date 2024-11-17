@@ -66,6 +66,7 @@
     <ClCompile Include="source\entity.cpp" />
     <ClCompile Include="source\transform.cpp" />
     <ClCompile Include="source\component.cpp" />
+    <ClCompile Include="source\material.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -120,5 +121,6 @@
     <ClInclude Include="source\entity.h" />
     <ClInclude Include="source\component.h" />
     <ClInclude Include="source\transform.h" />
+    <ClInclude Include="source\material.h" />
   </ItemGroup>
 </Project>

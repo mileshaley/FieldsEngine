@@ -28,29 +28,145 @@ fields_engine::scene::scene() {
 	glBindAttribLocation(m_shader->id(), 3, "vertexTangent");
 	m_shader->finalize();
 
-	{
+	graphics::material grass_mat;
+	grass_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
+	grass_mat.m_specular_color = { 0.7f, 0.7f, 0.8f };
+	grass_mat.m_shininess = 0.2f;
+
+	graphics::material snow_mat;
+	snow_mat.m_diffuse_color = { 0.95f, 0.95f, 1.0f };
+	snow_mat.m_specular_color = { 0.7f, 0.7f, 0.8f };
+	snow_mat.m_shininess = 4.0f;
+
+	graphics::material scarf_mat;
+	scarf_mat.m_diffuse_color = { 0.95f, 0.2f, 0.2f };
+	scarf_mat.m_specular_color = { 0.7f, 0.7f, 0.8f };
+	scarf_mat.m_shininess = 0.2f;
+
+	graphics::material hat_mat;
+	hat_mat.m_diffuse_color = { 0.1f, 0.1f, 0.1f };
+	hat_mat.m_specular_color = { 0.3f, 0.3f, 0.3f };
+	hat_mat.m_shininess = 1.0f;
+
+	float height = -1;
+
+	{ // Grass
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
 		unique_ptr<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
-
+		m->ref_material() = grass_mat;
 		ent->attach_component(move(m));
 		transform& tr = ent->ref_transform();
-		tr.set_position({ 0, 5, 0 });
-		tr.set_scale({ 1, 1, 1 });
-		tr.set_rotation({ 0, m_obj1_rot_a, m_obj1_rot_b });
+		const float scale = 1;
+		height += scale;
+		tr.set_position({ 5, 0, height });
+		height += scale;
+		tr.set_scale({ 20, 20, scale });
+		tr.set_rotation({ 0, 0, 0 });
 	}
-	{
+	{ // Legs
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
 		unique_ptr<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
-
+		m->ref_material() = snow_mat;
 		ent->attach_component(move(m));
 		transform& tr = ent->ref_transform();
-		tr.set_position({ 0, -5, 0 });
-		tr.set_scale({ 2, 2, 2 });
-		tr.set_rotation({ 0, m_obj1_rot_a, m_obj1_rot_b });
+
+		const float scale = 2;
+		height += scale;
+		tr.set_position({ 5, 0, height });
+		height += scale;
+		tr.set_scale({ scale, scale, scale });
+
+		tr.set_rotation({ 0, 0, 0 });
+
+	}
+	{ // Middle
+		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		unique_ptr<mesh> m = make_unique<mesh>();
+		m->add_cube();
+		m->generate();
+		m->ref_material() = snow_mat;
+		transform& tr = ent->ref_transform();
+
+		const float scale = 1.5f;
+		height += scale;
+		tr.set_position({ 5, 0, height });
+		height += scale;
+		tr.set_scale({ scale, scale, scale });
+
+		tr.set_rotation({ 0, 0, 0 });
+		ent->attach_component(move(m));
+	}
+	{ // Scarf
+		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		unique_ptr<mesh> m = make_unique<mesh>();
+		m->add_cube();
+		m->generate();
+		m->ref_material() = scarf_mat;
+		transform& tr = ent->ref_transform();
+
+		const float scale = 0.3;
+		height += scale;
+		tr.set_position({ 5, 0, height });
+		height += scale;
+		tr.set_scale({ 1.2f, 1.2f, scale });
+
+		tr.set_rotation({ 0, 0, 0 });
+		ent->attach_component(move(m));
+	}
+	{ // Head
+		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		unique_ptr<mesh> m = make_unique<mesh>();
+		m->add_cube();
+		m->generate();
+		m->ref_material() = snow_mat;
+		transform& tr = ent->ref_transform();
+
+		const float scale = 1;
+		height += scale;
+		tr.set_position({ 5, 0, height });
+		height += scale;
+		tr.set_scale({ scale, scale, scale });
+
+		tr.set_rotation({ 0, 0, 0 });
+		ent->attach_component(move(m));
+	}
+	{ // Hat base
+		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		unique_ptr<mesh> m = make_unique<mesh>();
+		m->add_cube();
+		m->generate();
+		m->ref_material() = hat_mat;
+		transform& tr = ent->ref_transform();
+
+		const float scale = 0.15;
+		height += scale;
+		tr.set_position({ 5, 0, height });
+		height += scale;
+		tr.set_scale({ 1.5f, 1.5f, scale });
+
+		tr.set_rotation({ 0, 0, 0 });
+		ent->attach_component(move(m));
+	}
+	{ // Hat top
+		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		unique_ptr<mesh> m = make_unique<mesh>();
+		m->add_cube();
+		m->generate();
+		m->ref_material() = hat_mat;
+		transform& tr = ent->ref_transform();
+
+		const float scale = 1.3;
+		height += scale;
+		tr.set_position({ 5, 0, height - scale * 0.1f });
+		height += scale;
+		tr.set_scale({ 1, 1, scale});
+
+		tr.set_rotation({ 0.13f, 0, 0 });
+		ent->attach_component(move(m));
 	}
 }
 
@@ -118,12 +234,10 @@ void fields_engine::scene::tick(float dt) {
 
 bool fields_engine::scene::display_window() {
 	bool res = false;
-	res |= ImGui::DragFloat("Rot A", &m_obj1_rot_a);
-	res |= ImGui::DragFloat("Rot B", &m_obj1_rot_b);
 	res |= ImGui::DragFloat("Spin", &m_spin);
 	res |= ImGui::DragFloat("Tilt", &m_tilt);
-	res |= ImGui::DragFloat("Front", &m_front);
-	res |= ImGui::DragFloat("Back", &m_back);
+	//res |= ImGui::DragFloat("Front", &m_front);
+	//res |= ImGui::DragFloat("Back", &m_back);
 	res |= ImGui::DragFloat3("Cam Pos", &m_cam_pos.x);
 	res |= ImGui::DragFloat3("Light Pos", &m_light_pos.x);
 

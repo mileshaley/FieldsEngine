@@ -52,23 +52,10 @@ void fields_engine::entity::tick(float dt) {
 }
 
 void fields_engine::entity::render(graphics::shader const& shader) const {
-	const vec3 diffuse_color{ 1.0f, 0.5f, 0.2f };
-	const vec3 specular_color{ 0.5f, 0.5f, 0.1f };
-	const float shininess = 3.0f;
 	const mat4& matrix = m_transform.world_matrix();
 	const mat4 inverse = glm::inverse(matrix);
 
-	GLint loc = shader.uniform_location("diffuse");
-	glUniform3fv(loc, 1, glm::value_ptr(diffuse_color));
-	FE_GL_VERIFY;
-
-	loc = shader.uniform_location("specular");
-	glUniform3fv(loc, 1, glm::value_ptr(specular_color));
-	FE_GL_VERIFY;
-	loc = shader.uniform_location("shininess");
-	glUniform1f(loc, shininess);
-	FE_GL_VERIFY;
-	loc = shader.uniform_location("objectId");
+	GLint loc = shader.uniform_location("objectId");
 	glUniform1i(loc, 5);
 	FE_GL_VERIFY;
 
@@ -96,7 +83,7 @@ void fields_engine::entity::render(graphics::shader const& shader) const {
 	FE_GL_VERIFY;
 
 	for (auto const& comp : m_components) {
-		comp->render();
+		comp->render(shader);
 	}
 }
 

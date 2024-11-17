@@ -6,7 +6,18 @@
 
 #pragma once
 
+/*~-------------------------------------------------------------------------~*\
+ * Includes & Forward Declarations                                           *
+\*~-------------------------------------------------------------------------~*/
+
 #include "component.h"
+#include "material.h"
+
+
+
+/*~-------------------------------------------------------------------------~*\
+ * Entity Class                                                              *
+\*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
 
@@ -22,12 +33,18 @@ namespace fields_engine {
 
 		void generate();
 
-		virtual void render() const override;
+		virtual void render(graphics::shader const& shader) const override;
 		void add_plane(mat4 const& transform);
-		void add_cube(float width = 1.0f);
+		void add_cube();
+
+
+		graphics::material      & ref_material()       { return m_material; }
+		graphics::material const& ref_material() const { return m_material; }
 
 	private:
 		void add_tris_for_quad(ivec4 const& indices);
+
+
 
 		unsigned m_vao_id;
 		vector<vec4> m_vertices;
@@ -35,6 +52,8 @@ namespace fields_engine {
 		vector<vec2> m_textures;
 		// Indices within m_vertices
 		vector<ivec3> m_triangles;
+
+		graphics::material m_material;
 	};
 
 } // namespace fields_engine
