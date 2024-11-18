@@ -60,7 +60,7 @@ fields_engine::scene::scene() {
 		transform& tr = ent->ref_transform();
 		const float scale = 1;
 		height += scale;
-		tr.set_position({ 5, 0, height });
+		tr.set_position({ 0, 0, height });
 		height += scale;
 		tr.set_scale({ 20, 20, scale });
 		tr.set_rotation({ 0, 0, 0 });
@@ -76,7 +76,7 @@ fields_engine::scene::scene() {
 
 		const float scale = 2;
 		height += scale;
-		tr.set_position({ 5, 0, height });
+		tr.set_position({ 0, 0, height });
 		height += scale;
 		tr.set_scale({ scale, scale, scale });
 
@@ -93,7 +93,7 @@ fields_engine::scene::scene() {
 
 		const float scale = 1.5f;
 		height += scale;
-		tr.set_position({ 5, 0, height });
+		tr.set_position({ 0, 0, height });
 		height += scale;
 		tr.set_scale({ scale, scale, scale });
 
@@ -110,7 +110,7 @@ fields_engine::scene::scene() {
 
 		const float scale = 0.3;
 		height += scale;
-		tr.set_position({ 5, 0, height });
+		tr.set_position({ 0, 0, height });
 		height += scale;
 		tr.set_scale({ 1.2f, 1.2f, scale });
 
@@ -127,7 +127,7 @@ fields_engine::scene::scene() {
 
 		const float scale = 1;
 		height += scale;
-		tr.set_position({ 5, 0, height });
+		tr.set_position({ 0, 0, height });
 		height += scale;
 		tr.set_scale({ scale, scale, scale });
 
@@ -144,7 +144,7 @@ fields_engine::scene::scene() {
 
 		const float scale = 0.15;
 		height += scale;
-		tr.set_position({ 5, 0, height });
+		tr.set_position({ 0, 0, height });
 		height += scale;
 		tr.set_scale({ 1.5f, 1.5f, scale });
 
@@ -161,7 +161,7 @@ fields_engine::scene::scene() {
 
 		const float scale = 1.3;
 		height += scale;
-		tr.set_position({ 5, 0, height - scale * 0.1f });
+		tr.set_position({ 0, 0, height - scale * 0.1f });
 		height += scale;
 		tr.set_scale({ 1, 1, scale});
 
@@ -179,15 +179,15 @@ static bool float_eq(float a, float b, float diff = 0.0001f) {
 }
 
 void fields_engine::scene::tick(float dt) {
-	ivec2 win_size = context<application>().window_size();
-	mat4 world_proj = glm::perspective(90.0f, float(win_size.x) / win_size.y, m_front, m_back);
-	m_world_view 
-		= glm::rotate(glm::radians(m_tilt - 90.0f), vec3{ 1, 0, 0 })
-		* glm::rotate(glm::radians(m_spin),         vec3{ 0, 0, 1 })
-		* glm::translate(-m_cam_pos);
+	const ivec2 win_size = context<application>().window_size();
+	const mat4 world_proj = glm::perspective(90.0f, float(win_size.x) / win_size.y, m_front, m_back);
 
-	mat4 world_inverse = glm::inverse(m_world_view);
-
+	//m_world_view 
+	//	= glm::rotate(glm::radians(m_tilt - 90.0f), vec3{ 1, 0, 0 })
+	//	* glm::rotate(glm::radians(m_spin),         vec3{ 0, 0, 1 })
+	//	* glm::translate(-m_cam_pos);
+	const mat4& world_view = m_cam_transform.world_matrix();
+	const mat4 world_inverse = world_view;
 
 	graphics::clear_background({ 0.5f, 1.0f, 1.0f, 1 });
 	m_shader->use();
@@ -197,9 +197,9 @@ void fields_engine::scene::tick(float dt) {
 
 
 	GLint loc = m_shader->uniform_location("eyePos");
-	glUniform3fv(loc, 1, glm::value_ptr(m_cam_pos));
+	glUniform3fv(loc, 1, (float*)&world_view[3][0]);
 	loc = m_shader->uniform_location("WorldView");
-	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(m_world_view));
+	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(world_view));
 	FE_GL_VERIFY;
 
 	loc = m_shader->uniform_location("WorldProj");
@@ -232,15 +232,13 @@ void fields_engine::scene::tick(float dt) {
 	m_shader->unuse();
 }
 
+#ifdef EDITOR
 bool fields_engine::scene::display_window() {
-	bool res = false;
-	res |= ImGui::DragFloat("Spin", &m_spin);
-	res |= ImGui::DragFloat("Tilt", &m_tilt);
-	//res |= ImGui::DragFloat("Front", &m_front);
-	//res |= ImGui::DragFloat("Back", &m_back);
-	res |= ImGui::DragFloat3("Cam Pos", &m_cam_pos.x);
-	res |= ImGui::DragFloat3("Light Pos", &m_light_pos.x);
-
-	return res;
+	bool modif = false;
+	modif |= m_cam_transform.display();
+	modif |= ImGui::DragFloat3("Light Position", &m_light_pos.x);
+	//modif |= ImGui::DragFloat("Front", &m_front);
+	//modif |= ImGui::DragFloat("Back", &m_back);
+	return modif;
 }
-
+#endif // EDITOR

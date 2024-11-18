@@ -10,6 +10,8 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+#include "transform.h"
+
 namespace fields_engine {
 	class entity;
 	namespace graphics {
@@ -29,17 +31,20 @@ namespace fields_engine {
 		~scene();
 		void tick(float dt);
 
-		bool display_window();
 
+#ifdef EDITOR
+		bool display_window();
+#endif // EDITOR
 	private: /// TODO: remove
-		//vec3 m_cam_rot = {}
-		float m_spin = 200;
-		float m_tilt = 15;
-		float m_front = 0.5f;
-		float m_back = 5000;
-		vec3 m_cam_pos   = { 9, 7, 11 };
+		transform m_cam_transform{
+			{ -7, -14, -23 },
+			{ 90, 180,  40 },
+			{  1,   1,   1 }
+		};
+
 		vec3 m_light_pos = { 9, 9, 11 };
-		mat4 m_world_view;
+		float m_back = 5000;
+		float m_front = 0.5f;
 
 		unique_ptr<graphics::shader> m_shader;
 		dyn_arr<unique_ptr<entity>> m_entities;

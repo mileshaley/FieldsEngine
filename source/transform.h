@@ -19,8 +19,8 @@ namespace fields_engine {
 
 	struct transform_data {
 		vec3 position;
-		vec3 scale;
 		vec3 rotation;
+		vec3 scale;
 	};
 
 /*~-------------------------------------------------------------------------~*\
@@ -31,8 +31,20 @@ namespace fields_engine {
 	class transform {
 	public:
 
-		transform();
+		transform(
+			vec3 position = { 0, 0, 0 }, 
+			vec3 rotation = { 0, 0, 0 },
+			vec3 scale    = { 1, 1, 1 }
+		);
+
 		transform(transform_data const& data);
+
+#ifdef EDITOR
+		bool display();
+#endif
+
+
+		void set_dirty() const;
 
 		mat4 const& world_matrix() const;
 

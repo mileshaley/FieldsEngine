@@ -7,14 +7,14 @@
 #include "precompiled.h"
 #include "transform.h"
 #include "glm/gtc/matrix_transform.hpp"
-//#include "glm/gtx/transform.hpp"
+#include "imgui.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Transform Definitions                                                     *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::transform::transform()
-	: m_data({{ 0, 0, 0 }, { 0, 0, 0 }, {1, 1, 1}})
+fields_engine::transform::transform(vec3 position, vec3 rotation, vec3 scale)
+	: m_data{position, rotation, scale}
 	, m_matrix(1)
 	, m_dirty(true)
 	, m_parent(nullptr)
@@ -26,6 +26,22 @@ fields_engine::transform::transform(transform_data const& data)
 	, m_dirty(true)
 	, m_parent(nullptr)
 {}
+
+#ifdef EDITOR
+bool fields_engine::transform::display() {
+	bool modif = false;
+	modif |= ImGui::DragFloat3("Position", &m_data.position.x);
+	modif |= ImGui::DragFloat3("Scale", &m_data.scale.x);
+	modif |= ImGui::DragFloat3("Rotation", &m_data.rotation.x);
+	m_dirty |= modif;
+	return modif;
+}
+#endif
+
+
+void fields_engine::transform::set_dirty() const {
+	m_dirty = true;
+}
 
 fe::mat4 const& fields_engine::transform::world_matrix() const {
 	constexpr mat4 ident(1);
@@ -39,11 +55,11 @@ fe::mat4 const& fields_engine::transform::world_matrix() const {
 							glm::translate(
 								(m_parent ? m_parent->world_matrix() : ident),
 								m_data.position
-							), m_data.rotation.x,
+							), glm::radians(m_data.rotation.x),
 							(vec3&)ident[0]
-						), m_data.rotation.y,
+						), glm::radians(m_data.rotation.y),
 						(vec3&)ident[1]
-					), m_data.rotation.z,
+					), glm::radians(m_data.rotation.z),
 					(vec3&)ident[2]
 				), m_data.scale
 			);
@@ -54,6 +70,7 @@ fe::mat4 const& fields_engine::transform::world_matrix() const {
 
 void fields_engine::transform::set_position(fe::vec3 const& new_position) {
 	m_data.position = new_position;
+	set_dirty();
 }
 
 fe::vec3 const& fields_engine::transform::get_position() const {
@@ -62,6 +79,7 @@ fe::vec3 const& fields_engine::transform::get_position() const {
 
 void fields_engine::transform::set_scale(fe::vec3 const& new_scale) {
 	m_data.scale = new_scale;
+	set_dirty();
 }
 
 fe::vec3 const& fields_engine::transform::get_scale() const {
@@ -70,6 +88,7 @@ fe::vec3 const& fields_engine::transform::get_scale() const {
 
 void fields_engine::transform::set_rotation(vec3 const& new_rotation) {
 	m_data.rotation = new_rotation;
+	set_dirty();
 }
 
 fe::vec3 const& fields_engine::transform::get_rotation() const {

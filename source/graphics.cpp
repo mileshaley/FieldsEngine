@@ -51,6 +51,8 @@ void fields_engine::graphics::clear_background(glm::vec4 const& color) {
 
 void fields_engine::graphics::detail::initialize() {
 	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+
 	FE_GL_VERIFY;
 	clear_background({ 1.5f, 0.5f, 1.0f, 1.0f });
 }
