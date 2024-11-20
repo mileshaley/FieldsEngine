@@ -43,6 +43,7 @@ namespace fields_engine {
 		bool display();
 #endif
 
+		void set_parent(transform* new_parent);
 
 		void set_dirty() const;
 

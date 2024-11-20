@@ -33,8 +33,14 @@ namespace fields_engine {
 
 		~entity();
 
+		void init();
 		void tick(float dt);
 		void render(graphics::shader const& shader) const;
+		void exit();
+
+#ifdef EDITOR
+		bool display();
+#endif // EDITOR
 
 		void attach_component(unique_ptr<component>&& comp);
 

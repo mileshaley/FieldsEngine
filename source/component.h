@@ -7,7 +7,16 @@
 #pragma once
 
 /*~-------------------------------------------------------------------------~*\
- * Includes & Forward Declarations                                           * 
+ * Component Defines                                                         * 
+\*~-------------------------------------------------------------------------~*/
+
+#define COMPONENT_BODY(p_subclass) \
+		virtual unique_ptr<component> clone() const override {\
+			return make_unique<p_subclass>(*this); \
+		}
+
+/*~-------------------------------------------------------------------------~*\
+ * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
 #include "transform.h"
@@ -33,11 +42,19 @@ namespace fields_engine {
 		virtual ~component() {}
 		virtual unique_ptr<component> clone() const = 0;
 		
+		virtual void init() {}
 		virtual void tick(float dt) {}
 		virtual void render(graphics::shader const& shader) const {}
+		virtual void exit() {}
+
+#ifdef EDITOR
+		bool display();
+#endif // EDITOR
 
 		transform      & ref_transform()       { return m_transform; }
 		transform const& ref_transform() const { return m_transform; }
+
+
 
 	private:
 		entity* m_owner;

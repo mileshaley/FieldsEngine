@@ -23,3 +23,9 @@ fields_engine::component::component(component const& other)
 	, m_parent(nullptr)
 {
 }
+
+#ifdef EDITOR
+bool fields_engine::component::display() {
+	return false;
+}
+#endif // EDITOR

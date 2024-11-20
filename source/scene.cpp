@@ -17,6 +17,7 @@
 #include "application.h"
 #include "imgui.h"
 #include "entity.h"
+#include "camera.h"
 
 fields_engine::scene::scene() {
 	m_shader = make_unique<graphics::shader>();
@@ -26,8 +27,14 @@ fields_engine::scene::scene() {
 	glBindAttribLocation(m_shader->id(), 1, "vertexNormal");
 	glBindAttribLocation(m_shader->id(), 2, "vertexTexture");
 	glBindAttribLocation(m_shader->id(), 3, "vertexTangent");
-	m_shader->finalize();
+	m_shader->finalize();	
+}
 
+fields_engine::scene::~scene() {}
+
+
+void fields_engine::scene::startup()
+{
 	graphics::material grass_mat;
 	grass_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
 	grass_mat.m_specular_color = { 0.7f, 0.7f, 0.8f };
@@ -163,47 +170,89 @@ fields_engine::scene::scene() {
 		height += scale;
 		tr.set_position({ 0, 0, height - scale * 0.1f });
 		height += scale;
-		tr.set_scale({ 1, 1, scale});
+		tr.set_scale({ 1, 1, scale });
 
 		tr.set_rotation({ 0.13f, 0, 0 });
 		ent->attach_component(move(m));
 	}
-}
+	{ // Camera
+		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		unique_ptr<camera> cam = make_unique<camera>();
+		cam->ref_transform().set_position({ -7, -14, -23 });
+		cam->ref_transform().set_rotation({ 90, 180,  40 });
+		cam->ref_transform().set_scale({ 1, 1, 1 });
+		ent->attach_component(move(cam));
+	}
 
-fields_engine::scene::~scene() {
-
-}
-
-static bool float_eq(float a, float b, float diff = 0.0001f) {
-	return std::abs(a - b) < diff;
+	for (unique_cr<entity> ent : m_entities) {
+		ent->init();
+	}
 }
 
 void fields_engine::scene::tick(float dt) {
-	const ivec2 win_size = context<application>().window_size();
-	const mat4 world_proj = glm::perspective(90.0f, float(win_size.x) / win_size.y, m_front, m_back);
+	//const ivec2 win_size = context<application>().window_size();
+	//const mat4 world_proj = glm::perspective(90.0f, float(win_size.x) / win_size.y, m_front, m_back);
+	//
+	////world_view 
+	////	= glm::rotate(glm::radians(m_tilt - 90.0f), vec3{ 1, 0, 0 })
+	////	* glm::rotate(glm::radians(m_spin),         vec3{ 0, 0, 1 })
+	////	* glm::translate(-m_cam_pos);
+	////const mat4& world_view = m_cam_transform.world_matrix();
+	//vec3 const& position = m_cam_transform.get_position();
+	//vec3 const& scale = m_cam_transform.get_scale();
+	//vec3 const& rotation = m_cam_transform.get_rotation();
+	//
+	//constexpr mat4 ident(1);
+	//const mat4 world_view =
+	//	glm::translate(
+	//		glm::rotate(
+	//			glm::rotate(
+	//				glm::rotate(
+	//					glm::scale(
+	//						ident,
+	//						scale
+	//					), glm::radians(rotation.x),
+	//					(vec3&)ident[0]
+	//				), glm::radians(rotation.y),
+	//				(vec3&)ident[1]
+	//			), glm::radians(rotation.z),
+	//			(vec3&)ident[2]
+	//		), position
+	//	);
+	//
 
-	//m_world_view 
-	//	= glm::rotate(glm::radians(m_tilt - 90.0f), vec3{ 1, 0, 0 })
-	//	* glm::rotate(glm::radians(m_spin),         vec3{ 0, 0, 1 })
-	//	* glm::translate(-m_cam_pos);
-	const mat4& world_view = m_cam_transform.world_matrix();
-	const mat4 world_inverse = world_view;
+	for (unique_cr<entity> ent : m_entities) {
+		ent->tick(dt);
+	}
+}
 
-	graphics::clear_background({ 0.5f, 1.0f, 1.0f, 1 });
+void fields_engine::scene::draw() const {
+
+	constexpr mat4 identity(1);
+	const mat4* world_view = &identity;
+	const mat4* world_proj = &identity;
+	if (m_active_camera) {
+		world_view = &m_active_camera->world_view_matrix();
+		world_proj = &m_active_camera->world_proj_matrix();
+	}
+
+	const mat4 world_inverse = glm::inverse(*world_view);
+
+	graphics::clear_background({ 0.1f, 0.1f, 0.1f, 1 });
 	m_shader->use();
 
-	const glm::vec3 ambient(0.2f, 0.2f, 0.2f);
-	const glm::vec3 light(3.5f, 3.5f, 3.5f);
+	const vec3 ambient(0.2f, 0.2f, 0.2f);
+	const vec3 light(3.5f, 3.5f, 3.5f);
 
 
 	GLint loc = m_shader->uniform_location("eyePos");
-	glUniform3fv(loc, 1, (float*)&world_view[3][0]);
+	glUniform3fv(loc, 1, (float*)&(*world_view)[3][0]);
 	loc = m_shader->uniform_location("WorldView");
-	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(world_view));
+	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(*world_view));
 	FE_GL_VERIFY;
 
 	loc = m_shader->uniform_location("WorldProj");
-	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(world_proj));
+	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(*world_proj));
 	FE_GL_VERIFY;
 	loc = m_shader->uniform_location("WorldInverse");
 	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(world_inverse));
@@ -223,22 +272,46 @@ void fields_engine::scene::tick(float dt) {
 	glUniform3fv(loc, 1, glm::value_ptr(light));
 	FE_GL_VERIFY;
 
-	// Object specific
-
-	for (auto const& ent : m_entities) {
+	for (unique_cr<entity> ent : m_entities) {
 		ent->render(*m_shader);
 	}
 
 	m_shader->unuse();
 }
 
+void fields_engine::scene::shutdown() {
+	for (unique_cr<entity> ent : m_entities) {
+		ent->exit();
+	}
+}
+
 #ifdef EDITOR
 bool fields_engine::scene::display_window() {
 	bool modif = false;
-	modif |= m_cam_transform.display();
 	modif |= ImGui::DragFloat3("Light Position", &m_light_pos.x);
-	//modif |= ImGui::DragFloat("Front", &m_front);
-	//modif |= ImGui::DragFloat("Back", &m_back);
+	for (unique_cr<entity> ent : m_entities) {
+		modif |= ent->display();
+	}
 	return modif;
 }
 #endif // EDITOR
+
+void fields_engine::scene::register_camera(camera* cam) {
+	if (m_cameras.size() == 0) {
+		m_active_camera = cam;
+	}
+	m_cameras.push_back(cam);
+}
+
+void fields_engine::scene::unregister_camera(camera* cam) {
+	m_cameras.erase(std::find(m_cameras.begin(), m_cameras.end(), cam));
+	if (cam == m_active_camera) {
+		if (m_cameras.size() == 0) {
+			m_active_camera = nullptr;
+		} else {
+			m_active_camera = m_cameras[0];
+		}
+	}
+}
+
+

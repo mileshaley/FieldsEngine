@@ -39,6 +39,10 @@ bool fields_engine::transform::display() {
 #endif
 
 
+void fields_engine::transform::set_parent(transform* new_parent) {
+	m_parent = new_parent;
+}
+
 void fields_engine::transform::set_dirty() const {
 	m_dirty = true;
 }

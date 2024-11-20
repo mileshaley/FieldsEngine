@@ -45,8 +45,14 @@ fields_engine::entity::~entity() {
 
 }
 
+void fields_engine::entity::init() {
+	for (unique_cr<component> comp : m_components) {
+		comp->init();
+	}
+}
+
 void fields_engine::entity::tick(float dt) {
-	for (auto const& comp : m_components) {
+	for (unique_cr<component> comp : m_components) {
 		comp->tick(dt);
 	}
 }
@@ -82,11 +88,38 @@ void fields_engine::entity::render(graphics::shader const& shader) const {
 	glUniform1i(loc, 0);
 	FE_GL_VERIFY;
 
-	for (auto const& comp : m_components) {
+	for (unique_cr<component> comp : m_components) {
 		comp->render(shader);
 	}
 }
 
+void fields_engine::entity::exit() {
+	for (unique_cr<component> comp : m_components) {
+		comp->exit();
+	}
+}
+
+#ifdef EDITOR
+bool fields_engine::entity::display() {
+	bool modif = false;
+	ImGui::SeparatorText("Entity");
+	ImGui::PushID(this);
+	m_transform.display();
+	ImGui::PopID();
+
+	for (unique_cr<component> comp : m_components) {
+		ImGui::PushID(comp.get());
+		ImGui::SeparatorText("Component");
+		modif |= comp->ref_transform().display();
+		modif |= comp->display();
+		ImGui::PopID();
+	}
+
+	return modif;
+}
+#endif // EDITOR
+
 void fields_engine::entity::attach_component(unique_ptr<component>&& comp) {
+	comp->ref_transform().set_parent(&m_transform);
 	m_components.emplace_back(move(comp));
 }

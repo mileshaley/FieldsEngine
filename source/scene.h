@@ -14,6 +14,7 @@
 
 namespace fields_engine {
 	class entity;
+	class camera;
 	namespace graphics {
 		class shader;
 	} // namespace graphics
@@ -27,27 +28,32 @@ namespace fields_engine {
 
 	class scene {
 	public:
+
 		scene();
 		~scene();
-		void tick(float dt);
 
+		void startup();
+		void tick(float dt);
+		void draw() const;
+		void shutdown();
 
 #ifdef EDITOR
 		bool display_window();
 #endif // EDITOR
+
+		void register_camera(camera* cam);
+		void unregister_camera(camera* cam);
+
 	private: /// TODO: remove
-		transform m_cam_transform{
-			{ -7, -14, -23 },
-			{ 90, 180,  40 },
-			{  1,   1,   1 }
-		};
 
 		vec3 m_light_pos = { 9, 9, 11 };
-		float m_back = 5000;
-		float m_front = 0.5f;
-
 		unique_ptr<graphics::shader> m_shader;
+
+	private:
+
 		dyn_arr<unique_ptr<entity>> m_entities;
+		dyn_arr<camera*> m_cameras;
+		camera* m_active_camera;
 	};
 
 } // namespace fields_engine

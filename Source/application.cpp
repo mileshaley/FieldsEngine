@@ -61,12 +61,15 @@ bool fields_engine::application::startup()
 	glfwSetFramebufferSizeCallback(m_window->handle, 
 		[](GLFWwindow* win, int w, int h) { graphics::resize_viewport(w, h); }
 	);
+	m_scene->startup();
 
 	return true;
 }
 
 bool fields_engine::application::shutdown() {
+	m_scene->shutdown();
 	m_editor.reset();
+	m_scene.reset();
 	glfwTerminate();
 	return true;
 }
@@ -85,6 +88,7 @@ void fields_engine::application::run() {
 		FE_GL_VERIFY;
 		
 		m_scene->tick(dt);
+		m_scene->draw();
 		
 
 		/// render logic goes here
