@@ -51,13 +51,13 @@ namespace fields_engine {
 		void set_far(float new_far);
 
 	private:
+		mat4 m_world_view_matrix{ 1 };
+		mat4 m_world_proj_matrix{ 1 };
 		float m_zoom = 1;
 		float m_fov = 90;
 		float m_near = 0.25f;
 		float m_far = 5000.0f;
-
-		mat4 m_world_proj_matrix{1};
-		mat4 m_world_view_matrix{1};
+		bool m_orthographic = false;
 	};
 
 } // namespace fields_engine

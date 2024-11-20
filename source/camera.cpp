@@ -47,6 +47,7 @@ bool fields_engine::camera::display() {
 	modif |= ImGui::DragFloat("FOV", &m_fov);
 	modif |= ImGui::DragFloat("Near", &m_near);
 	modif |= ImGui::DragFloat("Far", &m_far);
+	modif |= ImGui::Checkbox("Orthographic", &m_orthographic);
 	return false;
 }
 #endif // EDITOR
@@ -80,7 +81,18 @@ void fields_engine::camera::recalculate_view_matrix() {
 
 void fields_engine::camera::recalculate_proj_matrix() {
 	const ivec2 win_size = context<application>().window_size();
-	m_world_proj_matrix = glm::perspective(glm::radians(m_fov / m_zoom), float(win_size.x) / win_size.y, m_near, m_far);
+	if (m_orthographic) {
+		constexpr float ortho_zoom_factor = 20;
+		const vec2 half_win_size = 
+			vec2(win_size) * 0.5f / (m_zoom * ortho_zoom_factor);
+		m_world_proj_matrix = glm::ortho(
+			-half_win_size.x, half_win_size.x, 
+			-half_win_size.y, half_win_size.y, 
+			m_near, m_far
+		);
+	} else {
+		m_world_proj_matrix = glm::perspective(glm::radians(m_fov / m_zoom), float(win_size.x) / win_size.y, m_near, m_far);
+	}
 }
 
 fe::mat4 const& fields_engine::camera::world_view_matrix() const {
