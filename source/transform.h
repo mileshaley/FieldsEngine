@@ -27,9 +27,10 @@ namespace fields_engine {
  * Transform Class                                                           *
 \*~-------------------------------------------------------------------------~*/
 
-	// Lazy, only recalculates matrix when absolutely necessary
+	// Lazy, only recalculates matrix when necessary
 	class transform {
 	public:
+		static constexpr mat4 no_parent{1};
 
 		transform(
 			vec3 position = { 0, 0, 0 }, 
@@ -43,7 +44,15 @@ namespace fields_engine {
 		bool display();
 #endif
 
-		void set_parent(transform* new_parent);
+		// new_parent will be stored within this transform, 
+		// make sure it lives for at least as long as this transform does
+		void set_parent(const mat4* new_parent = &no_parent);
+
+		// new_parent's matrix will be stored within this transform, 
+		// make sure it lives for at least as long as this transform does
+		void set_parent(transform const& new_parent);
+
+		const mat4* as_parent() const;
 
 		void set_dirty() const;
 
@@ -58,9 +67,10 @@ namespace fields_engine {
 		void        set_rotation(vec3 const& new_rotation);
 		vec3 const& get_rotation() const;
 
+
 	private:
 		transform_data m_data;
-		transform* m_parent;
+		const mat4* m_parent;
 		mutable mat4 m_matrix;
 		mutable bool m_dirty;
 	};

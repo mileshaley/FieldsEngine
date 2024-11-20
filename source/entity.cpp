@@ -119,6 +119,9 @@ bool fields_engine::entity::display() {
 #endif // EDITOR
 
 void fields_engine::entity::attach_component(unique<component>&& comp) {
-	comp->ref_transform().set_parent(&m_transform);
+	comp->set_owner(this);
+	// If this is being called by component::attach_component,
+	// The transform parent will be reset to the calling component's transform 
+	comp->ref_transform().set_parent(m_transform);
 	m_components.emplace_back(move(comp));
 }

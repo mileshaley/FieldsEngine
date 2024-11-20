@@ -51,15 +51,23 @@ namespace fields_engine {
 		virtual bool display();
 #endif // EDITOR
 
+		void attach_component(unique<component>&& comp);
+
+		void set_parent(component* new_parent);
+		component* get_parent() const;
+
+		void set_owner(entity* new_owner);
+		entity* get_owner() const;
+
 		transform      & ref_transform()       { return m_transform; }
 		transform const& ref_transform() const { return m_transform; }
 
 
-
 	private:
+		transform m_transform;
 		entity* m_owner;
 		component* m_parent;
-		transform m_transform;
+		dyn_arr<component*> m_children;
 	};
 
 } // namespace fields_engine

@@ -17,14 +17,14 @@ fields_engine::transform::transform(vec3 position, vec3 rotation, vec3 scale)
 	: m_data{position, rotation, scale}
 	, m_matrix(1)
 	, m_dirty(true)
-	, m_parent(nullptr)
+	, m_parent(&no_parent)
 {}
 
 fields_engine::transform::transform(transform_data const& data)
 	: m_data(data)
 	, m_matrix(1)
 	, m_dirty(true)
-	, m_parent(nullptr)
+	, m_parent(&no_parent)
 {}
 
 #ifdef EDITOR
@@ -38,9 +38,16 @@ bool fields_engine::transform::display() {
 }
 #endif
 
-
-void fields_engine::transform::set_parent(transform* new_parent) {
+void fields_engine::transform::set_parent(const mat4* new_parent) {
 	m_parent = new_parent;
+}
+
+void fields_engine::transform::set_parent(transform const& new_parent) {
+	m_parent = &new_parent.m_matrix;
+}
+
+const fe::mat4* fields_engine::transform::as_parent() const {
+	return &m_matrix;
 }
 
 void fields_engine::transform::set_dirty() const {
@@ -57,7 +64,7 @@ fe::mat4 const& fields_engine::transform::world_matrix() const {
 					glm::rotate(
 						glm::rotate(
 							glm::translate(
-								(m_parent ? m_parent->world_matrix() : ident),
+								*m_parent,
 								m_data.position
 							), glm::radians(m_data.rotation.x),
 							(vec3&)ident[0]
@@ -98,3 +105,5 @@ void fields_engine::transform::set_rotation(vec3 const& new_rotation) {
 fe::vec3 const& fields_engine::transform::get_rotation() const {
 	return m_data.rotation;
 }
+
+
