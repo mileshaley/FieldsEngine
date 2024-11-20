@@ -41,8 +41,12 @@ void fields_engine::camera::exit() {
 }
 
 #ifdef EDITOR
-bool fields_engine::camera::display()
-{
+bool fields_engine::camera::display() {
+	bool modif = false;
+	modif |= ImGui::DragFloat("Zoom", &m_zoom);
+	modif |= ImGui::DragFloat("FOV", &m_fov);
+	modif |= ImGui::DragFloat("Near", &m_near);
+	modif |= ImGui::DragFloat("Far", &m_far);
 	return false;
 }
 #endif // EDITOR
@@ -72,7 +76,7 @@ void fields_engine::camera::recalculate_view_matrix() {
 
 void fields_engine::camera::recalculate_proj_matrix() {
 	const ivec2 win_size = context<application>().window_size();
-	m_world_proj_matrix = glm::perspective(m_fov, float(win_size.x) / win_size.y, m_near, m_far);
+	m_world_proj_matrix = glm::perspective(glm::radians(m_fov), float(win_size.x) / win_size.y, m_near, m_far);
 }
 
 fe::mat4 const& fields_engine::camera::world_view_matrix() const {

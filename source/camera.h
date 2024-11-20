@@ -31,7 +31,7 @@ namespace fields_engine {
 		virtual void exit() override;
 
 #ifdef EDITOR
-		bool display();
+		virtual bool display() override;
 #endif // EDITOR
 
 		void recalculate_view_matrix();
