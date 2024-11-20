@@ -114,7 +114,6 @@ bool fields_engine::entity::display() {
 		modif |= comp->display();
 		ImGui::PopID();
 	}
-
 	return modif;
 }
 #endif // EDITOR

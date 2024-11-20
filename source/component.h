@@ -48,7 +48,7 @@ namespace fields_engine {
 		virtual void exit() {}
 
 #ifdef EDITOR
-		bool display();
+		virtual bool display();
 #endif // EDITOR
 
 		transform      & ref_transform()       { return m_transform; }
