@@ -25,7 +25,7 @@ namespace fields_engine {
 		mesh();
 		mesh(mesh const& other);
 
-		COMPONENT_BODY(mesh);
+		FE_GEN_COMPONENT(mesh);
 
 		void generate();
 

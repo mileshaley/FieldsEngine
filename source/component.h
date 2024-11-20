@@ -10,7 +10,7 @@
  * Component Defines                                                         * 
 \*~-------------------------------------------------------------------------~*/
 
-#define COMPONENT_BODY(p_subclass) \
+#define FE_GEN_COMPONENT(p_subclass) \
 		virtual unique<component> clone() const override {\
 			return make_unique<p_subclass>(*this); \
 		}
