@@ -53,8 +53,8 @@ namespace fields_engine {
 	template<class T>
 	class unique_context {
 	public:
-		unique_context(std::unique_ptr<T>&& ptr) 
-			: m_ptr(std::move(ptr))
+		unique_context(unique<T>&& ptr) 
+			: m_ptr(move(ptr))
 		{
 			T*& current = detail::context_storage<T>::ptr;
 			if (current == nullptr) {
@@ -70,7 +70,7 @@ namespace fields_engine {
 			}
 		}
 
-		unique_context& operator=(unique_ptr<T>&& rhs) {
+		unique_context& operator=(unique<T>&& rhs) {
 			T*& current = detail::context_storage<T>::ptr;
 			if (current == m_ptr.get()) {
 				current = rhs.get();
@@ -83,7 +83,7 @@ namespace fields_engine {
 		}
 
 		inline void reset(T* new_ptr = nullptr) {
-			*this = unique_ptr<T>(new_ptr);
+			*this = unique<T>(new_ptr);
 		}
 
 		inline void use() {
@@ -102,7 +102,7 @@ namespace fields_engine {
 		}
 
 	private:
-		unique_ptr<T> m_ptr;
+		unique<T> m_ptr;
 	};
 
 	template<class T>

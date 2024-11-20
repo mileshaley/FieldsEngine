@@ -73,14 +73,15 @@ namespace fields_engine::common {
  * Pointer Intention Aliases                                                 *
 \*~-------------------------------------------------------------------------~*/
 
-	using std::unique_ptr;
 	using std::make_unique;
 	using std::move;
 
 	template<typename T>
-	using unique_r = unique_ptr<T>&;
+	using unique = std::unique_ptr<T>;
 	template<typename T>
-	using unique_cr = unique_ptr<T> const&;
+	using unique_r = std::unique_ptr<T>&;
+	template<typename T>
+	using unique_cr = std::unique_ptr<T> const&;
 
 /*~-------------------------------------------------------------------------~*\
  * Data Structure Aliases                                                    *

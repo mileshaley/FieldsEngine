@@ -119,7 +119,7 @@ bool fields_engine::entity::display() {
 }
 #endif // EDITOR
 
-void fields_engine::entity::attach_component(unique_ptr<component>&& comp) {
+void fields_engine::entity::attach_component(unique<component>&& comp) {
 	comp->ref_transform().set_parent(&m_transform);
 	m_components.emplace_back(move(comp));
 }

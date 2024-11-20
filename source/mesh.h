@@ -27,9 +27,7 @@ namespace fields_engine {
 		mesh();
 		mesh(mesh const& other);
 
-		virtual unique_ptr<component> clone() const override {
-			return make_unique<mesh>(*this);
-		}
+		COMPONENT_BODY(mesh);
 
 		void generate();
 

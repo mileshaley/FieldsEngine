@@ -59,7 +59,7 @@ void fields_engine::scene::startup()
 
 	{ // Grass
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
-		unique_ptr<mesh> m = make_unique<mesh>();
+		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
 		m->ref_material() = grass_mat;
@@ -74,7 +74,7 @@ void fields_engine::scene::startup()
 	}
 	{ // Legs
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
-		unique_ptr<mesh> m = make_unique<mesh>();
+		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
 		m->ref_material() = snow_mat;
@@ -92,7 +92,7 @@ void fields_engine::scene::startup()
 	}
 	{ // Middle
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
-		unique_ptr<mesh> m = make_unique<mesh>();
+		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
 		m->ref_material() = snow_mat;
@@ -109,7 +109,7 @@ void fields_engine::scene::startup()
 	}
 	{ // Scarf
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
-		unique_ptr<mesh> m = make_unique<mesh>();
+		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
 		m->ref_material() = scarf_mat;
@@ -126,7 +126,7 @@ void fields_engine::scene::startup()
 	}
 	{ // Head
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
-		unique_ptr<mesh> m = make_unique<mesh>();
+		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
 		m->ref_material() = snow_mat;
@@ -143,7 +143,7 @@ void fields_engine::scene::startup()
 	}
 	{ // Hat base
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
-		unique_ptr<mesh> m = make_unique<mesh>();
+		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
 		m->ref_material() = hat_mat;
@@ -160,7 +160,7 @@ void fields_engine::scene::startup()
 	}
 	{ // Hat top
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
-		unique_ptr<mesh> m = make_unique<mesh>();
+		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
 		m->ref_material() = hat_mat;
@@ -177,7 +177,7 @@ void fields_engine::scene::startup()
 	}
 	{ // Camera
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
-		unique_ptr<camera> cam = make_unique<camera>();
+		unique<camera> cam = make_unique<camera>();
 		cam->ref_transform().set_position({ -7, -14, -23 });
 		cam->ref_transform().set_rotation({ 90, 180,  40 });
 		cam->ref_transform().set_scale({ 1, 1, 1 });

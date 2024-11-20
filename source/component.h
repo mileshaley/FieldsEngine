@@ -11,7 +11,7 @@
 \*~-------------------------------------------------------------------------~*/
 
 #define COMPONENT_BODY(p_subclass) \
-		virtual unique_ptr<component> clone() const override {\
+		virtual unique<component> clone() const override {\
 			return make_unique<p_subclass>(*this); \
 		}
 
@@ -40,7 +40,7 @@ namespace fields_engine {
 		component();
 		component(component const& other);
 		virtual ~component() {}
-		virtual unique_ptr<component> clone() const = 0;
+		virtual unique<component> clone() const = 0;
 		
 		virtual void init() {}
 		virtual void tick(float dt) {}

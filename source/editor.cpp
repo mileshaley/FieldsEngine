@@ -416,7 +416,7 @@ bool fields_engine::editor::root_window() {
 	return res;
 }
 
-fe::editor_window& fields_engine::editor::add_window(unique_ptr<editor_window>&& new_win) {
+fe::editor_window& fields_engine::editor::add_window(unique<editor_window>&& new_win) {
 	m_recent_windows.push_back(int(m_windows.size()));
 	return *m_windows.emplace_back(move(new_win));
 }

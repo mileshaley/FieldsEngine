@@ -47,11 +47,11 @@ namespace fields_engine {
 	private: /// TODO: remove
 
 		vec3 m_light_pos = { 9, 9, 11 };
-		unique_ptr<graphics::shader> m_shader;
+		unique<graphics::shader> m_shader;
 
 	private:
 
-		dyn_arr<unique_ptr<entity>> m_entities;
+		dyn_arr<unique<entity>> m_entities;
 		dyn_arr<camera*> m_cameras;
 		camera* m_active_camera;
 	};

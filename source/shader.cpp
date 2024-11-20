@@ -42,7 +42,7 @@ void fields_engine::graphics::shader::add(const char* filename, int type) const 
         int length = 0;
         glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &length);
         FE_GL_VERIFY;
-        unique_ptr<char[]> buffer = make_unique<char[]>(size_t(length));
+        unique<char[]> buffer = make_unique<char[]>(size_t(length));
         glGetShaderInfoLog(shader_id, length, nullptr, buffer.get());
         FE_GL_VERIFY;
         /// TODO: use proper error logger
@@ -62,7 +62,7 @@ void fields_engine::graphics::shader::finalize() const {
         int length = 0;
         glGetProgramiv(m_program_id, GL_INFO_LOG_LENGTH, &length);
         FE_GL_VERIFY;
-        unique_ptr<char[]> buffer = make_unique<char[]>(size_t(length));
+        unique<char[]> buffer = make_unique<char[]>(size_t(length));
         glGetProgramInfoLog(m_program_id, length, nullptr, buffer.get());
         FE_GL_VERIFY;
         /// TODO: use proper error logger
