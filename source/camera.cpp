@@ -56,27 +56,31 @@ void fields_engine::camera::recalculate_view_matrix() {
 	vec3 const& position = tr.get_position();
 	vec3 const& scale = tr.get_scale();
 	vec3 const& rotation = tr.get_rotation();
-	constexpr mat4 ident(1);
+	constexpr mat4 identity(1);
 	m_world_view_matrix = glm::translate(
 		glm::rotate(
 			glm::rotate(
 				glm::rotate(
 					glm::scale(
-						ident,
+						identity,
 						scale
-					), glm::radians(rotation.x),
-					(vec3&)ident[0]
-				), glm::radians(rotation.y),
-				(vec3&)ident[1]
-			), glm::radians(rotation.z),
-			(vec3&)ident[2]
-		), position
+					), 
+					glm::radians(rotation.x),
+					(vec3&)identity[0]
+				), 
+				glm::radians(rotation.y),
+				(vec3&)identity[1]
+			), 
+			glm::radians(rotation.z),
+			(vec3&)identity[2]
+		), 
+		position
 	);
 }
 
 void fields_engine::camera::recalculate_proj_matrix() {
 	const ivec2 win_size = context<application>().window_size();
-	m_world_proj_matrix = glm::perspective(glm::radians(m_fov), float(win_size.x) / win_size.y, m_near, m_far);
+	m_world_proj_matrix = glm::perspective(glm::radians(m_fov / m_zoom), float(win_size.x) / win_size.y, m_near, m_far);
 }
 
 fe::mat4 const& fields_engine::camera::world_view_matrix() const {

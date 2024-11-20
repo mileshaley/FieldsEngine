@@ -50,9 +50,6 @@ namespace fields_engine {
 		void set_near(float new_near);
 		void set_far(float new_far);
 
-
-
-
 	private:
 		float m_zoom = 1;
 		float m_fov = 90;
