@@ -28,6 +28,9 @@ namespace fields_engine {
 
 	class entity {
 	public:
+		/// TODO: Remove this constructor
+		entity(string_view name);
+
 		entity();
 		entity(entity const& other);
 
@@ -48,6 +51,7 @@ namespace fields_engine {
 		transform const& ref_transform() const { return m_transform; }
 	
 	private:
+		string m_name;
 		transform m_transform;
 		dyn_arr<unique<component>> m_components;
 		component* m_root_component;

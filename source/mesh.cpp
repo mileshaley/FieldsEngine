@@ -115,8 +115,23 @@ void fields_engine::mesh::generate() {
 }
 
 void fields_engine::mesh::render(graphics::shader const& shader) const {
+    const mat4& matrix = ref_transform().world_matrix();
+    const mat4 inverse = glm::inverse(matrix);
+
+    GLint loc = shader.uniform_location("ModelTr");
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
+    FE_GL_VERIFY;
+    /// ???
+    loc = shader.uniform_location("NormalTr");
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(inverse));
+    FE_GL_VERIFY;
+
+
+
+
+
     // Material settings for shader
-    GLint loc = shader.uniform_location("diffuse");
+    loc = shader.uniform_location("diffuse");
     glUniform3fv(loc, 1, glm::value_ptr(m_material.m_diffuse_color));
     FE_GL_VERIFY;
 

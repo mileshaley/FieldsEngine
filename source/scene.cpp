@@ -57,7 +57,7 @@ void fields_engine::scene::startup()
 
 	float height = -1;
 	{ // Camera
-		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Camera"));
 		unique<camera> cam = make_unique<camera>();
 		cam->ref_transform().set_local_position({ -7, -14, -23 });
 		cam->ref_transform().set_local_rotation({ 90, 180,  40 });
@@ -65,7 +65,7 @@ void fields_engine::scene::startup()
 		ent->attach_component(move(cam));
 	}
 	{ // Grass
-		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Grass"));
 		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
@@ -80,7 +80,7 @@ void fields_engine::scene::startup()
 		tr.set_local_rotation({ 0, 0, 0 });
 	}
 	{ // Legs
-		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Legs"));
 		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
@@ -98,7 +98,7 @@ void fields_engine::scene::startup()
 
 	}
 	{ // Middle
-		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Middle"));
 		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
@@ -112,10 +112,27 @@ void fields_engine::scene::startup()
 		tr.set_local_scale({ scale, scale, scale });
 
 		tr.set_local_rotation({ 0, 0, 0 });
+		mesh* m_ptr = m.get();
 		ent->attach_component(move(m));
+
+		{
+			unique<mesh> m2 = make_unique<mesh>();
+			m2->add_cube();
+			m2->generate();
+			m2->ref_material() = scarf_mat;
+			transform& tr = m2->ref_transform();
+
+			const float scale = 1.5f;
+			tr.set_local_position({ 3, 0, 0 });
+			tr.set_local_scale({ scale, scale, scale });
+			tr.set_local_rotation({ 0, 0, 0 });
+			m_ptr->attach_component(move(m2));
+		}
+
+		
 	}
 	{ // Scarf
-		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Scarf"));
 		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
@@ -132,7 +149,7 @@ void fields_engine::scene::startup()
 		ent->attach_component(move(m));
 	}
 	{ // Head
-		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Head"));
 		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
@@ -149,7 +166,7 @@ void fields_engine::scene::startup()
 		ent->attach_component(move(m));
 	}
 	{ // Hat base
-		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Hat Base"));
 		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
@@ -166,7 +183,7 @@ void fields_engine::scene::startup()
 		ent->attach_component(move(m));
 	}
 	{ // Hat top
-		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Hat Top"));
 		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();

@@ -20,7 +20,15 @@
  * Entity Definitions                                                        *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::entity::entity() 
+fields_engine::entity::entity(string_view name) 
+	: m_name(name)
+	, m_transform()
+	, m_components()
+	, m_root_component(nullptr)
+{
+}
+
+fields_engine::entity::entity()
 	: m_transform()
 	, m_components()
 	, m_root_component(nullptr)
@@ -58,13 +66,13 @@ void fields_engine::entity::tick(float dt) {
 }
 
 void fields_engine::entity::render(graphics::shader const& shader) const {
-	const mat4& matrix = m_transform.world_matrix();
-	const mat4 inverse = glm::inverse(matrix);
 
 	GLint loc = shader.uniform_location("objectId");
 	glUniform1i(loc, 5);
 	FE_GL_VERIFY;
 
+	const mat4& matrix = m_transform.world_matrix();
+	const mat4 inverse = glm::inverse(matrix);
 
 	loc = shader.uniform_location("ModelTr");
 	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
@@ -102,11 +110,11 @@ void fields_engine::entity::exit() {
 #ifdef EDITOR
 bool fields_engine::entity::display() {
 	bool modif = false;
-	ImGui::SeparatorText("Entity");
+	ImGui::SeparatorText(m_name.c_str());
 	ImGui::PushID(this);
 	m_transform.display();
 	ImGui::PopID();
-
+	ImGui::Indent();
 	for (unique_cr<component> comp : m_components) {
 		ImGui::PushID(comp.get());
 		ImGui::SeparatorText("Component");
@@ -114,6 +122,7 @@ bool fields_engine::entity::display() {
 		modif |= comp->display();
 		ImGui::PopID();
 	}
+	ImGui::Unindent();
 	return modif;
 }
 #endif // EDITOR
