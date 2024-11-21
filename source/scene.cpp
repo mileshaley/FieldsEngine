@@ -37,7 +37,7 @@ void fields_engine::scene::startup()
 {
 	graphics::material grass_mat;
 	grass_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
-	grass_mat.m_specular_color = { 0.7f, 0.7f, 0.8f };
+	grass_mat.m_specular_color = vec3{0.0f, 0.0f, 1.0f};//{ 0.7f, 0.7f, 0.8f };
 	grass_mat.m_shininess = 0.2f;
 
 	graphics::material snow_mat;
@@ -56,7 +56,14 @@ void fields_engine::scene::startup()
 	hat_mat.m_shininess = 1.0f;
 
 	float height = -1;
-
+	{ // Camera
+		auto& ent = m_entities.emplace_back(make_unique<entity>());
+		unique<camera> cam = make_unique<camera>();
+		cam->ref_transform().set_local_position({ -7, -14, -23 });
+		cam->ref_transform().set_local_rotation({ 90, 180,  40 });
+		cam->ref_transform().set_local_scale({ 1, 1, 1 });
+		ent->attach_component(move(cam));
+	}
 	{ // Grass
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
 		unique<mesh> m = make_unique<mesh>();
@@ -67,10 +74,10 @@ void fields_engine::scene::startup()
 		transform& tr = ent->ref_transform();
 		const float scale = 1;
 		height += scale;
-		tr.set_position({ 0, 0, height });
+		tr.set_local_position({ 0, 0, height });
 		height += scale;
-		tr.set_scale({ 20, 20, scale });
-		tr.set_rotation({ 0, 0, 0 });
+		tr.set_local_scale({ 20, 20, scale });
+		tr.set_local_rotation({ 0, 0, 0 });
 	}
 	{ // Legs
 		auto& ent = m_entities.emplace_back(make_unique<entity>());
@@ -83,11 +90,11 @@ void fields_engine::scene::startup()
 
 		const float scale = 2;
 		height += scale;
-		tr.set_position({ 0, 0, height });
+		tr.set_local_position({ 0, 0, height });
 		height += scale;
-		tr.set_scale({ scale, scale, scale });
+		tr.set_local_scale({ scale, scale, scale });
 
-		tr.set_rotation({ 0, 0, 0 });
+		tr.set_local_rotation({ 0, 0, 0 });
 
 	}
 	{ // Middle
@@ -100,11 +107,11 @@ void fields_engine::scene::startup()
 
 		const float scale = 1.5f;
 		height += scale;
-		tr.set_position({ 0, 0, height });
+		tr.set_local_position({ 0, 0, height });
 		height += scale;
-		tr.set_scale({ scale, scale, scale });
+		tr.set_local_scale({ scale, scale, scale });
 
-		tr.set_rotation({ 0, 0, 0 });
+		tr.set_local_rotation({ 0, 0, 0 });
 		ent->attach_component(move(m));
 	}
 	{ // Scarf
@@ -117,11 +124,11 @@ void fields_engine::scene::startup()
 
 		const float scale = 0.3;
 		height += scale;
-		tr.set_position({ 0, 0, height });
+		tr.set_local_position({ 0, 0, height });
 		height += scale;
-		tr.set_scale({ 1.2f, 1.2f, scale });
+		tr.set_local_scale({ 1.2f, 1.2f, scale });
 
-		tr.set_rotation({ 0, 0, 0 });
+		tr.set_local_rotation({ 0, 0, 0 });
 		ent->attach_component(move(m));
 	}
 	{ // Head
@@ -134,11 +141,11 @@ void fields_engine::scene::startup()
 
 		const float scale = 1;
 		height += scale;
-		tr.set_position({ 0, 0, height });
+		tr.set_local_position({ 0, 0, height });
 		height += scale;
-		tr.set_scale({ scale, scale, scale });
+		tr.set_local_scale({ scale, scale, scale });
 
-		tr.set_rotation({ 0, 0, 0 });
+		tr.set_local_rotation({ 0, 0, 0 });
 		ent->attach_component(move(m));
 	}
 	{ // Hat base
@@ -151,11 +158,11 @@ void fields_engine::scene::startup()
 
 		const float scale = 0.15;
 		height += scale;
-		tr.set_position({ 0, 0, height });
+		tr.set_local_position({ 0, 0, height });
 		height += scale;
-		tr.set_scale({ 1.5f, 1.5f, scale });
+		tr.set_local_scale({ 1.5f, 1.5f, scale });
 
-		tr.set_rotation({ 0, 0, 0 });
+		tr.set_local_rotation({ 0, 0, 0 });
 		ent->attach_component(move(m));
 	}
 	{ // Hat top
@@ -168,21 +175,14 @@ void fields_engine::scene::startup()
 
 		const float scale = 1.3;
 		height += scale;
-		tr.set_position({ 0, 0, height - scale * 0.1f });
+		tr.set_local_position({ 0, 0, height - scale * 0.1f });
 		height += scale;
-		tr.set_scale({ 1, 1, scale });
+		tr.set_local_scale({ 1, 1, scale });
 
-		tr.set_rotation({ 0.13f, 0, 0 });
+		tr.set_local_rotation({ 0.13f, 0, 0 });
 		ent->attach_component(move(m));
 	}
-	{ // Camera
-		auto& ent = m_entities.emplace_back(make_unique<entity>());
-		unique<camera> cam = make_unique<camera>();
-		cam->ref_transform().set_position({ -7, -14, -23 });
-		cam->ref_transform().set_rotation({ 90, 180,  40 });
-		cam->ref_transform().set_scale({ 1, 1, 1 });
-		ent->attach_component(move(cam));
-	}
+
 
 	for (unique_cr<entity> ent : m_entities) {
 		ent->init();
@@ -198,9 +198,9 @@ void fields_engine::scene::tick(float dt) {
 	////	* glm::rotate(glm::radians(m_spin),         vec3{ 0, 0, 1 })
 	////	* glm::translate(-m_cam_pos);
 	////const mat4& world_view = m_cam_transform.world_matrix();
-	//vec3 const& position = m_cam_transform.get_position();
-	//vec3 const& scale = m_cam_transform.get_scale();
-	//vec3 const& rotation = m_cam_transform.get_rotation();
+	//vec3 const& position = m_cam_transform.get_world_position();
+	//vec3 const& scale = m_cam_transform.get_world_scale();
+	//vec3 const& rotation = m_cam_transform.get_world_rotation();
 	//
 	//constexpr mat4 ident(1);
 	//const mat4 world_view =

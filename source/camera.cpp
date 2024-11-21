@@ -10,6 +10,7 @@
 #include "context.h"
 #include "scene.h"
 #include "application.h"
+#include "glm/gtx/matrix_decompose.hpp"
 
 /*~-------------------------------------------------------------------------~*\
  * Camera Definitions                                                        *
@@ -53,45 +54,63 @@ bool fields_engine::camera::display() {
 #endif // EDITOR
 
 void fields_engine::camera::recalculate_view_matrix() {
-	transform const& tr = ref_transform();
-	vec3 const& position = tr.get_position();
-	vec3 const& scale = tr.get_scale();
-	vec3 const& rotation = tr.get_rotation();
 	constexpr mat4 identity(1);
-	m_world_view_matrix = glm::translate(
-		glm::rotate(
+	transform const& tr = ref_transform();
+	vec3 const& position = tr.get_local_position();
+	vec3 const& scale = tr.get_local_scale();
+	vec3 const& rotation = tr.get_local_rotation();
+
+	//m_world_view_matrix = glm::inverse(
+	//	glm::scale(
+	//		glm::rotate(
+	//			glm::rotate(
+	//				glm::rotate(
+	//					glm::translate(
+	//						identity,
+	//						position
+	//					), glm::radians(rotation.x),
+	//					(vec3&)identity[0]
+	//				), glm::radians(rotation.y),
+	//				(vec3&)identity[1]
+	//			), glm::radians(rotation.z),
+	//			(vec3&)identity[2]
+	//		),scale
+	//	));
+	m_world_view_matrix = 
+		glm::translate(
 			glm::rotate(
 				glm::rotate(
-					glm::scale(
-						identity,
-						scale
+					glm::rotate(
+						glm::scale(
+							identity,
+							scale
+						), 
+						glm::radians(rotation.x),
+						(vec3&)identity[0]
 					), 
-					glm::radians(rotation.x),
-					(vec3&)identity[0]
+					glm::radians(rotation.y),
+					(vec3&)identity[1]
 				), 
-				glm::radians(rotation.y),
-				(vec3&)identity[1]
+				glm::radians(rotation.z),
+				(vec3&)identity[2]
 			), 
-			glm::radians(rotation.z),
-			(vec3&)identity[2]
-		), 
-		position
-	);
+			position
+		);
 }
 
 void fields_engine::camera::recalculate_proj_matrix() {
-	const ivec2 win_size = context<application>().window_size();
+	const vec2 win_size = context<application>().window_size();
 	if (m_orthographic) {
 		constexpr float ortho_zoom_factor = 20;
-		const vec2 half_win_size = 
-			vec2(win_size) * 0.5f / (m_zoom * ortho_zoom_factor);
+		const vec2 half_win_size = win_size * 0.5f / (m_zoom * ortho_zoom_factor);
 		m_world_proj_matrix = glm::ortho(
 			-half_win_size.x, half_win_size.x, 
 			-half_win_size.y, half_win_size.y, 
 			m_near, m_far
 		);
-	} else {
-		m_world_proj_matrix = glm::perspective(glm::radians(m_fov / m_zoom), float(win_size.x) / win_size.y, m_near, m_far);
+	} else { // Perspective
+		m_world_proj_matrix = glm::perspective(
+			glm::radians(m_fov / m_zoom), win_size.x / win_size.y, m_near, m_far);
 	}
 }
 

@@ -36,7 +36,7 @@ void fields_engine::component::attach_component(unique<component>&& comp) {
 	m_owner->attach_component(move(comp));
 	m_children.push_back(comp_ptr);
 	comp_ptr->set_parent(this);
-	comp_ptr->ref_transform().set_parent(m_transform.as_parent());
+	comp_ptr->ref_transform().set_parent(m_transform);
 }
 
 void fields_engine::component::set_parent(component* new_parent) {

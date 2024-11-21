@@ -33,9 +33,9 @@ namespace fields_engine {
 		static constexpr mat4 no_parent{1};
 
 		transform(
-			vec3 position = { 0, 0, 0 }, 
-			vec3 rotation = { 0, 0, 0 },
-			vec3 scale    = { 1, 1, 1 }
+			vec3 const& position = { 0, 0, 0 }, 
+			vec3 const& rotation = { 0, 0, 0 },
+			vec3 const& scale    = { 1, 1, 1 }
 		);
 
 		transform(transform_data const& data);
@@ -52,20 +52,25 @@ namespace fields_engine {
 		// make sure it lives for at least as long as this transform does
 		void set_parent(transform const& new_parent);
 
-		const mat4* as_parent() const;
+		mat4 const* get_parent() const;
 
 		void set_dirty() const;
 
 		mat4 const& world_matrix() const;
 
-		void        set_position(vec3 const& new_pos);
-		vec3 const& get_position() const;
+		void set_local_position(vec3 const& new_pos);
+		void set_local_scale(vec3 const& new_scale);
+		void set_local_rotation(vec3 const& new_rotation);
 
-		void        set_scale(vec3 const& new_scale);
-		vec3 const& get_scale() const;
+		transform_data const& get_local_transform() const;
+		vec3 const& get_local_position() const;
+		vec3 const& get_local_scale() const;
+		vec3 const& get_local_rotation() const;
 
-		void        set_rotation(vec3 const& new_rotation);
-		vec3 const& get_rotation() const;
+		transform_data get_world_transform() const;
+		vec3 get_world_position() const;
+		vec3 get_world_scale() const;
+		vec3 get_world_rotation() const;
 
 
 	private:
@@ -73,9 +78,19 @@ namespace fields_engine {
 		const mat4* m_parent;
 		mutable mat4 m_matrix;
 		mutable bool m_dirty;
+
+		bool m_invert = false;
 	};
 
+/*~-------------------------------------------------------------------------~*\
+ * Transform Related Functions                                               *
+\*~-------------------------------------------------------------------------~*/
 
+	vec3 matrix_decompose_position(mat4 const& mat);
+	vec3 matrix_decompose_rotation(mat4 const& mat);
+	vec3 matrix_decompose_rotation(mat4 const& mat, vec3 const& scale);
+	vec3 matrix_decompose_scale(mat4 const& mat);
 
+	void matrix_decompose(mat4 const& mat, transform_data& out_data);
 
 } // namespace fields_engine
