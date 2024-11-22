@@ -106,16 +106,22 @@ void fields_engine::entity::exit() {
 #ifdef EDITOR
 bool fields_engine::entity::display() {
 	bool modif = false;
-	ImGui::SeparatorText(m_name.c_str());
-	ImGui::Indent();
-	for (unique_cr<component> comp : m_components) {
-		ImGui::PushID(comp.get());
-		ImGui::SeparatorText("Component");
-		modif |= comp->ref_transform().display();
-		modif |= comp->display();
-		ImGui::PopID();
+	ImGui::PushID(this);
+	if (ImGui::CollapsingHeader(m_name.c_str())) {
+		for (unique_cr<component> comp : m_components) {
+			ImGui::PushID(comp.get());
+			if (comp.get() == m_root_component) {
+				ImGui::SeparatorText((string(comp->component_name()) + " (root)").c_str());
+			} else {
+				ImGui::SeparatorText(comp->component_name().data());
+			}
+			modif |= comp->ref_transform().display();
+			modif |= comp->display();
+			ImGui::PopID();
+		}
 	}
-	ImGui::Unindent();
+	ImGui::PopID();
+	
 	return modif;
 }
 #endif // EDITOR

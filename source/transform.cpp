@@ -45,17 +45,17 @@ bool fields_engine::transform::display() {
 	modif |= ImGui::DragFloat3("Scale", &m_data.scale.x);
 	modif |= ImGui::DragFloat3("Rotation", &m_data.rotation.x);
 
-	modif |= ImGui::Checkbox("Invert", &m_invert);
+	if (ImGui::CollapsingHeader("Matrix")) {
+		ImGui::Text(m_owner->get_parent() ? "Parented" : "Unparented");
+		ImGui::BeginDisabled();
+		mat4 transposed = glm::transpose(world_matrix());
+		ImGui::DragFloat4("", &transposed[0][0]);
+		ImGui::DragFloat4("", &transposed[1][0]);
+		ImGui::DragFloat4("", &transposed[2][0]);
+		ImGui::DragFloat4("", &transposed[3][0]);
+		ImGui::EndDisabled();
+	}
 
-	ImGui::Text(m_owner->get_parent() ? "Parented" : "Unparented");
-	ImGui::BeginDisabled();
-	mat4 transposed = glm::transpose(world_matrix());
-	ImGui::DragFloat4("", &transposed[0][0]);
-	ImGui::DragFloat4("", &transposed[1][0]);
-	ImGui::DragFloat4("", &transposed[2][0]);
-	ImGui::DragFloat4("", &transposed[3][0]);
-	ImGui::EndDisabled();
-	
 	if (modif) {
 		set_dirty();
 	}

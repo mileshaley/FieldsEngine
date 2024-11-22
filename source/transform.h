@@ -70,7 +70,6 @@ namespace fields_engine {
 
 	private:
 		transform_data m_data;
-		bool m_invert = false;
 		mutable bool m_dirty = true;
 		mutable mat4 m_matrix;
 		const component* m_owner;
