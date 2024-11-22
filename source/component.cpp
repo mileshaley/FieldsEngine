@@ -41,9 +41,11 @@ bool fields_engine::component::display() {
 }
 #endif // EDITOR
 
-void fields_engine::component::attach_component(unique<component>&& comp) {
+fe::component& fields_engine::component::attach_component(unique<component>&& comp) {
+	component* comp_ptr = comp.get();
 	adopt_owned_component(comp.get());
 	m_owner->acquire_component(move(comp));
+	return *comp_ptr;
 }
 
 void fields_engine::component::adopt_owned_component(component* new_child) {

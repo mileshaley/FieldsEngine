@@ -66,7 +66,7 @@ namespace fields_engine {
 		virtual bool display();
 #endif // EDITOR
 
-		void attach_component(unique<component>&& comp);
+		component& attach_component(unique<component>&& comp);
 		void adopt_owned_component(component* new_child);
 
 

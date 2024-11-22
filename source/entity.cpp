@@ -30,8 +30,8 @@ fields_engine::entity::entity(string_view name, unique<component>&& root_compone
 	, m_components()
 	, m_root_component(nullptr)
 {
-	m_root_component =
-		m_components.emplace_back(move(root_component)).get();
+	m_root_component = root_component.get();
+	acquire_component(move(root_component));
 }
 
 fields_engine::entity::entity(unique<component>&& root_component)
@@ -39,8 +39,8 @@ fields_engine::entity::entity(unique<component>&& root_component)
 	, m_components()
 	, m_root_component(nullptr)
 {
-	m_root_component = 
-		m_components.emplace_back(move(root_component)).get();
+	m_root_component = root_component.get();
+	acquire_component(move(root_component));
 }
 
 fields_engine::entity::entity(entity const& other)

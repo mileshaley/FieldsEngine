@@ -64,26 +64,25 @@ void fields_engine::scene::startup()
 		m_entities.emplace_back(make_unique<entity>("Camera", move(cam)));
 	}
 	{ // Grass
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Grass"));
 		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
 		m->ref_material() = grass_mat;
-		ent->attach_component(move(m));
-		transform& tr = ent->ref_transform();
+		transform& tr = m->ref_transform();
 		const float scale = 1;
 		height += scale;
 		tr.set_local_position({ 0, 0, height });
 		height += scale;
 		tr.set_local_scale({ 20, 20, scale });
-		tr.set_local_rotation({ 0, 0, 0 });
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Grass", move(m)));
 	}
 	{ // Legs
-		unique<mesh> m = make_unique<mesh>();
-		m->add_cube();
-		m->generate();
-		m->ref_material() = snow_mat;
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Legs", move(m)));
+		unique<mesh> m0 = make_unique<mesh>();
+		m0->add_cube();
+		m0->generate();
+		m0->ref_material() = snow_mat;
+		mesh* pm0 = m0.get();
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Snowman", move(m0)));
 		transform& tr = ent->ref_transform();
 
 		const float scale = 2;
@@ -91,111 +90,99 @@ void fields_engine::scene::startup()
 		tr.set_local_position({ 0, 0, height });
 		height += scale;
 		tr.set_local_scale({ scale, scale, scale });
-		tr.set_local_rotation({ 0, 0, 0 });
-	}
-	{ // Middle
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Middle"));
-		unique<mesh> m = make_unique<mesh>();
-		m->add_cube();
-		m->generate();
-		m->ref_material() = snow_mat;
-		transform& tr = ent->ref_transform();
 
-		const float scale = 1.5f;
-		height += scale;
-		tr.set_local_position({ 0, 0, height });
-		height += scale;
-		tr.set_local_scale({ scale, scale, scale });
+		{ // Middle
+			unique<mesh> m1 = make_unique<mesh>();
+			m1->add_cube();
+			m1->generate();
+			m1->ref_material() = snow_mat;
+			transform& tr = m1->ref_transform();
 
-		tr.set_local_rotation({ 0, 0, 0 });
-		mesh* m_ptr = m.get();
-		ent->attach_component(move(m));
-
-		{
-			unique<mesh> m2 = make_unique<mesh>();
-			m2->add_cube();
-			m2->generate();
-			m2->ref_material() = scarf_mat;
-			transform& tr = m2->ref_transform();
-
-			const float scale = 1.5f;
-			tr.set_local_position({ 3, 0, 0 });
+			const float scale = 0.75;
+			tr.set_local_position({ 0, 0, scale + 1 });
 			tr.set_local_scale({ scale, scale, scale });
-			tr.set_local_rotation({ 0, 0, 0 });
-			m_ptr->attach_component(move(m2));
+			mesh* pm1 = m1.get();
+
+			pm0->attach_component(move(m1));
+
+			{ // Scarf
+				unique<mesh> m2 = make_unique<mesh>();
+				m2->add_cube();
+				m2->generate();
+				m2->ref_material() = scarf_mat;
+				transform& tr = m2->ref_transform();
+
+				const float scale = 0.3f / 1.5f;
+				tr.set_local_position({ 0, 0, scale + 1 });
+				tr.set_local_scale({ 1.2f / 1.5f, 1.2f / 1.5f, scale });
+
+				pm1->attach_component(move(m2));
+			}
+
+			{ // Head
+				unique<mesh> m3 = make_unique<mesh>();
+				m3->add_cube();
+				m3->generate();
+				m3->ref_material() = snow_mat;
+				transform& tr = m3->ref_transform();
+
+				const float scale = 0.75;
+				tr.set_local_position({ 0, 0, scale + 1 });
+				tr.set_local_scale({ scale, scale, scale });
+				mesh* pm3 = m3.get();
+
+				pm1->attach_component(move(m3));
+
+				{ // Hat base
+					unique<mesh> m4 = make_unique<mesh>();
+					m4->add_cube();
+					m4->generate();
+					m4->ref_material() = hat_mat;
+					transform& tr = m4->ref_transform();
+
+					const float scale = 0.15;
+					tr.set_local_position({ 0, 0, scale + 1 });
+					tr.set_local_scale({ 1.5f, 1.5f, scale });
+					mesh* pm4 = m4.get();
+
+					pm3->attach_component(move(m4));
+
+					{ // Hat top
+						unique<mesh> m5 = make_unique<mesh>();
+						m5->add_cube();
+						m5->generate();
+						m5->ref_material() = hat_mat;
+						transform& tr = m5->ref_transform();
+
+						const float scale = 1.3f / 0.15f;
+						tr.set_local_position({ 0, 0, scale + 1 });
+						tr.set_local_scale({ 1 / 1.5f, 1 / 1.5f, scale });
+
+						tr.set_local_rotation({ 0.13f, 0, 0 });
+						pm4->attach_component(move(m5));
+					}
+				}
+			}
 		}
-
-		
-	}
-	{ // Scarf
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Scarf"));
-		unique<mesh> m = make_unique<mesh>();
-		m->add_cube();
-		m->generate();
-		m->ref_material() = scarf_mat;
-		transform& tr = ent->ref_transform();
-
-		const float scale = 0.3;
-		height += scale;
-		tr.set_local_position({ 0, 0, height });
-		height += scale;
-		tr.set_local_scale({ 1.2f, 1.2f, scale });
-
-		tr.set_local_rotation({ 0, 0, 0 });
-		ent->attach_component(move(m));
-	}
-	{ // Head
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Head"));
-		unique<mesh> m = make_unique<mesh>();
-		m->add_cube();
-		m->generate();
-		m->ref_material() = snow_mat;
-		transform& tr = ent->ref_transform();
-
-		const float scale = 1;
-		height += scale;
-		tr.set_local_position({ 0, 0, height });
-		height += scale;
-		tr.set_local_scale({ scale, scale, scale });
-
-		tr.set_local_rotation({ 0, 0, 0 });
-		ent->attach_component(move(m));
-	}
-	{ // Hat base
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Hat Base"));
-		unique<mesh> m = make_unique<mesh>();
-		m->add_cube();
-		m->generate();
-		m->ref_material() = hat_mat;
-		transform& tr = ent->ref_transform();
-
-		const float scale = 0.15;
-		height += scale;
-		tr.set_local_position({ 0, 0, height });
-		height += scale;
-		tr.set_local_scale({ 1.5f, 1.5f, scale });
-
-		tr.set_local_rotation({ 0, 0, 0 });
-		ent->attach_component(move(m));
-	}
-	{ // Hat top
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Hat Top"));
-		unique<mesh> m = make_unique<mesh>();
-		m->add_cube();
-		m->generate();
-		m->ref_material() = hat_mat;
-		transform& tr = ent->ref_transform();
-
-		const float scale = 1.3;
-		height += scale;
-		tr.set_local_position({ 0, 0, height - scale * 0.1f });
-		height += scale;
-		tr.set_local_scale({ 1, 1, scale });
-
-		tr.set_local_rotation({ 0.13f, 0, 0 });
-		ent->attach_component(move(m));
 	}
 
+
+	
+	
+
+//{
+//	unique<mesh> m2 = make_unique<mesh>();
+//	m2->add_cube();
+//	m2->generate();
+//	m2->ref_material() = scarf_mat;
+//	transform& tr = m2->ref_transform();
+//
+//	const float scale = 1.5f;
+//	tr.set_local_position({ 3, 0, 0 });
+//	tr.set_local_scale({ scale, scale, scale });
+//	tr.set_local_rotation({ 0, 0, 0 });
+//	m_ptr->attach_component(move(m2));
+//}
 	for (unique_cr<entity> ent : m_entities) {
 		ent->init();
 	}
