@@ -166,23 +166,6 @@ void fields_engine::scene::startup()
 		}
 	}
 
-
-	
-	
-
-//{
-//	unique<mesh> m2 = make_unique<mesh>();
-//	m2->add_cube();
-//	m2->generate();
-//	m2->ref_material() = scarf_mat;
-//	transform& tr = m2->ref_transform();
-//
-//	const float scale = 1.5f;
-//	tr.set_local_position({ 3, 0, 0 });
-//	tr.set_local_scale({ scale, scale, scale });
-//	tr.set_local_rotation({ 0, 0, 0 });
-//	m_ptr->attach_component(move(m2));
-//}
 	for (unique_cr<entity> ent : m_entities) {
 		ent->init();
 	}

@@ -198,7 +198,6 @@ void fields_engine::mesh::add_cube() {
     add_plane(glm::rotate(face_mat, 2 * rot_90, i));
 }
 
-
 void fields_engine::mesh::add_tris_for_quad(ivec4 const& idcs) {
     m_triangles.emplace_back(idcs.x, idcs.y, idcs.z);
     m_triangles.emplace_back(idcs.x, idcs.z, idcs.w);
