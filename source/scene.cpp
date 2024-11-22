@@ -196,44 +196,12 @@ void fields_engine::scene::startup()
 		ent->attach_component(move(m));
 	}
 
-
 	for (unique_cr<entity> ent : m_entities) {
 		ent->init();
-		ent->sad();
 	}
 }
 
 void fields_engine::scene::tick(float dt) {
-	//const ivec2 win_size = context<application>().window_size();
-	//const mat4 world_proj = glm::perspective(90.0f, float(win_size.x) / win_size.y, m_front, m_back);
-	//
-	////world_view 
-	////	= glm::rotate(glm::radians(m_tilt - 90.0f), vec3{ 1, 0, 0 })
-	////	* glm::rotate(glm::radians(m_spin),         vec3{ 0, 0, 1 })
-	////	* glm::translate(-m_cam_pos);
-	////const mat4& world_view = m_cam_transform.world_matrix();
-	//vec3 const& position = m_cam_transform.get_world_position();
-	//vec3 const& scale = m_cam_transform.get_world_scale();
-	//vec3 const& rotation = m_cam_transform.get_world_rotation();
-	//
-	//constexpr mat4 ident(1);
-	//const mat4 world_view =
-	//	glm::translate(
-	//		glm::rotate(
-	//			glm::rotate(
-	//				glm::rotate(
-	//					glm::scale(
-	//						ident,
-	//						scale
-	//					), glm::radians(rotation.x),
-	//					(vec3&)ident[0]
-	//				), glm::radians(rotation.y),
-	//				(vec3&)ident[1]
-	//			), glm::radians(rotation.z),
-	//			(vec3&)ident[2]
-	//		), position
-	//	);
-	//
 
 	for (unique_cr<entity> ent : m_entities) {
 		ent->tick(dt);

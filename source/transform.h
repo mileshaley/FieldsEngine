@@ -69,13 +69,11 @@ namespace fields_engine {
 		vec3 get_world_rotation() const;
 
 	private:
-		mutable int count = 0;
 		transform_data m_data;
-		const component* m_owner;
-		mutable mat4 m_matrix;
-		mutable bool m_dirty = true;
-
 		bool m_invert = false;
+		mutable bool m_dirty = true;
+		mutable mat4 m_matrix;
+		const component* m_owner;
 	};
 
 /*~-------------------------------------------------------------------------~*\

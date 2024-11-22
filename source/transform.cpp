@@ -47,10 +47,8 @@ bool fields_engine::transform::display() {
 
 	modif |= ImGui::Checkbox("Invert", &m_invert);
 
-	ImGui::Text(m_owner ? "Parented" : "Unparented");
+	ImGui::Text(m_owner->get_parent() ? "Parented" : "Unparented");
 	ImGui::BeginDisabled();
-
-	ImGui::Text("Recalc count: %i", count);
 	mat4 transposed = glm::transpose(world_matrix());
 	ImGui::DragFloat4("", &transposed[0][0]);
 	ImGui::DragFloat4("", &transposed[1][0]);
@@ -92,7 +90,6 @@ void fields_engine::transform::recalculate_matrix() const {
 			), 
 			m_data.scale
 		);
-	++count;
 }
 
 void fields_engine::transform::set_owner(const component* new_owner) {

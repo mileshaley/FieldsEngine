@@ -56,8 +56,6 @@ namespace fields_engine {
 		// Attach to root
 		component& attach_component(unique<component>&& comp);
 
-		void sad();
-	
 	private:
 		string m_name;
 		dyn_arr<unique<component>> m_components;
