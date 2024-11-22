@@ -6,12 +6,13 @@
 
 #pragma once
 
+namespace fields_engine {
+
 /*~-------------------------------------------------------------------------~*\
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-
-namespace fields_engine {
+	class component;
 
 /*~-------------------------------------------------------------------------~*\
  * Transform Data Structure                                                  *
@@ -39,10 +40,13 @@ namespace fields_engine {
 		);
 
 		transform(transform_data const& data);
+		transform(transform const& other);
 
 #ifdef EDITOR
 		bool display();
 #endif
+
+		void recalculate_matrix() const;
 
 		// new_parent will be stored within this transform, 
 		// make sure it lives for at least as long as this transform does
@@ -51,10 +55,13 @@ namespace fields_engine {
 		// new_parent's matrix will be stored within this transform, 
 		// make sure it lives for at least as long as this transform does
 		void set_parent(transform const& new_parent);
-
 		mat4 const* get_parent() const;
 
+		void set_owner(const component* new_owner);
+		const component* get_owner() const;
+
 		void set_dirty() const;
+		void set_only_this_dirty() const;
 
 		mat4 const& world_matrix() const;
 
@@ -72,12 +79,12 @@ namespace fields_engine {
 		vec3 get_world_scale() const;
 		vec3 get_world_rotation() const;
 
-
 	private:
 		transform_data m_data;
+		const component* m_owner;
 		const mat4* m_parent;
 		mutable mat4 m_matrix;
-		mutable bool m_dirty;
+		mutable bool m_dirty = true;
 
 		bool m_invert = false;
 	};

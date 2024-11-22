@@ -40,18 +40,25 @@ namespace fields_engine {
 		component();
 		component(component const& other);
 		virtual ~component() {}
-		virtual unique<component> clone() const = 0;
+		virtual unique<component> clone() const {
+			return make_unique<component>();
+		};
 		
 		virtual void init() {}
 		virtual void tick(float dt) {}
 		virtual void render(graphics::shader const& shader) const {}
 		virtual void exit() {}
 
+		void dirtify_transforms() const;
+
+
 #ifdef EDITOR
 		virtual bool display();
 #endif // EDITOR
 
 		void attach_component(unique<component>&& comp);
+		void adopt_owned_component(component* new_child);
+
 
 		void set_parent(component* new_parent);
 		component* get_parent() const;

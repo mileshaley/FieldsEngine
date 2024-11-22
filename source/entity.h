@@ -28,10 +28,11 @@ namespace fields_engine {
 
 	class entity {
 	public:
-		/// TODO: Remove this constructor
+		/// TODO: Remove name constructors
 		entity(string_view name);
+		entity(string_view name, unique<component>&& root_component);
 
-		entity();
+		entity(unique<component>&& root_component);
 		entity(entity const& other);
 
 		~entity();
@@ -45,14 +46,18 @@ namespace fields_engine {
 		bool display();
 #endif // EDITOR
 
-		void attach_component(unique<component>&& comp);
+		transform& ref_transform();
+		transform const& ref_transform() const;
 
-		transform      & ref_transform()       { return m_transform; }
-		transform const& ref_transform() const { return m_transform; }
+		component* get_root();
+		component const* get_root() const;
+
+		void acquire_component(unique<component>&& comp_to_own);
+		// Attach to root
+		component& attach_component(unique<component>&& comp);
 	
 	private:
 		string m_name;
-		transform m_transform;
 		dyn_arr<unique<component>> m_components;
 		component* m_root_component;
 	};

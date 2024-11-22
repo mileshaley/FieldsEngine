@@ -21,21 +21,30 @@
 \*~-------------------------------------------------------------------------~*/
 
 fields_engine::entity::entity(string_view name) 
-	: m_name(name)
-	, m_transform()
-	, m_components()
-	, m_root_component(nullptr)
+	: entity(name, make_unique<component>())
 {
 }
 
-fields_engine::entity::entity()
-	: m_transform()
+fields_engine::entity::entity(string_view name, unique<component>&& root_component)
+	: m_name(name)
 	, m_components()
 	, m_root_component(nullptr)
-{}
+{
+	m_root_component =
+		m_components.emplace_back(move(root_component)).get();
+}
+
+fields_engine::entity::entity(unique<component>&& root_component)
+	: m_name()
+	, m_components()
+	, m_root_component(nullptr)
+{
+	m_root_component = 
+		m_components.emplace_back(move(root_component)).get();
+}
 
 fields_engine::entity::entity(entity const& other)
-	: m_transform(other.m_transform)
+	: m_name(other.m_name)
 	, m_components()
 	, m_root_component(nullptr)
 {
@@ -71,16 +80,16 @@ void fields_engine::entity::render(graphics::shader const& shader) const {
 	glUniform1i(loc, 5);
 	FE_GL_VERIFY;
 
-	const mat4& matrix = m_transform.world_matrix();
-	const mat4 inverse = glm::inverse(matrix);
-
-	loc = shader.uniform_location("ModelTr");
-	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
-	FE_GL_VERIFY;
-	/// ???
-	loc = shader.uniform_location("NormalTr");
-	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(inverse));
-	FE_GL_VERIFY;
+	//const mat4& matrix = m_transform.world_matrix();
+	//const mat4 inverse = glm::inverse(matrix);
+	//
+	//loc = shader.uniform_location("ModelTr");
+	//glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
+	//FE_GL_VERIFY;
+	///// ???
+	//loc = shader.uniform_location("NormalTr");
+	//glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(inverse));
+	//FE_GL_VERIFY;
 
 
 	loc = shader.uniform_location("texScale");
@@ -111,9 +120,9 @@ void fields_engine::entity::exit() {
 bool fields_engine::entity::display() {
 	bool modif = false;
 	ImGui::SeparatorText(m_name.c_str());
-	ImGui::PushID(this);
-	m_transform.display();
-	ImGui::PopID();
+	//ImGui::PushID(this);
+	//m_transform.display();
+	//ImGui::PopID();
 	ImGui::Indent();
 	for (unique_cr<component> comp : m_components) {
 		ImGui::PushID(comp.get());
@@ -127,10 +136,29 @@ bool fields_engine::entity::display() {
 }
 #endif // EDITOR
 
-void fields_engine::entity::attach_component(unique<component>&& comp) {
-	comp->set_owner(this);
-	// If this is being called by component::attach_component,
-	// The transform parent will be reset to the calling component's transform 
-	comp->ref_transform().set_parent(m_transform);
-	m_components.emplace_back(move(comp));
+fe::transform& fields_engine::entity::ref_transform() {
+	return m_root_component->ref_transform();
+}
+fe::transform const& fields_engine::entity::ref_transform() const {
+	return m_root_component->ref_transform();
+}
+
+fe::component* fields_engine::entity::get_root() {
+	return m_root_component;
+}
+
+fe::component const* fields_engine::entity::get_root() const {
+	return m_root_component;
+}
+
+void fields_engine::entity::acquire_component(unique<component>&& comp_to_own) {
+	comp_to_own->set_owner(this);
+	m_components.emplace_back(move(comp_to_own));
+}
+
+fe::component& fields_engine::entity::attach_component(unique<component>&& comp) {
+	component* comp_ptr = comp.get();
+	m_root_component->adopt_owned_component(comp_ptr);
+	acquire_component(move(comp));
+	return *comp_ptr;
 }

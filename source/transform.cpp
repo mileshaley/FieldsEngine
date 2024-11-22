@@ -8,7 +8,7 @@
 #include "transform.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "imgui.h"
-#include "glm/gtx/matrix_decompose.hpp"
+#include "component.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Transform Definitions                                                     *
@@ -19,14 +19,30 @@ fields_engine::transform::transform(vec3 const& position, vec3 const& rotation, 
 	, m_matrix(1)
 	, m_dirty(true)
 	, m_parent(&no_parent)
-{}
+	, m_owner(nullptr)
+{
+	m_matrix *= 6;
+}
 
 fields_engine::transform::transform(transform_data const& data)
 	: m_data(data)
 	, m_matrix(1)
 	, m_dirty(true)
 	, m_parent(&no_parent)
-{}
+	, m_owner(nullptr)
+{
+	m_matrix *= 6;
+}
+
+fields_engine::transform::transform(transform const& other)
+	: m_data(other.m_data)
+	, m_matrix(1)
+	, m_dirty(true)
+	, m_parent(&no_parent)
+	, m_owner(nullptr)
+{
+	m_matrix *= 6;
+}
 
 #ifdef EDITOR
 bool fields_engine::transform::display() {
@@ -37,52 +53,85 @@ bool fields_engine::transform::display() {
 
 	modif |= ImGui::Checkbox("Invert", &m_invert);
 
-	m_dirty |= modif;
+	ImGui::Text(m_parent == &no_parent ? "Has No Parent" : "Has Parent");
+	ImGui::BeginDisabled();
+	mat4 transposed = glm::transpose(world_matrix());
+	ImGui::DragFloat4("", &transposed[0][0]);
+	ImGui::DragFloat4("", &transposed[1][0]);
+	ImGui::DragFloat4("", &transposed[2][0]);
+	ImGui::DragFloat4("", &transposed[3][0]);
+	ImGui::EndDisabled();
+	
+	if (modif) {
+		set_dirty();
+	}
 	return modif;
 }
+
 #endif
+
+void fields_engine::transform::recalculate_matrix() const {
+	constexpr mat4 identity(1);
+	m_dirty = false;
+	m_matrix =
+		glm::scale(
+			glm::rotate(
+				glm::rotate(
+					glm::rotate(
+						glm::translate(
+							*m_parent,
+							m_data.position
+						), 
+						glm::radians(m_data.rotation.x),
+						(vec3&)identity[0]
+					), 
+					glm::radians(m_data.rotation.y),
+					(vec3&)identity[1]
+				), 
+				glm::radians(m_data.rotation.z),
+				(vec3&)identity[2]
+			), 
+			m_data.scale
+		);
+}
 
 void fields_engine::transform::set_parent(const mat4* new_parent) {
 	m_parent = new_parent;
+	set_dirty();
 }
 
 void fields_engine::transform::set_parent(transform const& new_parent) {
 	m_parent = &new_parent.m_matrix;
+	set_dirty();
 }
 
 fe::mat4 const* fields_engine::transform::get_parent() const {
 	return m_parent;
 }
 
+void fields_engine::transform::set_owner(const component* new_owner) {
+	m_owner = new_owner;
+}
+
+const fe::component* fields_engine::transform::get_owner() const {
+	return m_owner;
+}
+
 void fields_engine::transform::set_dirty() const {
+	m_dirty = true;
+	if (m_owner) {
+		m_owner->dirtify_transforms();
+	}
+}
+
+void fields_engine::transform::set_only_this_dirty() const {
 	m_dirty = true;
 }
 
 fe::mat4 const& fields_engine::transform::world_matrix() const {
-	constexpr mat4 ident(1);
 	if (m_dirty) {
-		m_dirty = false;
-		m_matrix = 
-			glm::scale(
-				glm::rotate(
-					glm::rotate(
-						glm::rotate(
-							glm::translate(
-								*m_parent,
-								m_data.position
-							), glm::radians(m_data.rotation.x),
-							(vec3&)ident[0]
-						), glm::radians(m_data.rotation.y),
-						(vec3&)ident[1]
-					), glm::radians(m_data.rotation.z),
-					(vec3&)ident[2]
-				), m_data.scale
-			);
-		if (m_invert) {
-			m_matrix = glm::inverse(m_matrix);
-		}
+		recalculate_matrix();
 	}
-
 	return m_matrix;
 }
 

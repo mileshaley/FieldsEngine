@@ -57,12 +57,11 @@ void fields_engine::scene::startup()
 
 	float height = -1;
 	{ // Camera
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Camera"));
 		unique<camera> cam = make_unique<camera>();
 		cam->ref_transform().set_local_position({ -7, -14, -23 });
 		cam->ref_transform().set_local_rotation({ 90, 180,  40 });
 		cam->ref_transform().set_local_scale({ 1, 1, 1 });
-		ent->attach_component(move(cam));
+		m_entities.emplace_back(make_unique<entity>("Camera", move(cam)));
 	}
 	{ // Grass
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Grass"));
@@ -80,12 +79,11 @@ void fields_engine::scene::startup()
 		tr.set_local_rotation({ 0, 0, 0 });
 	}
 	{ // Legs
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Legs"));
 		unique<mesh> m = make_unique<mesh>();
 		m->add_cube();
 		m->generate();
 		m->ref_material() = snow_mat;
-		ent->attach_component(move(m));
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Legs", move(m)));
 		transform& tr = ent->ref_transform();
 
 		const float scale = 2;
@@ -93,9 +91,7 @@ void fields_engine::scene::startup()
 		tr.set_local_position({ 0, 0, height });
 		height += scale;
 		tr.set_local_scale({ scale, scale, scale });
-
 		tr.set_local_rotation({ 0, 0, 0 });
-
 	}
 	{ // Middle
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Middle"));
