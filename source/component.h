@@ -10,14 +10,21 @@
  * Component Defines                                                         * 
 \*~-------------------------------------------------------------------------~*/
 
-#define FE_GEN_COMPONENT(p_subclass)                      \
-		virtual unique<component> clone() const override { \
-			return make_unique<p_subclass>(*this);          \
-		}                                                    \
-		virtual string_view component_name() const override { \
-			static constexpr string_view name( #p_subclass );  \
-				return name;                                    \
+#define FE_GEN_COMPONENT(p_subclass) \
+	IMPL_FE_GEN_COMPONENT(p_subclass, override) \
+	IMPL_FE_GEN_COMPONENT_EXTENDED(p_subclass)   
+
+
+#define IMPL_FE_GEN_COMPONENT(p_subclass, p_override)       \
+		virtual unique<component> clone() const p_override { \
+			return make_unique<p_subclass>(*this);            \
+		}                                                      \
+		virtual string_view component_name() const p_override { \
+			static constexpr string_view name( #p_subclass );    \
+				return name;                                      \
 		}
+
+#define IMPL_FE_GEN_COMPONENT_EXTENDED(p_subclass)
 
 /*~-------------------------------------------------------------------------~*\
  * Includes & Forward Declarations                                           *
@@ -44,14 +51,8 @@ namespace fields_engine {
 		component();
 		component(component const& other);
 		virtual ~component() {}
-		virtual unique<component> clone() const {
-			return make_unique<component>();
-		};
 
-		virtual string_view component_name() const {
-			static constexpr string_view name("component");
-			return name;
-		}
+		IMPL_FE_GEN_COMPONENT(component, );
 		
 		virtual void init() {}
 		virtual void tick(float dt) {}
