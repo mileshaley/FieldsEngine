@@ -104,7 +104,6 @@ void fields_engine::entity::render(graphics::shader const& shader) const {
 	loc = shader.uniform_location("hasNormal");
 	glUniform1i(loc, 0);
 	FE_GL_VERIFY;
-
 	for (unique_cr<component> comp : m_components) {
 		comp->render(shader);
 	}
@@ -161,4 +160,11 @@ fe::component& fields_engine::entity::attach_component(unique<component>&& comp)
 	m_root_component->adopt_owned_component(comp_ptr);
 	acquire_component(move(comp));
 	return *comp_ptr;
+}
+
+void fields_engine::entity::sad() {
+	for (auto& c : m_components) {
+		//c->ref_transform().recalculate_matrix();
+		c->ref_transform().set_only_this_dirty();
+	}
 }

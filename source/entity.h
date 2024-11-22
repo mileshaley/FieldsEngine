@@ -55,6 +55,8 @@ namespace fields_engine {
 		void acquire_component(unique<component>&& comp_to_own);
 		// Attach to root
 		component& attach_component(unique<component>&& comp);
+
+		void sad();
 	
 	private:
 		string m_name;

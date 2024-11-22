@@ -18,30 +18,24 @@ fields_engine::transform::transform(vec3 const& position, vec3 const& rotation, 
 	: m_data{position, rotation, scale}
 	, m_matrix(1)
 	, m_dirty(true)
-	, m_parent(&no_parent)
 	, m_owner(nullptr)
 {
-	m_matrix *= 6;
 }
 
 fields_engine::transform::transform(transform_data const& data)
 	: m_data(data)
 	, m_matrix(1)
 	, m_dirty(true)
-	, m_parent(&no_parent)
 	, m_owner(nullptr)
 {
-	m_matrix *= 6;
 }
 
 fields_engine::transform::transform(transform const& other)
 	: m_data(other.m_data)
 	, m_matrix(1)
 	, m_dirty(true)
-	, m_parent(&no_parent)
 	, m_owner(nullptr)
 {
-	m_matrix *= 6;
 }
 
 #ifdef EDITOR
@@ -53,8 +47,10 @@ bool fields_engine::transform::display() {
 
 	modif |= ImGui::Checkbox("Invert", &m_invert);
 
-	ImGui::Text(m_parent == &no_parent ? "Has No Parent" : "Has Parent");
+	ImGui::Text(m_owner ? "Parented" : "Unparented");
 	ImGui::BeginDisabled();
+
+	ImGui::Text("Recalc count: %i", count);
 	mat4 transposed = glm::transpose(world_matrix());
 	ImGui::DragFloat4("", &transposed[0][0]);
 	ImGui::DragFloat4("", &transposed[1][0]);
@@ -73,13 +69,16 @@ bool fields_engine::transform::display() {
 void fields_engine::transform::recalculate_matrix() const {
 	constexpr mat4 identity(1);
 	m_dirty = false;
+	component* owner_parent = m_owner->get_parent();
 	m_matrix =
 		glm::scale(
 			glm::rotate(
 				glm::rotate(
 					glm::rotate(
 						glm::translate(
-							*m_parent,
+							owner_parent != nullptr
+								? owner_parent->ref_transform().world_matrix() 
+								: identity,
 							m_data.position
 						), 
 						glm::radians(m_data.rotation.x),
@@ -93,20 +92,7 @@ void fields_engine::transform::recalculate_matrix() const {
 			), 
 			m_data.scale
 		);
-}
-
-void fields_engine::transform::set_parent(const mat4* new_parent) {
-	m_parent = new_parent;
-	set_dirty();
-}
-
-void fields_engine::transform::set_parent(transform const& new_parent) {
-	m_parent = &new_parent.m_matrix;
-	set_dirty();
-}
-
-fe::mat4 const* fields_engine::transform::get_parent() const {
-	return m_parent;
+	++count;
 }
 
 void fields_engine::transform::set_owner(const component* new_owner) {

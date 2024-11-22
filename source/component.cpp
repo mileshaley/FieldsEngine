@@ -23,7 +23,7 @@ fields_engine::component::component()
 fields_engine::component::component(component const& other) 
 	: m_owner(nullptr)
 	, m_parent(nullptr)
-	, m_transform()
+	, m_transform(other.m_transform)
 {
 	m_transform.set_owner(this);
 }
@@ -49,7 +49,6 @@ void fields_engine::component::attach_component(unique<component>&& comp) {
 void fields_engine::component::adopt_owned_component(component* new_child) {
 	m_children.push_back(new_child);
 	new_child->set_parent(this);
-	new_child->ref_transform().set_parent(m_transform);
 }
 
 void fields_engine::component::set_parent(component* new_parent) {

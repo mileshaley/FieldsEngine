@@ -199,6 +199,7 @@ void fields_engine::scene::startup()
 
 	for (unique_cr<entity> ent : m_entities) {
 		ent->init();
+		ent->sad();
 	}
 }
 

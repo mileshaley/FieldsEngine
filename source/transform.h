@@ -31,8 +31,6 @@ namespace fields_engine {
 	// Lazy, only recalculates matrix when necessary
 	class transform {
 	public:
-		static constexpr mat4 no_parent{1};
-
 		transform(
 			vec3 const& position = { 0, 0, 0 }, 
 			vec3 const& rotation = { 0, 0, 0 },
@@ -47,15 +45,6 @@ namespace fields_engine {
 #endif
 
 		void recalculate_matrix() const;
-
-		// new_parent will be stored within this transform, 
-		// make sure it lives for at least as long as this transform does
-		void set_parent(const mat4* new_parent = &no_parent);
-
-		// new_parent's matrix will be stored within this transform, 
-		// make sure it lives for at least as long as this transform does
-		void set_parent(transform const& new_parent);
-		mat4 const* get_parent() const;
 
 		void set_owner(const component* new_owner);
 		const component* get_owner() const;
@@ -80,9 +69,9 @@ namespace fields_engine {
 		vec3 get_world_rotation() const;
 
 	private:
+		mutable int count = 0;
 		transform_data m_data;
 		const component* m_owner;
-		const mat4* m_parent;
 		mutable mat4 m_matrix;
 		mutable bool m_dirty = true;
 
