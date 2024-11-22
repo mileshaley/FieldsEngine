@@ -10,9 +10,13 @@
  * Component Defines                                                         * 
 \*~-------------------------------------------------------------------------~*/
 
-#define FE_GEN_COMPONENT(p_subclass) \
-		virtual unique<component> clone() const override {\
-			return make_unique<p_subclass>(*this); \
+#define FE_GEN_COMPONENT(p_subclass)                      \
+		virtual unique<component> clone() const override { \
+			return make_unique<p_subclass>(*this);          \
+		}                                                    \
+		virtual string_view component_name() const override { \
+			static constexpr string_view name( #p_subclass );  \
+				return name;                                    \
 		}
 
 /*~-------------------------------------------------------------------------~*\
@@ -43,6 +47,11 @@ namespace fields_engine {
 		virtual unique<component> clone() const {
 			return make_unique<component>();
 		};
+
+		virtual string_view component_name() const {
+			static constexpr string_view name("component");
+			return name;
+		}
 		
 		virtual void init() {}
 		virtual void tick(float dt) {}
