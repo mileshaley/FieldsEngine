@@ -38,20 +38,19 @@
 	
 #include "context.h" // local_context, unique_context
 #include "window.h" // window
-#include "scene.h" // Needed for unique_context
 
-#if EDITOR 
-#include "editor.h" // Needed for unique_context
-#endif
+namespace fields_engine {
+	class editor;
+	class scene;
 
 /*~-------------------------------------------------------------------------~*\
  * Application Class                                                         *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine {
 	class application {
 	public:
 		application();
+		~application();
 
 		bool startup();
 		void run();
@@ -65,7 +64,6 @@ namespace fields_engine {
 		ivec2 get_window_size() const;
 
 	private:
-
 		ivec2 m_win_size;
 		local_context<fe::window> m_window;
 		unique_context<scene> m_scene;
@@ -75,4 +73,3 @@ namespace fields_engine {
 	};
 
 } // namespace fields_engine
-

@@ -8,6 +8,10 @@
 
 #include "scene.h"
 
+#if EDITOR 
+#include "editor.h"
+#endif
+
 #if FE_USING_GLFW
 #include "glfw/glfw3.h"
 #elif FE_USING_SDL2
@@ -19,6 +23,8 @@ fields_engine::application::application()
 	, m_scene{nullptr}
 	, m_win_size{1000, 800}
 {}
+
+fields_engine::application::~application() = default;
 
 bool fields_engine::application::startup() {
 #if FE_USING_GLFW
