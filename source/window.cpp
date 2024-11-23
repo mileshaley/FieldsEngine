@@ -6,6 +6,7 @@
 
 #include "precompiled.h"
 #include "window.h"
+
 #include "glfw/glfw3.h"
 
 fields_engine::window::window(GLFWwindow* win_handle)

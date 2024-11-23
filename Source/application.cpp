@@ -3,27 +3,25 @@
 
 #include <iostream>
 #include "glad/glad.h"
-#include "glfw/glfw3.h"
 #include "input.h"
 #include "graphics.h"
 
 #include "scene.h"
 
-//fe::application* fe::g_application = nullptr;
-
+#if FE_USING_GLFW
+#include "glfw/glfw3.h"
+#elif FE_USING_SDL2
+#include "SDL/SDL.h"
+#endif
 
 fields_engine::application::application() 
 	: m_window{nullptr}
-	, m_editor{nullptr}
 	, m_scene{nullptr}
+	, m_win_size{1000, 800}
 {}
 
-fields_engine::application::~application() {
-	
-}
-
-bool fields_engine::application::startup()
-{
+bool fields_engine::application::startup() {
+#if FE_USING_GLFW
 	glfwSetErrorCallback(graphics::gl_error_callback);
 	glfwInit();
 
@@ -33,10 +31,8 @@ bool fields_engine::application::startup()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, 1);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 0);
-	//const ivec2 win_size{ 1920, 1080 };
-	const ivec2 win_size{1000, 800};
 
-	m_window->handle = glfwCreateWindow(win_size.x, win_size.y, "FieldsEngine", nullptr, nullptr);
+	m_window->handle = glfwCreateWindow(m_win_size.x, m_win_size.y, "FieldsEngine", nullptr, nullptr);
 
 	if (!m_window->handle) { 
 		return false; 
@@ -50,36 +46,36 @@ bool fields_engine::application::startup()
 		return false;
 	}
 
-	input::detail::initialize_callbacks(m_window);
-
-	m_scene = make_unique<fe::scene>();
-	m_editor = make_unique<fe::editor>(m_window.get());
-	//glfwSetWindowFocusCallback(m_window, );
-
-	graphics::detail::initialize();
-
-	glfwSetFramebufferSizeCallback(m_window->handle, 
+	glfwSetFramebufferSizeCallback(m_window->handle,
 		[](GLFWwindow* win, int w, int h) { graphics::resize_viewport(w, h); }
 	);
+
+	//glfwSetWindowFocusCallback(m_window, );
+#elif FE_USING_SDL3
+
+
+#endif // FE_USING_SDL3
+
+	input::detail::initialize_callbacks(m_window);
+	graphics::detail::initialize();
+
+	m_scene = make_unique<fe::scene>();
+#if EDITOR
+	m_editor = make_unique<fe::editor>(m_window.get());
+#endif // EDITOR
+
 	m_scene->startup();
 
 	return true;
 }
 
-bool fields_engine::application::shutdown() {
-	m_scene->shutdown();
-	m_editor.reset();
-	m_scene.reset();
-	glfwTerminate();
-	return true;
-}
+
 
 void fields_engine::application::run() {
 	
 	while (m_window->is_running()) {
 		/// TODO: use real delta time
 		const float dt = 1.0f / 60.0f;
-		//graphics::clear_background({0.5, 0.5, 1.0, 1.0});
 		glfwPollEvents();
 
 		/// update logic goes here
@@ -99,6 +95,14 @@ void fields_engine::application::run() {
 	}
 }
 
+bool fields_engine::application::shutdown() {
+	m_scene->shutdown();
+	m_editor.reset();
+	m_scene.reset();
+	glfwTerminate();
+	return true;
+}
+
 void fields_engine::application::reinstate() const {
 	glfwMakeContextCurrent(m_window->handle);
 }
@@ -111,6 +115,6 @@ fe::editor* fields_engine::application::editor() {
 	return m_editor.get();
 }
 
-fe::ivec2 fields_engine::application::window_size() const {
+fe::ivec2 fields_engine::application::get_window_size() const {
 	return m_win_size;
 }

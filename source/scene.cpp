@@ -140,7 +140,7 @@ void fields_engine::scene::startup()
 					m4->ref_material() = hat_mat;
 					transform& tr = m4->ref_transform();
 
-					const float scale = 0.15;
+					const float scale = 0.15f;
 					tr.set_local_position({ 0, 0, scale + 1 });
 					tr.set_local_scale({ 1.5f, 1.5f, scale });
 					mesh* pm4 = m4.get();
