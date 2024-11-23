@@ -153,7 +153,7 @@ void fields_engine::mesh::draw(graphics::shader const& shader) const {
     FE_GL_VERIFY;
 }
 
-void fields_engine::mesh::add_plane(mat4 const& tr) {
+void fields_engine::mesh::add_face(mat4 const& tr) {
     constexpr int num_corners = 4;
     constexpr vec4 verts[num_corners]{
         { 0.5f,  0.5f, 0.5f, 0.5f}, 
@@ -170,7 +170,7 @@ void fields_engine::mesh::add_plane(mat4 const& tr) {
 
     const vec3 normal{tr * vec4(0, 0, 1, 0)};
 
-    int n = int(m_vertices.size());
+    const int n = int(m_vertices.size());
 
     for (int i = 0; i < num_corners; ++i) {
         m_vertices.emplace_back(tr * verts[i]);
@@ -189,15 +189,73 @@ void fields_engine::mesh::add_cube() {
     constexpr mat4 face_mat(1);
 
     // Add 6 faces as rotations of face_mat
-    add_plane(face_mat);
-    add_plane(glm::rotate(face_mat, rot_90, i));
-    add_plane(glm::rotate(face_mat, -rot_90, i));
-    add_plane(glm::rotate(face_mat, rot_90, j));
-    add_plane(glm::rotate(face_mat, -rot_90, j));
-    add_plane(glm::rotate(face_mat, 2 * rot_90, i));
+    add_face(face_mat);
+    add_face(glm::rotate(face_mat, rot_90, i));
+    add_face(glm::rotate(face_mat, -rot_90, i));
+    add_face(glm::rotate(face_mat, rot_90, j));
+    add_face(glm::rotate(face_mat, -rot_90, j));
+    add_face(glm::rotate(face_mat, 2 * rot_90, i));
 }
 
-void fields_engine::mesh::add_tris_for_quad(ivec4 const& idcs) {
-    m_triangles.emplace_back(idcs.x, idcs.y, idcs.z);
-    m_triangles.emplace_back(idcs.x, idcs.z, idcs.w);
+void fields_engine::mesh::add_cylinder(int sides) {
+    
+}
+
+void fields_engine::mesh::add_pyramid(float height, int sides) {
+    constexpr vec4 bot_middle_vert{ 0, 0, 0, 1 };
+    const vec4 tip_vert{ 0, 0, height, 1 };
+    const vec3 bot_norm{ 0, 0, -1 };
+
+    vec4 prev_vert{ 0, 1, 0, 1 };
+    // Offset by 1 (same # iterations) to make use of prev_vert
+    for (int i = 1; i < sides + 1; ++i) {
+        constexpr float two_pi = glm::pi<float>() * 2.0f;
+        const float percent = i / float(sides);
+        const vec4 vert{
+            sin(percent * two_pi),
+            cos(percent * two_pi),
+            0,
+            1
+        };
+
+        int n = int(m_vertices.size());
+        m_vertices.emplace_back(vert);
+        m_vertices.emplace_back(tip_vert);
+        m_vertices.emplace_back(prev_vert);
+
+        m_textures.emplace_back(0.5f, 1);
+        m_textures.emplace_back(0, 0);
+        m_textures.emplace_back(1, 0);
+        
+        const vec3 top_norm = glm::cross(vec3(tip_vert - prev_vert), vec3(vert - prev_vert));
+        m_normals.emplace_back(top_norm);
+        m_normals.emplace_back(top_norm);
+        m_normals.emplace_back(top_norm);
+
+        m_triangles.emplace_back(n, n + 1, n + 2);
+
+        // Bottom of cone
+
+        n = int(m_vertices.size());
+        m_vertices.emplace_back(prev_vert);
+        m_vertices.emplace_back(bot_middle_vert);
+        m_vertices.emplace_back(vert);
+
+        m_textures.emplace_back(0.5f, 1);
+        m_textures.emplace_back(0, 0);
+        m_textures.emplace_back(1, 0);
+
+        m_normals.emplace_back(bot_norm);
+        m_normals.emplace_back(bot_norm);
+        m_normals.emplace_back(bot_norm);
+
+        m_triangles.emplace_back(n, n + 1, n + 2);
+
+        prev_vert = vert;
+    }
+}
+
+void fields_engine::mesh::add_tris_for_quad(ivec4 const& indices) {
+    m_triangles.emplace_back(indices.x, indices.y, indices.z);
+    m_triangles.emplace_back(indices.x, indices.z, indices.w);
 }

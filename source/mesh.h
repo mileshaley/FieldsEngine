@@ -32,6 +32,9 @@ namespace fields_engine {
 		virtual void draw(graphics::shader const& shader) const override;
 		void add_face(mat4 const& transform);
 		void add_cube();
+		void add_cylinder(int sides = 16);
+		void add_pyramid(float height = 1.0f, int sides = 16);
+
 
 		graphics::material      & ref_material()       { return m_material; }
 		graphics::material const& ref_material() const { return m_material; }
