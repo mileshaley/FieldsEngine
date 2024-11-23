@@ -65,7 +65,7 @@ void fields_engine::scene::startup()
 	}
 	{ // Grass
 		unique<mesh> m = make_unique<mesh>();
-		m->add_pyramid(3, 8);
+		m->add_pyramid(1, 15);
 		//m->add_cube();
 		m->generate();
 		m->ref_material() = grass_mat;

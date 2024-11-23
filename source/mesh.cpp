@@ -201,7 +201,7 @@ void fields_engine::mesh::add_cylinder(int sides) {
     
 }
 
-void fields_engine::mesh::add_pyramid(float height, int sides) {
+void fields_engine::mesh::add_pyramid(int sides, float height) {
     constexpr vec4 bot_middle_vert{ 0, 0, 0, 1 };
     const vec4 tip_vert{ 0, 0, height, 1 };
     const vec3 bot_norm{ 0, 0, -1 };
@@ -219,8 +219,8 @@ void fields_engine::mesh::add_pyramid(float height, int sides) {
         };
 
         int n = int(m_vertices.size());
-        m_vertices.emplace_back(vert);
         m_vertices.emplace_back(prev_vert);
+        m_vertices.emplace_back(vert);
         m_vertices.emplace_back(tip_vert);
         m_vertices.emplace_back(bot_middle_vert);
 

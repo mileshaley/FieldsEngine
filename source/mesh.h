@@ -33,7 +33,7 @@ namespace fields_engine {
 		void add_face(mat4 const& transform);
 		void add_cube();
 		void add_cylinder(int sides = 16);
-		void add_pyramid(float height = 1.0f, int sides = 16);
+		void add_pyramid(int sides = 16, float height = 1.0f);
 
 
 		graphics::material      & ref_material()       { return m_material; }
