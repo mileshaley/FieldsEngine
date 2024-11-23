@@ -30,17 +30,14 @@ namespace fields_engine {
 		void generate();
 
 		virtual void draw(graphics::shader const& shader) const override;
-		void add_plane(mat4 const& transform);
+		void add_face(mat4 const& transform);
 		void add_cube();
-
 
 		graphics::material      & ref_material()       { return m_material; }
 		graphics::material const& ref_material() const { return m_material; }
 
 	private:
 		void add_tris_for_quad(ivec4 const& indices);
-
-
 
 		unsigned m_vao_id;
 		vector<vec4> m_vertices;

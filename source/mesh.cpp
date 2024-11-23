@@ -8,7 +8,6 @@
 #include "mesh.h"
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
-#include "glm/gtc/type_ptr.hpp"
 #include "graphics.h"
 #include "shader.h"
 
@@ -157,10 +156,10 @@ void fields_engine::mesh::draw(graphics::shader const& shader) const {
 void fields_engine::mesh::add_plane(mat4 const& tr) {
     constexpr int num_corners = 4;
     constexpr vec4 verts[num_corners]{
-        { 1.0f,  1.0f, 1.0f, 1.0f}, 
-        {-1.0f,  1.0f, 1.0f, 1.0f}, 
-        {-1.0f, -1.0f, 1.0f, 1.0f}, 
-        { 1.0f, -1.0f, 1.0f, 1.0f}
+        { 0.5f,  0.5f, 0.5f, 0.5f}, 
+        {-0.5f,  0.5f, 0.5f, 0.5f}, 
+        {-0.5f, -0.5f, 0.5f, 0.5f}, 
+        { 0.5f, -0.5f, 0.5f, 0.5f}
     };
     constexpr vec2 tex_coords[num_corners]{ 
         {1.0f, 1.0f},  
