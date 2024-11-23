@@ -114,7 +114,7 @@ void fields_engine::mesh::generate() {
     FE_GL_VERIFY;
 }
 
-void fields_engine::mesh::render(graphics::shader const& shader) const {
+void fields_engine::mesh::draw(graphics::shader const& shader) const {
     const mat4& matrix = ref_transform().world_matrix();
     const mat4 inverse = glm::inverse(matrix);
 
@@ -142,7 +142,7 @@ void fields_engine::mesh::render(graphics::shader const& shader) const {
     glUniform1f(loc, m_material.m_shininess);
     FE_GL_VERIFY;
 
-    // Mesh render
+    // Mesh draw
     glBindVertexArray(m_vao_id);
     FE_GL_VERIFY;
     glDrawElements(GL_TRIANGLES,

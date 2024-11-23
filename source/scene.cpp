@@ -225,7 +225,7 @@ void fields_engine::scene::draw() const {
 	FE_GL_VERIFY;
 
 	for (unique_cr<entity> ent : m_entities) {
-		ent->render(*m_shader);
+		ent->draw(*m_shader);
 	}
 
 	m_shader->unuse();

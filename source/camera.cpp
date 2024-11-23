@@ -10,16 +10,18 @@
 #include "context.h"
 #include "scene.h"
 #include "application.h"
-#include "glm/gtx/matrix_decompose.hpp"
 
 /*~-------------------------------------------------------------------------~*\
  * Camera Definitions                                                        *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::camera::camera() {}
+fields_engine::camera::camera() 
+	: component()
+{}
 
 fields_engine::camera::camera(camera const& other) 
-	: m_zoom(other.m_zoom)
+	: component(other)
+	, m_zoom(other.m_zoom)
 	, m_fov(other.m_fov)
 	, m_near(other.m_near)
 	, m_far(other.m_far)
@@ -60,22 +62,6 @@ void fields_engine::camera::recalculate_view_matrix() {
 	vec3 const& scale = tr.get_local_scale();
 	vec3 const& rotation = tr.get_local_rotation();
 
-	//m_world_view_matrix = glm::inverse(
-	//	glm::scale(
-	//		glm::rotate(
-	//			glm::rotate(
-	//				glm::rotate(
-	//					glm::translate(
-	//						identity,
-	//						position
-	//					), glm::radians(rotation.x),
-	//					(vec3&)identity[0]
-	//				), glm::radians(rotation.y),
-	//				(vec3&)identity[1]
-	//			), glm::radians(rotation.z),
-	//			(vec3&)identity[2]
-	//		),scale
-	//	));
 	m_world_view_matrix = 
 		glm::translate(
 			glm::rotate(

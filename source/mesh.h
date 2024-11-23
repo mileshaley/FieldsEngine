@@ -29,7 +29,7 @@ namespace fields_engine {
 
 		void generate();
 
-		virtual void render(graphics::shader const& shader) const override;
+		virtual void draw(graphics::shader const& shader) const override;
 		void add_plane(mat4 const& transform);
 		void add_cube();
 

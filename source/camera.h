@@ -10,7 +10,7 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include "component.h"
+#include "component.h" // Inheritance
 
 /*~-------------------------------------------------------------------------~*\
  * Camera Class                                                              *

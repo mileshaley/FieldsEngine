@@ -39,7 +39,7 @@ namespace fields_engine {
 
 		void init();
 		void tick(float dt);
-		void render(graphics::shader const& shader) const;
+		void draw(graphics::shader const& shader) const;
 		void exit();
 
 #ifdef EDITOR

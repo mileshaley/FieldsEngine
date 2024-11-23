@@ -1,3 +1,13 @@
+/*~-------------------------------------------------------------------------~*\
+ * FIELDS ENGINE                                                             *
+ *~-------------------------------------------------------------------------~*
+ * File: application.cpp                                                     *
+\*~-------------------------------------------------------------------------~*/
+
+/*~-------------------------------------------------------------------------~*\
+ * File Includes                                                             *
+\*~-------------------------------------------------------------------------~*/
+
 #include "precompiled.h"
 #include "application.h"
 
@@ -7,7 +17,6 @@
 #include "graphics.h"
 
 #include "scene.h"
-
 #if EDITOR 
 #include "editor.h"
 #endif
@@ -18,12 +27,17 @@
 #include "SDL/SDL.h"
 #endif
 
+/*~-------------------------------------------------------------------------~*\
+ * Application Definitions                                                   *
+\*~-------------------------------------------------------------------------~*/
+
 fields_engine::application::application() 
 	: m_window{nullptr}
 	, m_scene{nullptr}
 	, m_win_size{1000, 800}
 {}
 
+// Avoid dependencies on composed classes' destructors
 fields_engine::application::~application() = default;
 
 bool fields_engine::application::startup() {
@@ -93,7 +107,7 @@ void fields_engine::application::run() {
 		m_scene->draw();
 		
 
-		/// render logic goes here
+		/// draw logic goes here
 
 		m_editor->tick(dt);
 

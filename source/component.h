@@ -56,7 +56,7 @@ namespace fields_engine {
 		
 		virtual void init() {}
 		virtual void tick(float dt) {}
-		virtual void render(graphics::shader const& shader) const {}
+		virtual void draw(graphics::shader const& shader) const {}
 		virtual void exit() {}
 
 		void dirtify_transforms() const;

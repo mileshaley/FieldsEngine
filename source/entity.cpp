@@ -74,7 +74,7 @@ void fields_engine::entity::tick(float dt) {
 	}
 }
 
-void fields_engine::entity::render(graphics::shader const& shader) const {
+void fields_engine::entity::draw(graphics::shader const& shader) const {
 
 	GLint loc = shader.uniform_location("objectId");
 	glUniform1i(loc, 5);
@@ -93,7 +93,7 @@ void fields_engine::entity::render(graphics::shader const& shader) const {
 	glUniform1i(loc, 0);
 	FE_GL_VERIFY;
 	for (unique_cr<component> comp : m_components) {
-		comp->render(shader);
+		comp->draw(shader);
 	}
 }
 
