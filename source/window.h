@@ -29,6 +29,7 @@ namespace fields_engine {
 		using handle_type = SDL_Window;
 #endif // FE_USING_SDL3
 
+	public:
 		window(handle_type* win_handle);
 
 		handle_type* handle;

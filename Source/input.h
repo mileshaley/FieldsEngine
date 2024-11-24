@@ -8,9 +8,11 @@
 
 #include "window.h"
 
-namespace fields_engine::input {
+namespace fields_engine {
 
-	namespace detail {
+
+
+	namespace input::detail {
 		void initialize_callbacks(window& win);
 	} // namespace detail
 

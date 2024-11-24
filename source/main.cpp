@@ -6,16 +6,21 @@
 
 #include "precompiled.h"
 #include <iostream>
-#include "imGui/imgui.h"
 #include "application.h"
 #include "context.h"
 
+#include <Windows.h>
+
 int main() {
 	using namespace fields_engine;
+	// Hide the console
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+
 	//fe::detail::generate_all_icons_file();
 	//return 0;
 
-	std::cout << "Fields Engine Startup" << std::endl;
+
+	//std::cout << "Fields Engine Startup" << std::endl;
 
 	{
 		local_context<application> app{};
@@ -29,7 +34,7 @@ int main() {
 		}
 	}
 	
-	std::cout << "Fields Engine Shutdown" << std::endl;
+	//std::cout << "Fields Engine Shutdown" << std::endl;
 	return 0;
 }
 

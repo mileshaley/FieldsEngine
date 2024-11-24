@@ -6,9 +6,15 @@
 
 #include "precompiled.h"
 #include "input.h"
-#include "glfw/glfw3.h"
-#include <iostream>
 #include "imgui.h"
+#include "context.h"
+#include <iostream>
+
+#if FE_USING_GLFW
+#include "glfw/glfw3.h"
+#elif FE_USING_SDL3
+#include "SDL3/SDL.h"
+#endif // FE_USING_SDL3
 
 namespace fields_engine::input::detail {
 	// GLFWkeyFun

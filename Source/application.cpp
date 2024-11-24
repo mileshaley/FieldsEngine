@@ -126,7 +126,7 @@ void fields_engine::application::run() {
 		m_running = !glfwWindowShouldClose(m_window->handle);
 #elif FE_USING_SDL3
 		/// RenderClear
-		m_running; ///
+		m_running; /// using input
 #endif // FE_USING_SDL3
 	}
 }
