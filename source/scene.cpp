@@ -55,6 +55,11 @@ void fields_engine::scene::startup()
 	hat_mat.m_specular_color = { 0.3f, 0.3f, 0.3f };
 	hat_mat.m_shininess = 1.0f;
 
+	graphics::material nose_mat;
+	nose_mat.m_diffuse_color = { 0.9f, 0.35f, 0.1f };
+	nose_mat.m_specular_color = { 0.9f, 0.5f, 0.1f };
+	nose_mat.m_shininess = 1.0f;
+
 	{ // Camera
 		unique<camera> cam = make_unique<camera>();
 		cam->ref_transform().set_local_position({ -3, -2, -3 });
@@ -62,17 +67,17 @@ void fields_engine::scene::startup()
 		cam->ref_transform().set_local_scale({ 1, 1, 1 });
 		m_entities.emplace_back(make_unique<entity>("Camera", move(cam)));
 	}
-	{ // Grass
+	{ // Ground
 		unique<mesh> m = make_unique<mesh>();
 		m->add_pyramid(15);
 		//m->add_cube();
 		m->generate();
-		m->ref_material() = grass_mat;
+		m->ref_material() = snow_mat;
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ 0, 0, 0 });
 		tr.set_local_scale({ 20, 20, scale });
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Grass", move(m)));
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Ground", move(m)));
 	}
 	{ // Cylinder
 		unique<mesh> m = make_unique<mesh>();
@@ -127,18 +132,49 @@ void fields_engine::scene::startup()
 				tr.set_local_scale({ scale, scale, scale });
 				mesh* pm3 = m3.get();
 				pm1->attach_component(move(m3));
-				{ // Nose
-					unique<mesh> m6 = make_unique<mesh>();
-					m6->add_pyramid(15, 6);
-					m6->generate();
-					m6->ref_material() = hat_mat;
-					transform& tr = m6->ref_transform();
-					const float scale = 1;
-					tr.set_local_position({ scale + 1, 0, 0});
-					tr.set_local_scale({ scale, scale, scale });
-					tr.set_local_rotation({ 90, 0, 0 });
-					pm3->attach_component(move(m6));
+				{ // Face
+					unique<spatial_component> face = make_unique<spatial_component>();
+					transform& tr = face->ref_transform();
+					tr.set_local_position({ 0, 0.75f, 0.075f });
+					tr.set_local_rotation({ -90, 0, 0 });
+					spatial_component* pf = face.get();
+					pm3->attach_component(move(face));
+
+					{ // Nose
+						unique<mesh> m6 = make_unique<mesh>();
+						m6->add_pyramid(32, 1);
+						m6->generate();
+						m6->ref_material() = nose_mat;
+						transform& tr = m6->ref_transform();
+						tr.set_local_position({ 0, 0, 0.25f });
+						tr.set_local_scale({ 0.35f, 0.35f, 1 });
+						tr.set_local_rotation({ 0, 0, 0 });
+						pf->attach_component(move(m6));
+					}
+					{ // Eye 1
+						unique<mesh> m7 = make_unique<mesh>();
+						m7->add_cylinder(7, 1);
+						m7->generate();
+						m7->ref_material() = hat_mat;
+						transform& tr = m7->ref_transform();
+						tr.set_local_position({ 0.25f, -0.25f, -0.23f });
+						tr.set_local_scale({ 0.25f, 0.25f, 0.05f });
+						tr.set_local_rotation({ 0, 0, 28 });
+						pf->attach_component(move(m7));
+					}
+					{ // Eye 2
+						unique<mesh> m8 = make_unique<mesh>();
+						m8->add_cylinder(7, 1);
+						m8->generate();
+						m8->ref_material() = hat_mat;
+						transform& tr = m8->ref_transform();
+						tr.set_local_position({ -0.25f, -0.25f, -0.23f });
+						tr.set_local_scale({ 0.25f, 0.25f, 0.05f });
+						tr.set_local_rotation({ 0, 0, 5 });
+						pf->attach_component(move(m8));
+					}
 				}
+
 				{ // Hat base
 					unique<mesh> m4 = make_unique<mesh>();
 					m4->add_cube();
