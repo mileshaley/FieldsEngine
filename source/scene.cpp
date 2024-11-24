@@ -77,6 +77,16 @@ void fields_engine::scene::startup()
 		tr.set_local_scale({ 20, 20, scale });
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Grass", move(m)));
 	}
+	{ // Cylinder
+		unique<mesh> m = make_unique<mesh>();
+		m->add_cylinder();
+		m->generate();
+		m->ref_material() = scarf_mat;
+		transform& tr = m->ref_transform();
+		tr.set_local_position({ 3, 3, 5 });
+		tr.set_local_scale({ 1, 1, 1 });
+		m_entities.emplace_back(make_unique<entity>("Cylinder", move(m)));
+	}
 	{ // Legs
 		unique<mesh> m0 = make_unique<mesh>();
 		m0->add_cube();
@@ -172,7 +182,6 @@ void fields_engine::scene::startup()
 						const float scale = 1.3f / 0.15f;
 						tr.set_local_position({ 0, 0, scale + 1 });
 						tr.set_local_scale({ 1 / 1.5f, 1 / 1.5f, scale });
-
 						tr.set_local_rotation({ 0.75f, 0, 0 });
 						pm4->attach_component(move(m5));
 					}

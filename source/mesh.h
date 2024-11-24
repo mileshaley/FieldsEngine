@@ -32,7 +32,8 @@ namespace fields_engine {
 		virtual void draw(graphics::shader const& shader) const override;
 		void add_face(mat4 const& transform);
 		void add_cube();
-		void add_cylinder(int sides = 16);
+		void add_sphere(int subdivisions);
+		void add_cylinder(int sides = 16, float height = 1.0f);
 		void add_pyramid(int sides = 4, float height = 1.0f);
 
 
@@ -40,7 +41,9 @@ namespace fields_engine {
 		graphics::material const& ref_material() const { return m_material; }
 
 	private:
-		void add_tris_for_quad(ivec4 const& indices);
+		void sequential_tris(int first_vert_index);
+		void tris_for_quad(ivec4 const& indices);
+		void sequential_tris_for_quad(int first_vert_index);
 
 		unsigned m_vao_id;
 		vector<vec4> m_vertices;

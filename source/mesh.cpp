@@ -128,7 +128,6 @@ void fields_engine::mesh::draw(graphics::shader const& shader) const {
 
 
 
-
     // Material settings for shader
     loc = shader.uniform_location("diffuse");
     glUniform3fv(loc, 1, glm::value_ptr(m_material.m_diffuse_color));
@@ -178,7 +177,7 @@ void fields_engine::mesh::add_face(mat4 const& tr) {
         m_normals .emplace_back(normal);
     }
 
-    add_tris_for_quad({n, n + 1, n + 2, n + 3 });
+    sequential_tris_for_quad(n);
 }
 
 void fields_engine::mesh::add_cube() {
@@ -197,14 +196,100 @@ void fields_engine::mesh::add_cube() {
     add_face(glm::rotate(face_mat, 2 * rot_90, i));
 }
 
-void fields_engine::mesh::add_cylinder(int sides) {
-    
+void fields_engine::mesh::add_sphere(int subdivisions) {
+
+}
+
+void fields_engine::mesh::add_cylinder(int sides, float height) {
+    const float half_height = height * 0.5f;
+    const vec4 top_mid_vert{ 0, 0, half_height, 1 };
+    const vec4 bot_mid_vert{ 0, 0, -half_height, 1 };
+    constexpr vec3 top_norm{ 0, 0, -1 };
+    constexpr vec3 bot_norm{ 0, 0, -1 };
+
+    vec4 prev_bot_vert{ 0, 0.5f, -half_height, 1 };
+    // Offset by 1 (same # iterations) to make use of prev_bot_vert
+    for (int i = 1; i < sides + 1; ++i) {
+        constexpr float two_pi = glm::pi<float>() * 2.0f;
+        const float percent = i / float(sides);
+        const vec4 bot_vert{
+            sin(percent * two_pi) * 0.5f,
+            cos(percent * two_pi) * 0.5f,
+            -half_height,
+            1
+        };
+        vec4 top_vert = bot_vert;
+        vec4 prev_top_vert = prev_bot_vert;
+        top_vert.z *= -1;
+        prev_top_vert.z *= -1;
+
+        // Side quad
+
+        int n = int(m_vertices.size());
+
+        m_vertices.emplace_back(top_vert);
+        m_vertices.emplace_back(prev_top_vert);
+        m_vertices.emplace_back(prev_bot_vert);
+        m_vertices.emplace_back(bot_vert);
+
+        m_textures.emplace_back(1, 1);
+        m_textures.emplace_back(0, 1);
+        m_textures.emplace_back(0, 0);
+        m_textures.emplace_back(1, 0);
+
+        // Vector from origin to midpoint of the outer quad is just equal to the midpoint in this case
+        const vec3 out_norm = (prev_bot_vert + top_vert) * 0.5f;
+            
+        m_normals.emplace_back(out_norm);
+        m_normals.emplace_back(out_norm);
+        m_normals.emplace_back(out_norm);
+        m_normals.emplace_back(out_norm);
+
+        sequential_tris_for_quad(n);
+
+        // Top of cylinder
+
+        n = int(m_vertices.size());
+        m_vertices.emplace_back(top_mid_vert);
+        m_vertices.emplace_back(prev_top_vert);
+        m_vertices.emplace_back(top_vert);
+
+        m_textures.emplace_back(1, 0);
+        m_textures.emplace_back(0, 1);
+        m_textures.emplace_back(0, 0);
+
+        m_normals.emplace_back(top_norm);
+        m_normals.emplace_back(top_norm);
+        m_normals.emplace_back(top_norm);
+
+        sequential_tris(n);
+
+        // Bottom of cylinder
+
+        n = int(m_vertices.size());
+
+        m_vertices.emplace_back(bot_mid_vert);
+        m_vertices.emplace_back(prev_bot_vert);
+        m_vertices.emplace_back(bot_vert);
+
+        m_textures.emplace_back(1, 0);
+        m_textures.emplace_back(0, 1);
+        m_textures.emplace_back(0, 0);
+
+        m_normals.emplace_back(bot_norm);
+        m_normals.emplace_back(bot_norm);
+        m_normals.emplace_back(bot_norm);
+
+        sequential_tris(n);
+
+        prev_bot_vert = bot_vert;
+    }
 }
 
 void fields_engine::mesh::add_pyramid(int sides, float height) {
+    constexpr vec3 bot_norm{ 0, 0, -1 };
     constexpr vec4 bot_middle_vert{ 0, 0, 0, 1 };
     const vec4 tip_vert{ 0, 0, height, 1 };
-    const vec3 bot_norm{ 0, 0, -1 };
 
     vec4 prev_vert{ 0, 1, 0, 1 };
     // Offset by 1 (same # iterations) to make use of prev_vert
@@ -244,14 +329,23 @@ void fields_engine::mesh::add_pyramid(int sides, float height) {
         m_normals.emplace_back(bot_norm);
         m_normals.emplace_back(bot_norm);
 
-        m_triangles.emplace_back(n + 0, n + 1, n + 2);
-        m_triangles.emplace_back(n + 3, n + 4, n + 5);
+        sequential_tris(n);
+        sequential_tris(n + 3);
 
         prev_vert = vert;
     }
 }
 
-void fields_engine::mesh::add_tris_for_quad(ivec4 const& indices) {
+void fields_engine::mesh::sequential_tris(int i) {
+    m_triangles.emplace_back(i, i + 1, i + 2);
+
+}
+
+void fields_engine::mesh::tris_for_quad(ivec4 const& indices) {
     m_triangles.emplace_back(indices.x, indices.y, indices.z);
     m_triangles.emplace_back(indices.x, indices.z, indices.w);
+}
+
+void fields_engine::mesh::sequential_tris_for_quad(int i) {
+    tris_for_quad({ i, i + 1, i + 2, i + 3 });
 }
