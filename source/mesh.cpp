@@ -291,14 +291,14 @@ void fields_engine::mesh::add_pyramid(int sides, float height) {
     constexpr vec4 bot_middle_vert{ 0, 0, 0, 1 };
     const vec4 tip_vert{ 0, 0, height, 1 };
 
-    vec4 prev_vert{ 0, 1, 0, 1 };
+    vec4 prev_vert{ 0, 0.5f, 0, 1 };
     // Offset by 1 (same # iterations) to make use of prev_vert
     for (int i = 1; i < sides + 1; ++i) {
         constexpr float two_pi = glm::pi<float>() * 2.0f;
         const float percent = i / float(sides);
         const vec4 vert{
-            sin(percent * two_pi),
-            cos(percent * two_pi),
+            sin(percent * two_pi) * 0.5f,
+            cos(percent * two_pi) * 0.5f,
             0,
             1
         };
