@@ -219,23 +219,33 @@ void fields_engine::mesh::add_pyramid(int sides, float height) {
         };
 
         int n = int(m_vertices.size());
+        m_vertices.emplace_back(tip_vert);
         m_vertices.emplace_back(prev_vert);
         m_vertices.emplace_back(vert);
-        m_vertices.emplace_back(tip_vert);
+
+        m_vertices.emplace_back(vert);
+        m_vertices.emplace_back(prev_vert);
         m_vertices.emplace_back(bot_middle_vert);
 
         m_textures.emplace_back(1, 1);
         m_textures.emplace_back(0, 1);
-        m_textures.emplace_back(0, 0);
         m_textures.emplace_back(1, 0);
+
+        m_textures.emplace_back(1, 0);
+        m_textures.emplace_back(0, 1);
+        m_textures.emplace_back(0, 0);
 
         const vec3 top_norm = glm::cross(vec3(tip_vert - prev_vert), vec3(vert - prev_vert));
         m_normals.emplace_back(top_norm);
         m_normals.emplace_back(top_norm);
         m_normals.emplace_back(top_norm);
+
+        m_normals.emplace_back(bot_norm);
+        m_normals.emplace_back(bot_norm);
         m_normals.emplace_back(bot_norm);
 
-        add_tris_for_quad({ n, n + 1, n + 2, n + 3 });
+        m_triangles.emplace_back(n + 0, n + 1, n + 2);
+        m_triangles.emplace_back(n + 3, n + 4, n + 5);
 
         prev_vert = vert;
     }

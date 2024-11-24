@@ -37,7 +37,7 @@ fields_engine::application::application()
 	, m_win_size{1000, 800}
 {}
 
-// Avoid dependencies on composed classes' destructors
+// Fulfil dependencies on member destructors
 fields_engine::application::~application() = default;
 
 bool fields_engine::application::startup() {

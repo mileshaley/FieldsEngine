@@ -23,7 +23,7 @@
 #define FE_USING_GLFW 0
 #define FE_USING_SDL3 0
 
-// Redefine the chosen platform with 1
+// Redefine the chosen platform to 1
 #if FEI_PLATFORM == FEI_PLATFORM_GLFW
 #undef  FE_USING_GLFW
 #define FE_USING_GLFW 1

@@ -65,7 +65,7 @@ void fields_engine::scene::startup()
 	}
 	{ // Grass
 		unique<mesh> m = make_unique<mesh>();
-		m->add_pyramid(1, 15);
+		m->add_pyramid(15);
 		//m->add_cube();
 		m->generate();
 		m->ref_material() = grass_mat;
@@ -131,8 +131,22 @@ void fields_engine::scene::startup()
 				tr.set_local_position({ 0, 0, scale + 1 });
 				tr.set_local_scale({ scale, scale, scale });
 				mesh* pm3 = m3.get();
-
 				pm1->attach_component(move(m3));
+
+				{ // Nose
+					unique<mesh> m6 = make_unique<mesh>();
+					m6->add_pyramid(15, 6);
+					m6->generate();
+					m6->ref_material() = hat_mat;
+					transform& tr = m6->ref_transform();
+
+					const float scale = 1;
+					tr.set_local_position({ scale + 1, 0, 0});
+					tr.set_local_scale({ scale, scale, scale });
+
+					tr.set_local_rotation({ 90, 0, 0 });
+					pm3->attach_component(move(m6));
+				}
 
 				{ // Hat base
 					unique<mesh> m4 = make_unique<mesh>();
@@ -159,7 +173,7 @@ void fields_engine::scene::startup()
 						tr.set_local_position({ 0, 0, scale + 1 });
 						tr.set_local_scale({ 1 / 1.5f, 1 / 1.5f, scale });
 
-						tr.set_local_rotation({ 0.13f, 0, 0 });
+						tr.set_local_rotation({ 0.75f, 0, 0 });
 						pm4->attach_component(move(m5));
 					}
 				}
