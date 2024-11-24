@@ -23,9 +23,9 @@
 
 #if FE_USING_GLFW
 #include "glfw/glfw3.h"
-#elif FE_USING_SDL2
-#include "SDL/SDL.h"
-#endif
+#elif FE_USING_SDL3
+#include "SDL3/SDL.h"
+#endif // FE_USING_SDL3
 
 /*~-------------------------------------------------------------------------~*\
  * Application Definitions                                                   *
@@ -35,6 +35,7 @@ fields_engine::application::application()
 	: m_window{nullptr}
 	, m_scene{nullptr}
 	, m_win_size{1000, 800}
+	, m_running(false)
 {}
 
 // Fulfil dependencies on member destructors
@@ -73,6 +74,14 @@ bool fields_engine::application::startup() {
 	//glfwSetWindowFocusCallback(m_window, );
 #elif FE_USING_SDL3
 
+	if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMEPAD)) {
+		return false;
+	}
+	
+	m_window->handle = SDL_CreateWindow("FieldsEngine", m_win_size.x, m_win_size.y, 0);
+	if (!m_window->handle) {
+		return false;
+	}
 
 #endif // FE_USING_SDL3
 
@@ -92,8 +101,9 @@ bool fields_engine::application::startup() {
 
 
 void fields_engine::application::run() {
-	
-	while (m_window->is_running()) {
+	m_running = true;
+
+	while (m_running) {
 		/// TODO: use real delta time
 		const float dt = 1.0f / 60.0f;
 		glfwPollEvents();
@@ -111,7 +121,13 @@ void fields_engine::application::run() {
 
 		m_editor->tick(dt);
 
+#if FE_USING_GLFW
 		glfwSwapBuffers(m_window->handle);
+		m_running = !glfwWindowShouldClose(m_window->handle);
+#elif FE_USING_SDL3
+		/// RenderClear
+		m_running; ///
+#endif // FE_USING_SDL3
 	}
 }
 
@@ -119,21 +135,33 @@ bool fields_engine::application::shutdown() {
 	m_scene->shutdown();
 	m_editor.reset();
 	m_scene.reset();
+#if FE_USING_GLFW
+	glfwDestroyWindow(m_window->handle);
 	glfwTerminate();
+#elif FE_USING_SDL3
+	SDL_DestroyWindow(m_window->handle);
+	SDL_Quit();
+#endif // FE_USING_SDL3
 	return true;
 }
 
-void fields_engine::application::reinstate() const {
+void fields_engine::application::use() const {
+#if FE_USING_GLFW
 	glfwMakeContextCurrent(m_window->handle);
+#elif FE_USING_SDL3
+	///
+#endif // FE_USING_SDL3
 }
 
-fe::window& fields_engine::application::window() {
+fe::window& fields_engine::application::ref_window() {
 	return m_window.get();
 }
 
-fe::editor* fields_engine::application::editor() {
-	return m_editor.get();
+#if EDITOR
+fe::editor& fields_engine::application::ref_editor() {
+	return *m_editor;
 }
+#endif // EDITOR
 
 fe::ivec2 fields_engine::application::get_window_size() const {
 	return m_win_size;

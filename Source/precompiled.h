@@ -32,11 +32,38 @@
 #define FE_NODISCARD [[nodiscard]]
 #define FE_FALLTHROUGH [[fallthrough]]
 
-namespace fields_engine::common {
+/*~-------------------------------------------------------------------------~*\
+ * Application Platform Defines                                              *
+\*~-------------------------------------------------------------------------~*/
+
+// Choose which platform layer Fields Engine should use
+#define FEI_PLATFORM FEI_PLATFORM_GLFW
+
+// Each platform layer option is given an id
+
+#define FEI_PLATFORM_GLFW 1
+#define FEI_PLATFORM_SDL3 2
+
+// Initialize all mutually exclusive platform usages to 0
+
+#define FE_USING_GLFW 0
+#define FE_USING_SDL3 0
+
+// Redefine the chosen platform to 1
+#if FEI_PLATFORM == FEI_PLATFORM_GLFW
+#undef  FE_USING_GLFW
+#define FE_USING_GLFW 1
+#elif FEI_PLATFORM == FEI_PLATFORM_SDL3
+#undef  FE_USING_SDL3
+#define FE_USING_SDL3 1
+#endif // FEI_PLATFORM_SDL3
+
 
 /*~-------------------------------------------------------------------------~*\
  * Primitive Type Aliases                                                    *
 \*~-------------------------------------------------------------------------~*/
+
+namespace fields_engine::common {
 
 	using i8 = int8_t;
 	using i16 = int16_t;
