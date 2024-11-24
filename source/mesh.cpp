@@ -16,7 +16,7 @@ namespace fields_engine {
 } // namespace fields_engine
 
 fields_engine::mesh::mesh()
-	: component()
+	: spatial_component()
     , m_vertices()
 	, m_triangles()
     , m_textures()
@@ -25,7 +25,7 @@ fields_engine::mesh::mesh()
 {}
 
 fields_engine::mesh::mesh(mesh const& other)
-    : component(other)
+    : spatial_component(other)
     , m_vertices(other.m_vertices)
     , m_triangles(other.m_triangles)
     , m_textures(other.m_textures)

@@ -6,9 +6,9 @@
 
 #include "precompiled.h"
 #include "transform.h"
-#include "glm/gtc/matrix_transform.hpp"
 #include "imgui.h"
-#include "component.h"
+#include "spatial_component.h"
+#include "glm/gtc/matrix_transform.hpp"
 
 /*~-------------------------------------------------------------------------~*\
  * Transform Definitions                                                     *
@@ -67,7 +67,7 @@ bool fields_engine::transform::display() {
 void fields_engine::transform::recalculate_matrix() const {
 	constexpr mat4 identity(1);
 	m_dirty = false;
-	component* owner_parent = m_owner->get_parent();
+	spatial_component* owner_parent = m_owner->get_parent();
 	m_matrix =
 		glm::scale(
 			glm::rotate(
@@ -92,11 +92,11 @@ void fields_engine::transform::recalculate_matrix() const {
 		);
 }
 
-void fields_engine::transform::set_owner(const component* new_owner) {
+void fields_engine::transform::set_owner(const spatial_component* new_owner) {
 	m_owner = new_owner;
 }
 
-const fe::component* fields_engine::transform::get_owner() const {
+const fe::spatial_component* fields_engine::transform::get_owner() const {
 	return m_owner;
 }
 

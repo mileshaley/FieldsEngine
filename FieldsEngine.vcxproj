@@ -66,6 +66,7 @@
     </ClCompile>
     <ClCompile Include="source\scene.cpp" />
     <ClCompile Include="source\shader.cpp" />
+    <ClCompile Include="source\spatial_component.cpp" />
     <ClCompile Include="source\stubs\stub.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='DebugEditor|x64'">true</ExcludedFromBuild>
@@ -106,6 +107,7 @@
     <ClInclude Include="source\precompiled.h" />
     <ClInclude Include="source\scene.h" />
     <ClInclude Include="source\shader.h" />
+    <ClInclude Include="source\spatial_component.h" />
     <ClInclude Include="source\stubs\stub.h" />
     <ClInclude Include="source\text.h" />
     <ClInclude Include="source\transform.h" />

@@ -68,6 +68,7 @@
     <ClCompile Include="source\component.cpp" />
     <ClCompile Include="source\material.cpp" />
     <ClCompile Include="source\camera.cpp" />
+    <ClCompile Include="source\spatial_component.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -125,5 +126,6 @@
     <ClInclude Include="source\material.h" />
     <ClInclude Include="source\camera.h" />
     <ClInclude Include="source\context_ownership.h" />
+    <ClInclude Include="source\spatial_component.h" />
   </ItemGroup>
 </Project>

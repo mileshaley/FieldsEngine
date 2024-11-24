@@ -16,11 +16,11 @@
 \*~-------------------------------------------------------------------------~*/
 
 fields_engine::camera::camera() 
-	: component()
+	: spatial_component()
 {}
 
 fields_engine::camera::camera(camera const& other) 
-	: component(other)
+	: spatial_component(other)
 	, m_zoom(other.m_zoom)
 	, m_fov(other.m_fov)
 	, m_near(other.m_near)
@@ -45,7 +45,7 @@ void fields_engine::camera::exit() {
 
 #ifdef EDITOR
 bool fields_engine::camera::display() {
-	bool modif = false;
+	bool modif = spatial_component::display();
 	modif |= ImGui::DragFloat("Zoom", &m_zoom);
 	modif |= ImGui::DragFloat("FOV", &m_fov);
 	modif |= ImGui::DragFloat("Near", &m_near);

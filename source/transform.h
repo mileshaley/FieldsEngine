@@ -12,7 +12,7 @@ namespace fields_engine {
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-	class component;
+	class spatial_component;
 
 /*~-------------------------------------------------------------------------~*\
  * Transform Data Structure                                                  *
@@ -46,8 +46,8 @@ namespace fields_engine {
 
 		void recalculate_matrix() const;
 
-		void set_owner(const component* new_owner);
-		const component* get_owner() const;
+		void set_owner(const spatial_component* new_owner);
+		const spatial_component* get_owner() const;
 
 		void set_dirty() const;
 		void set_only_this_dirty() const;
@@ -72,7 +72,7 @@ namespace fields_engine {
 		transform_data m_data;
 		mutable bool m_dirty = true;
 		mutable mat4 m_matrix;
-		const component* m_owner;
+		const spatial_component* m_owner;
 	};
 
 /*~-------------------------------------------------------------------------~*\

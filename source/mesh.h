@@ -10,7 +10,7 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include "component.h"
+#include "spatial_component.h" // Inheritance
 #include "material.h"
 
 /*~-------------------------------------------------------------------------~*\
@@ -19,7 +19,7 @@
 
 namespace fields_engine {
 
-	class mesh : public component {
+	class mesh : public spatial_component {
 	public:
 
 		mesh();

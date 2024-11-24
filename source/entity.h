@@ -14,6 +14,7 @@
 
 namespace fields_engine {
 	class component;
+	class spatial_component;
 	/// TODO: remove
 	namespace graphics {
 		class shader; 
@@ -30,9 +31,9 @@ namespace fields_engine {
 	public:
 		/// TODO: Remove name constructors
 		entity(string_view name);
-		entity(string_view name, unique<component>&& root_component);
+		entity(string_view name, unique<spatial_component>&& root_component);
 
-		entity(unique<component>&& root_component);
+		entity(unique<spatial_component>&& root_component);
 		entity(entity const& other);
 
 		~entity();
@@ -49,8 +50,8 @@ namespace fields_engine {
 		transform& ref_transform();
 		transform const& ref_transform() const;
 
-		component* get_root();
-		component const* get_root() const;
+		spatial_component* get_root();
+		spatial_component const* get_root() const;
 
 		void acquire_component(unique<component>&& comp_to_own);
 		// Attach to root
@@ -59,7 +60,7 @@ namespace fields_engine {
 	private:
 		string m_name;
 		dyn_arr<unique<component>> m_components;
-		component* m_root_component;
+		spatial_component* m_root_component;
 	};
 
 } // namespace fields_engine

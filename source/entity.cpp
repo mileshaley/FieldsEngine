@@ -6,7 +6,7 @@
 
 #include "precompiled.h"
 #include "entity.h"
-#include "component.h"
+#include "spatial_component.h"
 
 /// TODO: remove
 #include "glad/glad.h"
@@ -21,11 +21,11 @@
 \*~-------------------------------------------------------------------------~*/
 
 fields_engine::entity::entity(string_view name) 
-	: entity(name, make_unique<component>())
+	: entity(name, make_unique<spatial_component>())
 {
 }
 
-fields_engine::entity::entity(string_view name, unique<component>&& root_component)
+fields_engine::entity::entity(string_view name, unique<spatial_component>&& root_component)
 	: m_name(name)
 	, m_components()
 	, m_root_component(nullptr)
@@ -34,7 +34,7 @@ fields_engine::entity::entity(string_view name, unique<component>&& root_compone
 	acquire_component(move(root_component));
 }
 
-fields_engine::entity::entity(unique<component>&& root_component)
+fields_engine::entity::entity(unique<spatial_component>&& root_component)
 	: m_name()
 	, m_components()
 	, m_root_component(nullptr)
@@ -53,7 +53,7 @@ fields_engine::entity::entity(entity const& other)
 	for (auto const& comp : m_components) {
 		m_components.emplace_back(move(comp->clone()));
 		if (comp.get() == other.m_root_component) {
-			m_root_component = m_components.back().get();
+			m_root_component = reinterpret_cast<spatial_component*>(m_components.back().get());
 		}
 	}
 }
@@ -115,7 +115,6 @@ bool fields_engine::entity::display() {
 			} else {
 				ImGui::SeparatorText(comp->component_name().data());
 			}
-			modif |= comp->ref_transform().display();
 			modif |= comp->display();
 			ImGui::PopID();
 		}
@@ -133,11 +132,11 @@ fe::transform const& fields_engine::entity::ref_transform() const {
 	return m_root_component->ref_transform();
 }
 
-fe::component* fields_engine::entity::get_root() {
+fe::spatial_component* fields_engine::entity::get_root() {
 	return m_root_component;
 }
 
-fe::component const* fields_engine::entity::get_root() const {
+fe::spatial_component const* fields_engine::entity::get_root() const {
 	return m_root_component;
 }
 
@@ -148,7 +147,10 @@ void fields_engine::entity::acquire_component(unique<component>&& comp_to_own) {
 
 fe::component& fields_engine::entity::attach_component(unique<component>&& comp) {
 	component* comp_ptr = comp.get();
-	m_root_component->adopt_owned_component(comp_ptr);
+	spatial_component* spatial = dynamic_cast<spatial_component*>(comp.get());
+	if (spatial) {
+		m_root_component->adopt_owned_component(spatial);
+	}
 	acquire_component(move(comp));
 	return *comp_ptr;
 }

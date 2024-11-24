@@ -10,7 +10,7 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include "component.h" // Inheritance
+#include "spatial_component.h" // Inheritance
 
 /*~-------------------------------------------------------------------------~*\
  * Camera Class                                                              *
@@ -18,7 +18,7 @@
 
 namespace fields_engine {
 
-	class camera : public component {
+	class camera : public spatial_component {
 	public:
 		camera();
 		camera(camera const& other);
