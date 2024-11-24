@@ -35,6 +35,7 @@ namespace fields_engine {
 
 		// Use this window as the primary one
 		void use() const;
+		input_manager& ref_input_manager();
 		window& ref_window();
 #if EDITOR
 		editor& ref_editor();

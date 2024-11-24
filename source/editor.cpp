@@ -17,6 +17,7 @@
 #include "text.h"
 #include "imGui/imgui_internal.h"
 #include "scene.h"
+#include "context.h"
 
 fields_engine::editor::editor(window& win)
 	: m_gui_context(ImGui::CreateContext())

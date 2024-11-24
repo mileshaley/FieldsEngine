@@ -8,8 +8,6 @@
 
 #include "editor_icons.h" // editor_icon
 #include "editor_window.h" // m_windows
-#include "context.h"
-//#include <unordered_set>
 
 struct ImGuiContext;
 struct ImFont;

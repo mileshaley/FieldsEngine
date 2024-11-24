@@ -13,7 +13,6 @@
 
 #include <iostream>
 #include "glad/glad.h"
-#include "input.h"
 #include "graphics.h"
 
 #include "scene.h"
@@ -85,12 +84,16 @@ bool fields_engine::application::startup() {
 
 #endif // FE_USING_SDL3
 
+	if (!m_input_manager->startup()) {
+		return false;
+	}
+
 	input::detail::initialize_callbacks(m_window);
 	graphics::detail::initialize();
 
-	m_scene = make_unique<fe::scene>();
+	m_scene = make_unique<scene>();
 #if EDITOR
-	m_editor = make_unique<fe::editor>(m_window.get());
+	m_editor = make_unique<editor>(m_window.get());
 #endif // EDITOR
 
 	m_scene->startup();
@@ -106,6 +109,9 @@ void fields_engine::application::run() {
 	while (m_running) {
 		/// TODO: use real delta time
 		const float dt = 1.0f / 60.0f;
+
+		m_input_manager->tick(dt);
+
 		glfwPollEvents();
 
 		/// update logic goes here
@@ -135,6 +141,7 @@ bool fields_engine::application::shutdown() {
 	m_scene->shutdown();
 	m_editor.reset();
 	m_scene.reset();
+	m_input_manager->shutdown();
 #if FE_USING_GLFW
 	glfwDestroyWindow(m_window->handle);
 	glfwTerminate();
@@ -151,6 +158,10 @@ void fields_engine::application::use() const {
 #elif FE_USING_SDL3
 	///
 #endif // FE_USING_SDL3
+}
+
+fe::input_manager& fields_engine::application::ref_input_manager() {
+	return m_input_manager;
 }
 
 fe::window& fields_engine::application::ref_window() {
