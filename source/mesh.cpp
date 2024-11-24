@@ -237,7 +237,7 @@ void fields_engine::mesh::add_cylinder(int sides, float height) {
         m_textures.emplace_back(0, 0);
         m_textures.emplace_back(1, 0);
 
-        // Vector from origin to midpoint of the outer quad is just equal to the midpoint in this case
+        // Vector from origin to midpoint of the outer quad is equal to the midpoint in this case
         const vec3 out_norm = (prev_bot_vert + top_vert) * 0.5f;
             
         m_normals.emplace_back(out_norm);
@@ -288,10 +288,11 @@ void fields_engine::mesh::add_cylinder(int sides, float height) {
 
 void fields_engine::mesh::add_pyramid(int sides, float height) {
     constexpr vec3 bot_norm{ 0, 0, -1 };
-    constexpr vec4 bot_middle_vert{ 0, 0, 0, 1 };
-    const vec4 tip_vert{ 0, 0, height, 1 };
+    const float half_height = height * 0.5f;
+    const vec4 bot_middle_vert{ 0, 0, -half_height, 1 };
+    const vec4 tip_vert{ 0, 0, half_height, 1 };
 
-    vec4 prev_vert{ 0, 0.5f, 0, 1 };
+    vec4 prev_vert{ 0, 0.5f, -half_height, 1 };
     // Offset by 1 (same # iterations) to make use of prev_vert
     for (int i = 1; i < sides + 1; ++i) {
         constexpr float two_pi = glm::pi<float>() * 2.0f;
@@ -299,7 +300,7 @@ void fields_engine::mesh::add_pyramid(int sides, float height) {
         const vec4 vert{
             sin(percent * two_pi) * 0.5f,
             cos(percent * two_pi) * 0.5f,
-            0,
+            -half_height,
             1
         };
 

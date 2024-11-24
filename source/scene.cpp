@@ -57,8 +57,8 @@ void fields_engine::scene::startup()
 
 	{ // Camera
 		unique<camera> cam = make_unique<camera>();
-		cam->ref_transform().set_local_position({ -7, -14, -23 });
-		cam->ref_transform().set_local_rotation({ 90, 180,  40 });
+		cam->ref_transform().set_local_position({ -3, -2, -3 });
+		cam->ref_transform().set_local_rotation({ 90, 180,  55 });
 		cam->ref_transform().set_local_scale({ 1, 1, 1 });
 		m_entities.emplace_back(make_unique<entity>("Camera", move(cam)));
 	}
@@ -93,7 +93,7 @@ void fields_engine::scene::startup()
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Snowman", move(m0)));
 		transform& tr = ent->ref_transform();
 		const float scale = 1;
-		tr.set_local_position({ 0, 0, 3 });
+		tr.set_local_position({ 0, 0, 0.8f });
 		tr.set_local_scale({ scale, scale, scale });
 		{ // Middle
 			unique<mesh> m1 = make_unique<mesh>();
