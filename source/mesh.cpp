@@ -155,10 +155,10 @@ void fields_engine::mesh::draw(graphics::shader const& shader) const {
 void fields_engine::mesh::add_face(mat4 const& tr) {
     constexpr int num_corners = 4;
     constexpr vec4 verts[num_corners]{
-        { 0.5f,  0.5f, 0.5f, 0.5f}, 
-        {-0.5f,  0.5f, 0.5f, 0.5f}, 
-        {-0.5f, -0.5f, 0.5f, 0.5f}, 
-        { 0.5f, -0.5f, 0.5f, 0.5f}
+        { 0.5f,  0.5f, 0.5f, 1.0f}, 
+        {-0.5f,  0.5f, 0.5f, 1.0f}, 
+        {-0.5f, -0.5f, 0.5f, 1.0f}, 
+        { 0.5f, -0.5f, 0.5f, 1.0f}
     };
     constexpr vec2 tex_coords[num_corners]{ 
         {1.0f, 1.0f},  

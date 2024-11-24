@@ -55,7 +55,6 @@ void fields_engine::scene::startup()
 	hat_mat.m_specular_color = { 0.3f, 0.3f, 0.3f };
 	hat_mat.m_shininess = 1.0f;
 
-	float height = -1;
 	{ // Camera
 		unique<camera> cam = make_unique<camera>();
 		cam->ref_transform().set_local_position({ -7, -14, -23 });
@@ -71,9 +70,7 @@ void fields_engine::scene::startup()
 		m->ref_material() = grass_mat;
 		transform& tr = m->ref_transform();
 		const float scale = 1;
-		height += scale;
-		tr.set_local_position({ 0, 0, height });
-		height += scale;
+		tr.set_local_position({ 0, 0, 0 });
 		tr.set_local_scale({ 20, 20, scale });
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Grass", move(m)));
 	}
@@ -95,93 +92,71 @@ void fields_engine::scene::startup()
 		mesh* pm0 = m0.get();
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Snowman", move(m0)));
 		transform& tr = ent->ref_transform();
-
-		const float scale = 2;
-		height += scale;
-		tr.set_local_position({ 0, 0, height });
-		height += scale;
+		const float scale = 1;
+		tr.set_local_position({ 0, 0, 3 });
 		tr.set_local_scale({ scale, scale, scale });
-
 		{ // Middle
 			unique<mesh> m1 = make_unique<mesh>();
 			m1->add_cube();
 			m1->generate();
 			m1->ref_material() = snow_mat;
 			transform& tr = m1->ref_transform();
-
-			const float scale = 0.75;
-			tr.set_local_position({ 0, 0, scale + 1 });
+			const float scale = 0.75f;
+			tr.set_local_position({ 0, 0, 0.75f });
 			tr.set_local_scale({ scale, scale, scale });
 			mesh* pm1 = m1.get();
-
 			pm0->attach_component(move(m1));
-
 			{ // Scarf
 				unique<mesh> m2 = make_unique<mesh>();
 				m2->add_cube();
 				m2->generate();
 				m2->ref_material() = scarf_mat;
 				transform& tr = m2->ref_transform();
-
-				const float scale = 0.3f / 1.5f;
-				tr.set_local_position({ 0, 0, scale + 1 });
-				tr.set_local_scale({ 1.2f / 1.5f, 1.2f / 1.5f, scale });
-
+				tr.set_local_position({ 0, 0, 0.6f });
+				tr.set_local_scale({ 0.8f, 0.8f, 0.2f });
 				pm1->attach_component(move(m2));
 			}
-
 			{ // Head
 				unique<mesh> m3 = make_unique<mesh>();
 				m3->add_cube();
 				m3->generate();
 				m3->ref_material() = snow_mat;
 				transform& tr = m3->ref_transform();
-
 				const float scale = 0.75;
-				tr.set_local_position({ 0, 0, scale + 1 });
+				tr.set_local_position({ 0, 0, 1 });
 				tr.set_local_scale({ scale, scale, scale });
 				mesh* pm3 = m3.get();
 				pm1->attach_component(move(m3));
-
 				{ // Nose
 					unique<mesh> m6 = make_unique<mesh>();
 					m6->add_pyramid(15, 6);
 					m6->generate();
 					m6->ref_material() = hat_mat;
 					transform& tr = m6->ref_transform();
-
 					const float scale = 1;
 					tr.set_local_position({ scale + 1, 0, 0});
 					tr.set_local_scale({ scale, scale, scale });
-
 					tr.set_local_rotation({ 90, 0, 0 });
 					pm3->attach_component(move(m6));
 				}
-
 				{ // Hat base
 					unique<mesh> m4 = make_unique<mesh>();
 					m4->add_cube();
 					m4->generate();
 					m4->ref_material() = hat_mat;
 					transform& tr = m4->ref_transform();
-
-					const float scale = 0.15f;
-					tr.set_local_position({ 0, 0, scale + 1 });
-					tr.set_local_scale({ 1.5f, 1.5f, scale });
+					tr.set_local_position({ 0, 0, 0.57f });
+					tr.set_local_scale({ 1.5f, 1.5f, 0.15f });
 					mesh* pm4 = m4.get();
-
 					pm3->attach_component(move(m4));
-
 					{ // Hat top
 						unique<mesh> m5 = make_unique<mesh>();
 						m5->add_cube();
 						m5->generate();
 						m5->ref_material() = hat_mat;
 						transform& tr = m5->ref_transform();
-
-						const float scale = 1.3f / 0.15f;
-						tr.set_local_position({ 0, 0, scale + 1 });
-						tr.set_local_scale({ 1 / 1.5f, 1 / 1.5f, scale });
+						tr.set_local_position({ 0, 0, 4.75f });
+						tr.set_local_scale({ 0.67f, 0.67f, 8.67f });
 						tr.set_local_rotation({ 0.75f, 0, 0 });
 						pm4->attach_component(move(m5));
 					}
