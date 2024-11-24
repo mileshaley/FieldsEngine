@@ -124,5 +124,6 @@
     <ClInclude Include="source\transform.h" />
     <ClInclude Include="source\material.h" />
     <ClInclude Include="source\camera.h" />
+    <ClInclude Include="source\context_ownership.h" />
   </ItemGroup>
 </Project>

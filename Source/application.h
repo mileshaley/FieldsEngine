@@ -10,17 +10,19 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 	
-#include "context.h" // local_context, unique_context
+#include "context_ownership.h"
 #include "window.h" // window
 
 namespace fields_engine {
 	class editor;
 	class scene;
+} // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
  * Application Class                                                         *
 \*~-------------------------------------------------------------------------~*/
 
+namespace fields_engine {
 	class application {
 	public:
 		application();
@@ -48,5 +50,4 @@ namespace fields_engine {
 		unique_context<editor> m_editor{nullptr};
 #endif // EDITOR
 	};
-
 } // namespace fields_engine

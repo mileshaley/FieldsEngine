@@ -91,6 +91,7 @@
     <ClInclude Include="source\camera.h" />
     <ClInclude Include="source\component.h" />
     <ClInclude Include="source\context.h" />
+    <ClInclude Include="source\context_ownership.h" />
     <ClInclude Include="source\editor.h" />
     <ClInclude Include="source\editor_icons.h" />
     <ClInclude Include="source\editor_icons_all.h" />
