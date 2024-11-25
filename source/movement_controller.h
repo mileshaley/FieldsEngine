@@ -21,8 +21,8 @@ namespace fields_engine {
 	class movement_controller : public component {
 	public:
 		enum class mode : int {
-			use_absolute_rotation,
-			use_xz_rotation
+			consider_z_rotation = 0,
+			consider_all_rotation,
 		};
 
 		movement_controller();
@@ -43,7 +43,7 @@ namespace fields_engine {
 		float get_speed() const;
 	private:
 		float m_speed = 5.0f;
-		mode m_mode = mode::use_absolute_rotation;
+		mode m_mode = mode::consider_z_rotation;
 	};
 
 } // namespace fields_engine

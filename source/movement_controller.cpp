@@ -10,6 +10,7 @@
 #include "input.h"
 #include "glfw/glfw3.h"
 #include "entity.h"
+#include "glm/gtc/matrix_transform.hpp"
 
 /*~-------------------------------------------------------------------------~*\
  * Movement Controller Definitions                                           *
@@ -35,9 +36,10 @@ bool fields_engine::movement_controller::display() {
 
 
 void fields_engine::movement_controller::tick(float dt) {
+	constexpr glm::mat4 identity(1);
 	input_manager& in = context<input_manager>();
 
-	if (m_mode == mode::use_absolute_rotation) {
+	if (m_mode == mode::consider_z_rotation) {
 		vec4 dir{
 			int(in.is_key_held(GLFW_KEY_D)) - int(in.is_key_held(GLFW_KEY_A)),
 			0,
@@ -45,26 +47,50 @@ void fields_engine::movement_controller::tick(float dt) {
 			0,
 		};
 
-		transform& tr = get_owner()->ref_transform();
+		int ydiff = int(in.is_key_held(GLFW_KEY_SPACE)) - int(in.is_key_held(GLFW_KEY_LEFT_SHIFT));
+
+		float dist = glm::length(dir);
+		if (dist > 0.000001f || ydiff) {
+			transform& tr = get_owner()->ref_transform();
+			const vec3 rot = tr.get_local_rotation();
+
+			const mat4 rotator =
+				glm::rotate(
+					glm::rotate(
+						identity,
+						glm::radians(rot.z),
+						(vec3 const&)identity[2]
+					),
+					glm::radians(rot.x),
+					(vec3 const&)identity[0]
+				);
+			dir = rotator * dir;
+
+
+			dir.z = ydiff;
+			dir = glm::normalize(dir) * m_speed * dt;
+
+			tr.set_local_position(tr.get_local_position() + vec3(dir));
+		}
+	} else if (m_mode == mode::consider_all_rotation) {
+		vec4 dir{
+			int(in.is_key_held(GLFW_KEY_D)) - int(in.is_key_held(GLFW_KEY_A)),
+			0,
+			int(in.is_key_held(GLFW_KEY_S)) - int(in.is_key_held(GLFW_KEY_W)),
+			0,
+		};
+
 
 		float dist = glm::length(dir);
 		if (dist > 0.000001f) {
-			dir = glm::normalize(dir);
-			dir *= m_speed * dt;
+			transform& tr = get_owner()->ref_transform();
 
-			mat4 rotator = tr.make_rotator_matrix();
+			const mat4 rotator = tr.make_rotator_matrix();
 			dir = rotator * dir;
+			dir = glm::normalize(dir) * m_speed * dt;
 
-			//dir += vec4(tr.get_world_position(), 1);
-
-			/// TODO: this should be set_world_position but it doesn't exist yet;
 			tr.set_local_position(tr.get_local_position() + vec3(dir));
 		}
-
-
-
-	} else if (m_mode == mode::use_absolute_rotation) {
-		
 	}
 }
 
