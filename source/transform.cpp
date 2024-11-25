@@ -70,23 +70,13 @@ void fields_engine::transform::recalculate_matrix() const {
 	spatial_component* owner_parent = m_owner->get_parent();
 	m_matrix =
 		glm::scale(
-			glm::rotate(
-				glm::rotate(
-					glm::rotate(
-						glm::translate(
-							owner_parent != nullptr
-								? owner_parent->ref_transform().world_matrix() 
-								: identity,
-							m_data.position
-						), 
-						glm::radians(m_data.rotation.x),
-						(vec3&)identity[0]
-					), 
-					glm::radians(m_data.rotation.y),
-					(vec3&)identity[1]
-				), 
-				glm::radians(m_data.rotation.z),
-				(vec3&)identity[2]
+			make_rotator_matrix(
+				glm::translate(
+					owner_parent != nullptr
+						? owner_parent->ref_transform().world_matrix() 
+						: identity,
+					m_data.position
+				)
 			), 
 			m_data.scale
 		);
@@ -161,6 +151,23 @@ fe::vec3 const& fields_engine::transform::get_local_scale() const {
 }
 fe::vec3 const& fields_engine::transform::get_local_rotation() const {
 	return m_data.rotation;
+}
+
+fe::mat4 fields_engine::transform::make_rotator_matrix(mat4 const& base) const {
+	return
+		glm::rotate(
+			glm::rotate(
+				glm::rotate(
+					base,
+					glm::radians(m_data.rotation.z),
+					(vec3&)identity[2]
+				),
+				glm::radians(m_data.rotation.y),
+				(vec3&)identity[1]
+			),
+			glm::radians(m_data.rotation.x),
+			(vec3&)identity[0]
+		);
 }
 
 /*~-------------------------------------------------------------------------~*\

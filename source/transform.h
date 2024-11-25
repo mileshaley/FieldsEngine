@@ -30,6 +30,7 @@ namespace fields_engine {
 
 	// Lazy, only recalculates matrix when necessary
 	class transform {
+		static constexpr mat4 identity{1};
 	public:
 		transform(
 			vec3 const& position = { 0, 0, 0 }, 
@@ -58,15 +59,17 @@ namespace fields_engine {
 		void set_local_scale(vec3 const& new_scale);
 		void set_local_rotation(vec3 const& new_rotation);
 
+		transform_data get_world_transform() const;
+		vec3 get_world_position() const;
+		vec3 get_world_scale() const;
+		vec3 get_world_rotation() const;
+
 		transform_data const& get_local_transform() const;
 		vec3 const& get_local_position() const;
 		vec3 const& get_local_scale() const;
 		vec3 const& get_local_rotation() const;
 
-		transform_data get_world_transform() const;
-		vec3 get_world_position() const;
-		vec3 get_world_scale() const;
-		vec3 get_world_rotation() const;
+		mat4 make_rotator_matrix(mat4 const& base = identity) const;
 
 	private:
 		transform_data m_data;

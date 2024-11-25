@@ -18,6 +18,7 @@
 #include "imgui.h"
 #include "entity.h"
 #include "camera.h"
+#include "movement_controller.h"
 
 fields_engine::scene::scene() {
 	m_shader = make_unique<graphics::shader>();
@@ -61,11 +62,21 @@ void fields_engine::scene::startup()
 	nose_mat.m_shininess = 1.0f;
 
 	{ // Camera
+		//unique<spatial_component> root = make_unique<spatial_component>();
+		//spatial_component* p_root = root.get();
 		unique<camera> cam = make_unique<camera>();
-		cam->ref_transform().set_local_position({ -3, -2, -3 });
-		cam->ref_transform().set_local_rotation({ 90, 180,  55 });
-		cam->ref_transform().set_local_scale({ 1, 1, 1 });
-		m_entities.emplace_back(make_unique<entity>("Camera", move(cam)));
+		//unique<mesh> m = make_unique<mesh>();
+		//m->add_cube();
+		//m->generate();
+		//m->ref_material() = nose_mat;
+		//mesh* pm = m.get();
+		transform& tr = cam->ref_transform();
+		tr.set_local_position({ 3, 2, 3 });
+		tr.set_local_rotation({ 90, 0, -240 });
+		tr.set_local_scale({ 1, 1, 1 });
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Camera", move(cam)));
+		//p_root->attach_component(move(cam));
+		ent->attach_component(make_unique<movement_controller>());
 	}
 	{ // Ground
 		unique<mesh> m = make_unique<mesh>();
@@ -79,16 +90,6 @@ void fields_engine::scene::startup()
 		tr.set_local_scale({ 20, 20, scale });
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Ground", move(m)));
 	}
-	{ // Cylinder
-		unique<mesh> m = make_unique<mesh>();
-		m->add_cylinder();
-		m->generate();
-		m->ref_material() = scarf_mat;
-		transform& tr = m->ref_transform();
-		tr.set_local_position({ 3, 3, 5 });
-		tr.set_local_scale({ 1, 1, 1 });
-		m_entities.emplace_back(make_unique<entity>("Cylinder", move(m)));
-	}
 	{ // Legs
 		unique<mesh> m0 = make_unique<mesh>();
 		m0->add_cube();
@@ -100,6 +101,8 @@ void fields_engine::scene::startup()
 		const float scale = 1;
 		tr.set_local_position({ 0, 0, 0.8f });
 		tr.set_local_scale({ scale, scale, scale });
+		//ent->attach_component(make_unique<movement_controller>());
+
 		{ // Middle
 			unique<mesh> m1 = make_unique<mesh>();
 			m1->add_cube();
