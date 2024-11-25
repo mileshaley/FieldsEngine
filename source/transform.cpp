@@ -154,6 +154,7 @@ fe::vec3 const& fields_engine::transform::get_local_rotation() const {
 }
 
 fe::mat4 fields_engine::transform::make_rotator_matrix(mat4 const& base) const {
+	/// TODO: Fix this
 	return
 		glm::rotate(
 			glm::rotate(

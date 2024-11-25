@@ -41,9 +41,12 @@ namespace fields_engine {
 
 		void set_speed(float new_speed);
 		float get_speed() const;
+
 	private:
-		float m_speed = 5.0f;
 		mode m_mode = mode::consider_z_rotation;
+		float m_speed = 5.0f;
+		float m_sensitivity = 0.5f;
+		bool m_invert_look_y = false;
 	};
 
 } // namespace fields_engine

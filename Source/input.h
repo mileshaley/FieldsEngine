@@ -39,13 +39,22 @@ namespace fields_engine {
 
 		void tick(float dt);
 
-		bool is_key_held(int key_code) const;
-		bool was_key_triggered(int key_code) const;
-		bool was_key_released (int key_code) const;
+		bool is_button_held(int key_code, bool on_mouse = false) const;
+		bool was_button_triggered(int key_code, bool on_mouse = false) const;
+		bool was_button_released (int key_code, bool on_mouse = false) const;
 
+		bool did_mouse_move() const;
+		vec2 get_delta_mouse_move() const;
+
+		bool did_mouse_scroll() const;
+		vec2 get_delta_mouse_scroll() const;
 
 		// triggered is false if the action is released
 		void report_key_action(int key_code, bool triggered);
+		void report_mouse_action(int button_code, bool triggered);
+		void report_mouse_pos(vec2 delta);
+		void report_mouse_scroll(vec2 delta);
+
 	private:
 		class record {
 		public:
@@ -55,7 +64,10 @@ namespace fields_engine {
 		};
 
 	private:
-		std::unordered_map<int, record> m_key_map;
+		std::unordered_map<int, record> m_button_records;
+		vec2 m_last_mouse_pos;
+		vec2 m_mouse_pos;
+		vec2 m_mouse_scroll;
 	};
 
 

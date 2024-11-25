@@ -17,7 +17,7 @@
 #include "SDL3/SDL.h"
 #endif // FE_USING_SDL3
 
-
+static constexpr int mouse_code_offset = GLFW_KEY_LAST + 1;
 
 namespace fields_engine::input::detail {
 	// GLFWkeyFun
@@ -44,34 +44,37 @@ namespace fields_engine::input::detail {
 		if (ImGui::GetIO().WantCaptureMouse) {
 			return;
 		}
-
+		context<input_manager>().report_mouse_action(button, action == 1);
 	}
 	// GLFWcursorposfun
-	static void cursor_move_callback(GLFWwindow* win, double x, double y) {
+	static void cursor_pos_callback(GLFWwindow* win, double x, double y) {
 		if (ImGui::GetIO().WantCaptureMouse) {
 			return;
 		}
-
+		context<input_manager>().report_mouse_pos({x, y});
 	}
 	// GLFWscrollfun
 	static void scroll_callback(GLFWwindow* win, double x, double y) {
 		if (ImGui::GetIO().WantCaptureMouse) {
 			return;
 		}
-
+		context<input_manager>().report_mouse_scroll({ x, y });
 	}
 
 	void initialize_callbacks(window& win) {
 		glfwSetKeyCallback(win.handle, key_callback);
 		glfwSetMouseButtonCallback(win.handle, mouse_button_callback);
-		glfwSetCursorPosCallback(win.handle, cursor_move_callback);
+		glfwSetCursorPosCallback(win.handle, cursor_pos_callback);
 		glfwSetScrollCallback(win.handle, scroll_callback);
 	}
 } // namespace fields_engine::input::detail
 
 
-fields_engine::input_manager::input_manager() 
-	: m_key_map()
+fields_engine::input_manager::input_manager()
+	: m_button_records()
+	, m_mouse_pos(0, 0)
+	, m_last_mouse_pos(0, 0)
+	, m_mouse_scroll(0, 0)
 {
 }
 
@@ -86,7 +89,7 @@ bool fields_engine::input_manager::shutdown() {
 }
 
 void fields_engine::input_manager::tick(float dt) {
-	for (auto it = m_key_map.begin(); it != m_key_map.end(); ++it) {
+	for (auto it = m_button_records.begin(); it != m_button_records.end(); ++it) {
 		record& rec = it->second;
 		input_state& state = rec.state;
 		if (state == input_state::triggered) {
@@ -95,36 +98,65 @@ void fields_engine::input_manager::tick(float dt) {
 			state = input_state::none;
 		}
 	}
+	m_last_mouse_pos = m_mouse_pos;
+	m_mouse_scroll = vec2{ 0, 0 };
 }
 
-bool fields_engine::input_manager::is_key_held(int key_code) const {
-	auto it = m_key_map.find(key_code);
-	if (it != m_key_map.end()) {
+bool fields_engine::input_manager::is_button_held(int key_code, bool on_mouse) const {
+	auto it = m_button_records.find(key_code + (on_mouse ? mouse_code_offset : 0));
+	if (it != m_button_records.end()) {
 		return it->second.state == input_state::held 
 			|| it->second.state == input_state::triggered;
 	}
 	return false;
 }
 
-bool fields_engine::input_manager::was_key_triggered(int key_code) const {
-	auto it = m_key_map.find(key_code);
-	if (it != m_key_map.end()) {
+bool fields_engine::input_manager::was_button_triggered(int key_code, bool on_mouse) const {
+	auto it = m_button_records.find(key_code + (on_mouse ? mouse_code_offset : 0));
+	if (it != m_button_records.end()) {
 		return it->second.state == input_state::triggered;
 	}
 	return false;
 }
 
-bool fields_engine::input_manager::was_key_released(int key_code) const {
-	auto it = m_key_map.find(key_code);
-	if (it != m_key_map.end()) {
+bool fields_engine::input_manager::was_button_released(int key_code, bool on_mouse) const {
+	auto it = m_button_records.find(key_code + (on_mouse ? mouse_code_offset : 0));
+	if (it != m_button_records.end()) {
 		return it->second.state == input_state::released;
 	}
 	return false;
 }
 
+bool fields_engine::input_manager::did_mouse_move() const {
+	return m_mouse_pos != m_last_mouse_pos;
+}
+
+fe::vec2 fields_engine::input_manager::get_delta_mouse_move() const {
+	return m_mouse_pos - m_last_mouse_pos;
+}
+
+bool fields_engine::input_manager::did_mouse_scroll() const {
+	return m_mouse_scroll != vec2(0, 0);
+}
+
+fe::vec2 fields_engine::input_manager::get_delta_mouse_scroll() const {
+	return m_mouse_scroll;
+}
+
 void fields_engine::input_manager::report_key_action(int key_code, bool triggered) {
-	m_key_map[key_code].state = triggered ? input_state::triggered : input_state::released;
+	m_button_records[key_code].state = triggered ? input_state::triggered : input_state::released;
 	/// TODO: trigger input events here
 }
 
+void fields_engine::input_manager::report_mouse_action(int button_code, bool triggered) {
+	m_button_records[button_code + mouse_code_offset].state = triggered ? input_state::triggered : input_state::released;
+	/// TODO: trigger input events here
+}
 
+void fields_engine::input_manager::report_mouse_pos(vec2 delta) {
+	m_mouse_pos = delta;
+}
+
+void fields_engine::input_manager::report_mouse_scroll(vec2 delta) {
+	m_mouse_scroll = delta;
+}
