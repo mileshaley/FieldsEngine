@@ -70,6 +70,7 @@
     <ClCompile Include="source\camera.cpp" />
     <ClCompile Include="source\spatial_component.cpp" />
     <ClCompile Include="source\movement_controller.cpp" />
+    <ClCompile Include="source\frame_buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -129,5 +130,6 @@
     <ClInclude Include="source\context_ownership.h" />
     <ClInclude Include="source\spatial_component.h" />
     <ClInclude Include="source\movement_controller.h" />
+    <ClInclude Include="source\frame_buffer.h" />
   </ItemGroup>
 </Project>

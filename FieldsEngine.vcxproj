@@ -52,6 +52,7 @@
     <ClCompile Include="source\editor_icons_all.cpp" />
     <ClCompile Include="source\editor_window.cpp" />
     <ClCompile Include="source\entity.cpp" />
+    <ClCompile Include="source\frame_buffer.cpp" />
     <ClCompile Include="source\graphics.cpp" />
     <ClCompile Include="source\input.cpp" />
     <ClCompile Include="source\log.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="source\editor_window.h" />
     <ClInclude Include="source\entity.h" />
     <ClInclude Include="source\error.h" />
+    <ClInclude Include="source\frame_buffer.h" />
     <ClInclude Include="source\graphics.h" />
     <ClInclude Include="source\input.h" />
     <ClInclude Include="source\log.h" />
