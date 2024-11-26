@@ -103,7 +103,7 @@ void fields_engine::editor::tick(float dt) {
 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
-
+			ImGui::Text("FPS: %2f", 1.0f / dt);
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit")) {
@@ -421,10 +421,11 @@ bool fields_engine::editor::is_capturing_keyboard() const {
 }
 
 bool fields_engine::editor::game_window() {
-
+	ImVec2 avail = ImGui::GetContentRegionAvail();
+	m_game_window_size = { avail.x, avail.y };
 	ImGui::Image(
 		(ImTextureID)(i64)m_frame_buffer.get_texture_id(),
-		{ 1920, 1080 },
+		{ m_game_window_size.x, m_game_window_size.y },
 		{ 0, 1 },
 		{ 1, 0 }
 	);

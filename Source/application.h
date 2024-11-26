@@ -44,6 +44,7 @@ namespace fields_engine {
 		ivec2 get_window_size() const;
 
 	private:
+		double m_prev_time;
 		ivec2 m_win_size;
 		local_context<window> m_window;
 		local_context<input_manager> m_input_manager;

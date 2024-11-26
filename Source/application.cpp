@@ -106,9 +106,11 @@ bool fields_engine::application::startup() {
 void fields_engine::application::run() {
 	m_running = true;
 
+	m_prev_time = glfwGetTime();
 	while (m_running) {
-		/// TODO: use real delta time
-		const float dt = 1.0f / 60.0f;
+		const double new_time = glfwGetTime();
+		const float dt = float(new_time - m_prev_time);
+		m_prev_time = new_time;
 
 		m_input_manager->tick(dt);
 

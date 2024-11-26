@@ -33,9 +33,7 @@ fields_engine::scene::scene() {
 
 fields_engine::scene::~scene() {}
 
-
-void fields_engine::scene::startup()
-{
+void fields_engine::scene::startup() {
 	graphics::material grass_mat;
 	grass_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
 	grass_mat.m_specular_color = vec3{0.0f, 0.0f, 1.0f};//{ 0.7f, 0.7f, 0.8f };
