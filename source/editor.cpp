@@ -19,6 +19,10 @@
 #include "scene.h"
 #include "context.h"
 
+/*~-------------------------------------------------------------------------~*\
+ * Editor Definitions                                                        *
+\*~-------------------------------------------------------------------------~*/
+
 fields_engine::editor::editor(window& win)
 	: m_gui_context(ImGui::CreateContext())
 	, m_fonts()
@@ -82,15 +86,20 @@ fields_engine::editor::editor(window& win)
 		std::bind(&scene::display_window, &context<scene>()),
 		ICON_MOUNTAIN_SUN
 	));
-}
 
+	add_window(make_unique<editor_window>(
+		"Game View",
+		std::bind(&editor::game_window, this),
+		ICON_GAMEPAD
+	));
+}
 void fields_engine::editor::tick(float dt) {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
 	// Begin dockspace
-	//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
+	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
@@ -121,6 +130,9 @@ void fields_engine::editor::tick(float dt) {
 		ImGui::EndMainMenuBar();
 	}
 
+	m_game_window_focused = false;
+	m_game_window_hovered = false;
+
 	for (int i = 0; i < m_windows.size(); ++i) {
 		m_windows[i]->display();
 	}
@@ -141,11 +153,13 @@ void fields_engine::editor::tick(float dt) {
 	//ImGui::End();
 
 	//graphics::clear_background(clor_);
+	m_frame_buffer.unuse();
 
 	ImGui::Render();
 
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+	m_frame_buffer.use();
 
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 		ImGui::UpdatePlatformWindows();
@@ -396,6 +410,28 @@ bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
 		ImGui::EndPopup();
 	}
 	return changed;
+}
+
+bool fields_engine::editor::is_capturing_mouse() const {
+	return ImGui::GetIO().WantCaptureMouse && !m_game_window_focused;
+}
+
+bool fields_engine::editor::is_capturing_keyboard() const {
+	return ImGui::GetIO().WantCaptureKeyboard && !m_game_window_focused;
+}
+
+bool fields_engine::editor::game_window() {
+
+	ImGui::Image(
+		(ImTextureID)(i64)m_frame_buffer.get_texture_id(),
+		{ 1920, 1080 },
+		{ 0, 1 },
+		{ 1, 0 }
+	);
+	m_game_window_hovered = ImGui::IsWindowHovered();
+	m_game_window_focused = ImGui::IsWindowFocused();
+
+	return false;
 }
 
 bool fields_engine::editor::root_window() {

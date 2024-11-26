@@ -10,6 +10,11 @@
 #include <iostream>
 #include "window.h"
 #include "context.h"
+#include "application.h"
+
+#if EDITOR
+#include "editor.h"
+#endif // EDITOR
 
 #if FE_USING_GLFW
 #include "glfw/glfw3.h"
@@ -26,39 +31,51 @@ namespace fields_engine::input::detail {
 		// 0 - released
 		// 1 - triggered
 		// 2 - repeat (no thanks)
-
-		if (ImGui::GetIO().WantCaptureKeyboard) {
-			return;
-		} else if (action == GLFW_REPEAT) {
+		if (action == GLFW_REPEAT) {
 			return;
 		}
-
+		application& app = context<application>();
+#if EDITOR
+		if (app.ref_editor().is_capturing_keyboard()) {
+			return;
+		}
+#endif // EDITOR
+		app.ref_input_manager().report_key_action(key, action == 1);
 		//std::cout << "key: '" << static_cast<char>(key) 
 		//		  << "', scan code: " << scan_code << ", action: " 
 		//		  << action << ", mods: " << mods << std::endl;
-
-		context<input_manager>().report_key_action(key, action == 1);
 	}
+
 	// GLFWmousebuttonfun
 	static void mouse_button_callback(GLFWwindow* win, int button, int action, int mods) {
-		if (ImGui::GetIO().WantCaptureMouse) {
+		application& app = context<application>();
+#if EDITOR
+		if (app.ref_editor().is_capturing_mouse()) {
 			return;
 		}
-		context<input_manager>().report_mouse_action(button, action == 1);
+#endif // EDITOR
+		app.ref_input_manager().report_mouse_action(button, action == 1);
 	}
+
 	// GLFWcursorposfun
 	static void cursor_pos_callback(GLFWwindow* win, double x, double y) {
-		if (ImGui::GetIO().WantCaptureMouse) {
+		application& app = context<application>();
+#if EDITOR
+		if (app.ref_editor().is_capturing_mouse()) {
 			return;
 		}
-		context<input_manager>().report_mouse_pos({x, y});
+#endif // EDITOR
+		app.ref_input_manager().report_mouse_pos({x, y});
 	}
 	// GLFWscrollfun
 	static void scroll_callback(GLFWwindow* win, double x, double y) {
-		if (ImGui::GetIO().WantCaptureMouse) {
+		application& app = context<application>();
+#if EDITOR
+		if (app.ref_editor().is_capturing_mouse()) {
 			return;
 		}
-		context<input_manager>().report_mouse_scroll({ x, y });
+#endif // EDITOR
+		app.ref_input_manager().report_mouse_scroll({ x, y });
 	}
 
 	void initialize_callbacks(window& win) {

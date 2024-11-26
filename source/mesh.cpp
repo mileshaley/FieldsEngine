@@ -125,9 +125,6 @@ void fields_engine::mesh::draw(graphics::shader const& shader) const {
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(inverse));
     FE_GL_VERIFY;
 
-
-
-
     // Material settings for shader
     loc = shader.uniform_location("diffuse");
     glUniform3fv(loc, 1, glm::value_ptr(m_material.m_diffuse_color));

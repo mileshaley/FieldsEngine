@@ -10,8 +10,6 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-
-
 /*~-------------------------------------------------------------------------~*\
  * Frame Buffer Class                                                        *
 \*~-------------------------------------------------------------------------~*/
@@ -26,7 +24,7 @@ namespace fields_engine::graphics {
 		void use() const;
 		void unuse() const;
 
-		unsigned get_texture_id();
+		unsigned get_texture_id() const;
 
 	private:
 		unsigned m_fbo_id;
