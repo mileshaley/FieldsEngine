@@ -25,11 +25,44 @@ namespace fields_engine::graphics {
 		void unuse() const;
 
 		unsigned get_texture_id() const;
+		unsigned get_frame_buffer_id() const;
+		unsigned get_render_buffer_id() const;
+
 
 	private:
 		unsigned m_fbo_id;
 		unsigned m_rbo_id;
 		unsigned m_tex_id;
+	};
+
+/*~-------------------------------------------------------------------------~*\
+ * Frame Buffer Class                                                        *
+\*~-------------------------------------------------------------------------~*/
+
+	class dual_frame_buffer {
+	public:
+		dual_frame_buffer();
+
+		void swap();
+
+		void use() const;
+		void unuse() const;
+		// Gets the inactive texture's id
+		unsigned get_texture_id() const;
+		// Gets the active texture's id
+		unsigned get_frame_buffer_id() const;
+		// Gets the active texture's id
+		unsigned get_render_buffer_id() const;
+
+	private:
+		frame_buffer& ref_active();
+		frame_buffer const& ref_active() const;
+		frame_buffer& ref_inactive();
+		frame_buffer const& ref_inactive() const;
+
+		frame_buffer m_fb_1;
+		frame_buffer m_fb_2;
+		bool m_1_active;
 	};
 
 } // namespace fields_engine::graphics

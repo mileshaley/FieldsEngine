@@ -128,13 +128,18 @@ void fields_engine::application::run() {
 		/// draw logic goes here
 
 		m_editor->tick(dt);
-
-#if FE_USING_GLFW
+#if EDITOR
+		m_editor->ref_dual_frame_buffer().swap();
+#elif FE_USING_GLFW
 		glfwSwapBuffers(m_window->handle);
-		m_running = !glfwWindowShouldClose(m_window->handle);
 #elif FE_USING_SDL3
 		/// RenderClear
-		m_running; /// using input
+#endif // FE_USING_SDL3
+
+#if FE_USING_GLFW
+m_running = !glfwWindowShouldClose(m_window->handle);
+#elif FE_USING_SDL3
+m_running; /// using input
 #endif // FE_USING_SDL3
 	}
 }

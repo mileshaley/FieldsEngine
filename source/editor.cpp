@@ -99,7 +99,8 @@ void fields_engine::editor::tick(float dt) {
 	ImGui::NewFrame();
 
 	// Begin dockspace
-	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
+	
+	//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
@@ -153,13 +154,13 @@ void fields_engine::editor::tick(float dt) {
 	//ImGui::End();
 
 	//graphics::clear_background(clor_);
-	m_frame_buffer.unuse();
+	m_dual_fb.unuse();
 
 	ImGui::Render();
 
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	m_frame_buffer.use();
+	m_dual_fb.use();
 
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 		ImGui::UpdatePlatformWindows();
@@ -420,11 +421,15 @@ bool fields_engine::editor::is_capturing_keyboard() const {
 	return ImGui::GetIO().WantCaptureKeyboard && !m_game_window_focused;
 }
 
+fe::graphics::dual_frame_buffer& fields_engine::editor::ref_dual_frame_buffer() {
+	return m_dual_fb;
+}
+
 bool fields_engine::editor::game_window() {
 	ImVec2 avail = ImGui::GetContentRegionAvail();
 	m_game_window_size = { avail.x, avail.y };
 	ImGui::Image(
-		(ImTextureID)(i64)m_frame_buffer.get_texture_id(),
+		(ImTextureID)(i64)m_dual_fb.get_texture_id(),
 		{ m_game_window_size.x, m_game_window_size.y },
 		{ 0, 1 },
 		{ 1, 0 }
