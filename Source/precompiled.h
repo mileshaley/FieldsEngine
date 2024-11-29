@@ -82,6 +82,8 @@ namespace fields_engine::common {
  * Math Type Aliases                                                         *
 \*~-------------------------------------------------------------------------~*/
 
+	using glm::quat;
+
 	using glm::mat2;
 	using glm::mat3;
 	using glm::mat4;

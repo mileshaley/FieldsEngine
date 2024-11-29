@@ -9,41 +9,43 @@
 #include "imgui.h"
 #include "spatial_component.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtx/quaternion.hpp"
 
 /*~-------------------------------------------------------------------------~*\
  * Transform Definitions                                                     *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::transform::transform(vec3 const& position, vec3 const& rotation, vec3 const& scale)
-	: m_data{position, rotation, scale}
+fields_engine::transform::transform(
+	vec3 const& position, 
+	vec3 const& scale,
+	quat const& rotation
+)
+	: m_data{position, scale, rotation}
 	, m_matrix(1)
 	, m_dirty(true)
 	, m_owner(nullptr)
-{
-}
+{}
 
 fields_engine::transform::transform(transform_data const& data)
 	: m_data(data)
 	, m_matrix(1)
 	, m_dirty(true)
 	, m_owner(nullptr)
-{
-}
+{}
 
 fields_engine::transform::transform(transform const& other)
 	: m_data(other.m_data)
 	, m_matrix(1)
 	, m_dirty(true)
 	, m_owner(nullptr)
-{
-}
+{}
 
 #ifdef EDITOR
 bool fields_engine::transform::display() {
 	bool modif = false;
 	modif |= ImGui::DragFloat3("Position", &m_data.position.x);
 	modif |= ImGui::DragFloat3("Scale", &m_data.scale.x);
-	modif |= ImGui::DragFloat3("Rotation", &m_data.rotation.x);
+	modif |= ImGui::DragFloat4("Rotation", &m_data.rotation.x);
 
 	if (ImGui::CollapsingHeader("Matrix")) {
 		ImGui::Text(m_owner->get_parent() ? "Parented" : "Unparented");
@@ -68,16 +70,26 @@ void fields_engine::transform::recalculate_matrix() const {
 	constexpr mat4 identity(1);
 	m_dirty = false;
 	spatial_component* owner_parent = m_owner->get_parent();
-	m_matrix =
-		glm::scale(
-			make_rotator_matrix(
-				glm::translate(
-					owner_parent != nullptr
-						? owner_parent->ref_transform().world_matrix() 
-						: identity,
-					m_data.position
-				)
-			), 
+	
+	//m_matrix =
+	//	glm::translate(
+	//		glm::toMat4(m_data.rotation)
+	//		*
+	//			glm::scale(
+	//				owner_parent != nullptr
+	//					? owner_parent->ref_transform().world_matrix() 
+	//					: identity,
+	//				m_data.scale
+	//			), 
+	//		m_data.position
+	//	);
+
+	m_matrix
+		= glm::scale(
+		glm::translate((owner_parent != nullptr
+			? owner_parent->ref_transform().world_matrix()
+			: identity), m_data.position)
+		* glm::mat4_cast(m_data.rotation),
 			m_data.scale
 		);
 }
@@ -116,7 +128,7 @@ void fields_engine::transform::set_local_scale(fe::vec3 const& new_scale) {
 	m_data.scale = new_scale;
 	set_dirty();
 }
-void fields_engine::transform::set_local_rotation(vec3 const& new_rotation) {
+void fields_engine::transform::set_local_rotation(quat const& new_rotation) {
 	m_data.rotation = new_rotation;
 	set_dirty();
 }
@@ -135,8 +147,17 @@ fe::vec3 fields_engine::transform::get_world_scale() const {
 	return matrix_decompose_scale(m_matrix);
 }
 
-fe::vec3 fields_engine::transform::get_world_rotation() const {
-	return matrix_decompose_rotation(m_matrix);
+fe::quat fields_engine::transform::get_world_rotation() const {
+	glm::vec3 rot = matrix_decompose_rotation(m_matrix);
+	float angle_x = glm::radians(rot.x); // Convert degrees to radians
+	float angle_y = glm::radians(rot.y);
+	float angle_z = glm::radians(rot.z);
+
+	glm::quat q_x = glm::angleAxis(angle_x, glm::vec3(1.0f, 0.0f, 0.0f)); // X-axis
+	glm::quat q_y = glm::angleAxis(angle_y, glm::vec3(0.0f, 1.0f, 0.0f)); // Y-axis
+	glm::quat q_z = glm::angleAxis(angle_z, glm::vec3(0.0f, 0.0f, 1.0f)); // Z-axis
+
+	return q_z * q_y * q_x;
 }
 
 fe::transform_data const& fields_engine::transform::get_local_transform() const {
@@ -149,26 +170,27 @@ fe::vec3 const& fields_engine::transform::get_local_position() const {
 fe::vec3 const& fields_engine::transform::get_local_scale() const {
 	return m_data.scale;
 }
-fe::vec3 const& fields_engine::transform::get_local_rotation() const {
+fe::quat const& fields_engine::transform::get_local_rotation() const {
 	return m_data.rotation;
 }
 
 fe::mat4 fields_engine::transform::make_rotator_matrix(mat4 const& base) const {
+	return glm::toMat4(m_data.rotation);
 	/// TODO: Fix this
-	return
-		glm::rotate(
-			glm::rotate(
-				glm::rotate(
-					base,
-					glm::radians(m_data.rotation.z),
-					(vec3&)identity[2]
-				),
-				glm::radians(m_data.rotation.y),
-				(vec3&)identity[1]
-			),
-			glm::radians(m_data.rotation.x),
-			(vec3&)identity[0]
-		);
+	//return
+	//	glm::rotate(
+	//		glm::rotate(
+	//			glm::rotate(
+	//				base,
+	//				glm::radians(m_data.rotation.z),
+	//				(vec3&)identity[2]
+	//			),
+	//			glm::radians(m_data.rotation.y),
+	//			(vec3&)identity[1]
+	//		),
+	//		glm::radians(m_data.rotation.x),
+	//		(vec3&)identity[0]
+	//	);
 }
 
 /*~-------------------------------------------------------------------------~*\

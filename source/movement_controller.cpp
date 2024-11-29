@@ -60,19 +60,19 @@ void fields_engine::movement_controller::tick(float dt) {
 		float dist = glm::length(dir);
 		if (dist > 0.000001f || ydiff) {
 			transform& tr = get_owner()->ref_transform();
-			const vec3 rot = tr.get_local_rotation();
-
+			//const vec3 rot = tr.get_local_rotation();
+			
 			/// TODO: Fix this, it sucks
-			const mat4 rotator =
-				glm::rotate(
-					glm::rotate(
-						identity,
-						glm::radians(rot.z),
-						(vec3 const&)identity[2]
-					),
-					glm::radians(rot.x),
-					(vec3 const&)identity[0]
-				);
+			const mat4 rotator = glm::mat4_cast(tr.get_local_rotation());
+			//	glm::rotate(
+			//		glm::rotate(
+			//			identity,
+			//			glm::radians(rot.z),
+			//			(vec3 const&)identity[2]
+			//		),
+			//		glm::radians(rot.x),
+			//		(vec3 const&)identity[0]
+			//	);
 			dir = rotator * dir;
 
 
@@ -110,8 +110,11 @@ void fields_engine::movement_controller::tick(float dt) {
 		if (m_invert_look_y) {
 			delta.y *= -1;
 		}
-
-		tr.set_local_rotation(tr.get_local_rotation() + vec3{delta.y, 0, delta.x});
+		const quat new_rot 
+			= glm::angleAxis(glm::radians(delta.x), vec3{ 0, 0, 1 })
+			* tr.get_local_rotation()
+			* glm::angleAxis(glm::radians(delta.y), vec3{ 1, 0, 0 });
+		tr.set_local_rotation(new_rot);
 	}
 }
 

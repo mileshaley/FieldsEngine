@@ -6,22 +6,27 @@
 
 #pragma once
 
-namespace fields_engine {
 
 /*~-------------------------------------------------------------------------~*\
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+#include "glm/gtc/quaternion.hpp"
+
+namespace fields_engine {
 	class spatial_component;
+} // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
  * Transform Data Structure                                                  *
 \*~-------------------------------------------------------------------------~*/
 
+namespace fields_engine {
+
 	struct transform_data {
 		vec3 position;
-		vec3 rotation;
 		vec3 scale;
+		quat rotation;
 	};
 
 /*~-------------------------------------------------------------------------~*\
@@ -34,8 +39,8 @@ namespace fields_engine {
 	public:
 		transform(
 			vec3 const& position = { 0, 0, 0 }, 
-			vec3 const& rotation = { 0, 0, 0 },
-			vec3 const& scale    = { 1, 1, 1 }
+			vec3 const& scale    = { 1, 1, 1 },
+			quat const& rotation = { 1, 0, 0, 0 }
 		);
 
 		transform(transform_data const& data);
@@ -57,17 +62,17 @@ namespace fields_engine {
 
 		void set_local_position(vec3 const& new_pos);
 		void set_local_scale(vec3 const& new_scale);
-		void set_local_rotation(vec3 const& new_rotation);
+		void set_local_rotation(quat const& new_rotation);
 
 		transform_data get_world_transform() const;
 		vec3 get_world_position() const;
 		vec3 get_world_scale() const;
-		vec3 get_world_rotation() const;
+		quat get_world_rotation() const;
 
 		transform_data const& get_local_transform() const;
 		vec3 const& get_local_position() const;
 		vec3 const& get_local_scale() const;
-		vec3 const& get_local_rotation() const;
+		quat const& get_local_rotation() const;
 
 		mat4 make_rotator_matrix(mat4 const& base = identity) const;
 

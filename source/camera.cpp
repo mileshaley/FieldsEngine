@@ -58,38 +58,14 @@ bool fields_engine::camera::display() {
 #endif // EDITOR
 
 void fields_engine::camera::recalculate_view_matrix() {
-	constexpr mat4 identity(1);
 	transform const& tr = ref_transform();
-	vec3 const& position = tr.get_world_position();
-	vec3 const& scale = tr.get_world_scale();
-	vec3 const& rotation = tr.get_world_rotation();
-
 	m_world_view_matrix = glm::inverse(tr.world_matrix());
-	
-		//m_world_view_matrix = 
-	//	glm::translate(
-	//		glm::rotate(
-	//			glm::rotate(
-	//				glm::rotate(
-	//					glm::scale(
-	//						identity,
-	//						scale
-	//					), 
-	//					glm::radians(rotation.x),
-	//					(vec3&)identity[0]
-	//				), 
-	//				glm::radians(rotation.y),
-	//				(vec3&)identity[1]
-	//			), 
-	//			glm::radians(rotation.z),
-	//			(vec3&)identity[2]
-	//		), 
-	//		position
-	//	);
 }
 
 void fields_engine::camera::recalculate_proj_matrix() {
-	const vec2 win_size = context<editor>().m_game_window_size;// context<application>().get_window_size();
+	/// TODO: fix this
+	const vec2 win_size = context<editor>().m_game_window_size;
+	// context<application>().get_window_size();
 	
 	if (m_orthographic) {
 		constexpr float ortho_zoom_factor = 20;
