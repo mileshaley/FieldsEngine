@@ -82,19 +82,24 @@ namespace fields_engine::common {
  * Math Type Aliases                                                         *
 \*~-------------------------------------------------------------------------~*/
 
+	using glm::mat2;
+	using glm::mat3;
+	using glm::mat4;
+
 	using glm::vec1;
 	using glm::vec2;
 	using glm::vec3;
 	using glm::vec4;
 
-	using glm::mat2;
-	using glm::mat3;
-	using glm::mat4;
-
 	using glm::ivec1;
 	using glm::ivec2;
 	using glm::ivec3;
 	using glm::ivec4;
+
+	using svec1 = glm::vec<1, i16>;
+	using svec2 = glm::vec<2, i16>;
+	using svec3 = glm::vec<3, i16>;
+	using svec4 = glm::vec<4, i16>;
 
 /*~-------------------------------------------------------------------------~*\
  * Pointer Intention Aliases                                                 *

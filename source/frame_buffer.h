@@ -18,21 +18,36 @@ namespace fields_engine::graphics {
 
 	class frame_buffer {
 	public:
-		frame_buffer();
+		enum class usage_status : int {
+			unused = 0,
+			used_draw_only = 1,
+			used_read_only = 2,
+			used = 3,
+		};
+
+		frame_buffer(ivec2 size = { 1920, 1080 });
 		~frame_buffer();
 
+		void viewport();
 		void use() const;
 		void unuse() const;
+
+		void resize(ivec2 new_size);
 
 		unsigned get_texture_id() const;
 		unsigned get_frame_buffer_id() const;
 		unsigned get_render_buffer_id() const;
 
+		usage_status get_usage_status() const;
 
 	private:
+		void create();
+		void destroy();
+
 		unsigned m_fbo_id;
 		unsigned m_rbo_id;
 		unsigned m_tex_id;
+		svec2 m_size;
 	};
 
 /*~-------------------------------------------------------------------------~*\
@@ -41,12 +56,16 @@ namespace fields_engine::graphics {
 
 	class dual_frame_buffer {
 	public:
-		dual_frame_buffer();
+		dual_frame_buffer(ivec2 size = {1920, 1080});
 
 		void swap();
 
+		void viewport();
 		void use() const;
 		void unuse() const;
+
+		void resize(ivec2 new_size);
+
 		// Gets the inactive texture's id
 		unsigned get_texture_id() const;
 		// Gets the active texture's id

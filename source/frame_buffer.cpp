@@ -15,8 +15,97 @@
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine::graphics {
-	frame_buffer::frame_buffer() {
-		constexpr ivec2 windowSize = { 1920, 1080 };
+	frame_buffer::frame_buffer(ivec2 size) 
+		: m_size(size)
+	{
+		create();
+	}
+
+	frame_buffer::~frame_buffer() {
+		destroy();
+	}
+
+	void frame_buffer::viewport() {
+		glViewport(0, 0, m_size.x, m_size.y);
+		FE_GL_VERIFY;
+	}
+
+	void frame_buffer::use() const {
+		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo_id);
+		FE_GL_VERIFY;
+	}
+
+	void frame_buffer::unuse() const {
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		FE_GL_VERIFY;
+	}
+
+	void frame_buffer::resize(ivec2 new_size) {
+		destroy();
+		m_size = new_size;
+		create();
+		//usage_status usage = get_usage_status();
+		//if (usage == usage_status::unused) {
+		//	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo_id);
+		//	FE_GL_VERIFY;
+		//}
+		//m_size = new_size;
+		//glBindFramebuffer(GL_FRAMEBUFFER, m_fbo_id);
+		//glViewport(0, 0, new_size.x, new_size.y);
+		//
+		//glBindTexture(GL_TEXTURE_2D, m_tex_id);
+		//FE_GL_VERIFY;
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, new_size.x, new_size.y, 
+		//	0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+		//FE_GL_VERIFY;
+		//glBindTexture(GL_TEXTURE_2D, 0);
+		//FE_GL_VERIFY;
+		//
+		//glBindRenderbuffer(GL_RENDERBUFFER, m_rbo_id);
+		//FE_GL_VERIFY;
+		//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 
+		//	new_size.x, new_size.y);
+		//FE_GL_VERIFY;
+		//glBindRenderbuffer(GL_RENDERBUFFER, 0);
+		//FE_GL_VERIFY;
+		//
+		//
+		//FE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
+		//	"Something went wrong during frame buffer resize"
+		//);
+		////if (usage == usage_status::unused) {
+		////	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		////	FE_GL_VERIFY;
+		////}
+		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	unsigned frame_buffer::get_texture_id() const {
+		return m_tex_id;
+	}
+
+	unsigned frame_buffer::get_frame_buffer_id() const {
+		return m_fbo_id;
+	}
+
+	unsigned frame_buffer::get_render_buffer_id() const {
+		return m_rbo_id;
+	}
+
+	frame_buffer::usage_status frame_buffer::get_usage_status() const {
+		int draw_fbo_id;
+		int read_fbo_id;
+		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &draw_fbo_id);
+		FE_GL_VERIFY;
+		glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &read_fbo_id);
+		FE_GL_VERIFY;
+
+		return usage_status{
+			int(draw_fbo_id == m_fbo_id) | (int(read_fbo_id == m_fbo_id) << 1)
+		};
+	}
+
+	void frame_buffer::create() {
 		glGenFramebuffers(1, &m_fbo_id);
 		FE_GL_VERIFY;
 		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo_id);
@@ -25,7 +114,8 @@ namespace fields_engine::graphics {
 		FE_GL_VERIFY;
 		glBindTexture(GL_TEXTURE_2D, m_tex_id);
 		FE_GL_VERIFY;
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, windowSize.x, windowSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_size.x, m_size.y,
+			0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 		FE_GL_VERIFY;
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		FE_GL_VERIFY;
@@ -38,7 +128,8 @@ namespace fields_engine::graphics {
 		FE_GL_VERIFY;
 		glBindRenderbuffer(GL_RENDERBUFFER, m_rbo_id);
 		FE_GL_VERIFY;
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, windowSize.x, windowSize.y);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8,
+			m_size.x, m_size.y);
 		FE_GL_VERIFY;
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_rbo_id);
 		FE_GL_VERIFY;
@@ -54,69 +145,45 @@ namespace fields_engine::graphics {
 		FE_GL_VERIFY;
 	}
 
-	frame_buffer::~frame_buffer() {
+	void frame_buffer::destroy() {
 		glDeleteRenderbuffers(1, &m_rbo_id);
 		FE_GL_VERIFY;
 		glDeleteTextures(1, &m_tex_id);
 		FE_GL_VERIFY;
 		glDeleteFramebuffers(1, &m_fbo_id);
 		FE_GL_VERIFY;
+		//m_rbo_id = m_tex_id = m_fbo_id = 0;
 	}
 
-	void frame_buffer::use() const {
-		glBindFramebuffer(GL_FRAMEBUFFER, m_fbo_id);
-		FE_GL_VERIFY;
-	}
-
-	void frame_buffer::unuse() const {
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		FE_GL_VERIFY;
-	}
-
-	unsigned frame_buffer::get_texture_id() const {
-		return m_tex_id;
-	}
-
-	unsigned frame_buffer::get_frame_buffer_id() const {
-		return m_fbo_id;
-	}
-
-	unsigned frame_buffer::get_render_buffer_id() const {
-		return m_rbo_id;
-	}
 
 /*~-------------------------------------------------------------------------~*\
  * Dual Frame Buffer Definitions                                             *
 \*~-------------------------------------------------------------------------~*/
 
-	dual_frame_buffer::dual_frame_buffer()
-		: m_fb_1()
-		, m_fb_2()
+	dual_frame_buffer::dual_frame_buffer(ivec2 size)
+		: m_fb_1(size)
+		, m_fb_2(size)
 		, m_1_active(true)
 	{
 	}
 
 	void dual_frame_buffer::swap() {
-		int draw_fbo_id;
-		int read_fbo_id;
-		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &draw_fbo_id);
-		FE_GL_VERIFY;
-		glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &read_fbo_id);
-		FE_GL_VERIFY;
+		frame_buffer::usage_status usage = ref_active().get_usage_status();
 
-		int active_fbo_id = ref_active().get_frame_buffer_id();
 		int inactive_fbo_id = ref_inactive().get_frame_buffer_id();
-		if (draw_fbo_id == active_fbo_id) {
-			if (read_fbo_id == active_fbo_id) {
-				glBindFramebuffer(GL_FRAMEBUFFER, inactive_fbo_id);
-			} else {
-				glBindFramebuffer(GL_DRAW_FRAMEBUFFER, inactive_fbo_id);
-			}
-		} else if (read_fbo_id == active_fbo_id) {
+		if (usage == frame_buffer::usage_status::used) {
+			glBindFramebuffer(GL_FRAMEBUFFER, inactive_fbo_id);
+		} else if (usage == frame_buffer::usage_status::used_draw_only) {
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, inactive_fbo_id);
+		} else if (usage == frame_buffer::usage_status::used_read_only) {
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, inactive_fbo_id);
 		} // else do nothing (neither of our fbo were bound)
 		FE_GL_VERIFY;
 		m_1_active = !m_1_active;
+	}
+
+	void dual_frame_buffer::viewport() {
+		m_fb_1.viewport();
 	}
 
 	void dual_frame_buffer::use() const {
@@ -125,6 +192,11 @@ namespace fields_engine::graphics {
 
 	void dual_frame_buffer::unuse() const {
 		ref_active().unuse();
+	}
+
+	void dual_frame_buffer::resize(ivec2 new_size) {
+		m_fb_1.resize(new_size);
+		m_fb_2.resize(new_size);
 	}
 
 	unsigned dual_frame_buffer::get_texture_id() const {

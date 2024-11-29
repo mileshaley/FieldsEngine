@@ -11,6 +11,8 @@
 #include "scene.h"
 #include "application.h"
 
+#include "editor.h"
+
 /*~-------------------------------------------------------------------------~*\
  * Camera Definitions                                                        *
 \*~-------------------------------------------------------------------------~*/
@@ -87,7 +89,8 @@ void fields_engine::camera::recalculate_view_matrix() {
 }
 
 void fields_engine::camera::recalculate_proj_matrix() {
-	const vec2 win_size = context<application>().get_window_size();
+	const vec2 win_size = context<editor>().m_game_window_size;// context<application>().get_window_size();
+	
 	if (m_orthographic) {
 		constexpr float ortho_zoom_factor = 20;
 		const vec2 half_win_size = win_size * 0.5f / (m_zoom * ortho_zoom_factor);

@@ -118,7 +118,7 @@ void fields_engine::application::run() {
 
 		/// update logic goes here
 		glfwGetFramebufferSize(m_window->handle, &m_win_size.x, &m_win_size.y);
-		glViewport(0, 0, m_win_size.x, m_win_size.y);
+		//glViewport(0, 0, m_win_size.x, m_win_size.y);
 		FE_GL_VERIFY;
 		
 		m_scene->tick(dt);
@@ -130,8 +130,8 @@ void fields_engine::application::run() {
 		m_editor->tick(dt);
 #if EDITOR
 		m_editor->ref_dual_frame_buffer().swap();
-#elif FE_USING_GLFW
 		glfwSwapBuffers(m_window->handle);
+#elif FE_USING_GLFW
 #elif FE_USING_SDL3
 		/// RenderClear
 #endif // FE_USING_SDL3

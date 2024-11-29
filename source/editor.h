@@ -42,13 +42,13 @@ namespace fields_engine {
 
 		graphics::dual_frame_buffer& ref_dual_frame_buffer();
 
+		vec2 m_game_window_size = {1000, 800};
 	private:
 		bool game_window();
 		bool root_window();
 		editor_window& add_window(unique<editor_window>&& new_win);
 
 		graphics::dual_frame_buffer m_dual_fb;
-		vec2 m_game_window_size;
 		bool m_game_window_focused = true;
 		bool m_game_window_hovered = true;
 

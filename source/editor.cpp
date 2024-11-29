@@ -27,6 +27,7 @@ fields_engine::editor::editor(window& win)
 	: m_gui_context(ImGui::CreateContext())
 	, m_fonts()
 	, m_windows()
+	, m_dual_fb(ivec2{1920, 1080})
 {
 	ImGui::SetCurrentContext(m_gui_context);
 	ImGuiIO& io = ImGui::GetIO();
@@ -100,7 +101,7 @@ void fields_engine::editor::tick(float dt) {
 
 	// Begin dockspace
 	
-	//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
+	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
@@ -137,30 +138,16 @@ void fields_engine::editor::tick(float dt) {
 	for (int i = 0; i < m_windows.size(); ++i) {
 		m_windows[i]->display();
 	}
-
-	//if (ImGui::Begin(ICON_FLOPPY_DISK" Glung")) {
-	//	ImGui::Text("Hello, World!");
-	//	static bool two = false;
-	//	if (ImGui::Button("two")) {
-	//		two = true;
-	//	}
-	//	if (two && ImGui::Button("one")) {
-	//		two = false;
-	//	}
-	//}
-
-	//ImGui::ColorPicker4("", &clor_.r);
-
-	//ImGui::End();
-
-	//graphics::clear_background(clor_);
 	m_dual_fb.unuse();
-
+	//if (context<input_manager>().was_button_triggered(GLFW_KEY_R)) {
+	//	m_dual_fb.resize(context<application>().get_window_size());
+	//}
 	ImGui::Render();
 
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	m_dual_fb.use();
+	m_dual_fb.viewport();
 
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 		ImGui::UpdatePlatformWindows();
@@ -426,11 +413,11 @@ fe::graphics::dual_frame_buffer& fields_engine::editor::ref_dual_frame_buffer() 
 }
 
 bool fields_engine::editor::game_window() {
-	ImVec2 avail = ImGui::GetContentRegionAvail();
-	m_game_window_size = { avail.x, avail.y };
+	const ImVec2 size = ImGui::GetWindowSize();
+	m_game_window_size = { size.x, size.y };
 	ImGui::Image(
 		(ImTextureID)(i64)m_dual_fb.get_texture_id(),
-		{ m_game_window_size.x, m_game_window_size.y },
+		{ size },
 		{ 0, 1 },
 		{ 1, 0 }
 	);
@@ -441,22 +428,21 @@ bool fields_engine::editor::game_window() {
 }
 
 bool fields_engine::editor::root_window() {
-	bool res = ImGui::InputTextWithHint(
+	bool modif = ImGui::InputTextWithHint(
 		"###root_enter_new_window_name", "Enter Window Name", &m_new_window_buf);
 
 	if (ImGui::Button(m_new_window_icon)) {
 		open_icon_selector();
 	}
-	icon_selector_popup(m_new_window_icon);
+	modif |= icon_selector_popup(m_new_window_icon);
 
 	if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
 		add_window(make_unique<editor_window>(
 			m_new_window_buf, do_nothing, m_new_window_icon));
 		m_new_window_buf.clear();
-		res = true;
+		modif = true;
 	}
-
-	return res;
+	return modif;
 }
 
 fe::editor_window& fields_engine::editor::add_window(unique<editor_window>&& new_win) {
