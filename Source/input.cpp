@@ -22,6 +22,7 @@
 #include "SDL3/SDL.h"
 #endif // FE_USING_SDL3
 
+
 static constexpr int mouse_code_offset = GLFW_KEY_LAST + 1;
 
 namespace fields_engine::input::detail {

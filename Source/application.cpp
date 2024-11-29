@@ -109,25 +109,24 @@ void fields_engine::application::run() {
 	m_prev_time = glfwGetTime();
 	while (m_running) {
 		const double new_time = glfwGetTime();
-		const float dt = float(new_time - m_prev_time);
+		m_delta_time = float(new_time - m_prev_time);
 		m_prev_time = new_time;
 
-		m_input_manager->tick(dt);
+		m_input_manager->tick(m_delta_time);
 
 		glfwPollEvents();
 
 		/// update logic goes here
 		glfwGetFramebufferSize(m_window->handle, &m_win_size.x, &m_win_size.y);
 		//glViewport(0, 0, m_win_size.x, m_win_size.y);
-		FE_GL_VERIFY;
-		
-		m_scene->tick(dt);
+		//FE_GL_VERIFY;
+		m_scene->tick(m_delta_time);
 		m_scene->draw();
 		
 
 		/// draw logic goes here
 
-		m_editor->tick(dt);
+		m_editor->tick(m_delta_time);
 #if EDITOR
 		m_editor->ref_dual_frame_buffer().swap();
 		glfwSwapBuffers(m_window->handle);
@@ -183,4 +182,8 @@ fe::editor& fields_engine::application::ref_editor() {
 
 fe::ivec2 fields_engine::application::get_window_size() const {
 	return m_win_size;
+}
+
+float fields_engine::application::get_delta_time() const {
+	return m_delta_time;
 }

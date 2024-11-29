@@ -43,6 +43,10 @@ void fields_engine::movement_controller::tick(float dt) {
 	constexpr glm::mat4 identity(1);
 	input_manager& in = context<input_manager>();
 
+	if (!in.is_button_held(GLFW_MOUSE_BUTTON_2, true)) {
+		return;
+	}
+
 	if (m_mode == mode::consider_z_rotation) {
 		vec4 dir{
 			int(in.is_button_held(GLFW_KEY_D)) - int(in.is_button_held(GLFW_KEY_A)),

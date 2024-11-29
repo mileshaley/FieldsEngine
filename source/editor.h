@@ -10,6 +10,8 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+#if EDITOR
+
 #include "editor_icons.h" // editor_icon
 #include "editor_window.h" // m_windows
 #include "frame_buffer.h"
@@ -64,3 +66,5 @@ namespace fields_engine {
 	};
 
 } // namespace fields_engine
+
+#endif // EDITOR

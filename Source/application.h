@@ -43,9 +43,11 @@ namespace fields_engine {
 #endif // EDITOR
 
 		ivec2 get_window_size() const;
+		float get_delta_time() const;
 
 	private:
 		double m_prev_time;
+		float m_delta_time;
 		ivec2 m_win_size;
 		local_context<window> m_window;
 		local_context<input_manager> m_input_manager;

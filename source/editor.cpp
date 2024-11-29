@@ -6,6 +6,8 @@
 
 #include "precompiled.h"
 #include "editor.h"
+
+#if EDITOR
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "graphics.h"
@@ -449,3 +451,5 @@ fe::editor_window& fields_engine::editor::add_window(unique<editor_window>&& new
 	m_recent_windows.push_back(int(m_windows.size()));
 	return *m_windows.emplace_back(move(new_win));
 }
+
+#endif // EDITOR
