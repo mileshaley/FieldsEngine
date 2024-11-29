@@ -45,6 +45,9 @@ bool fields_engine::transform::display() {
 	bool modif = false;
 	modif |= ImGui::DragFloat3("Position", &m_data.position.x);
 	modif |= ImGui::DragFloat3("Scale", &m_data.scale.x);
+	//vec3 euler_rot = 
+	//bool rot_modif = ;
+	//r
 	modif |= ImGui::DragFloat4("Rotation", &m_data.rotation.x);
 
 	if (ImGui::CollapsingHeader("Matrix")) {
@@ -177,7 +180,7 @@ fe::quat const& fields_engine::transform::get_local_rotation() const {
 }
 
 fe::vec3 fields_engine::transform::get_local_forward_vector() const {
-	return m_data.rotation * vec3{ 0, 0, -1 };
+	return m_data.rotation * vec3{ 0, 1, 0 };
 }
 
 fe::vec3 fields_engine::transform::get_local_right_vector() const {
@@ -185,7 +188,7 @@ fe::vec3 fields_engine::transform::get_local_right_vector() const {
 }
 
 fe::vec3 fields_engine::transform::get_local_up_vector() const {
-	return m_data.rotation * vec3{ 0, 1, 0 };
+	return m_data.rotation * vec3{ 0, 0, 1 };
 }
 
 /*~-------------------------------------------------------------------------~*\

@@ -59,6 +59,62 @@ void fields_engine::scene::startup() {
 	nose_mat.m_specular_color = { 0.9f, 0.5f, 0.1f };
 	nose_mat.m_shininess = 1.0f;
 
+	graphics::material x_mat;
+	x_mat.m_diffuse_color = { 1, 0.2f, 0.2f };
+	x_mat.m_specular_color = { 1, 0.2f, 0.2f };
+	x_mat.m_shininess = 1.0f;
+	graphics::material y_mat;
+	y_mat.m_diffuse_color = { 0.2f, 1, 0.2f };
+	y_mat.m_specular_color = { 0.2f, 1, 0.2f };
+	y_mat.m_shininess = 1.0f;
+	graphics::material z_mat;
+	z_mat.m_diffuse_color = { 0.2f, 0.2f, 1 };
+	z_mat.m_specular_color = { 0.2f, 0.2f, 1 };
+	z_mat.m_shininess = 1.0f;
+
+	{ // Direction Indicator
+		unique<mesh> d = make_unique<mesh>();
+		d->add_cube();
+		d->generate();
+		d->ref_material() = hat_mat;
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Direction Indicator", move(d)));
+		transform& dtr = ent->ref_transform();
+		const float scale = 1;
+		constexpr vec3 off{ 10, 0, 0 };
+		dtr.set_local_position(off);
+
+		{ // X
+			unique<mesh> xm = make_unique<mesh>();
+			xm->add_cube();
+			xm->generate();
+			xm->ref_material() = x_mat;
+			auto& xent = m_entities.emplace_back(make_unique<entity>("Dx", move(xm)));
+			transform& tr = xent->ref_transform();
+			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
+			tr.set_local_position(off + dtr.get_local_right_vector());
+		}
+		{ // Y
+			unique<mesh> ym = make_unique<mesh>();
+			ym->add_cube();
+			ym->generate();
+			ym->ref_material() = y_mat;
+			auto& yent = m_entities.emplace_back(make_unique<entity>("Yx", move(ym)));
+			transform& tr = yent->ref_transform();
+			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
+			tr.set_local_position(off + dtr.get_local_forward_vector());
+		}
+		{ // Z
+			unique<mesh> zm = make_unique<mesh>();
+			zm->add_cube();
+			zm->generate();
+			zm->ref_material() = z_mat;
+			auto& zent = m_entities.emplace_back(make_unique<entity>("Zx", move(zm)));
+			transform& tr = zent->ref_transform();
+			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
+			tr.set_local_position(off + dtr.get_local_up_vector());
+		}
+	}
+
 	{ // Camera
 		//unique<spatial_component> root = make_unique<spatial_component>();
 		//spatial_component* p_root = root.get();
