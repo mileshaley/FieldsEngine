@@ -74,8 +74,9 @@ namespace fields_engine {
 		vec3 const& get_local_scale() const;
 		quat const& get_local_rotation() const;
 
-		mat4 make_rotator_matrix(mat4 const& base = identity) const;
-
+		vec3 get_local_forward_vector() const;
+		vec3 get_local_right_vector() const;
+		vec3 get_local_up_vector() const;
 	private:
 		transform_data m_data;
 		mutable bool m_dirty = true;

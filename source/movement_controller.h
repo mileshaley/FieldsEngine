@@ -21,8 +21,8 @@ namespace fields_engine {
 	class movement_controller : public component {
 	public:
 		enum class mode : int {
-			consider_z_rotation = 0,
-			consider_all_rotation,
+			pitch_yaw = 0,
+			all_axes = 1,
 		};
 
 		movement_controller();
@@ -43,7 +43,7 @@ namespace fields_engine {
 		float get_speed() const;
 
 	private:
-		mode m_mode = mode::consider_z_rotation;
+		mode m_mode = mode::pitch_yaw;
 		float m_speed = 5.0f;
 		float m_sensitivity = 0.5f;
 		bool m_invert_look_y = false;

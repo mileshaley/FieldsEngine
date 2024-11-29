@@ -69,8 +69,17 @@ bool fields_engine::transform::display() {
 void fields_engine::transform::recalculate_matrix() const {
 	constexpr mat4 identity(1);
 	m_dirty = false;
-	spatial_component* owner_parent = m_owner->get_parent();
-	
+	const spatial_component* owner_parent = m_owner->get_parent();
+	mat4 const& parent_mat = owner_parent != nullptr
+		? owner_parent->ref_transform().world_matrix()
+		: identity;
+
+	m_matrix = glm::scale(
+		glm::translate(parent_mat, m_data.position)
+			* glm::mat4_cast(m_data.rotation),
+		m_data.scale
+	);
+
 	//m_matrix =
 	//	glm::translate(
 	//		glm::toMat4(m_data.rotation)
@@ -84,14 +93,7 @@ void fields_engine::transform::recalculate_matrix() const {
 	//		m_data.position
 	//	);
 
-	m_matrix
-		= glm::scale(
-		glm::translate((owner_parent != nullptr
-			? owner_parent->ref_transform().world_matrix()
-			: identity), m_data.position)
-		* glm::mat4_cast(m_data.rotation),
-			m_data.scale
-		);
+
 }
 
 void fields_engine::transform::set_owner(const spatial_component* new_owner) {
@@ -174,23 +176,16 @@ fe::quat const& fields_engine::transform::get_local_rotation() const {
 	return m_data.rotation;
 }
 
-fe::mat4 fields_engine::transform::make_rotator_matrix(mat4 const& base) const {
-	return glm::toMat4(m_data.rotation);
-	/// TODO: Fix this
-	//return
-	//	glm::rotate(
-	//		glm::rotate(
-	//			glm::rotate(
-	//				base,
-	//				glm::radians(m_data.rotation.z),
-	//				(vec3&)identity[2]
-	//			),
-	//			glm::radians(m_data.rotation.y),
-	//			(vec3&)identity[1]
-	//		),
-	//		glm::radians(m_data.rotation.x),
-	//		(vec3&)identity[0]
-	//	);
+fe::vec3 fields_engine::transform::get_local_forward_vector() const {
+	return m_data.rotation * vec3{ 0, 0, -1 };
+}
+
+fe::vec3 fields_engine::transform::get_local_right_vector() const {
+	return m_data.rotation * vec3{ 1, 0, 0 };
+}
+
+fe::vec3 fields_engine::transform::get_local_up_vector() const {
+	return m_data.rotation * vec3{ 0, 1, 0 };
 }
 
 /*~-------------------------------------------------------------------------~*\

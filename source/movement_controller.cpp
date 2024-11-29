@@ -22,10 +22,10 @@ fields_engine::movement_controller::movement_controller()
 }
 
 fields_engine::movement_controller::movement_controller(movement_controller const& other)
-	: m_mode(m_mode)
-	, m_speed(m_speed)
-	, m_sensitivity(m_sensitivity)
-	, m_invert_look_y(m_invert_look_y)
+	: m_mode(other.m_mode)
+	, m_speed(other.m_speed)
+	, m_sensitivity(other.m_sensitivity)
+	, m_invert_look_y(other.m_invert_look_y)
 {}
 
 #if EDITOR
@@ -41,64 +41,59 @@ bool fields_engine::movement_controller::display() {
 
 void fields_engine::movement_controller::tick(float dt) {
 	constexpr glm::mat4 identity(1);
-	input_manager& in = context<input_manager>();
+	input_manager const& in = context<input_manager>();
 
+	// Allow panning with middle click
+	if (in.is_button_held(GLFW_MOUSE_BUTTON_3, true)) {
+		transform& tr = get_owner()->ref_transform();
+		vec2 delta = in.get_delta_mouse_move() * 0.02f;
+		const vec3 up = tr.get_local_up_vector();
+		const vec3 right = tr.get_local_right_vector();
+		tr.set_local_position(tr.get_local_position() + right * -delta.x + up * delta.y);
+	}
+
+	// Lock all inputs besides panning behind right click hold
 	if (!in.is_button_held(GLFW_MOUSE_BUTTON_2, true)) {
 		return;
 	}
 
-	if (m_mode == mode::consider_z_rotation) {
-		vec4 dir{
+	if (m_mode == mode::pitch_yaw) {
+		const ivec3 delta{
+			int(in.is_button_held(GLFW_KEY_W)) - int(in.is_button_held(GLFW_KEY_S)),
 			int(in.is_button_held(GLFW_KEY_D)) - int(in.is_button_held(GLFW_KEY_A)),
-			0,
-			int(in.is_button_held(GLFW_KEY_S)) - int(in.is_button_held(GLFW_KEY_W)),
-			0,
+			int(in.is_button_held(GLFW_KEY_SPACE)) - int(in.is_button_held(GLFW_KEY_LEFT_SHIFT))
 		};
 
-		int ydiff = int(in.is_button_held(GLFW_KEY_SPACE)) - int(in.is_button_held(GLFW_KEY_LEFT_SHIFT));
-
-		float dist = glm::length(dir);
-		if (dist > 0.000001f || ydiff) {
+		if (delta.x || delta.y || delta.z) {
 			transform& tr = get_owner()->ref_transform();
-			//const vec3 rot = tr.get_local_rotation();
-			
-			/// TODO: Fix this, it sucks
-			const mat4 rotator = glm::mat4_cast(tr.get_local_rotation());
-			//	glm::rotate(
-			//		glm::rotate(
-			//			identity,
-			//			glm::radians(rot.z),
-			//			(vec3 const&)identity[2]
-			//		),
-			//		glm::radians(rot.x),
-			//		(vec3 const&)identity[0]
-			//	);
-			dir = rotator * dir;
 
+			vec3 forward = tr.get_local_forward_vector();
+			vec3 right = tr.get_local_right_vector();
+			forward.z = 0;
+			right.z = 0;
+			forward = glm::normalize(forward);
+			right = glm::normalize(right);
+			vec3 move 
+				= forward * float(delta.x) 
+				+ right * float(delta.y) 
+				+ vec3{ 0, 0, delta.z };
+			move = glm::normalize(move) * m_speed * dt;
 
-			dir.z = ydiff;
-			dir = glm::normalize(dir) * m_speed * dt;
-
-			tr.set_local_position(tr.get_local_position() + vec3(dir));
+			tr.set_local_position(tr.get_local_position() + move);
 		}
-	} else if (m_mode == mode::consider_all_rotation) {
-		vec4 dir{
+	} else if (m_mode == mode::all_axes) {
+		const ivec3 delta{
 			int(in.is_button_held(GLFW_KEY_D)) - int(in.is_button_held(GLFW_KEY_A)),
-			0,
-			int(in.is_button_held(GLFW_KEY_S)) - int(in.is_button_held(GLFW_KEY_W)),
-			0,
+			int(in.is_button_held(GLFW_KEY_SPACE)) - int(in.is_button_held(GLFW_KEY_LEFT_SHIFT)),
+			int(in.is_button_held(GLFW_KEY_S)) - int(in.is_button_held(GLFW_KEY_W))
 		};
 
-
-		float dist = glm::length(dir);
-		if (dist > 0.000001f) {
+		if (delta.x || delta.y || delta.z) {
 			transform& tr = get_owner()->ref_transform();
+			quat const& rot = tr.get_local_rotation();
+			vec3 move = glm::normalize(rot * vec3(delta)) * m_speed * dt;
 
-			const mat4 rotator = tr.make_rotator_matrix();
-			dir = rotator * dir;
-			dir = glm::normalize(dir) * m_speed * dt;
-
-			tr.set_local_position(tr.get_local_position() + vec3(dir));
+			tr.set_local_position(tr.get_local_position() + move);
 		}
 	}
 
