@@ -40,7 +40,7 @@ namespace fields_engine {
 		transform(
 			vec3 const& position = { 0, 0, 0 }, 
 			vec3 const& scale    = { 1, 1, 1 },
-			quat const& rotation = { 1, 0, 0, 0 }
+			vec3 const& rotation = { 0, 0, 0,}
 		);
 
 		transform(transform_data const& data);
@@ -62,6 +62,7 @@ namespace fields_engine {
 
 		void set_local_position(vec3 const& new_pos);
 		void set_local_scale(vec3 const& new_scale);
+		void set_local_rotation(vec3 const& new_rotation);
 		void set_local_rotation(quat const& new_rotation);
 
 		transform_data get_world_transform() const;

@@ -126,7 +126,7 @@ void fields_engine::scene::startup() {
 		//mesh* pm = m.get();
 		transform& tr = cam->ref_transform();
 		tr.set_local_position({ 3, 2, 3 });
-		//tr.set_local_rotation({ 90, 0, -240 });
+		tr.set_local_rotation(vec3{90, 0, -240});
 		tr.set_local_scale({ 1, 1, 1 });
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Camera", move(cam)));
 		//p_root->attach_component(move(cam));
@@ -193,7 +193,7 @@ void fields_engine::scene::startup() {
 					unique<spatial_component> face = make_unique<spatial_component>();
 					transform& tr = face->ref_transform();
 					tr.set_local_position({ 0, 0.75f, 0.075f });
-					tr.set_local_rotation({ -90, 0, 0, 0 });
+					tr.set_local_rotation(vec3{ -90, 0, 0 });
 					spatial_component* pf = face.get();
 					pm3->attach_component(move(face));
 

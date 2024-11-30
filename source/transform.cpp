@@ -20,9 +20,9 @@
 fields_engine::transform::transform(
 	vec3 const& position, 
 	vec3 const& scale,
-	quat const& rotation
+	vec3 const& rotation
 )
-	: m_data{position, scale, rotation}
+	: m_data{ position, scale, quat{glm::radians(rotation)} }
 	, m_matrix(1)
 	, m_dirty(true)
 	, m_owner(nullptr)
@@ -161,6 +161,11 @@ void fields_engine::transform::set_local_scale(fe::vec3 const& new_scale) {
 	m_data.scale = new_scale;
 	set_dirty();
 }
+void fields_engine::transform::set_local_rotation(vec3 const& new_rotation) {
+	m_data.rotation = glm::radians(new_rotation);
+	set_dirty();
+}
+
 void fields_engine::transform::set_local_rotation(quat const& new_rotation) {
 	m_data.rotation = new_rotation;
 	set_dirty();
