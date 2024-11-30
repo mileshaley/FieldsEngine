@@ -11,6 +11,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/quaternion.hpp"
 
+#include "editor_icons.h"
+
 /*~-------------------------------------------------------------------------~*\
  * Transform Definitions                                                     *
 \*~-------------------------------------------------------------------------~*/
@@ -42,15 +44,41 @@ fields_engine::transform::transform(transform const& other)
 
 #ifdef EDITOR
 bool fields_engine::transform::display() {
+	constexpr int x_off = 36;
+	static bool scale_uniformly = true;
 	bool modif = false;
+	ImGui::SetCursorPosX(x_off);
 	modif |= ImGui::DragFloat3("Position", &m_data.position.x);
-	modif |= ImGui::DragFloat3("Scale", &m_data.scale.x);
-	//vec3 euler_rot = 
-	//bool rot_modif = ;
-	//r
-	modif |= ImGui::DragFloat4("Rotation", &m_data.rotation.x);
+	if (ImGui::Button(scale_uniformly 
+		? ICON_LOCK"##tr_scale_lock" 
+		: ICON_LOCK_OPEN"##tr_scale_lock")
+	) {
+		scale_uniformly = !scale_uniformly;
+	}
+	ImGui::SameLine(x_off);
+	if (scale_uniformly) {
+		vec3 uni_scale = m_data.scale;
+		if (ImGui::DragFloat3("Scale", &uni_scale.x)) {
+			modif = true;
+			if (uni_scale.x != m_data.scale.x) {
+				m_data.scale += vec3{ uni_scale.x - m_data.scale.x };
+			} else if (uni_scale.y != m_data.scale.y) {
+				m_data.scale += vec3{ uni_scale.y - m_data.scale.y };
+			} else if (uni_scale.z != m_data.scale.z) {
+				m_data.scale += vec3{ uni_scale.z - m_data.scale.z };
+			}
+		}
+	} else {
+		modif |= ImGui::DragFloat3("Scale", &m_data.scale.x);
+	}
+	vec3 euler_rot = glm::degrees(glm::eulerAngles(m_data.rotation));
+	ImGui::SetCursorPosX(x_off);
+	if (ImGui::DragFloat3("Rotation", &euler_rot.x)) {
+		modif = true;
+		m_data.rotation = quat(glm::radians(euler_rot));
+	}
 
-	if (ImGui::CollapsingHeader("Matrix")) {
+	if (ImGui::CollapsingHeader("World Matrix")) {
 		ImGui::Text(m_owner->get_parent() ? "Parented" : "Unparented");
 		ImGui::BeginDisabled();
 		mat4 transposed = glm::transpose(world_matrix());
