@@ -38,14 +38,14 @@ bool fields_engine::editor_window::display() {
 }
 
 bool fields_engine::editor_window::force_display() {
-	bool result = false;
+	bool modif = false;
 	if (m_callback) {
 		if (begin_window()) {
-			result = m_callback();
+			modif = m_callback();
 		}
 		end_window();
 	}
-	return result;
+	return modif;
 }
 
 bool fields_engine::editor_window::begin_window() {
@@ -57,10 +57,8 @@ void fields_engine::editor_window::end_window() const {
 }
 
 bool fields_engine::editor_window::menu_item() {
-	//bool was_open = m_open;
 	if (ImGui::MenuItem(m_str_id.c_str(), nullptr, &m_open)) {
 		return true;
-		//m_open = !m_open;
 		/// Bring to top
 	}
 	return false;
@@ -78,18 +76,18 @@ void fields_engine::editor_window::close() {
 	m_open = false;
 }
 
-bool& fields_engine::editor_window::open_ref() {
+bool& fields_engine::editor_window::ref_open() {
 	return m_open;
 }
 
-fe::editor_window::callback_t const& fields_engine::editor_window::callback() const {
+fe::editor_window::callback_t const& fields_engine::editor_window::get_callback() const {
 	return m_callback;
 }
 
-void fields_engine::editor_window::callback(callback_t const& new_callback) {
+void fields_engine::editor_window::set_callback(callback_t const& new_callback) {
 	m_callback = new_callback;
 }
 
-fe::string const& fields_engine::editor_window::std_id() const {
+fe::string const& fields_engine::editor_window::get_str_id() const {
 	return m_str_id;
 }

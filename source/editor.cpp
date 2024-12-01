@@ -77,9 +77,9 @@ fields_engine::editor::editor(window& win)
 	
 	editor_window* demo_window = &add_window(make_unique<editor_window>(
 		"ImGui Demo", editor_window::callback_t{}, ICON_INFO));
-	demo_window->callback([demo_window]() {
+	demo_window->set_callback([demo_window]() {
 		ImGui::SetWindowHiddendAndSkipItemsForCurrentFrame(ImGui::GetCurrentWindow());
-		ImGui::ShowDemoWindow(&demo_window->open_ref());
+		ImGui::ShowDemoWindow(&demo_window->ref_open());
 		return false; 
 	});
 	demo_window->close();

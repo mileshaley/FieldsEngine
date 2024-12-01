@@ -33,13 +33,13 @@ namespace fields_engine {
 		void open();
 		void close();
 		FE_NODISCARD bool is_open() const;
-		FE_NODISCARD bool& open_ref();
+		FE_NODISCARD bool& ref_open();
 
 
-		FE_NODISCARD callback_t const& callback() const;
-		void callback(callback_t const& new_callback = {});
+		FE_NODISCARD callback_t const& get_callback() const;
+		void set_callback(callback_t const& new_callback = {});
 
-		FE_NODISCARD string const& std_id() const;
+		FE_NODISCARD string const& get_str_id() const;
 
 	private:
 		bool m_open;
