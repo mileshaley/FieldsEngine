@@ -20,6 +20,8 @@
 #include "camera.h"
 #include "movement_controller.h"
 
+#include <random>
+
 fields_engine::scene::scene() {
 	m_shader = make_unique<graphics::shader>();
 	m_shader->add("lighting.vert", GL_VERTEX_SHADER);
@@ -33,12 +35,8 @@ fields_engine::scene::scene() {
 
 fields_engine::scene::~scene() {}
 
-void fields_engine::scene::startup() {
-	graphics::material grass_mat;
-	grass_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
-	grass_mat.m_specular_color = vec3{0.0f, 0.0f, 1.0f};//{ 0.7f, 0.7f, 0.8f };
-	grass_mat.m_shininess = 0.2f;
-
+static fe::unique<fe::entity> make_snowman() {
+	using namespace fields_engine;
 	graphics::material snow_mat;
 	snow_mat.m_diffuse_color = { 0.95f, 0.95f, 1.0f };
 	snow_mat.m_specular_color = { 0.7f, 0.7f, 0.8f };
@@ -58,7 +56,178 @@ void fields_engine::scene::startup() {
 	nose_mat.m_diffuse_color = { 0.9f, 0.35f, 0.1f };
 	nose_mat.m_specular_color = { 0.9f, 0.5f, 0.1f };
 	nose_mat.m_shininess = 1.0f;
+	unique<mesh> m0 = make_unique<mesh>();
+	m0->add_cube();
+	m0->generate();
+	m0->ref_material() = snow_mat;
+	mesh* pm0 = m0.get();
+	auto ent = make_unique<entity>("Snowman", move(m0));
+	transform& tr = ent->ref_transform();
+	const float scale = 1;
+	tr.set_local_position({ 0, 0, 0.8f });
+	tr.set_local_scale({ scale, scale, scale });
 
+	{ // Middle
+		unique<mesh> m1 = make_unique<mesh>();
+		m1->add_cube();
+		m1->generate();
+		m1->ref_material() = snow_mat;
+		transform& tr = m1->ref_transform();
+		const float scale = 0.75f;
+		tr.set_local_position({ 0, 0, 0.75f });
+		tr.set_local_scale({ scale, scale, scale });
+		mesh* pm1 = m1.get();
+		pm0->attach_component(move(m1));
+		{ // Scarf
+			unique<mesh> m2 = make_unique<mesh>();
+			m2->add_cube();
+			m2->generate();
+			m2->ref_material() = scarf_mat;
+			transform& tr = m2->ref_transform();
+			tr.set_local_position({ 0, 0, 0.6f });
+			tr.set_local_scale({ 0.8f, 0.8f, 0.2f });
+			pm1->attach_component(move(m2));
+		}
+		{ // Head
+			unique<mesh> m3 = make_unique<mesh>();
+			m3->add_cube();
+			m3->generate();
+			m3->ref_material() = snow_mat;
+			transform& tr = m3->ref_transform();
+			const float scale = 0.75;
+			tr.set_local_position({ 0, 0, 1 });
+			tr.set_local_scale({ scale, scale, scale });
+			mesh* pm3 = m3.get();
+			pm1->attach_component(move(m3));
+			{ // Face
+				unique<spatial_component> face = make_unique<spatial_component>();
+				transform& tr = face->ref_transform();
+				tr.set_local_position({ 0, 0.75f, 0.075f });
+				tr.set_local_rotation(vec3{ -90, 0, 0 });
+				spatial_component* pf = face.get();
+				pm3->attach_component(move(face));
+
+				{ // Nose
+					unique<mesh> m6 = make_unique<mesh>();
+					m6->add_pyramid(32, 1);
+					m6->generate();
+					m6->ref_material() = nose_mat;
+					transform& tr = m6->ref_transform();
+					tr.set_local_position({ 0, 0, 0.25f });
+					tr.set_local_scale({ 0.35f, 0.35f, 1 });
+					pf->attach_component(move(m6));
+				}
+				{ // Eye 1
+					unique<mesh> m7 = make_unique<mesh>();
+					m7->add_cylinder(7, 1);
+					m7->generate();
+					m7->ref_material() = hat_mat;
+					transform& tr = m7->ref_transform();
+					tr.set_local_position({ 0.25f, -0.25f, -0.23f });
+					tr.set_local_scale({ 0.25f, 0.25f, 0.05f });
+					//tr.set_local_rotation({ 0, 0, 28 });
+					pf->attach_component(move(m7));
+				}
+				{ // Eye 2
+					unique<mesh> m8 = make_unique<mesh>();
+					m8->add_cylinder(7, 1);
+					m8->generate();
+					m8->ref_material() = hat_mat;
+					transform& tr = m8->ref_transform();
+					tr.set_local_position({ -0.25f, -0.25f, -0.23f });
+					tr.set_local_scale({ 0.25f, 0.25f, 0.05f });
+					//tr.set_local_rotation({ 0, 0, 5 });
+					pf->attach_component(move(m8));
+				}
+			}
+
+			{ // Hat base
+				unique<mesh> m4 = make_unique<mesh>();
+				m4->add_cube();
+				m4->generate();
+				m4->ref_material() = hat_mat;
+				transform& tr = m4->ref_transform();
+				tr.set_local_position({ 0, 0, 0.57f });
+				tr.set_local_scale({ 1.5f, 1.5f, 0.15f });
+				mesh* pm4 = m4.get();
+				pm3->attach_component(move(m4));
+				{ // Hat top
+					unique<mesh> m5 = make_unique<mesh>();
+					m5->add_cube();
+					m5->generate();
+					m5->ref_material() = hat_mat;
+					transform& tr = m5->ref_transform();
+					tr.set_local_position({ 0, 0, 4.75f });
+					tr.set_local_scale({ 0.67f, 0.67f, 8.67f });
+					//tr.set_local_rotation({ 0.75f, 0, 0 });
+					pm4->attach_component(move(m5));
+				}
+			}
+		}
+	}
+	return ent;
+}
+
+static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
+	using namespace fields_engine;
+	graphics::material needle_mat;
+	needle_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
+	needle_mat.m_specular_color = vec3{ 0.0f, 0.0f, 1.0f };
+	needle_mat.m_shininess = 0.2f;
+
+	graphics::material wood_mat;
+	wood_mat.m_diffuse_color = { 0.2f, 0.25f, 0.04f };
+	wood_mat.m_specular_color = vec3{ 1.0f, 0.0f, 0.0f };
+	wood_mat.m_shininess = 0.2f;
+
+	//needle_mat.m_diffuse_color = { 0.95f, 0.95f, 1.0f };
+	//needle_mat.m_specular_color = { 0.4f, 0.4f, 0.5f };
+	//needle_mat.m_shininess = 1.0f;
+
+	const float h = 10;
+	unique<mesh> m0 = make_unique<mesh>();
+	m0->add_cylinder(16, h);
+	m0->generate();
+	m0->ref_material() = wood_mat;
+	mesh* pm0 = m0.get();
+	auto ent = make_unique<entity>("Tree", move(m0));
+	transform& tr = ent->ref_transform();
+	tr.set_local_position({ 0, 0, h * 0.5f  });
+	tr.set_local_scale({ 1, 1, 1 });
+	//spatial_component* prev = pm0;
+	const float cone_offset = 3;
+	const float downscale = 0.8f;
+	for (unsigned i = 0; i < top_segments; ++i) {
+		unique<mesh> m = make_unique<mesh>();
+		m->add_pyramid(16);
+		m->generate();
+		m->ref_material() = needle_mat;
+		mesh* pm = m.get();
+		pm0->attach_component(move(m));
+		transform& tr = pm->ref_transform();
+		const float scale = 5 - (i * downscale);
+		tr.set_local_position({ 0, 0, (i * cone_offset) - (i * downscale)});
+		tr.set_local_scale({ scale, scale, scale });
+		//prev = pm;
+	}
+	return ent;
+}
+
+void fields_engine::scene::startup() {
+	graphics::material grass_mat;
+	grass_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
+	grass_mat.m_specular_color = vec3{0.0f, 0.0f, 1.0f};//{ 0.7f, 0.7f, 0.8f };
+	grass_mat.m_shininess = 0.2f;
+
+	graphics::material snow_mat;
+	snow_mat.m_diffuse_color = { 0.95f, 0.95f, 1.0f };
+	snow_mat.m_specular_color = { 0.4f, 0.4f, 0.5f };
+	snow_mat.m_shininess = 1.0f;
+
+	graphics::material d_mat;
+	d_mat.m_diffuse_color = { 0.1f, 0.1f, 0.1f };
+	d_mat.m_specular_color = { 0.3f, 0.3f, 0.3f };
+	d_mat.m_shininess = 1.0f;
 	graphics::material x_mat;
 	x_mat.m_diffuse_color = { 1, 0.2f, 0.2f };
 	x_mat.m_specular_color = { 1, 0.2f, 0.2f };
@@ -76,7 +245,7 @@ void fields_engine::scene::startup() {
 		unique<mesh> d = make_unique<mesh>();
 		d->add_cube();
 		d->generate();
-		d->ref_material() = hat_mat;
+		d->ref_material() = d_mat;
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Direction Indicator", move(d)));
 		transform& dtr = ent->ref_transform();
 		const float scale = 1;
@@ -114,6 +283,8 @@ void fields_engine::scene::startup() {
 			tr.set_local_position(off + dtr.get_local_up_vector());
 		}
 	}
+	m_entities.emplace_back(make_snowman());
+
 
 	{ // Camera
 		//unique<spatial_component> root = make_unique<spatial_component>();
@@ -134,6 +305,17 @@ void fields_engine::scene::startup() {
 	}
 	{ // Ground
 		unique<mesh> m = make_unique<mesh>();
+		m->add_cube();
+		m->generate();
+		m->ref_material() = grass_mat;
+		transform& tr = m->ref_transform();
+		const float scale = 1;
+		tr.set_local_position({ 0, 0, -1 });
+		tr.set_local_scale({ 200, 200, scale });
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Ground", move(m)));
+	}
+	{ // Mound
+		unique<mesh> m = make_unique<mesh>();
 		m->add_pyramid(15);
 		//m->add_cube();
 		m->generate();
@@ -142,119 +324,43 @@ void fields_engine::scene::startup() {
 		const float scale = 1;
 		tr.set_local_position({ 0, 0, 0 });
 		tr.set_local_scale({ 20, 20, scale });
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Ground", move(m)));
+		auto& ent = m_entities.emplace_back(make_unique<entity>("Mound", move(m)));
 	}
-	{ // Legs
-		unique<mesh> m0 = make_unique<mesh>();
-		m0->add_cube();
-		m0->generate();
-		m0->ref_material() = snow_mat;
-		mesh* pm0 = m0.get();
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Snowman", move(m0)));
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> pos_range(-50, 50);
+	std::uniform_real_distribution<> scale_range(0.8, 1.6);
+
+	// Trees
+	for (int i = 0; i < 20; ++i) {
+		auto ent = make_tree();
+		ent->ref_name() += std::to_string(i);
 		transform& tr = ent->ref_transform();
-		const float scale = 1;
-		tr.set_local_position({ 0, 0, 0.8f });
-		tr.set_local_scale({ scale, scale, scale });
-		//ent->attach_component(make_unique<movement_controller>());
-
-		{ // Middle
-			unique<mesh> m1 = make_unique<mesh>();
-			m1->add_cube();
-			m1->generate();
-			m1->ref_material() = snow_mat;
-			transform& tr = m1->ref_transform();
-			const float scale = 0.75f;
-			tr.set_local_position({ 0, 0, 0.75f });
-			tr.set_local_scale({ scale, scale, scale });
-			mesh* pm1 = m1.get();
-			pm0->attach_component(move(m1));
-			{ // Scarf
-				unique<mesh> m2 = make_unique<mesh>();
-				m2->add_cube();
-				m2->generate();
-				m2->ref_material() = scarf_mat;
-				transform& tr = m2->ref_transform();
-				tr.set_local_position({ 0, 0, 0.6f });
-				tr.set_local_scale({ 0.8f, 0.8f, 0.2f });
-				pm1->attach_component(move(m2));
+		const float scale = 1;//scale_range(gen);
+		tr.set_local_scale(vec3{ scale, scale, scale });
+		const float z  = tr.get_world_position().z + 4;
+		vec3 pos{};
+		while (true) {
+			pos = { pos_range(gen), pos_range(gen), z };
+			if (glm::length(pos) < 6) {
+				continue;
 			}
-			{ // Head
-				unique<mesh> m3 = make_unique<mesh>();
-				m3->add_cube();
-				m3->generate();
-				m3->ref_material() = snow_mat;
-				transform& tr = m3->ref_transform();
-				const float scale = 0.75;
-				tr.set_local_position({ 0, 0, 1 });
-				tr.set_local_scale({ scale, scale, scale });
-				mesh* pm3 = m3.get();
-				pm1->attach_component(move(m3));
-				{ // Face
-					unique<spatial_component> face = make_unique<spatial_component>();
-					transform& tr = face->ref_transform();
-					tr.set_local_position({ 0, 0.75f, 0.075f });
-					tr.set_local_rotation(vec3{ -90, 0, 0 });
-					spatial_component* pf = face.get();
-					pm3->attach_component(move(face));
-
-					{ // Nose
-						unique<mesh> m6 = make_unique<mesh>();
-						m6->add_pyramid(32, 1);
-						m6->generate();
-						m6->ref_material() = nose_mat;
-						transform& tr = m6->ref_transform();
-						tr.set_local_position({ 0, 0, 0.25f });
-						tr.set_local_scale({ 0.35f, 0.35f, 1 });
-						pf->attach_component(move(m6));
-					}
-					{ // Eye 1
-						unique<mesh> m7 = make_unique<mesh>();
-						m7->add_cylinder(7, 1);
-						m7->generate();
-						m7->ref_material() = hat_mat;
-						transform& tr = m7->ref_transform();
-						tr.set_local_position({ 0.25f, -0.25f, -0.23f });
-						tr.set_local_scale({ 0.25f, 0.25f, 0.05f });
-						//tr.set_local_rotation({ 0, 0, 28 });
-						pf->attach_component(move(m7));
-					}
-					{ // Eye 2
-						unique<mesh> m8 = make_unique<mesh>();
-						m8->add_cylinder(7, 1);
-						m8->generate();
-						m8->ref_material() = hat_mat;
-						transform& tr = m8->ref_transform();
-						tr.set_local_position({ -0.25f, -0.25f, -0.23f });
-						tr.set_local_scale({ 0.25f, 0.25f, 0.05f });
-						//tr.set_local_rotation({ 0, 0, 5 });
-						pf->attach_component(move(m8));
+			bool collision = false;
+			for (auto const& e : m_entities) {
+				if (e->get_name().find("Tree") != string::npos) {
+					if (glm::distance(e->ref_transform().get_world_position(), pos) < 30) {
+						collision = true;
+						break;
 					}
 				}
-
-				{ // Hat base
-					unique<mesh> m4 = make_unique<mesh>();
-					m4->add_cube();
-					m4->generate();
-					m4->ref_material() = hat_mat;
-					transform& tr = m4->ref_transform();
-					tr.set_local_position({ 0, 0, 0.57f });
-					tr.set_local_scale({ 1.5f, 1.5f, 0.15f });
-					mesh* pm4 = m4.get();
-					pm3->attach_component(move(m4));
-					{ // Hat top
-						unique<mesh> m5 = make_unique<mesh>();
-						m5->add_cube();
-						m5->generate();
-						m5->ref_material() = hat_mat;
-						transform& tr = m5->ref_transform();
-						tr.set_local_position({ 0, 0, 4.75f });
-						tr.set_local_scale({ 0.67f, 0.67f, 8.67f });
-						//tr.set_local_rotation({ 0.75f, 0, 0 });
-						pm4->attach_component(move(m5));
-					}
-				}
+			}
+			if (!collision) {
+				break;
 			}
 		}
+		tr.set_local_position(pos);
+
+		m_entities.emplace_back(move(ent));
 	}
 
 	for (unique_cr<entity> ent : m_entities) {
@@ -281,7 +387,7 @@ void fields_engine::scene::draw() const {
 
 	const mat4 world_inverse = glm::inverse(*world_view);
 
-	graphics::clear_background({ 0.1f, 0.1f, 0.1f, 1 });
+	graphics::clear_background(m_background_color);
 	m_shader->use();
 
 	const vec3 ambient(0.2f, 0.2f, 0.2f);
@@ -332,6 +438,7 @@ void fields_engine::scene::shutdown() {
 bool fields_engine::scene::display_window() {
 	bool modif = false;
 	modif |= ImGui::DragFloat3("Light Position", &m_light_pos.x);
+	modif |= ImGui::ColorPicker3("Background color", &m_background_color.x);
 	for (unique_cr<entity> ent : m_entities) {
 		modif |= ent->display();
 	}

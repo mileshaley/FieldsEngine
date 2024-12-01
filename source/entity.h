@@ -47,6 +47,9 @@ namespace fields_engine {
 		bool display();
 #endif // EDITOR
 
+		string const& get_name() const;
+		string& ref_name();
+
 		transform& ref_transform();
 		transform const& ref_transform() const;
 

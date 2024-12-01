@@ -50,7 +50,9 @@ namespace fields_engine {
 		unique<graphics::shader> m_shader;
 
 	private:
+		// { 0.1f, 0.1f, 0.1f, 1 } // Gray
 
+		vec4 m_background_color = { 0.55f, 0.75f, 1.0f, 1 };
 		dyn_arr<unique<entity>> m_entities;
 		dyn_arr<camera*> m_cameras;
 		camera* m_active_camera;

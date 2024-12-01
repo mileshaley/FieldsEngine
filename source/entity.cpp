@@ -123,7 +123,15 @@ bool fields_engine::entity::display() {
 	
 	return modif;
 }
+
 #endif // EDITOR
+
+fe::string const& fields_engine::entity::get_name() const {
+	return m_name;
+}
+fe::string& fields_engine::entity::ref_name() {
+	return m_name;
+}
 
 fe::transform& fields_engine::entity::ref_transform() {
 	return m_root_component->ref_transform();

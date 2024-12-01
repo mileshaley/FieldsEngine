@@ -238,6 +238,7 @@ fe::vec3 fields_engine::matrix_decompose_rotation(mat4 const& mat) {
 }
 
 fe::vec3 fields_engine::matrix_decompose_rotation(mat4 const& mat, vec3 const& scale) {
+	/// TODO: Support decomposing into quaternion
 	const mat3 rot_mat{
 		(vec3 const&)mat[0] / scale.x,
 		(vec3 const&)mat[1] / scale.y,
