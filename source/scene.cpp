@@ -19,7 +19,7 @@
 #include "entity.h"
 #include "camera.h"
 #include "movement_controller.h"
-
+#include "editor.h"
 #include <random>
 
 fields_engine::scene::scene() {
@@ -439,8 +439,13 @@ bool fields_engine::scene::display_window() {
 	bool modif = false;
 	modif |= ImGui::DragFloat3("Light Position", &m_light_pos.x);
 	modif |= ImGui::ColorPicker3("Background color", &m_background_color.x);
+	editor& edit = context<editor>();
+	const entity* curr_selected = edit.get_selected_entity();
 	for (unique_cr<entity> ent : m_entities) {
-		modif |= ent->display();
+		// This assumes that all entities in the scene have unique names
+		if (ImGui::Selectable(ent->get_name().c_str(), ent.get() == curr_selected)) {
+			edit.set_selected_entity(ent.get());
+		}
 	}
 	return modif;
 }

@@ -20,6 +20,7 @@
 #include "imGui/imgui_internal.h"
 #include "scene.h"
 #include "context.h"
+#include "entity.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Editor Definitions                                                        *
@@ -71,10 +72,12 @@ fields_engine::editor::editor(window& win)
 	ImGui::SetNextWindowSize({ 300.0f, 500.0f });
 
 	add_window(make_unique<editor_window>(
-		"Root", std::bind(&editor::root_window, this), ICON_FACE_SMILE));
+		"Root", std::bind(&editor::root_window, this), ICON_FACE_SMILE)).close();
+
+	add_window(make_unique<editor_window>(
+		"Inspect", std::bind(&editor::inspect_window, this), ICON_MAGNIFYING_GLASS));
 
 	// Add the window and then set its callback after since it needs to access data inside the window
-	
 	editor_window* demo_window = &add_window(make_unique<editor_window>(
 		"ImGui Demo", editor_window::callback_t{}, ICON_INFO));
 	demo_window->set_callback([demo_window]() {
@@ -171,6 +174,134 @@ static ImVec4 rgb(int r, int g, int b) {
 		b / 255.0f,
 		1.0f
 	};
+}
+
+
+static bool do_nothing() {
+	return false;
+}
+
+void fields_engine::editor::open_icon_selector() {
+	ImGui::OpenPopup("icon_selector_popup");
+}
+
+// static
+bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
+
+	const float width = ImGui::GetContentRegionAvail().x;
+	constexpr float min_width = 20;
+	const int num_cols = int(std::ceilf(width / min_width));
+	bool changed = false;
+	if (ImGui::BeginPopup("icon_selector_popup")) {
+		static string search = "";
+		ImGui::InputTextWithHint("###Search Icon", "Search for an icon", &search);
+		if (ImGui::BeginTable("Icon Selection Table", num_cols, ImGuiTableFlags_SizingStretchSame)) {
+			int pos = 0;
+			for (int i = 0; i < all_editor_icons.size(); ++i) {
+				editor_icon_info const& icon_info = all_editor_icons[i];
+				if (!text::is_relevant(icon_info.pretty_name, search)) {
+					continue;
+				}
+				const int mod = pos++ % num_cols;
+				if (mod == 0) {
+					ImGui::TableNextRow();
+				}
+				ImGui::TableSetColumnIndex(mod);
+				// The const char* == const char* is jank but won't break anything if it doesn't work as intended
+				if (ImGui::Selectable(icon_info.icon, selected == icon_info.icon)) {
+					selected = icon_info.icon;
+					ImGui::CloseCurrentPopup();
+					changed = true;
+				}
+				if (ImGui::BeginItemTooltip()) {
+					ImGui::Text("%s %s", icon_info.icon, icon_info.pretty_name);
+					ImGui::EndTooltip();
+				}
+			}
+			ImGui::EndTable();
+		}
+		ImGui::EndPopup();
+	}
+	return changed;
+}
+
+bool fields_engine::editor::is_capturing_mouse() const {
+	return ImGui::GetIO().WantCaptureMouse && !m_game_window_hovered;
+}
+
+bool fields_engine::editor::is_capturing_keyboard() const {
+	return ImGui::GetIO().WantCaptureKeyboard && !m_game_window_hovered;
+}
+
+fe::graphics::dual_frame_buffer& fields_engine::editor::ref_dual_frame_buffer() {
+	return m_dual_fb;
+}
+
+fe::ivec2 fields_engine::editor::get_game_window_size() const {
+	return m_game_window_size;
+}
+
+fe::entity const* fields_engine::editor::get_selected_entity() const {
+	return m_selected_ent;
+}
+
+fe::entity* fields_engine::editor::get_selected_entity() {
+	return m_selected_ent;
+}
+
+void fields_engine::editor::set_selected_entity(entity* new_selected) {
+	m_selected_ent = new_selected;
+}
+
+/*~-------------------------------------------------------------------------~*\
+ * Editor Hosted Windows                                                     *
+\*~-------------------------------------------------------------------------~*/
+
+bool fields_engine::editor::game_window() {
+	const ImVec2 size = ImGui::GetWindowSize();
+	m_game_window_size = { size.x, size.y };
+	ImGui::Image(
+		(ImTextureID)(i64)m_dual_fb.get_texture_id(),
+		{ size },
+		{ 0, 1 },
+		{ 1, 0 }
+	);
+	m_game_window_hovered = ImGui::IsWindowHovered();
+	m_game_window_focused = ImGui::IsWindowFocused();
+
+	return false;
+}
+
+bool fields_engine::editor::inspect_window() {
+	if (m_selected_ent == nullptr) { return false; }
+	return m_selected_ent->display();
+}
+
+bool fields_engine::editor::root_window() {
+	bool modif = ImGui::InputTextWithHint(
+		"###root_enter_new_window_name", "Enter Window Name", &m_new_window_buf);
+
+	if (ImGui::Button(m_new_window_icon)) {
+		open_icon_selector();
+	}
+	modif |= icon_selector_popup(m_new_window_icon);
+
+	if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
+		add_window(make_unique<editor_window>(
+			m_new_window_buf, do_nothing, m_new_window_icon));
+		m_new_window_buf.clear();
+		modif = true;
+	}
+	return modif;
+}
+
+/*~-------------------------------------------------------------------------~*\
+ * Editor Helper Definitions                                                 *
+\*~-------------------------------------------------------------------------~*/
+
+fe::editor_window& fields_engine::editor::add_window(unique<editor_window>&& new_win) {
+	m_recent_windows.push_back(int(m_windows.size()));
+	return *m_windows.emplace_back(move(new_win));
 }
 
 void fields_engine::editor::reset_style() const {
@@ -352,104 +483,6 @@ void fields_engine::editor::reset_style() const {
     colors[ImGuiCol_NavWindowingHighlight] = {0.28f, 0.28f, 0.28f, 0.29f};
     colors[ImGuiCol_NavWindowingDimBg]     = {0.28f, 0.28f, 0.28f, 0.29f};
     colors[ImGuiCol_ModalWindowDimBg]      = {0.28f, 0.28f, 0.28f, 0.29f};
-}
-
-static bool do_nothing() {
-	return false;
-}
-
-void fields_engine::editor::open_icon_selector() {
-	ImGui::OpenPopup("icon_selector_popup");
-}
-
-// static
-bool fields_engine::editor::icon_selector_popup(editor_icon& selected) {
-
-	const float width = ImGui::GetContentRegionAvail().x;
-	constexpr float min_width = 20;
-	const int num_cols = int(std::ceilf(width / min_width));
-	bool changed = false;
-	if (ImGui::BeginPopup("icon_selector_popup")) {
-		static string search = "";
-		ImGui::InputTextWithHint("###Search Icon", "Search for an icon", &search);
-		if (ImGui::BeginTable("Icon Selection Table", num_cols, ImGuiTableFlags_SizingStretchSame)) {
-			int pos = 0;
-			for (int i = 0; i < all_editor_icons.size(); ++i) {
-				editor_icon_info const& icon_info = all_editor_icons[i];
-				if (!text::is_relevant(icon_info.pretty_name, search)) {
-					continue;
-				}
-				const int mod = pos++ % num_cols;
-				if (mod == 0) {
-					ImGui::TableNextRow();
-				}
-				ImGui::TableSetColumnIndex(mod);
-				// The const char* == const char* is jank but won't break anything if it doesn't work as intended
-				if (ImGui::Selectable(icon_info.icon, selected == icon_info.icon)) {
-					selected = icon_info.icon;
-					ImGui::CloseCurrentPopup();
-					changed = true;
-				}
-				if (ImGui::BeginItemTooltip()) {
-					ImGui::Text("%s %s", icon_info.icon, icon_info.pretty_name);
-					ImGui::EndTooltip();
-				}
-			}
-			ImGui::EndTable();
-		}
-		ImGui::EndPopup();
-	}
-	return changed;
-}
-
-bool fields_engine::editor::is_capturing_mouse() const {
-	return ImGui::GetIO().WantCaptureMouse && !m_game_window_focused;
-}
-
-bool fields_engine::editor::is_capturing_keyboard() const {
-	return ImGui::GetIO().WantCaptureKeyboard && !m_game_window_focused;
-}
-
-fe::graphics::dual_frame_buffer& fields_engine::editor::ref_dual_frame_buffer() {
-	return m_dual_fb;
-}
-
-bool fields_engine::editor::game_window() {
-	const ImVec2 size = ImGui::GetWindowSize();
-	m_game_window_size = { size.x, size.y };
-	ImGui::Image(
-		(ImTextureID)(i64)m_dual_fb.get_texture_id(),
-		{ size },
-		{ 0, 1 },
-		{ 1, 0 }
-	);
-	m_game_window_hovered = ImGui::IsWindowHovered();
-	m_game_window_focused = ImGui::IsWindowFocused();
-
-	return false;
-}
-
-bool fields_engine::editor::root_window() {
-	bool modif = ImGui::InputTextWithHint(
-		"###root_enter_new_window_name", "Enter Window Name", &m_new_window_buf);
-
-	if (ImGui::Button(m_new_window_icon)) {
-		open_icon_selector();
-	}
-	modif |= icon_selector_popup(m_new_window_icon);
-
-	if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
-		add_window(make_unique<editor_window>(
-			m_new_window_buf, do_nothing, m_new_window_icon));
-		m_new_window_buf.clear();
-		modif = true;
-	}
-	return modif;
-}
-
-fe::editor_window& fields_engine::editor::add_window(unique<editor_window>&& new_win) {
-	m_recent_windows.push_back(int(m_windows.size()));
-	return *m_windows.emplace_back(move(new_win));
 }
 
 #endif // EDITOR

@@ -21,6 +21,7 @@ struct ImFont;
 
 namespace fields_engine {
 	class window;
+	class entity;
 } // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
@@ -34,7 +35,6 @@ namespace fields_engine {
 		void tick(float dt);
 		~editor();
 
-		void reset_style() const;
 
 		static void open_icon_selector();
 		static bool icon_selector_popup(editor_icon& current);
@@ -44,25 +44,41 @@ namespace fields_engine {
 
 		graphics::dual_frame_buffer& ref_dual_frame_buffer();
 
-		vec2 m_game_window_size = {1000, 800};
-	private:
-		bool game_window();
-		bool root_window();
-		editor_window& add_window(unique<editor_window>&& new_win);
+		ivec2 get_game_window_size() const;
 
-		graphics::dual_frame_buffer m_dual_fb;
+		entity const* get_selected_entity() const;
+		entity* get_selected_entity();
+		void set_selected_entity(entity* new_selected);
+
+
+	private: // Windows
+		bool game_window();
+		//bool scene_window();
+		bool inspect_window();
+		bool root_window();
+
+	private: // Helpers
+		editor_window& add_window(unique<editor_window>&& new_win);
+		void reset_style() const;
+
+	private:
+		entity* m_selected_ent;
+		//vector<entity*> m_selected_ents;
+
+		// Game window
+		ivec2 m_game_window_size = {1000, 800};
 		bool m_game_window_focused = true;
 		bool m_game_window_hovered = true;
 
-
+		// Root window
 		string m_new_window_buf;
 		editor_icon m_new_window_icon = ICON_ELLIPSIS_VERTICAL;
+		// Editor
+		graphics::dual_frame_buffer m_dual_fb;
 		vector<unique<editor_window>> m_windows;
 		ImGuiContext* m_gui_context;
 		vector<ImFont*> m_fonts;
-
 		vector<int> m_recent_windows;
-		//std::unordered_set<int> m_recent_windows_set;
 	};
 
 } // namespace fields_engine

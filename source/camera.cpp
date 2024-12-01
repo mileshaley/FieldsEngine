@@ -64,7 +64,7 @@ void fields_engine::camera::recalculate_view_matrix() {
 
 void fields_engine::camera::recalculate_proj_matrix() {
 	/// TODO: fix this
-	const vec2 win_size = context<editor>().m_game_window_size;
+	const vec2 win_size = context<editor>().get_game_window_size();
 	// context<application>().get_window_size();
 	
 	if (m_orthographic) {
