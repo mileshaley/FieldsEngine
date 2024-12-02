@@ -73,6 +73,7 @@
     <ClCompile Include="source\frame_buffer.cpp" />
     <ClCompile Include="source\texture.cpp" />
     <ClCompile Include="source\mesh_resource.cpp" />
+    <ClCompile Include="source\resource_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -135,5 +136,6 @@
     <ClInclude Include="source\frame_buffer.h" />
     <ClInclude Include="source\texture.h" />
     <ClInclude Include="source\mesh_resource.h" />
+    <ClInclude Include="source\resource_manager.h" />
   </ItemGroup>
 </Project>
