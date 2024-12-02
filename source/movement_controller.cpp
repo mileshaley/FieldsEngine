@@ -48,7 +48,7 @@ void fields_engine::movement_controller::tick(float dt) {
 		transform& tr = get_owner()->ref_transform();
 		// TODO: make dynamic, possibly using the distance to the middle clicked object
 		vec2 delta = in.get_delta_mouse_move() * 0.0085f;
-		const vec3 up = tr.get_local_up_vector();
+		const vec3 up = tr.get_local_forward_vector();
 		const vec3 right = tr.get_local_right_vector();
 		tr.set_local_position(tr.get_local_position() + right * -delta.x + up * delta.y);
 	}
@@ -60,7 +60,7 @@ void fields_engine::movement_controller::tick(float dt) {
 
 	if (m_mode == mode::pitch_yaw) {
 		const ivec3 delta{
-			int(in.is_button_held(GLFW_KEY_W)) - int(in.is_button_held(GLFW_KEY_S)),
+			int(in.is_button_held(GLFW_KEY_S)) - int(in.is_button_held(GLFW_KEY_W)),
 			int(in.is_button_held(GLFW_KEY_D)) - int(in.is_button_held(GLFW_KEY_A)),
 			int(in.is_button_held(GLFW_KEY_SPACE)) - int(in.is_button_held(GLFW_KEY_LEFT_SHIFT))
 		};
@@ -68,7 +68,7 @@ void fields_engine::movement_controller::tick(float dt) {
 		if (delta.x || delta.y || delta.z) {
 			transform& tr = get_owner()->ref_transform();
 
-			vec3 forward = tr.get_local_forward_vector();
+			vec3 forward = tr.get_local_up_vector();
 			vec3 right = tr.get_local_right_vector();
 			forward.z = 0;
 			right.z = 0;
