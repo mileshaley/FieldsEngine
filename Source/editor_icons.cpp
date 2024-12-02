@@ -38,6 +38,7 @@ namespace fields_engine::detail {
 		out <<
 			"// Generated\n"
 			"#pragma once\n\n"
+			"#if EDITOR"
 			"#include \"editor_icons.h\"\n\n"
 			"namespace fields_engine {\n"
 				"\textern const std::array<editor_icon_info, "
@@ -55,6 +56,7 @@ namespace fields_engine::detail {
 					<< count << "> all_editor_icons = {\n"
 				<< info_str <<
 				"\t};\n"
-			"} // namespace fields_editor\n";
+			"} // namespace fields_editor\n"
+			"#endif // EDITOR\n";
 	}
 } // namespace fields_engine::detail

@@ -21,6 +21,7 @@
 #include "movement_controller.h"
 #include "editor.h"
 #include <random>
+#include "texture.h"
 
 fields_engine::scene::scene() {
 	m_shader = make_unique<graphics::shader>();
@@ -93,6 +94,8 @@ static fe::unique<fe::entity> make_snowman() {
 			m3->add_cube();
 			m3->generate();
 			m3->ref_material() = snow_mat;
+			m3->set_texture(make_unique<graphics::texture>("miles.png"));
+			//m3->set_normal_texture(make_unique<graphics::texture>("miles.png"));
 			transform& tr = m3->ref_transform();
 			const float scale = 0.75;
 			tr.set_local_position({ 0, 0, 1 });

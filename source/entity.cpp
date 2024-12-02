@@ -59,7 +59,7 @@ fields_engine::entity::entity(entity const& other)
 }
 
 fields_engine::entity::~entity() {
-
+	
 }
 
 void fields_engine::entity::init() {
@@ -80,18 +80,6 @@ void fields_engine::entity::draw(graphics::shader const& shader) const {
 	glUniform1i(loc, 5);
 	FE_GL_VERIFY;
 
-	loc = shader.uniform_location("texScale");
-	glUniform2fv(loc, 1, glm::value_ptr(vec2(1, 1)));
-	FE_GL_VERIFY;
-	loc = shader.uniform_location("texRot");
-	glUniform1f(loc, 1);
-	FE_GL_VERIFY;
-	loc = shader.uniform_location("hasTexture");
-	glUniform1i(loc, 0);
-	FE_GL_VERIFY;
-	loc = shader.uniform_location("hasNormal");
-	glUniform1i(loc, 0);
-	FE_GL_VERIFY;
 	for (unique_cr<component> comp : m_components) {
 		comp->draw(shader);
 	}

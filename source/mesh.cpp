@@ -10,6 +10,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "graphics.h"
 #include "shader.h"
+#include "texture.h"
 
 namespace fields_engine {
     using namespace graphics;
@@ -35,6 +36,10 @@ fields_engine::mesh::mesh(mesh const& other)
     if (other.m_vao_id != 0) {
         generate();
     }
+}
+
+fields_engine::mesh::~mesh()
+{
 }
 
 void fields_engine::mesh::generate() {
@@ -135,6 +140,33 @@ void fields_engine::mesh::draw(graphics::shader const& shader) const {
     FE_GL_VERIFY;
     loc = shader.uniform_location("shininess");
     glUniform1f(loc, m_material.m_shininess);
+    FE_GL_VERIFY;
+
+    int has_texture = m_texture != nullptr;
+    int has_normal_texture = m_normal_texture != nullptr;
+    loc = shader.uniform_location("texScale");
+    glUniform2fv(loc, 1, glm::value_ptr(vec2(1, 1)));
+    FE_GL_VERIFY;
+    loc = shader.uniform_location("texRot");
+    glUniform1f(loc, 0);
+    FE_GL_VERIFY;
+
+    if (has_texture) {
+        m_texture->use();
+        loc = shader.uniform_location("tex");
+        glUniform1i(loc, m_texture->get_unit());
+    }
+    loc = shader.uniform_location("hasTexture");
+    glUniform1i(loc, has_texture);
+    FE_GL_VERIFY;
+
+    if (has_normal_texture) {
+        m_normal_texture->use();
+        loc = shader.uniform_location("norm");
+        glUniform1i(loc, m_normal_texture->get_unit());
+    }
+    loc = shader.uniform_location("hasNormal");
+    glUniform1i(loc, has_normal_texture);
     FE_GL_VERIFY;
 
     // Mesh draw
@@ -331,6 +363,20 @@ void fields_engine::mesh::add_pyramid(int sides, float height) {
         sequential_tris(n + 3);
 
         prev_vert = vert;
+    }
+}
+
+void fields_engine::mesh::set_texture(unique<graphics::texture>&& new_texture) {
+    m_texture = move(new_texture);
+    if (m_texture != nullptr) {
+        m_texture->set_unit(0);
+    }
+}
+
+void fields_engine::mesh::set_normal_texture(unique<graphics::texture>&& new_normal_texture) {
+    m_normal_texture = move(new_normal_texture);
+    if (m_normal_texture != nullptr) {
+        m_normal_texture->set_unit(1);
     }
 }
 

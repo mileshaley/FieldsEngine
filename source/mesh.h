@@ -13,6 +13,10 @@
 #include "spatial_component.h" // Inheritance
 #include "material.h"
 
+namespace fields_engine::graphics {
+	class texture;
+} // namespace fields_engine::graphics
+
 /*~-------------------------------------------------------------------------~*\
  * Entity Class                                                              *
 \*~-------------------------------------------------------------------------~*/
@@ -24,6 +28,7 @@ namespace fields_engine {
 
 		mesh();
 		mesh(mesh const& other);
+		~mesh();
 
 		FE_GEN_COMPONENT(mesh);
 
@@ -40,11 +45,17 @@ namespace fields_engine {
 		graphics::material      & ref_material()       { return m_material; }
 		graphics::material const& ref_material() const { return m_material; }
 
+		void set_texture(unique<graphics::texture>&& new_texture);
+		void set_normal_texture(unique<graphics::texture>&& new_normal_texture);
+
+
 	private:
 		void sequential_tris(int first_vert_index);
 		void tris_for_quad(ivec4 const& indices);
 		void sequential_tris_for_quad(int first_vert_index);
 
+		/// TODO: Put these in external managed resource, 
+		/// add pointer to that resource and also material, texture, etc.
 		unsigned m_vao_id;
 		vector<vec4> m_vertices;
 		vector<vec3> m_normals;
@@ -53,6 +64,9 @@ namespace fields_engine {
 		vector<ivec3> m_triangles;
 
 		graphics::material m_material;
+		unique<graphics::texture> m_texture;
+		unique<graphics::texture> m_normal_texture;
+
 	};
 
 } // namespace fields_engine
