@@ -84,10 +84,14 @@ namespace fields_engine::common {
 
 	using glm::quat;
 
+	using glm::mat;
+
 	using glm::mat2;
 	using glm::mat3;
 	using glm::mat4;
 
+	using glm::vec;
+	
 	using glm::vec1;
 	using glm::vec2;
 	using glm::vec3;
@@ -97,11 +101,6 @@ namespace fields_engine::common {
 	using glm::ivec2;
 	using glm::ivec3;
 	using glm::ivec4;
-
-	using svec1 = glm::vec<1, i16>;
-	using svec2 = glm::vec<2, i16>;
-	using svec3 = glm::vec<3, i16>;
-	using svec4 = glm::vec<4, i16>;
 
 /*~-------------------------------------------------------------------------~*\
  * Pointer Intention Aliases                                                 *
@@ -129,6 +128,11 @@ namespace fields_engine::common {
 
 	template<typename T>
 	using dyn_arr = std::vector<T>;
+
+	/// TODO: Make our own map type
+	template<typename H, typename T>
+	using map = std::unordered_map<H, T>;
+
 
 } // namespace fields_engine::common
 

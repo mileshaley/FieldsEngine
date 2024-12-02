@@ -47,7 +47,7 @@ namespace fields_engine::graphics {
 		unsigned m_fbo_id;
 		unsigned m_rbo_id;
 		unsigned m_tex_id;
-		svec2 m_size;
+		vec<2, i16> m_size;
 	};
 
 /*~-------------------------------------------------------------------------~*\

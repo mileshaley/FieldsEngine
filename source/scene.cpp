@@ -22,6 +22,7 @@
 #include "editor.h"
 #include <random>
 #include "texture.h"
+#include "mesh_resource.h"
 
 fields_engine::scene::scene() {
 	m_shader = make_unique<graphics::shader>();
@@ -58,8 +59,8 @@ static fe::unique<fe::entity> make_snowman() {
 	nose_mat.m_specular_color = { 0.9f, 0.5f, 0.1f };
 	nose_mat.m_shininess = 1.0f;
 	unique<mesh> m0 = make_unique<mesh>();
-	m0->add_cube();
-	m0->generate();
+	m0->ref_resource().add_cube();
+	m0->ref_resource().generate();
 	m0->ref_material() = snow_mat;
 	mesh* pm0 = m0.get();
 	auto ent = make_unique<entity>("Snowman", move(m0));
@@ -70,8 +71,8 @@ static fe::unique<fe::entity> make_snowman() {
 
 	{ // Middle
 		unique<mesh> m1 = make_unique<mesh>();
-		m1->add_cube();
-		m1->generate();
+		m1->ref_resource().add_cube();
+		m1->ref_resource().generate();
 		m1->ref_material() = snow_mat;
 		transform& tr = m1->ref_transform();
 		const float scale = 0.75f;
@@ -81,8 +82,8 @@ static fe::unique<fe::entity> make_snowman() {
 		pm0->attach_component(move(m1));
 		{ // Scarf
 			unique<mesh> m2 = make_unique<mesh>();
-			m2->add_cube();
-			m2->generate();
+			m2->ref_resource().add_cube();
+			m2->ref_resource().generate();
 			m2->ref_material() = scarf_mat;
 			transform& tr = m2->ref_transform();
 			tr.set_local_position({ 0, 0, 0.6f });
@@ -91,8 +92,8 @@ static fe::unique<fe::entity> make_snowman() {
 		}
 		{ // Head
 			unique<mesh> m3 = make_unique<mesh>();
-			m3->add_cube();
-			m3->generate();
+			m3->ref_resource().add_cube();
+			m3->ref_resource().generate();
 			m3->ref_material() = snow_mat;
 			m3->set_texture(make_unique<graphics::texture>("miles.png"));
 			//m3->set_normal_texture(make_unique<graphics::texture>("miles.png"));
@@ -112,8 +113,8 @@ static fe::unique<fe::entity> make_snowman() {
 
 				{ // Nose
 					unique<mesh> m6 = make_unique<mesh>();
-					m6->add_pyramid(32, 1);
-					m6->generate();
+					m6->ref_resource().add_pyramid(32, 1);
+					m6->ref_resource().generate();
 					m6->ref_material() = nose_mat;
 					transform& tr = m6->ref_transform();
 					tr.set_local_position({ 0, 0, 0.25f });
@@ -122,8 +123,8 @@ static fe::unique<fe::entity> make_snowman() {
 				}
 				{ // Eye 1
 					unique<mesh> m7 = make_unique<mesh>();
-					m7->add_cylinder(7, 1);
-					m7->generate();
+					m7->ref_resource().add_cylinder(7, 1);
+					m7->ref_resource().generate();
 					m7->ref_material() = hat_mat;
 					transform& tr = m7->ref_transform();
 					tr.set_local_position({ 0.25f, -0.25f, -0.23f });
@@ -133,8 +134,8 @@ static fe::unique<fe::entity> make_snowman() {
 				}
 				{ // Eye 2
 					unique<mesh> m8 = make_unique<mesh>();
-					m8->add_cylinder(7, 1);
-					m8->generate();
+					m8->ref_resource().add_cylinder(7, 1);
+					m8->ref_resource().generate();
 					m8->ref_material() = hat_mat;
 					transform& tr = m8->ref_transform();
 					tr.set_local_position({ -0.25f, -0.25f, -0.23f });
@@ -146,8 +147,8 @@ static fe::unique<fe::entity> make_snowman() {
 
 			{ // Hat base
 				unique<mesh> m4 = make_unique<mesh>();
-				m4->add_cube();
-				m4->generate();
+				m4->ref_resource().add_cube();
+				m4->ref_resource().generate();
 				m4->ref_material() = hat_mat;
 				transform& tr = m4->ref_transform();
 				tr.set_local_position({ 0, 0, 0.57f });
@@ -156,8 +157,8 @@ static fe::unique<fe::entity> make_snowman() {
 				pm3->attach_component(move(m4));
 				{ // Hat top
 					unique<mesh> m5 = make_unique<mesh>();
-					m5->add_cube();
-					m5->generate();
+					m5->ref_resource().add_cube();
+					m5->ref_resource().generate();
 					m5->ref_material() = hat_mat;
 					transform& tr = m5->ref_transform();
 					tr.set_local_position({ 0, 0, 4.75f });
@@ -189,8 +190,8 @@ static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
 
 	const float h = 10;
 	unique<mesh> m0 = make_unique<mesh>();
-	m0->add_cylinder(16, h);
-	m0->generate();
+	m0->ref_resource().add_cylinder(16, h);
+	m0->ref_resource().generate();
 	m0->ref_material() = wood_mat;
 	mesh* pm0 = m0.get();
 	auto ent = make_unique<entity>("Tree", move(m0));
@@ -202,8 +203,8 @@ static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
 	const float downscale = 0.8f;
 	for (unsigned i = 0; i < top_segments; ++i) {
 		unique<mesh> m = make_unique<mesh>();
-		m->add_pyramid(16);
-		m->generate();
+		m->ref_resource().add_pyramid(16);
+		m->ref_resource().generate();
 		m->ref_material() = needle_mat;
 		mesh* pm = m.get();
 		pm0->attach_component(move(m));
@@ -246,8 +247,8 @@ void fields_engine::scene::startup() {
 
 	{ // Direction Indicator
 		unique<mesh> d = make_unique<mesh>();
-		d->add_cube();
-		d->generate();
+		d->ref_resource().add_cube();
+		d->ref_resource().generate();
 		d->ref_material() = d_mat;
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Direction Indicator", move(d)));
 		transform& dtr = ent->ref_transform();
@@ -257,8 +258,8 @@ void fields_engine::scene::startup() {
 
 		{ // X
 			unique<mesh> xm = make_unique<mesh>();
-			xm->add_cube();
-			xm->generate();
+			xm->ref_resource().add_cube();
+			xm->ref_resource().generate();
 			xm->ref_material() = x_mat;
 			auto& xent = m_entities.emplace_back(make_unique<entity>("Dx", move(xm)));
 			transform& tr = xent->ref_transform();
@@ -267,8 +268,8 @@ void fields_engine::scene::startup() {
 		}
 		{ // Y
 			unique<mesh> ym = make_unique<mesh>();
-			ym->add_cube();
-			ym->generate();
+			ym->ref_resource().add_cube();
+			ym->ref_resource().generate();
 			ym->ref_material() = y_mat;
 			auto& yent = m_entities.emplace_back(make_unique<entity>("Yx", move(ym)));
 			transform& tr = yent->ref_transform();
@@ -277,8 +278,8 @@ void fields_engine::scene::startup() {
 		}
 		{ // Z
 			unique<mesh> zm = make_unique<mesh>();
-			zm->add_cube();
-			zm->generate();
+			zm->ref_resource().add_cube();
+			zm->ref_resource().generate();
 			zm->ref_material() = z_mat;
 			auto& zent = m_entities.emplace_back(make_unique<entity>("Zx", move(zm)));
 			transform& tr = zent->ref_transform();
@@ -308,8 +309,8 @@ void fields_engine::scene::startup() {
 	}
 	{ // Ground
 		unique<mesh> m = make_unique<mesh>();
-		m->add_cube();
-		m->generate();
+		m->ref_resource().add_cube();
+		m->ref_resource().generate();
 		m->ref_material() = grass_mat;
 		transform& tr = m->ref_transform();
 		const float scale = 1;
@@ -319,9 +320,8 @@ void fields_engine::scene::startup() {
 	}
 	{ // Mound
 		unique<mesh> m = make_unique<mesh>();
-		m->add_pyramid(15);
-		//m->add_cube();
-		m->generate();
+		m->ref_resource().add_pyramid(15);
+		m->ref_resource().generate();
 		m->ref_material() = snow_mat;
 		transform& tr = m->ref_transform();
 		const float scale = 1;

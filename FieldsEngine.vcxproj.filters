@@ -72,6 +72,7 @@
     <ClCompile Include="source\movement_controller.cpp" />
     <ClCompile Include="source\frame_buffer.cpp" />
     <ClCompile Include="source\texture.cpp" />
+    <ClCompile Include="source\mesh_resource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -133,5 +134,6 @@
     <ClInclude Include="source\movement_controller.h" />
     <ClInclude Include="source\frame_buffer.h" />
     <ClInclude Include="source\texture.h" />
+    <ClInclude Include="source\mesh_resource.h" />
   </ItemGroup>
 </Project>
