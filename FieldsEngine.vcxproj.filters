@@ -137,5 +137,6 @@
     <ClInclude Include="source\texture.h" />
     <ClInclude Include="source\mesh_resource.h" />
     <ClInclude Include="source\resource_manager.h" />
+    <ClInclude Include="source\this_type.h" />
   </ItemGroup>
 </Project>
