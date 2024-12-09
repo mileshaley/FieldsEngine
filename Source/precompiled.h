@@ -89,7 +89,6 @@ namespace fields_engine::common {
 	using glm::mat2;
 	using glm::mat3;
 	using glm::mat4;
-
 	using glm::vec;
 	
 	using glm::vec1;
@@ -129,10 +128,9 @@ namespace fields_engine::common {
 	template<typename T>
 	using dyn_arr = std::vector<T>;
 
-	/// TODO: Make our own map type
+	/// TODO: Make a Fields Engine map type
 	template<typename H, typename T>
 	using map = std::unordered_map<H, T>;
-
 
 } // namespace fields_engine::common
 

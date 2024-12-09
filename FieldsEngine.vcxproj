@@ -113,6 +113,7 @@
     <ClInclude Include="source\mesh_resource.h" />
     <ClInclude Include="source\movement_controller.h" />
     <ClInclude Include="source\precompiled.h" />
+    <ClInclude Include="source\resource_factory.h" />
     <ClInclude Include="source\resource_manager.h" />
     <ClInclude Include="source\scene.h" />
     <ClInclude Include="source\shader.h" />

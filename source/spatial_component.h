@@ -26,6 +26,8 @@ namespace fields_engine {
 
 		FE_GEN_COMPONENT(spatial_component);
 
+
+
 		void dirtify_transforms() const;
 
 
@@ -42,7 +44,16 @@ namespace fields_engine {
 		transform      & ref_transform()       { return m_transform; }
 		transform const& ref_transform() const { return m_transform; }
 
+		//void deep_resolve_clone_relations(
+		//	spatial_component* original_root, 
+		//	dyn_arr<unique<component>> const& original,
+		//	dyn_arr<unique<component>> const& comps
+		//);
+
+		void deep_copy_root_into_entity(entity& owner) const;
+
 	private:
+		void deep_copy_into_entity(entity& owner) const;
 		transform m_transform;
 		spatial_component* m_parent;
 		dyn_arr<spatial_component*> m_children;

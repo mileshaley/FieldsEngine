@@ -15,6 +15,8 @@
 fields_engine::spatial_component::spatial_component()
 	: component()
 	, m_transform()
+	, m_parent(nullptr)
+	, m_children()
 {
 	m_transform.set_owner(this);
 }
@@ -22,6 +24,8 @@ fields_engine::spatial_component::spatial_component()
 fields_engine::spatial_component::spatial_component(spatial_component const& other)
 	: component(other)
 	, m_transform(other.m_transform)
+	, m_parent(nullptr)
+	, m_children()
 {
 	m_transform.set_owner(this);
 }
@@ -59,4 +63,31 @@ void fields_engine::spatial_component::set_parent(spatial_component* new_parent)
 
 fe::spatial_component* fields_engine::spatial_component::get_parent() const {
 	return m_parent;
+}
+
+//void fields_engine::spatial_component::deep_resolve_clone_relations(
+//	spatial_component* original_root, 
+//	dyn_arr<unique<component>> const& original,
+//	dyn_arr<unique<component>> const& cloned
+//) {
+//	
+//	for (int i = 0; i < m_children.size(); ++i) {
+//		
+//	}
+//}
+
+void fields_engine::spatial_component::deep_copy_root_into_entity(entity& owner) const {
+	owner.acquire_component(this->clone());
+	for (spatial_component* child : m_children) {
+		child->deep_copy_into_entity(owner);
+	}
+}
+
+void fields_engine::spatial_component::deep_copy_into_entity(entity& owner) const {
+	unique<component> copy(this->clone());
+	spatial_component* copy_ptr = static_cast<spatial_component*>(copy.get());
+	owner.acquire_component(move(copy));
+	for (spatial_component* child : m_children) {
+		child->deep_copy_into_entity(owner);
+	}
 }
