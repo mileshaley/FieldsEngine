@@ -28,7 +28,7 @@ namespace fields_engine {
 		movement_controller();
 		movement_controller(movement_controller const& other);
 
-		FE_GEN_COMPONENT(movement_controller);
+		FE_GEN_COMPONENT(movement_controller, component);
 
 #if EDITOR
 		bool display() override;

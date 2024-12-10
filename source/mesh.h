@@ -31,7 +31,7 @@ namespace fields_engine {
 		mesh(mesh const& other);
 		~mesh();
 
-		FE_GEN_COMPONENT(mesh);
+		FE_GEN_COMPONENT(mesh, spatial_component);
 
 		virtual void draw(graphics::shader const& shader) const override;
 

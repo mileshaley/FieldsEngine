@@ -30,8 +30,16 @@ fields_engine::mesh::mesh(mesh const& other)
     , m_resource(make_unique<mesh_resource>(*other.m_resource))
     , m_texture(nullptr)
     , m_normal_texture(nullptr)
-    , m_material()
-{}
+    , m_material(other.m_material)
+{
+    /// TODO: Copy texture when we are using resource manager
+    //if (other.m_texture) {
+    //    m_texture = make_unique<texture>(other.m_texture);
+    //}
+    //if (other.m_normal_texture) {
+    //    m_normal_texture = make_unique<texture>(other.m_texture);
+    //}
+}
 
 fields_engine::mesh::~mesh() {}
 

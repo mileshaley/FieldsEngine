@@ -27,67 +27,73 @@ fields_engine::entity::entity(string_view name)
 
 fields_engine::entity::entity(string_view name, unique<spatial_component>&& root_component)
 	: m_name(name)
-	, m_components()
+	, m_basic_components()
+	, m_spatial_components()
 	, m_root_component(nullptr)
 {
-	m_root_component = root_component.get();
-	acquire_component(move(root_component));
+	attach_spatial_component(move(root_component));
 }
 
 fields_engine::entity::entity(unique<spatial_component>&& root_component)
 	: m_name()
-	, m_components()
+	, m_basic_components()
+	, m_spatial_components()
 	, m_root_component(nullptr)
 {
-	m_root_component = root_component.get();
-	acquire_component(move(root_component));
+	attach_spatial_component(move(root_component));
 }
 
 fields_engine::entity::entity(entity const& other)
 	: m_name(other.m_name)
-	, m_components()
+	, m_basic_components()
+	, m_spatial_components()
 	, m_root_component(nullptr)
 {
 	// Clone all components from other into this entity
-	m_components.reserve(other.m_components.size());
-	for (auto const& comp : m_components) {
-		m_components.emplace_back(move(comp->clone()));
-		if (comp.get() == other.m_root_component) {
-			m_root_component = reinterpret_cast<spatial_component*>(m_components.back().get());
-		}
+	m_basic_components.reserve(other.m_basic_components.size());
+	m_spatial_components.reserve(other.m_spatial_components.size());
+
+	for (auto const& comp : other.m_basic_components) {
+		acquire_basic_component(clone(*comp));
 	}
+
+	other.m_root_component->deep_copy_into_entity(*this);
 }
 
 fields_engine::entity::~entity() {
-	
 }
 
 void fields_engine::entity::init() {
-	for (unique_cr<component> comp : m_components) {
+	for (unique<component> const& comp : m_basic_components) {
 		comp->init();
 	}
+	m_root_component->init_all();
 }
 
 void fields_engine::entity::tick(float dt) {
-	for (unique_cr<component> comp : m_components) {
+	for (unique<component> const& comp : m_basic_components) {
 		comp->tick(dt);
 	}
+	m_root_component->tick_all(dt);
 }
 
 void fields_engine::entity::draw(graphics::shader const& shader) const {
-
+	/// TODO: Remove
 	GLint loc = shader.uniform_location("objectId");
 	glUniform1i(loc, 5);
 	FE_GL_VERIFY;
 
-	for (unique_cr<component> comp : m_components) {
+	for (unique<component> const& comp : m_basic_components) {
 		comp->draw(shader);
 	}
+	m_root_component->draw_all(shader);
 }
 
 void fields_engine::entity::exit() {
-	for (unique_cr<component> comp : m_components) {
-		comp->exit();
+	// Reverse order of init()
+	m_root_component->exit_all();
+	for (auto it = m_basic_components.rbegin(); it != m_basic_components.rend(); ++it) {
+		(*it)->exit();
 	}
 }
 
@@ -95,7 +101,8 @@ void fields_engine::entity::exit() {
 bool fields_engine::entity::display() {
 	bool modif = false;
 	ImGui::Text(m_name.c_str());
-	for (unique_cr<component> comp : m_components) {
+
+	for (unique<component> const& comp : m_basic_components) {
 		ImGui::PushID(comp.get());
 		if (comp.get() == m_root_component) {
 			ImGui::SeparatorText((string(comp->component_name()) + " (root)").c_str());
@@ -105,7 +112,19 @@ bool fields_engine::entity::display() {
 		modif |= comp->display();
 		ImGui::PopID();
 	}
-	
+	// Update basic components first
+	for (unique<component> const& comp : m_basic_components) {
+		ImGui::PushID(comp.get());
+		ImGui::SeparatorText(comp->component_name().data());
+		modif |= comp->display();
+		ImGui::PopID();
+	}
+	return modif;
+}
+
+bool fields_engine::entity::component_display() {
+	bool modif = false;
+
 	return modif;
 }
 
@@ -133,17 +152,33 @@ fe::spatial_component const* fields_engine::entity::get_root() const {
 	return m_root_component;
 }
 
-void fields_engine::entity::acquire_component(unique<component>&& comp_to_own) {
-	comp_to_own->set_owner(this);
-	m_components.emplace_back(move(comp_to_own));
+fe::component& fields_engine::entity::attach_basic_component(unique<component>&& comp) {
+	component* comp_ptr = comp.get();
+	acquire_basic_component(move(comp));
+	return *comp_ptr;
 }
 
-fe::component& fields_engine::entity::attach_component(unique<component>&& comp) {
-	component* comp_ptr = comp.get();
-	spatial_component* spatial = dynamic_cast<spatial_component*>(comp.get());
-	if (spatial) {
-		m_root_component->adopt_owned_component(spatial);
+fe::spatial_component& fields_engine::entity::attach_spatial_component(unique<spatial_component>&& comp) {
+	spatial_component* comp_ptr = comp.get();
+	acquire_spatial_component(move(comp));
+	if (m_root_component) {
+		m_root_component->adopt_owned_component(comp_ptr);
+	} else {
+		m_root_component = comp_ptr;
 	}
-	acquire_component(move(comp));
 	return *comp_ptr;
+}
+
+void fields_engine::entity::acquire_basic_component(unique<component>&& comp_to_own) {
+	comp_to_own->set_owner(this);
+	m_basic_components.emplace_back(move(comp_to_own));
+}
+
+void fields_engine::entity::acquire_spatial_component(unique<spatial_component>&& comp_to_own) {
+	comp_to_own->set_owner(this);
+	m_spatial_components.emplace_back(move(comp_to_own));
+}
+
+void fields_engine::entity::set_root(spatial_component* new_root) {
+	m_root_component = new_root;
 }

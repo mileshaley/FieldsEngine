@@ -44,7 +44,9 @@ namespace fields_engine {
 		void exit();
 
 #ifdef EDITOR
+		//static bool display_window();
 		bool display();
+		bool component_display();
 #endif // EDITOR
 
 		string const& get_name() const;
@@ -53,17 +55,22 @@ namespace fields_engine {
 		transform& ref_transform();
 		transform const& ref_transform() const;
 
-		spatial_component* get_root();
-		spatial_component const* get_root() const;
+		component& attach_basic_component(unique<component>&& comp);
+		// Set as or attach to root
+		spatial_component& attach_spatial_component(unique<spatial_component>&& comp);
 
-		void acquire_component(unique<component>&& comp_to_own);
-		// Attach to root
-		component& attach_component(unique<component>&& comp);
+		void acquire_basic_component(unique<component>&& comp_to_own);
+		void acquire_spatial_component(unique<spatial_component>&& comp_to_own);
+
+		spatial_component const* get_root() const;
+		spatial_component* get_root();
+		void set_root(spatial_component* new_root);
 
 	private:
-		string m_name;
-		dyn_arr<unique<component>> m_components;
+		dyn_arr<unique<component>> m_basic_components;
+		dyn_arr<unique<spatial_component>> m_spatial_components;
 		spatial_component* m_root_component;
+		string m_name;
 	};
 
 } // namespace fields_engine

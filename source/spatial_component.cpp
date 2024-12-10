@@ -37,18 +37,44 @@ void fields_engine::spatial_component::dirtify_transforms() const {
 	}
 }
 
+void fields_engine::spatial_component::init_all() {
+	init();
+	for (spatial_component* child : m_children) {
+		child->init_all();
+	}
+}
+
+void fields_engine::spatial_component::tick_all(float dt) {
+	tick(dt);
+	for (spatial_component* child : m_children) {
+		child->tick_all(dt);
+	}
+}
+
+void fields_engine::spatial_component::draw_all(graphics::shader const& shader) const {
+	draw(shader);
+	for (spatial_component const* child : m_children) {
+		child->draw_all(shader);
+	}
+}
+
+void fields_engine::spatial_component::exit_all() {
+	for (auto it = m_children.rbegin(); it != m_children.rend(); ++it) {
+		(*it)->exit_all();
+	}
+	exit();
+}
+
 #ifdef EDITOR
 bool fields_engine::spatial_component::display() {
 	return m_transform.display();
 }
 #endif // EDITOR
 
-
-
-fe::spatial_component& fields_engine::spatial_component::attach_component(unique<spatial_component>&& comp) {
+fe::spatial_component& fields_engine::spatial_component::attach_spatial_component(unique<spatial_component>&& comp) {
 	spatial_component* comp_ptr = comp.get();
 	adopt_owned_component(comp.get());
-	get_owner()->acquire_component(move(comp));
+	get_owner()->acquire_spatial_component(move(comp));
 	return *comp_ptr;
 }
 
@@ -65,29 +91,22 @@ fe::spatial_component* fields_engine::spatial_component::get_parent() const {
 	return m_parent;
 }
 
-//void fields_engine::spatial_component::deep_resolve_clone_relations(
-//	spatial_component* original_root, 
-//	dyn_arr<unique<component>> const& original,
-//	dyn_arr<unique<component>> const& cloned
-//) {
-//	
-//	for (int i = 0; i < m_children.size(); ++i) {
-//		
-//	}
-//}
-
-void fields_engine::spatial_component::deep_copy_root_into_entity(entity& owner) const {
-	owner.acquire_component(this->clone());
+void fields_engine::spatial_component::deep_copy_into_entity(entity& other_owner) const {
+	unique<spatial_component> new_root = clone(*this);
+	// Relies on attach's ability to either set as root or attach to root	
+	spatial_component& root =
+		other_owner.attach_spatial_component(move(new_root));
 	for (spatial_component* child : m_children) {
-		child->deep_copy_into_entity(owner);
+		child->deep_copy_into_entity_aux(other_owner, root);
 	}
 }
 
-void fields_engine::spatial_component::deep_copy_into_entity(entity& owner) const {
-	unique<component> copy(this->clone());
-	spatial_component* copy_ptr = static_cast<spatial_component*>(copy.get());
-	owner.acquire_component(move(copy));
+void fields_engine::spatial_component::deep_copy_into_entity_aux(entity& other_owner, spatial_component& other_parent) const {
+	unique<spatial_component> comp = clone(*this);
+	spatial_component* comp_ptr = comp.get();
+	other_owner.acquire_spatial_component(move(comp));
+	other_parent.adopt_owned_component(comp_ptr);
 	for (spatial_component* child : m_children) {
-		child->deep_copy_into_entity(owner);
+		child->deep_copy_into_entity_aux(other_owner, *comp_ptr);
 	}
 }

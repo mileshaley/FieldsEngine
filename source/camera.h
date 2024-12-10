@@ -23,7 +23,7 @@ namespace fields_engine {
 		camera();
 		camera(camera const& other);
 
-		FE_GEN_COMPONENT(camera);
+		FE_GEN_COMPONENT(camera, spatial_component);
 
 
 		virtual void init() override;

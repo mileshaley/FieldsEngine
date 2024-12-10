@@ -23,6 +23,7 @@
 #include <random>
 #include "texture.h"
 #include "mesh_resource.h"
+#include "spatial_component.h"
 
 fields_engine::scene::scene() {
 	m_shader = make_unique<graphics::shader>();
@@ -79,7 +80,7 @@ static fe::unique<fe::entity> make_snowman() {
 		tr.set_local_position({ 0, 0, 0.75f });
 		tr.set_local_scale({ scale, scale, scale });
 		mesh* pm1 = m1.get();
-		pm0->attach_component(move(m1));
+		pm0->attach_spatial_component(move(m1));
 		{ // Scarf
 			unique<mesh> m2 = make_unique<mesh>();
 			m2->ref_resource().add_cube();
@@ -88,7 +89,7 @@ static fe::unique<fe::entity> make_snowman() {
 			transform& tr = m2->ref_transform();
 			tr.set_local_position({ 0, 0, 0.6f });
 			tr.set_local_scale({ 0.8f, 0.8f, 0.2f });
-			pm1->attach_component(move(m2));
+			pm1->attach_spatial_component(move(m2));
 		}
 		{ // Head
 			unique<mesh> m3 = make_unique<mesh>();
@@ -102,14 +103,14 @@ static fe::unique<fe::entity> make_snowman() {
 			tr.set_local_position({ 0, 0, 1 });
 			tr.set_local_scale({ scale, scale, scale });
 			mesh* pm3 = m3.get();
-			pm1->attach_component(move(m3));
+			pm1->attach_spatial_component(move(m3));
 			{ // Face
 				unique<spatial_component> face = make_unique<spatial_component>();
 				transform& tr = face->ref_transform();
 				tr.set_local_position({ 0, 0.75f, 0.075f });
 				tr.set_local_rotation(vec3{ -90, 0, 0 });
 				spatial_component* pf = face.get();
-				pm3->attach_component(move(face));
+				pm3->attach_spatial_component(move(face));
 
 				{ // Nose
 					unique<mesh> m6 = make_unique<mesh>();
@@ -119,7 +120,7 @@ static fe::unique<fe::entity> make_snowman() {
 					transform& tr = m6->ref_transform();
 					tr.set_local_position({ 0, 0, 0.25f });
 					tr.set_local_scale({ 0.35f, 0.35f, 1 });
-					pf->attach_component(move(m6));
+					pf->attach_spatial_component(move(m6));
 				}
 				{ // Eye 1
 					unique<mesh> m7 = make_unique<mesh>();
@@ -130,7 +131,7 @@ static fe::unique<fe::entity> make_snowman() {
 					tr.set_local_position({ 0.25f, -0.25f, -0.23f });
 					tr.set_local_scale({ 0.25f, 0.25f, 0.05f });
 					//tr.set_local_rotation({ 0, 0, 28 });
-					pf->attach_component(move(m7));
+					pf->attach_spatial_component(move(m7));
 				}
 				{ // Eye 2
 					unique<mesh> m8 = make_unique<mesh>();
@@ -141,7 +142,7 @@ static fe::unique<fe::entity> make_snowman() {
 					tr.set_local_position({ -0.25f, -0.25f, -0.23f });
 					tr.set_local_scale({ 0.25f, 0.25f, 0.05f });
 					//tr.set_local_rotation({ 0, 0, 5 });
-					pf->attach_component(move(m8));
+					pf->attach_spatial_component(move(m8));
 				}
 			}
 
@@ -154,7 +155,7 @@ static fe::unique<fe::entity> make_snowman() {
 				tr.set_local_position({ 0, 0, 0.57f });
 				tr.set_local_scale({ 1.5f, 1.5f, 0.15f });
 				mesh* pm4 = m4.get();
-				pm3->attach_component(move(m4));
+				pm3->attach_spatial_component(move(m4));
 				{ // Hat top
 					unique<mesh> m5 = make_unique<mesh>();
 					m5->ref_resource().add_cube();
@@ -164,7 +165,7 @@ static fe::unique<fe::entity> make_snowman() {
 					tr.set_local_position({ 0, 0, 4.75f });
 					tr.set_local_scale({ 0.67f, 0.67f, 8.67f });
 					//tr.set_local_rotation({ 0.75f, 0, 0 });
-					pm4->attach_component(move(m5));
+					pm4->attach_spatial_component(move(m5));
 				}
 			}
 		}
@@ -207,7 +208,7 @@ static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
 		m->ref_resource().generate();
 		m->ref_material() = needle_mat;
 		mesh* pm = m.get();
-		pm0->attach_component(move(m));
+		pm0->attach_spatial_component(move(m));
 		transform& tr = pm->ref_transform();
 		const float scale = 5 - (i * downscale);
 		tr.set_local_position({ 0, 0, (i * cone_offset) - (i * downscale)});
@@ -304,8 +305,8 @@ void fields_engine::scene::startup() {
 		tr.set_local_rotation(vec3{90, 0, -240});
 		tr.set_local_scale({ 1, 1, 1 });
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Camera", move(cam)));
-		//p_root->attach_component(move(cam));
-		ent->attach_component(make_unique<movement_controller>());
+		//p_root->attach_spatial_component(move(cam));
+		ent->attach_basic_component(make_unique<movement_controller>());
 	}
 	{ // Ground
 		unique<mesh> m = make_unique<mesh>();
@@ -372,6 +373,21 @@ void fields_engine::scene::startup() {
 }
 
 void fields_engine::scene::tick(float dt) {
+	/// TODO: Remove
+	if (context<input_manager>().was_button_triggered(GLFW_KEY_C)) {
+		for (int i = 0; i < m_entities.size(); ++i) {
+			if (m_entities[i]->get_name().find("nowm") != string::npos) {
+				for (int j = i + 1; j < m_entities.size(); ++j) {
+					if (m_entities[j]->get_name().find("amera") != string::npos) {
+						auto& new_ent = m_entities.emplace_back(make_unique<entity>(*m_entities[i]));
+						new_ent->ref_transform().set_local_position(m_entities[j]->ref_transform().get_local_position());
+						goto done;
+					}
+				}
+			}
+		}
+	}
+	done:
 
 	for (unique_cr<entity> ent : m_entities) {
 		ent->tick(dt);
