@@ -17,7 +17,7 @@
 namespace fields_engine {
 
 	class resource_manager {
-
+		
 	};
 
 } // namespace fields_engine

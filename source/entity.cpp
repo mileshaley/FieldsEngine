@@ -105,9 +105,9 @@ bool fields_engine::entity::display() {
 	for (unique<component> const& comp : m_basic_components) {
 		ImGui::PushID(comp.get());
 		if (comp.get() == m_root_component) {
-			ImGui::SeparatorText((string(comp->component_name()) + " (root)").c_str());
+			ImGui::SeparatorText((string(comp->get_type_name()) + " (root)").c_str());
 		} else {
-			ImGui::SeparatorText(comp->component_name().data());
+			ImGui::SeparatorText(comp->get_type_name().data());
 		}
 		modif |= comp->display();
 		ImGui::PopID();
@@ -115,7 +115,7 @@ bool fields_engine::entity::display() {
 	// Update basic components first
 	for (unique<component> const& comp : m_basic_components) {
 		ImGui::PushID(comp.get());
-		ImGui::SeparatorText(comp->component_name().data());
+		ImGui::SeparatorText(comp->get_type_name().data());
 		modif |= comp->display();
 		ImGui::PopID();
 	}

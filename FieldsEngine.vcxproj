@@ -118,6 +118,7 @@
     <ClInclude Include="source\scene.h" />
     <ClInclude Include="source\shader.h" />
     <ClInclude Include="source\spatial_component.h" />
+    <ClInclude Include="source\polymorphic.h" />
     <ClInclude Include="source\this_type.h" />
     <ClInclude Include="source\stubs\stub.h" />
     <ClInclude Include="source\text.h" />
