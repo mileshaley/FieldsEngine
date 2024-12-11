@@ -60,7 +60,7 @@
     <ClCompile Include="source\material.cpp" />
     <ClCompile Include="source\mesh.cpp" />
     <ClCompile Include="source\mesh_resource.cpp" />
-    <ClCompile Include="source\movement_controller.cpp" />
+    <ClCompile Include="source\camera_controller.cpp" />
     <ClCompile Include="source\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEditor|x64'">Create</PrecompiledHeader>
@@ -111,7 +111,7 @@
     <ClInclude Include="source\material.h" />
     <ClInclude Include="source\mesh.h" />
     <ClInclude Include="source\mesh_resource.h" />
-    <ClInclude Include="source\movement_controller.h" />
+    <ClInclude Include="source\camera_controller.h" />
     <ClInclude Include="source\precompiled.h" />
     <ClInclude Include="source\resource_factory.h" />
     <ClInclude Include="source\resource_manager.h" />

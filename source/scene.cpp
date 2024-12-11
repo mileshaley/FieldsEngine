@@ -18,7 +18,7 @@
 #include "imgui.h"
 #include "entity.h"
 #include "camera.h"
-#include "movement_controller.h"
+#include "camera_controller.h"
 #include "editor.h"
 #include <random>
 #include "texture.h"
@@ -306,7 +306,7 @@ void fields_engine::scene::startup() {
 		tr.set_local_scale({ 1, 1, 1 });
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Camera", move(cam)));
 		//p_root->attach_spatial_component(move(cam));
-		ent->attach_basic_component(make_unique<movement_controller>());
+		ent->attach_basic_component(make_unique<camera_controller>());
 	}
 	{ // Ground
 		unique<mesh> m = make_unique<mesh>();

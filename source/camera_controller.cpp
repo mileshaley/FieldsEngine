@@ -1,11 +1,11 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~*
- * File: movement_controller.cpp                                             *
+ * File: camera_controller.cpp                                             *
 \*~-------------------------------------------------------------------------~*/
 
 #include "precompiled.h"
-#include "movement_controller.h"
+#include "camera_controller.h"
 #include "context.h"
 #include "input.h"
 #include "application.h"
@@ -14,14 +14,14 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 /*~-------------------------------------------------------------------------~*\
- * Movement Controller Definitions                                           *
+ * Camera Controller Definitions                                             *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::movement_controller::movement_controller()
+fields_engine::camera_controller::camera_controller()
 {
 }
 
-fields_engine::movement_controller::movement_controller(movement_controller const& other)
+fields_engine::camera_controller::camera_controller(camera_controller const& other)
 	: m_mode(other.m_mode)
 	, m_speed(other.m_speed)
 	, m_sensitivity(other.m_sensitivity)
@@ -29,7 +29,7 @@ fields_engine::movement_controller::movement_controller(movement_controller cons
 {}
 
 #if EDITOR
-bool fields_engine::movement_controller::display() {
+bool fields_engine::camera_controller::display() {
 	bool modif = false;
 	modif |= ImGui::SliderInt("Mode", (int*)&m_mode, 0, 1);
 	modif |= ImGui::DragFloat("Speed", &m_speed);
@@ -39,7 +39,7 @@ bool fields_engine::movement_controller::display() {
 }
 #endif // EDITOR
 
-void fields_engine::movement_controller::tick(float dt) {
+void fields_engine::camera_controller::tick(float dt) {
 	constexpr glm::mat4 identity(1);
 	input_manager const& in = context<input_manager>();
 
@@ -112,18 +112,18 @@ void fields_engine::movement_controller::tick(float dt) {
 	}
 }
 
-void fields_engine::movement_controller::set_mode(mode new_mode) {
+void fields_engine::camera_controller::set_mode(mode new_mode) {
 	m_mode = new_mode;
 }
 
-fe::movement_controller::mode fields_engine::movement_controller::get_mode() const {
+fe::camera_controller::mode fields_engine::camera_controller::get_mode() const {
 	return m_mode;
 }
 
-void fields_engine::movement_controller::set_speed(float new_speed) {
+void fields_engine::camera_controller::set_speed(float new_speed) {
 	m_speed = new_speed;
 }
 
-float fields_engine::movement_controller::get_speed() const {
+float fields_engine::camera_controller::get_speed() const {
 	return m_speed;
 }

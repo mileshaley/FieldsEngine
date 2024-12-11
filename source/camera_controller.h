@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~* 
- * File: movement_controller.h                                               *
+ * File: camera_controller.h                                               *
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
@@ -13,22 +13,22 @@
 #include "component.h" // Inheritance
 
 /*~-------------------------------------------------------------------------~*\
- * Movement Controller Class                                                 *
+ * Camera Controller Component                                               *
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
 
-	class movement_controller : public component {
+	class camera_controller : public component {
 	public:
 		enum class mode : int {
 			pitch_yaw = 0,
 			all_axes = 1,
 		};
 
-		movement_controller();
-		movement_controller(movement_controller const& other);
+		camera_controller();
+		camera_controller(camera_controller const& other);
 
-		FE_GEN_COMPONENT(movement_controller, component);
+		FE_GEN_COMPONENT(camera_controller, component);
 
 #if EDITOR
 		bool display() override;
