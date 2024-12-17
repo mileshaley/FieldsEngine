@@ -28,8 +28,8 @@ namespace fields_engine::graphics {
 	void clear_background();
 	void clear_background(glm::vec4 const& color);
 
-	namespace detail {
+	namespace impl {
 		void initialize();
-	}
+	} // namespace impl
 
 } // namespace fields_engine::graphics

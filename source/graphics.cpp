@@ -49,7 +49,7 @@ void fields_engine::graphics::clear_background(glm::vec4 const& color) {
 	clear_background();
 }
 
-void fields_engine::graphics::detail::initialize() {
+void fields_engine::graphics::impl::initialize() {
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 

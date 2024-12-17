@@ -73,8 +73,8 @@ namespace fields_engine {
 	};
 
 
-	namespace input::detail {
+	namespace input::impl {
 		void initialize_callbacks(window& win);
-	} // namespace detail
+	} // namespace input::impl
 
 } // namespace fields_engine::input

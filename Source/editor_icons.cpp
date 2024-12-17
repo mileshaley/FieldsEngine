@@ -9,7 +9,7 @@
 #include <fstream>
 #include "text.h"
 
-namespace fields_engine::detail {
+namespace fields_engine::impl {
 	void generate_all_icons_file(const char* dest_pathname, const char* src_filename) {
 		std::ifstream in(src_filename);
 		string token = "";
@@ -59,4 +59,4 @@ namespace fields_engine::detail {
 			"} // namespace fields_editor\n"
 			"#endif // EDITOR\n";
 	}
-} // namespace fields_engine::detail
+} // namespace fields_engine::impl

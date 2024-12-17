@@ -15,12 +15,12 @@ namespace fields_engine {
 		const char* pretty_name;
 	};
 
-	namespace detail {
+	namespace impl {
 		void generate_all_icons_file(
 			const char* dest_pathname = "editor_icons_all", 
 			const char* src_filename = __FILE__
 		);
-	} // namespace detail
+	} // namespace impl
 } // namespace fields_engine
 
 #define FA_SOLID_ICON_FONT_FILENAME "fa-solid-900.ttf"

@@ -22,33 +22,33 @@ namespace fields_engine {
 	template<class T>
 	class unique_context {
 	public:
-		using type = detail::remove_all_t<T>;
+		using type = impl::remove_all_t<T>;
 
 		unique_context(unique<type>&& ptr)
 			: m_ptr(move(ptr))
 		{
-			T*& current = detail::context_storage<type>::ptr;
+			T*& current = impl::context_storage<type>::ptr;
 			if (current == nullptr) {
 				current = m_ptr.get();
-				detail::context_storage<type>::initialize();
+				impl::context_storage<type>::initialize();
 			}
 		}
 
 		~unique_context() {
-			type*& current = detail::context_storage<type>::ptr;
+			type*& current = impl::context_storage<type>::ptr;
 			if (current == m_ptr.get()) {
 				current = nullptr;
 			}
 		}
 
 		unique_context& operator=(unique<type>&& rhs) {
-			type*& current = detail::context_storage<type>::ptr;
+			type*& current = impl::context_storage<type>::ptr;
 			if (current == m_ptr.get()) {
 				current = rhs.get();
 			}
 			else if (current == nullptr) {
 				current = rhs.get();
-				detail::context_storage<type>::initialize();
+				impl::context_storage<type>::initialize();
 			}
 			m_ptr = move(rhs);
 			return *this;
@@ -59,7 +59,7 @@ namespace fields_engine {
 		}
 
 		inline void use() {
-			detail::context_storage<type>::ptr = m_ptr.get();
+			impl::context_storage<type>::ptr = m_ptr.get();
 		}
 
 		FE_NODISCARD inline type& operator*() const noexcept(noexcept(*m_ptr)) {
@@ -84,28 +84,28 @@ namespace fields_engine {
 	template<class T>
 	class local_context {
 	public:
-		using type = detail::remove_all_t<T>;
+		using type = impl::remove_all_t<T>;
 
 		template<typename... Ts>
 		local_context(Ts&&... args)
 			: m_data(std::forward<Ts>(args)...)
 		{
-			type*& current = detail::context_storage<type>::ptr;
+			type*& current = impl::context_storage<type>::ptr;
 			if (current == nullptr) {
 				current = &m_data;
-				detail::context_storage<type>::initialize();
+				impl::context_storage<type>::initialize();
 			}
 		}
 
 		~local_context() {
-			type*& current = detail::context_storage<type>::ptr;
+			type*& current = impl::context_storage<type>::ptr;
 			if (current == &m_data) {
 				current = nullptr;
 			}
 		}
 
 		inline void use() {
-			detail::context_storage<type>::ptr = &m_data;
+			impl::context_storage<type>::ptr = &m_data;
 		}
 
 		FE_NODISCARD inline type* operator->() noexcept {

@@ -35,6 +35,8 @@ fields_engine::application::application()
 	, m_scene{nullptr}
 	, m_win_size{1000, 800}
 	, m_running(false)
+	, m_delta_time(0)
+	, m_prev_time(0)
 {}
 
 // Fulfil dependencies on member destructors
@@ -88,8 +90,8 @@ bool fields_engine::application::startup() {
 		return false;
 	}
 
-	input::detail::initialize_callbacks(m_window);
-	graphics::detail::initialize();
+	input::impl::initialize_callbacks(m_window);
+	graphics::impl::initialize();
 
 	m_scene = make_unique<scene>();
 #if EDITOR
