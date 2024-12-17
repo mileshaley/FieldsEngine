@@ -28,7 +28,6 @@
  * Defines                                                                   *
 \*~-------------------------------------------------------------------------~*/
 
-
 #define FE ::fe::
 #define FIELDS_ENGINE
 #define FE_NODISCARD [[nodiscard]]
@@ -131,8 +130,11 @@ namespace fields_engine::common {
 	using dyn_arr = std::vector<T>;
 
 	/// TODO: Make a Fields Engine map type
-	template<typename H, typename T>
-	using map = std::unordered_map<H, T>;
+	template<typename KeyT, typename ValT>
+	using map = std::unordered_map<KeyT, ValT>;
+
+	template<typename KeyT, typename ValT>
+	using ordered_map = std::map<KeyT, ValT>;
 
 } // namespace fields_engine::common
 

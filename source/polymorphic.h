@@ -55,12 +55,30 @@
 
 namespace fields_engine {
 
+	namespace impl {
+		// Primary template. Does a simple copy
+		template<typename T, class = void>
+		struct clone_helper {
+			static inline unique<T> clone(T const& source) {
+				return make_unique<T>(source);
+			}
+		};
+		// Specialized for classes with non-static internal_clone() function
+		template<typename T>
+		struct clone_helper<T, std::void_t<decltype(std::declval<T>().internal_clone())>> {
+			static inline unique<T> clone(T const& source) {
+				return unique<T>(static_cast<T*>(source.internal_clone()));
+			}
+		};
+	} // namespace impl
+
 	// Virtually clones a generic cloneable object as its real type and returns it
 	// as a unique<T> given that T <= the real type
 	template<class T>
 	inline unique<T> clone(T const& source) {
-		return unique<T>(static_cast<T*>(source.internal_clone()));
+		return impl::clone_helper<T>::clone(source);
 	}
+
 
 } // namespace fields_engine
 
