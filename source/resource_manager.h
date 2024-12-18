@@ -10,14 +10,19 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+#include "resource_factory.h"
+
 /*~-------------------------------------------------------------------------~*\
- * resource_manager Class                                                    *
+ * Resource Manager Class                                                    *
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
 
 	class resource_manager {
-		
+	public:
+		resource_manager();
+	private:
+		resource_factory<int> m_factory;
 	};
 
 } // namespace fields_engine
