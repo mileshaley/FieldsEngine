@@ -7,7 +7,7 @@
 #include "precompiled.h"
 #include "scene.h"
 #include "shader.h"
-#include "mesh.h"
+#include "mesh_component.h"
 #include "graphics.h"
 #include "glad/glad.h"
 #include "glfw/glfw3.h"
@@ -22,7 +22,7 @@
 #include "editor.h"
 #include <random>
 #include "texture.h"
-#include "mesh_resource.h"
+#include "mesh.h"
 #include "spatial_component.h"
 
 fields_engine::scene::scene() {

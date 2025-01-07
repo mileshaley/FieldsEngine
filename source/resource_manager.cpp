@@ -6,7 +6,7 @@
 
 #include "precompiled.h"
 #include "resource_manager.h"
-#include "mesh_resource.h"
+#include "mesh.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Resource Manager Definitions                                              *
