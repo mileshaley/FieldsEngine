@@ -406,7 +406,8 @@ void fields_engine::scene::draw() const {
 
 	const mat4 world_inverse = glm::inverse(*world_view);
 
-	vis::clear_background(m_background_color);
+	vis::set_background_color(m_background_color);
+	vis::reset_frame();
 	m_shader->use();
 
 	const vec3 ambient(0.2f, 0.2f, 0.2f);

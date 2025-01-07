@@ -39,15 +39,14 @@ void fields_engine::vis::resize_viewport(int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
-void fields_engine::vis::clear_background() {
+void fields_engine::vis::reset_frame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	VIS_VERIFY;
 }
 
-void fields_engine::vis::clear_background(glm::vec4 const& color) {
+void fields_engine::vis::set_background_color(glm::vec4 const& color) {
 	glClearColor(color.r, color.g, color.b, color.a);
 	VIS_VERIFY;
-	clear_background();
 }
 
 void fields_engine::vis::impl::initialize() {
@@ -55,5 +54,6 @@ void fields_engine::vis::impl::initialize() {
 	glDisable(GL_CULL_FACE);
 
 	VIS_VERIFY;
-	clear_background({ 1.5f, 0.5f, 1.0f, 1.0f });
+	set_background_color({ 1.5f, 0.5f, 1.0f, 1.0f });
+	reset_frame();
 }

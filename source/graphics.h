@@ -24,8 +24,8 @@ namespace fields_engine::vis {
 	void gl_error_callback(int error_code, const char* message);
 	void resize_viewport(int width, int height);
 
-	void clear_background();
-	void clear_background(glm::vec4 const& color);
+	void reset_frame();
+	void set_background_color(glm::vec4 const& color);
 
 	namespace impl {
 		void initialize();
