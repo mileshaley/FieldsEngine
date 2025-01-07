@@ -15,6 +15,8 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <set>
+#include <unordered_set>
 
 #include <glm/glm.hpp>
 #include "json-develop/single_include/nlohmann/json.hpp"
@@ -111,9 +113,6 @@ namespace fields_engine::common {
 
 	template<typename T>
 	using unique = std::unique_ptr<T>;
-	/// TODO: Remove unique_r alias
-	template<typename T>
-	using unique_r = std::unique_ptr<T>&;
 	template<typename T>
 	using unique_cr = std::unique_ptr<T> const&;
 
@@ -136,6 +135,12 @@ namespace fields_engine::common {
 
 	template<typename KeyT, typename ValT>
 	using ordered_map = std::map<KeyT, ValT>;
+
+	template<typename T>
+	using set = std::unordered_set<T>;
+
+	template<typename T>
+	using ordered_set = std::set<T>;
 
 } // namespace fields_engine::common
 
