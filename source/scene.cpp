@@ -96,7 +96,7 @@ static fe::unique<fe::entity> make_snowman() {
 			m3->ref_mesh().add_cube();
 			m3->ref_mesh().generate();
 			m3->ref_material() = snow_mat;
-			m3->set_texture(make_unique<vis::texture>("miles.png"));
+			m3->set_texture(make_unique<vis::texture>("content/miles.png"));
 			//m3->set_normal_texture(make_unique<vis::texture>("miles.png"));
 			transform& tr = m3->ref_transform();
 			const float scale = 0.75;

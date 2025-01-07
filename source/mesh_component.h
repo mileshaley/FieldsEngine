@@ -25,7 +25,6 @@ namespace fields_engine::vis {
 namespace fields_engine {
 	class mesh_component : public spatial_component {
 	public:
-
 		mesh_component();
 		mesh_component(mesh_component const& other);
 		~mesh_component();
@@ -44,6 +43,7 @@ namespace fields_engine {
 
 	private:
 		/// TODO: Make material and mesh both managed resource ptrs
+		/// TODO: Allow for multiple material slots per mesh
 		vis::material m_material;
 		unique<vis::mesh> m_mesh;
 		unique<vis::texture> m_texture;
