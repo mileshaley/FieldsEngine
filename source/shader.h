@@ -6,7 +6,7 @@
 
 #pragma once
 
-namespace fields_engine::graphics {
+namespace fields_engine::vis {
 	class shader {
 	public:
 		shader();
@@ -23,4 +23,4 @@ namespace fields_engine::graphics {
 		int m_program_id;
 	};
 
-} // namespace fields_engine::graphics
+} // namespace fields_engine::vis

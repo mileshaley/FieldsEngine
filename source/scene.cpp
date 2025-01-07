@@ -26,7 +26,7 @@
 #include "spatial_component.h"
 
 fields_engine::scene::scene() {
-	m_shader = make_unique<graphics::shader>();
+	m_shader = make_unique<vis::shader>();
 	m_shader->add("lighting.vert", GL_VERTEX_SHADER);
 	m_shader->add("lighting.frag", GL_FRAGMENT_SHADER);
 	glBindAttribLocation(m_shader->id(), 0, "vertex");
@@ -40,22 +40,22 @@ fields_engine::scene::~scene() {}
 
 static fe::unique<fe::entity> make_snowman() {
 	using namespace fields_engine;
-	graphics::material snow_mat;
+	vis::material snow_mat;
 	snow_mat.m_diffuse_color = { 0.95f, 0.95f, 1.0f };
 	snow_mat.m_specular_color = { 0.7f, 0.7f, 0.8f };
 	snow_mat.m_shininess = 4.0f;
 
-	graphics::material scarf_mat;
+	vis::material scarf_mat;
 	scarf_mat.m_diffuse_color = { 0.95f, 0.2f, 0.2f };
 	scarf_mat.m_specular_color = { 0.7f, 0.7f, 0.8f };
 	scarf_mat.m_shininess = 0.2f;
 
-	graphics::material hat_mat;
+	vis::material hat_mat;
 	hat_mat.m_diffuse_color = { 0.1f, 0.1f, 0.1f };
 	hat_mat.m_specular_color = { 0.3f, 0.3f, 0.3f };
 	hat_mat.m_shininess = 1.0f;
 
-	graphics::material nose_mat;
+	vis::material nose_mat;
 	nose_mat.m_diffuse_color = { 0.9f, 0.35f, 0.1f };
 	nose_mat.m_specular_color = { 0.9f, 0.5f, 0.1f };
 	nose_mat.m_shininess = 1.0f;
@@ -96,8 +96,8 @@ static fe::unique<fe::entity> make_snowman() {
 			m3->ref_resource().add_cube();
 			m3->ref_resource().generate();
 			m3->ref_material() = snow_mat;
-			m3->set_texture(make_unique<graphics::texture>("miles.png"));
-			//m3->set_normal_texture(make_unique<graphics::texture>("miles.png"));
+			m3->set_texture(make_unique<vis::texture>("miles.png"));
+			//m3->set_normal_texture(make_unique<vis::texture>("miles.png"));
 			transform& tr = m3->ref_transform();
 			const float scale = 0.75;
 			tr.set_local_position({ 0, 0, 1 });
@@ -175,12 +175,12 @@ static fe::unique<fe::entity> make_snowman() {
 
 static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
 	using namespace fields_engine;
-	graphics::material needle_mat;
+	vis::material needle_mat;
 	needle_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
 	needle_mat.m_specular_color = vec3{ 0.0f, 0.0f, 1.0f };
 	needle_mat.m_shininess = 0.2f;
 
-	graphics::material wood_mat;
+	vis::material wood_mat;
 	wood_mat.m_diffuse_color = { 0.2f, 0.25f, 0.04f };
 	wood_mat.m_specular_color = vec3{ 1.0f, 0.0f, 0.0f };
 	wood_mat.m_shininess = 0.2f;
@@ -219,29 +219,29 @@ static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
 }
 
 void fields_engine::scene::startup() {
-	graphics::material grass_mat;
+	vis::material grass_mat;
 	grass_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
 	grass_mat.m_specular_color = vec3{0.0f, 0.0f, 1.0f};//{ 0.7f, 0.7f, 0.8f };
 	grass_mat.m_shininess = 0.2f;
 
-	graphics::material snow_mat;
+	vis::material snow_mat;
 	snow_mat.m_diffuse_color = { 0.95f, 0.95f, 1.0f };
 	snow_mat.m_specular_color = { 0.4f, 0.4f, 0.5f };
 	snow_mat.m_shininess = 1.0f;
 
-	graphics::material d_mat;
+	vis::material d_mat;
 	d_mat.m_diffuse_color = { 0.1f, 0.1f, 0.1f };
 	d_mat.m_specular_color = { 0.3f, 0.3f, 0.3f };
 	d_mat.m_shininess = 1.0f;
-	graphics::material x_mat;
+	vis::material x_mat;
 	x_mat.m_diffuse_color = { 1, 0.2f, 0.2f };
 	x_mat.m_specular_color = { 1, 0.2f, 0.2f };
 	x_mat.m_shininess = 1.0f;
-	graphics::material y_mat;
+	vis::material y_mat;
 	y_mat.m_diffuse_color = { 0.2f, 1, 0.2f };
 	y_mat.m_specular_color = { 0.2f, 1, 0.2f };
 	y_mat.m_shininess = 1.0f;
-	graphics::material z_mat;
+	vis::material z_mat;
 	z_mat.m_diffuse_color = { 0.2f, 0.2f, 1 };
 	z_mat.m_specular_color = { 0.2f, 0.2f, 1 };
 	z_mat.m_shininess = 1.0f;
@@ -406,7 +406,7 @@ void fields_engine::scene::draw() const {
 
 	const mat4 world_inverse = glm::inverse(*world_view);
 
-	graphics::clear_background(m_background_color);
+	vis::clear_background(m_background_color);
 	m_shader->use();
 
 	const vec3 ambient(0.2f, 0.2f, 0.2f);
@@ -417,28 +417,28 @@ void fields_engine::scene::draw() const {
 	glUniform3fv(loc, 1, (float*)&(*world_view)[3][0]);
 	loc = m_shader->uniform_location("WorldView");
 	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(*world_view));
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 
 	loc = m_shader->uniform_location("WorldProj");
 	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(*world_proj));
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 	loc = m_shader->uniform_location("WorldInverse");
 	glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(world_inverse));
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 	loc = m_shader->uniform_location("lightPos");
 	glUniform3fv(loc, 1, glm::value_ptr(m_light_pos));
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 	loc = m_shader->uniform_location("mode");
 	glUniform1i(loc, 0);
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 
 
 	loc = m_shader->uniform_location("Ambient");
 	glUniform3fv(loc, 1, glm::value_ptr(ambient));
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 	loc = m_shader->uniform_location("Light");
 	glUniform3fv(loc, 1, glm::value_ptr(light));
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 
 	for (unique_cr<entity> ent : m_entities) {
 		ent->draw(*m_shader);

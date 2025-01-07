@@ -22,7 +22,7 @@
 namespace fields_engine {
 	class entity;
 	/// TODO: remove
-	namespace graphics {
+	namespace vis {
 		class shader;
 	}
 } // namespace fields_engine
@@ -43,7 +43,7 @@ namespace fields_engine {
 		
 		virtual void init() {}
 		virtual void tick(float dt) {}
-		virtual void draw(graphics::shader const& shader) const {}
+		virtual void draw(vis::shader const& shader) const {}
 		virtual void exit() {}
 
 #ifdef EDITOR

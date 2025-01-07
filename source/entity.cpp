@@ -77,11 +77,11 @@ void fields_engine::entity::tick(float dt) {
 	m_root_component->tick_all(dt);
 }
 
-void fields_engine::entity::draw(graphics::shader const& shader) const {
+void fields_engine::entity::draw(vis::shader const& shader) const {
 	/// TODO: Remove
 	GLint loc = shader.uniform_location("objectId");
 	glUniform1i(loc, 5);
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 
 	for (unique<component> const& comp : m_basic_components) {
 		comp->draw(shader);

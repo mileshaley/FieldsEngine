@@ -16,7 +16,7 @@ namespace fields_engine {
 	class component;
 	class spatial_component;
 	/// TODO: remove
-	namespace graphics {
+	namespace vis {
 		class shader; 
 	}
 } // namespace fields_engine
@@ -40,7 +40,7 @@ namespace fields_engine {
 
 		void init();
 		void tick(float dt);
-		void draw(graphics::shader const& shader) const;
+		void draw(vis::shader const& shader) const;
 		void exit();
 
 #ifdef EDITOR

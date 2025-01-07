@@ -13,18 +13,17 @@
 #include "spatial_component.h" // Inheritance
 #include "material.h"
 
-namespace fields_engine::graphics {
+namespace fields_engine::vis {
 	class texture;
 	class mesh_resource;
-} // namespace fields_engine::graphics
+} // namespace fields_engine::vis
 
 /*~-------------------------------------------------------------------------~*\
  * Entity Class                                                              *
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
-	/// TODO: Rename to mesh_component
-
+	/// TODO: Consider rename to mesh_component
 	class mesh : public spatial_component {
 	public:
 
@@ -34,21 +33,21 @@ namespace fields_engine {
 
 		FE_GEN_COMPONENT(mesh, spatial_component);
 
-		virtual void draw(graphics::shader const& shader) const override;
+		virtual void draw(vis::shader const& shader) const override;
 
-		graphics::material      & ref_material()       { return m_material; }
-		graphics::material const& get_material() const { return m_material; }
-		graphics::mesh_resource      & ref_resource()		{ return *m_resource; }
-		graphics::mesh_resource const& get_resource() const { return *m_resource; }
+		vis::material      & ref_material()       { return m_material; }
+		vis::material const& get_material() const { return m_material; }
+		vis::mesh_resource      & ref_resource()		{ return *m_resource; }
+		vis::mesh_resource const& get_resource() const { return *m_resource; }
 
-		void set_texture(unique<graphics::texture>&& new_texture);
-		void set_normal_texture(unique<graphics::texture>&& new_normal_texture);
+		void set_texture(unique<vis::texture>&& new_texture);
+		void set_normal_texture(unique<vis::texture>&& new_normal_texture);
 
 	private:
-		unique<graphics::mesh_resource> m_resource;
-		unique<graphics::texture> m_texture;
-		unique<graphics::texture> m_normal_texture;
-		graphics::material m_material;
+		unique<vis::mesh_resource> m_resource;
+		unique<vis::texture> m_texture;
+		unique<vis::texture> m_normal_texture;
+		vis::material m_material;
 	};
 
 } // namespace fields_engine

@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~*
- * File: graphics.cpp                                                        *
+ * File: vis.cpp                                                        *
 \*~-------------------------------------------------------------------------~*/
 
 #include "precompiled.h"
@@ -15,7 +15,7 @@
 #include "mesh.h"
 #include "error.h"
 
-void fields_engine::graphics::check_graphics_error(string_view file, int line) {
+void fields_engine::vis::check_error(string_view file, int line) {
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR) {
 		if (file.empty()) {
@@ -26,33 +26,34 @@ void fields_engine::graphics::check_graphics_error(string_view file, int line) {
 			std::cerr << "Graphical error [" << error << "] in file "
 				<< file << " at line " << line << std::endl;
 		}
+		/// TODO: Please fix
 		FE_FAILED_ASSERT(":(");
 	}
 }
 
-void fields_engine::graphics::gl_error_callback(int error_code, const char* message) {
+void fields_engine::vis::gl_error_callback(int error_code, const char* message) {
 	std::cerr << "Graphical error (callback) [" << error_code << "]: \"" << message << "\"" << std::endl;
 }
 
-void fields_engine::graphics::resize_viewport(int width, int height) {
+void fields_engine::vis::resize_viewport(int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
-void fields_engine::graphics::clear_background() {
+void fields_engine::vis::clear_background() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 }
 
-void fields_engine::graphics::clear_background(glm::vec4 const& color) {
+void fields_engine::vis::clear_background(glm::vec4 const& color) {
 	glClearColor(color.r, color.g, color.b, color.a);
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 	clear_background();
 }
 
-void fields_engine::graphics::impl::initialize() {
+void fields_engine::vis::impl::initialize() {
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 
-	FE_GL_VERIFY;
+	VIS_VERIFY;
 	clear_background({ 1.5f, 0.5f, 1.0f, 1.0f });
 }

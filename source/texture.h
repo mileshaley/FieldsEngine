@@ -14,7 +14,7 @@
  * Texture Class                                                             *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine::graphics {
+namespace fields_engine::vis {
 	class texture {
 	public:
 		texture(string_view filename);
@@ -36,4 +36,4 @@ namespace fields_engine::graphics {
 		i16 m_active_unit = 0; // 0-31
 	};
 
-} // namespace fields_engine::graphics
+} // namespace fields_engine::vis

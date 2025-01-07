@@ -15,7 +15,7 @@
  * Mesh Resource Definitions                                                 *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine::graphics {
+namespace fields_engine::vis {
 
     mesh_resource::mesh_resource()
         : m_vertices()
@@ -39,19 +39,19 @@ namespace fields_engine::graphics {
 
     mesh_resource::~mesh_resource() {
         glDeleteBuffers(1, &m_vao_id);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
     }
 
     void mesh_resource::draw() const {
         glBindVertexArray(m_vao_id);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glDrawElements(GL_TRIANGLES,
             GLsizei(m_triangles.size() * 3),
             GL_UNSIGNED_INT,
             0);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glBindVertexArray(0);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
     }
 
     void mesh_resource::generate() {
@@ -61,73 +61,73 @@ namespace fields_engine::graphics {
         // Generate vertex buffer
         GLuint vert_buf = 0;
         glGenBuffers(1, &vert_buf);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glBindBuffer(GL_ARRAY_BUFFER, vert_buf);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glBufferData(GL_ARRAY_BUFFER,
             m_vertices.size() * sizeof(vec4),
             glm::value_ptr(m_vertices[0]), // float ptr
             GL_STATIC_DRAW);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glEnableVertexAttribArray(0);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
 
         if (!m_normals.empty()) {
             GLuint norm_buf = 0;
             glGenBuffers(1, &norm_buf);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
             glBindBuffer(GL_ARRAY_BUFFER, norm_buf);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
             glBufferData(GL_ARRAY_BUFFER,
                 m_normals.size() * sizeof(vec3),
                 glm::value_ptr(m_normals[0]), // float ptr
                 GL_STATIC_DRAW);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
             glEnableVertexAttribArray(1);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
             glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
             glBindBuffer(GL_ARRAY_BUFFER, 0);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
         }
 
         if (!m_textures.empty()) {
 
             GLuint tex_buf = 0;
             glGenBuffers(1, &tex_buf);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
             glBindBuffer(GL_ARRAY_BUFFER, tex_buf);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
             glBufferData(GL_ARRAY_BUFFER,
                 m_textures.size() * sizeof(vec2),
                 glm::value_ptr(m_textures[0]), // float ptr
                 GL_STATIC_DRAW);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
             glEnableVertexAttribArray(2);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
             glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
             glBindBuffer(GL_ARRAY_BUFFER, 0);
-            FE_GL_VERIFY;
+            VIS_VERIFY;
         }
 
         // Generate triangle buffer
         GLuint tri_buf = 0;
         glGenBuffers(1, &tri_buf);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tri_buf);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glBufferData(GL_ELEMENT_ARRAY_BUFFER,
             m_triangles.size() * sizeof(ivec3),
             glm::value_ptr(m_triangles[0]), // int ptr 
             GL_STATIC_DRAW);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glBindVertexArray(0);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
     }
 
     void mesh_resource::add_face(mat4 const& tr) {
@@ -329,4 +329,4 @@ namespace fields_engine::graphics {
         tris_for_quad({ i, i + 1, i + 2, i + 3 });
     }
 
-} // namespace fields_engine::graphics
+} // namespace fields_engine::vis

@@ -16,7 +16,7 @@
  * Material Class                                                            *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine::graphics {
+namespace fields_engine::vis {
 
 	class material {
 	public:
@@ -32,4 +32,4 @@ namespace fields_engine::graphics {
 		vec3 m_specular_color;
 	};
 
-} // namespace fields_engine::graphics
+} // namespace fields_engine::vis

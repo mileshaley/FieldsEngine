@@ -14,7 +14,7 @@
  * Mesh Resource Class                                                       *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine::graphics {
+namespace fields_engine::vis {
 
 	class mesh_resource {
 	public:
@@ -45,4 +45,4 @@ namespace fields_engine::graphics {
 		vector<ivec3> m_triangles;
 	}; // class mesh_resource
 
-} // namespace fields_engine::graphics
+} // namespace fields_engine::vis

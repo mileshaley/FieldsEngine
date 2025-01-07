@@ -44,7 +44,7 @@ fields_engine::application::~application() = default;
 
 bool fields_engine::application::startup() {
 #if FE_USING_GLFW
-	glfwSetErrorCallback(graphics::gl_error_callback);
+	glfwSetErrorCallback(vis::gl_error_callback);
 	glfwInit();
 
 	// Use OpenGL version 3.3
@@ -69,7 +69,7 @@ bool fields_engine::application::startup() {
 	}
 
 	glfwSetFramebufferSizeCallback(m_window->handle,
-		[](GLFWwindow* win, int w, int h) { graphics::resize_viewport(w, h); }
+		[](GLFWwindow* win, int w, int h) { vis::resize_viewport(w, h); }
 	);
 
 	//glfwSetWindowFocusCallback(m_window, );
@@ -91,7 +91,7 @@ bool fields_engine::application::startup() {
 	}
 
 	input::impl::initialize_callbacks(m_window);
-	graphics::impl::initialize();
+	vis::impl::initialize();
 
 	m_scene = make_unique<scene>();
 #if EDITOR
@@ -121,7 +121,7 @@ void fields_engine::application::run() {
 		/// update logic goes here
 		glfwGetFramebufferSize(m_window->handle, &m_win_size.x, &m_win_size.y);
 		//glViewport(0, 0, m_win_size.x, m_win_size.y);
-		//FE_GL_VERIFY;
+		//VIS_VERIFY;
 		m_scene->tick(m_delta_time);
 		m_scene->draw();
 		

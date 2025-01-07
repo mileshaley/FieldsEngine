@@ -30,7 +30,7 @@ namespace fields_engine {
 		
 		void init_all();
 		void tick_all(float dt);
-		void draw_all(graphics::shader const& shader) const;
+		void draw_all(vis::shader const& shader) const;
 		void exit_all();
 
 #ifdef EDITOR

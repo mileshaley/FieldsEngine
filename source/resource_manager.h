@@ -14,7 +14,7 @@
 #include "context_ownership.h"
 
 namespace fields_engine {
-	namespace graphics {
+	namespace vis {
 		class mesh_resource;
 	}
 }
@@ -31,7 +31,7 @@ namespace fields_engine {
 		~resource_manager();
 
 	private: // Since we use contexts for factories, we don't have to expose anything
-		local_context<resource_factory<graphics::mesh_resource> > m_mesh_resources;
+		local_context<resource_factory<vis::mesh_resource> > m_mesh_resources;
 
 	};
 

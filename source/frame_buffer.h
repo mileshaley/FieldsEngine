@@ -14,7 +14,7 @@
  * Frame Buffer Class                                                        *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine::graphics {
+namespace fields_engine::vis {
 
 	class frame_buffer {
 	public:
@@ -84,4 +84,4 @@ namespace fields_engine::graphics {
 		bool m_1_active;
 	};
 
-} // namespace fields_engine::graphics
+} // namespace fields_engine::vis

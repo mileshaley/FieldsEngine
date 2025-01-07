@@ -14,7 +14,7 @@
 #include "mesh_resource.h"
 
 namespace fields_engine {
-    using namespace graphics;
+    using namespace vis;
 } // namespace fields_engine
 
 fields_engine::mesh::mesh()
@@ -43,38 +43,38 @@ fields_engine::mesh::mesh(mesh const& other)
 
 fields_engine::mesh::~mesh() {}
 
-void fields_engine::mesh::draw(graphics::shader const& shader) const {
+void fields_engine::mesh::draw(vis::shader const& shader) const {
     const mat4& matrix = ref_transform().world_matrix();
     const mat4 inverse = glm::inverse(matrix);
 
     GLint loc = shader.uniform_location("ModelTr");
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
-    FE_GL_VERIFY;
+    VIS_VERIFY;
     /// ???
     loc = shader.uniform_location("NormalTr");
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(inverse));
-    FE_GL_VERIFY;
+    VIS_VERIFY;
 
     // Material settings for shader
     loc = shader.uniform_location("diffuse");
     glUniform3fv(loc, 1, glm::value_ptr(m_material.m_diffuse_color));
-    FE_GL_VERIFY;
+    VIS_VERIFY;
 
     loc = shader.uniform_location("specular");
     glUniform3fv(loc, 1, glm::value_ptr(m_material.m_specular_color));
-    FE_GL_VERIFY;
+    VIS_VERIFY;
     loc = shader.uniform_location("shininess");
     glUniform1f(loc, m_material.m_shininess);
-    FE_GL_VERIFY;
+    VIS_VERIFY;
 
     int has_texture = m_texture != nullptr;
     int has_normal_texture = m_normal_texture != nullptr;
     loc = shader.uniform_location("texScale");
     glUniform2fv(loc, 1, glm::value_ptr(vec2(1, 1)));
-    FE_GL_VERIFY;
+    VIS_VERIFY;
     loc = shader.uniform_location("texRot");
     glUniform1f(loc, 0);
-    FE_GL_VERIFY;
+    VIS_VERIFY;
 
     if (has_texture) {
         m_texture->use();
@@ -83,7 +83,7 @@ void fields_engine::mesh::draw(graphics::shader const& shader) const {
     }
     loc = shader.uniform_location("hasTexture");
     glUniform1i(loc, has_texture);
-    FE_GL_VERIFY;
+    VIS_VERIFY;
 
     if (has_normal_texture) {
         m_normal_texture->use();
@@ -92,19 +92,19 @@ void fields_engine::mesh::draw(graphics::shader const& shader) const {
     }
     loc = shader.uniform_location("hasNormal");
     glUniform1i(loc, has_normal_texture);
-    FE_GL_VERIFY;
+    VIS_VERIFY;
 
     m_resource->draw();
 }
 
-void fields_engine::mesh::set_texture(unique<graphics::texture>&& new_texture) {
+void fields_engine::mesh::set_texture(unique<vis::texture>&& new_texture) {
     m_texture = move(new_texture);
     if (m_texture != nullptr) {
         m_texture->set_unit(0);
     }
 }
 
-void fields_engine::mesh::set_normal_texture(unique<graphics::texture>&& new_normal_texture) {
+void fields_engine::mesh::set_normal_texture(unique<vis::texture>&& new_normal_texture) {
     m_normal_texture = move(new_normal_texture);
     if (m_normal_texture != nullptr) {
         m_normal_texture->set_unit(1);

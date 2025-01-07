@@ -24,7 +24,7 @@
  * Texture Definitions                                                       *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine::graphics {
+namespace fields_engine::vis {
     texture::texture(string_view filename) 
         : m_tex_id(0)
         , m_size(-1, -1)
@@ -45,35 +45,35 @@ namespace fields_engine::graphics {
         m_num_channels = num_channels;
 
         glGenTextures(1, &m_tex_id);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glBindTexture(GL_TEXTURE_2D, m_tex_id);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         // Copy the image into a gl texture
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_size.x, m_size.y,
             0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glGenerateMipmap(GL_TEXTURE_2D);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         // Horizontal wrap
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         // Vertical wrap
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         glBindTexture(GL_TEXTURE_2D, 0);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
         stbi_image_free(image_data);
     }
     
     texture::~texture() {
         glDeleteTextures(1, &m_tex_id);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
     }
 
     ivec2 texture::get_size() const {
@@ -91,15 +91,15 @@ namespace fields_engine::graphics {
     void texture::use() const {
         glActiveTexture(GL_TEXTURE0 + int(m_active_unit));
         glBindTexture(GL_TEXTURE_2D, m_tex_id);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
     }
 
     void texture::unuse() const {
         glActiveTexture(GL_TEXTURE0 + int(m_active_unit));
         glBindTexture(GL_TEXTURE_2D, 0);
-        FE_GL_VERIFY;
+        VIS_VERIFY;
     }
 
 
-} // namespace fields_engine::graphics
+} // namespace fields_engine::vis
 

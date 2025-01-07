@@ -15,9 +15,9 @@
 namespace fields_engine {
 	class entity;
 	class camera;
-	namespace graphics {
+	namespace vis {
 		class shader;
-	} // namespace graphics
+	} // namespace vis
 } // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
@@ -47,7 +47,7 @@ namespace fields_engine {
 	private: /// TODO: remove
 
 		vec3 m_light_pos = { 9, 9, 11 };
-		unique<graphics::shader> m_shader;
+		unique<vis::shader> m_shader;
 
 	private:
 		// { 0.1f, 0.1f, 0.1f, 1 } // Gray

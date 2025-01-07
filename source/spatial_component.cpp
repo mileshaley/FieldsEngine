@@ -55,7 +55,7 @@ void fields_engine::spatial_component::tick_all(float dt) {
 	}
 }
 
-void fields_engine::spatial_component::draw_all(graphics::shader const& shader) const {
+void fields_engine::spatial_component::draw_all(vis::shader const& shader) const {
 	draw(shader);
 	for (spatial_component const* child : m_children) {
 		child->draw_all(shader);

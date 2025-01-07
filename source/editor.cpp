@@ -233,7 +233,7 @@ bool fields_engine::editor::is_capturing_keyboard() const {
 	return ImGui::GetIO().WantCaptureKeyboard && !m_game_window_hovered;
 }
 
-fe::graphics::dual_frame_buffer& fields_engine::editor::ref_dual_frame_buffer() {
+fe::vis::dual_frame_buffer& fields_engine::editor::ref_dual_frame_buffer() {
 	return m_dual_fb;
 }
 
