@@ -51,7 +51,8 @@ void fields_engine::vis::set_background_color(glm::vec4 const& color) {
 
 void fields_engine::vis::impl::initialize() {
 	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
+	/// TODO: Fix all of our meshes so we can do face culling
+	//glEnable(GL_CULL_FACE);
 
 	VIS_VERIFY;
 	set_background_color({ 1.5f, 0.5f, 1.0f, 1.0f });

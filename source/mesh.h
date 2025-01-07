@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~* 
- * File: mesh_component.h                                                              *
+ * File: mesh.h                                                              *
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
@@ -10,43 +10,39 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include "spatial_component.h" // Inheritance
-#include "material.h"
-
-namespace fields_engine::vis {
-	class texture;
-	class mesh;
-} // namespace fields_engine::vis
-
 /*~-------------------------------------------------------------------------~*\
- * Entity Class                                                              *
+ * Mesh Class                                                                *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine {
-	class mesh_component : public spatial_component {
+namespace fields_engine::vis {
+
+	class mesh {
 	public:
+		mesh();
+		mesh(mesh const& other);
+		~mesh();
 
-		mesh_component();
-		mesh_component(mesh_component const& other);
-		~mesh_component();
+		void draw() const;
 
-		FE_GEN_COMPONENT(mesh_component, spatial_component);
+		void generate();
 
-		virtual void draw(vis::shader const& shader) const override;
-
-		vis::material      & ref_material()       { return m_material; }
-		vis::material const& get_material() const { return m_material; }
-		vis::mesh      & ref_mesh()		{ return *m_mesh; }
-		vis::mesh const& get_mesh() const { return *m_mesh; }
-
-		void set_texture(unique<vis::texture>&& new_texture);
-		void set_normal_texture(unique<vis::texture>&& new_normal_texture);
+		void add_face(mat4 const& transform);
+		void add_cube();
+		void add_sphere(int subdivisions);
+		void add_cylinder(int sides = 16, float height = 1.0f);
+		void add_pyramid(int sides = 4, float height = 1.0f);
 
 	private:
-		unique<vis::mesh> m_mesh;
-		unique<vis::texture> m_texture;
-		unique<vis::texture> m_normal_texture;
-		vis::material m_material;
-	};
+		void sequential_tris(int first_vert_index);
+		void tris_for_quad(ivec4 const& indices);
+		void sequential_tris_for_quad(int first_vert_index);
 
-} // namespace fields_engine
+		unsigned m_vao_id;
+		vector<vec4> m_vertices;
+		vector<vec3> m_normals;
+		vector<vec2> m_textures;
+		// Indices within vertices, normals, and textures
+		vector<ivec3> m_triangles;
+	}; // class mesh
+
+} // namespace fields_engine::vis
