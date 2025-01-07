@@ -59,11 +59,11 @@ static fe::unique<fe::entity> make_snowman() {
 	nose_mat.m_diffuse_color = { 0.9f, 0.35f, 0.1f };
 	nose_mat.m_specular_color = { 0.9f, 0.5f, 0.1f };
 	nose_mat.m_shininess = 1.0f;
-	unique<mesh> m0 = make_unique<mesh>();
-	m0->ref_resource().add_cube();
-	m0->ref_resource().generate();
+	unique<mesh_component> m0 = make_unique<mesh_component>();
+	m0->ref_mesh().add_cube();
+	m0->ref_mesh().generate();
 	m0->ref_material() = snow_mat;
-	mesh* pm0 = m0.get();
+	mesh_component* pm0 = m0.get();
 	auto ent = make_unique<entity>("Snowman", move(m0));
 	transform& tr = ent->ref_transform();
 	const float scale = 1;
@@ -71,20 +71,20 @@ static fe::unique<fe::entity> make_snowman() {
 	tr.set_local_scale({ scale, scale, scale });
 
 	{ // Middle
-		unique<mesh> m1 = make_unique<mesh>();
-		m1->ref_resource().add_cube();
-		m1->ref_resource().generate();
+		unique<mesh_component> m1 = make_unique<mesh_component>();
+		m1->ref_mesh().add_cube();
+		m1->ref_mesh().generate();
 		m1->ref_material() = snow_mat;
 		transform& tr = m1->ref_transform();
 		const float scale = 0.75f;
 		tr.set_local_position({ 0, 0, 0.75f });
 		tr.set_local_scale({ scale, scale, scale });
-		mesh* pm1 = m1.get();
+		mesh_component* pm1 = m1.get();
 		pm0->attach_spatial_component(move(m1));
 		{ // Scarf
-			unique<mesh> m2 = make_unique<mesh>();
-			m2->ref_resource().add_cube();
-			m2->ref_resource().generate();
+			unique<mesh_component> m2 = make_unique<mesh_component>();
+			m2->ref_mesh().add_cube();
+			m2->ref_mesh().generate();
 			m2->ref_material() = scarf_mat;
 			transform& tr = m2->ref_transform();
 			tr.set_local_position({ 0, 0, 0.6f });
@@ -92,9 +92,9 @@ static fe::unique<fe::entity> make_snowman() {
 			pm1->attach_spatial_component(move(m2));
 		}
 		{ // Head
-			unique<mesh> m3 = make_unique<mesh>();
-			m3->ref_resource().add_cube();
-			m3->ref_resource().generate();
+			unique<mesh_component> m3 = make_unique<mesh_component>();
+			m3->ref_mesh().add_cube();
+			m3->ref_mesh().generate();
 			m3->ref_material() = snow_mat;
 			m3->set_texture(make_unique<vis::texture>("miles.png"));
 			//m3->set_normal_texture(make_unique<vis::texture>("miles.png"));
@@ -102,7 +102,7 @@ static fe::unique<fe::entity> make_snowman() {
 			const float scale = 0.75;
 			tr.set_local_position({ 0, 0, 1 });
 			tr.set_local_scale({ scale, scale, scale });
-			mesh* pm3 = m3.get();
+			mesh_component* pm3 = m3.get();
 			pm1->attach_spatial_component(move(m3));
 			{ // Face
 				unique<spatial_component> face = make_unique<spatial_component>();
@@ -113,9 +113,9 @@ static fe::unique<fe::entity> make_snowman() {
 				pm3->attach_spatial_component(move(face));
 
 				{ // Nose
-					unique<mesh> m6 = make_unique<mesh>();
-					m6->ref_resource().add_pyramid(32, 1);
-					m6->ref_resource().generate();
+					unique<mesh_component> m6 = make_unique<mesh_component>();
+					m6->ref_mesh().add_pyramid(32, 1);
+					m6->ref_mesh().generate();
 					m6->ref_material() = nose_mat;
 					transform& tr = m6->ref_transform();
 					tr.set_local_position({ 0, 0, 0.25f });
@@ -123,9 +123,9 @@ static fe::unique<fe::entity> make_snowman() {
 					pf->attach_spatial_component(move(m6));
 				}
 				{ // Eye 1
-					unique<mesh> m7 = make_unique<mesh>();
-					m7->ref_resource().add_cylinder(7, 1);
-					m7->ref_resource().generate();
+					unique<mesh_component> m7 = make_unique<mesh_component>();
+					m7->ref_mesh().add_cylinder(7, 1);
+					m7->ref_mesh().generate();
 					m7->ref_material() = hat_mat;
 					transform& tr = m7->ref_transform();
 					tr.set_local_position({ 0.25f, -0.25f, -0.23f });
@@ -134,9 +134,9 @@ static fe::unique<fe::entity> make_snowman() {
 					pf->attach_spatial_component(move(m7));
 				}
 				{ // Eye 2
-					unique<mesh> m8 = make_unique<mesh>();
-					m8->ref_resource().add_cylinder(7, 1);
-					m8->ref_resource().generate();
+					unique<mesh_component> m8 = make_unique<mesh_component>();
+					m8->ref_mesh().add_cylinder(7, 1);
+					m8->ref_mesh().generate();
 					m8->ref_material() = hat_mat;
 					transform& tr = m8->ref_transform();
 					tr.set_local_position({ -0.25f, -0.25f, -0.23f });
@@ -147,19 +147,19 @@ static fe::unique<fe::entity> make_snowman() {
 			}
 
 			{ // Hat base
-				unique<mesh> m4 = make_unique<mesh>();
-				m4->ref_resource().add_cube();
-				m4->ref_resource().generate();
+				unique<mesh_component> m4 = make_unique<mesh_component>();
+				m4->ref_mesh().add_cube();
+				m4->ref_mesh().generate();
 				m4->ref_material() = hat_mat;
 				transform& tr = m4->ref_transform();
 				tr.set_local_position({ 0, 0, 0.57f });
 				tr.set_local_scale({ 1.5f, 1.5f, 0.15f });
-				mesh* pm4 = m4.get();
+				mesh_component* pm4 = m4.get();
 				pm3->attach_spatial_component(move(m4));
 				{ // Hat top
-					unique<mesh> m5 = make_unique<mesh>();
-					m5->ref_resource().add_cube();
-					m5->ref_resource().generate();
+					unique<mesh_component> m5 = make_unique<mesh_component>();
+					m5->ref_mesh().add_cube();
+					m5->ref_mesh().generate();
 					m5->ref_material() = hat_mat;
 					transform& tr = m5->ref_transform();
 					tr.set_local_position({ 0, 0, 4.75f });
@@ -190,11 +190,11 @@ static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
 	//needle_mat.m_shininess = 1.0f;
 
 	const float h = 10;
-	unique<mesh> m0 = make_unique<mesh>();
-	m0->ref_resource().add_cylinder(16, h);
-	m0->ref_resource().generate();
+	unique<mesh_component> m0 = make_unique<mesh_component>();
+	m0->ref_mesh().add_cylinder(16, h);
+	m0->ref_mesh().generate();
 	m0->ref_material() = wood_mat;
-	mesh* pm0 = m0.get();
+	mesh_component* pm0 = m0.get();
 	auto ent = make_unique<entity>("Tree", move(m0));
 	transform& tr = ent->ref_transform();
 	tr.set_local_position({ 0, 0, h * 0.5f  });
@@ -203,11 +203,11 @@ static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
 	const float cone_offset = 3;
 	const float downscale = 0.8f;
 	for (unsigned i = 0; i < top_segments; ++i) {
-		unique<mesh> m = make_unique<mesh>();
-		m->ref_resource().add_pyramid(16);
-		m->ref_resource().generate();
+		unique<mesh_component> m = make_unique<mesh_component>();
+		m->ref_mesh().add_pyramid(16);
+		m->ref_mesh().generate();
 		m->ref_material() = needle_mat;
-		mesh* pm = m.get();
+		mesh_component* pm = m.get();
 		pm0->attach_spatial_component(move(m));
 		transform& tr = pm->ref_transform();
 		const float scale = 5 - (i * downscale);
@@ -247,9 +247,9 @@ void fields_engine::scene::startup() {
 	z_mat.m_shininess = 1.0f;
 
 	{ // Direction Indicator
-		unique<mesh> d = make_unique<mesh>();
-		d->ref_resource().add_cube();
-		d->ref_resource().generate();
+		unique<mesh_component> d = make_unique<mesh_component>();
+		d->ref_mesh().add_cube();
+		d->ref_mesh().generate();
 		d->ref_material() = d_mat;
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Direction Indicator", move(d)));
 		transform& dtr = ent->ref_transform();
@@ -258,9 +258,9 @@ void fields_engine::scene::startup() {
 		dtr.set_local_position(off);
 
 		{ // X
-			unique<mesh> xm = make_unique<mesh>();
-			xm->ref_resource().add_cube();
-			xm->ref_resource().generate();
+			unique<mesh_component> xm = make_unique<mesh_component>();
+			xm->ref_mesh().add_cube();
+			xm->ref_mesh().generate();
 			xm->ref_material() = x_mat;
 			auto& xent = m_entities.emplace_back(make_unique<entity>("Dx", move(xm)));
 			transform& tr = xent->ref_transform();
@@ -268,9 +268,9 @@ void fields_engine::scene::startup() {
 			tr.set_local_position(off + dtr.get_local_right_vector());
 		}
 		{ // Y
-			unique<mesh> ym = make_unique<mesh>();
-			ym->ref_resource().add_cube();
-			ym->ref_resource().generate();
+			unique<mesh_component> ym = make_unique<mesh_component>();
+			ym->ref_mesh().add_cube();
+			ym->ref_mesh().generate();
 			ym->ref_material() = y_mat;
 			auto& yent = m_entities.emplace_back(make_unique<entity>("Yx", move(ym)));
 			transform& tr = yent->ref_transform();
@@ -278,9 +278,9 @@ void fields_engine::scene::startup() {
 			tr.set_local_position(off + dtr.get_local_forward_vector());
 		}
 		{ // Z
-			unique<mesh> zm = make_unique<mesh>();
-			zm->ref_resource().add_cube();
-			zm->ref_resource().generate();
+			unique<mesh_component> zm = make_unique<mesh_component>();
+			zm->ref_mesh().add_cube();
+			zm->ref_mesh().generate();
 			zm->ref_material() = z_mat;
 			auto& zent = m_entities.emplace_back(make_unique<entity>("Zx", move(zm)));
 			transform& tr = zent->ref_transform();
@@ -295,11 +295,11 @@ void fields_engine::scene::startup() {
 		//unique<spatial_component> root = make_unique<spatial_component>();
 		//spatial_component* p_root = root.get();
 		unique<camera> cam = make_unique<camera>();
-		//unique<mesh> m = make_unique<mesh>();
+		//unique<mesh_component> m = make_unique<mesh_component>();
 		//m->add_cube();
 		//m->generate();
 		//m->ref_material() = nose_mat;
-		//mesh* pm = m.get();
+		//mesh_component* pm = m.get();
 		transform& tr = cam->ref_transform();
 		tr.set_local_position({ 3, 2, 3 });
 		tr.set_local_rotation(vec3{90, 0, -240});
@@ -309,9 +309,9 @@ void fields_engine::scene::startup() {
 		ent->attach_basic_component(make_unique<camera_controller>());
 	}
 	{ // Ground
-		unique<mesh> m = make_unique<mesh>();
-		m->ref_resource().add_cube();
-		m->ref_resource().generate();
+		unique<mesh_component> m = make_unique<mesh_component>();
+		m->ref_mesh().add_cube();
+		m->ref_mesh().generate();
 		m->ref_material() = grass_mat;
 		transform& tr = m->ref_transform();
 		const float scale = 1;
@@ -320,9 +320,9 @@ void fields_engine::scene::startup() {
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Ground", move(m)));
 	}
 	{ // Mound
-		unique<mesh> m = make_unique<mesh>();
-		m->ref_resource().add_pyramid(15);
-		m->ref_resource().generate();
+		unique<mesh_component> m = make_unique<mesh_component>();
+		m->ref_mesh().add_pyramid(15);
+		m->ref_mesh().generate();
 		m->ref_material() = snow_mat;
 		transform& tr = m->ref_transform();
 		const float scale = 1;

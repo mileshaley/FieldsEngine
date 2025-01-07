@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             * 
  *~-------------------------------------------------------------------------~* 
- * File: mesh.cpp                                                            * 
+ * File: mesh_component.cpp                                                            * 
 \*~-------------------------------------------------------------------------~*/
 
 #include "precompiled.h"
@@ -17,17 +17,17 @@ namespace fields_engine {
     using namespace vis;
 } // namespace fields_engine
 
-fields_engine::mesh::mesh()
+fields_engine::mesh_component::mesh_component()
 	: spatial_component()
-    , m_resource(make_unique<mesh_resource>())
+    , m_mesh(make_unique<mesh>())
     , m_texture(nullptr)
     , m_normal_texture(nullptr)
     , m_material()
 {}
 
-fields_engine::mesh::mesh(mesh const& other)
+fields_engine::mesh_component::mesh_component(mesh_component const& other)
     : spatial_component(other)
-    , m_resource(make_unique<mesh_resource>(*other.m_resource))
+    , m_mesh(make_unique<mesh>(*other.m_mesh))
     , m_texture(nullptr)
     , m_normal_texture(nullptr)
     , m_material(other.m_material)
@@ -41,9 +41,9 @@ fields_engine::mesh::mesh(mesh const& other)
     //}
 }
 
-fields_engine::mesh::~mesh() {}
+fields_engine::mesh_component::~mesh_component() {}
 
-void fields_engine::mesh::draw(vis::shader const& shader) const {
+void fields_engine::mesh_component::draw(vis::shader const& shader) const {
     const mat4& matrix = ref_transform().world_matrix();
     const mat4 inverse = glm::inverse(matrix);
 
@@ -94,17 +94,17 @@ void fields_engine::mesh::draw(vis::shader const& shader) const {
     glUniform1i(loc, has_normal_texture);
     VIS_VERIFY;
 
-    m_resource->draw();
+    m_mesh->draw();
 }
 
-void fields_engine::mesh::set_texture(unique<vis::texture>&& new_texture) {
+void fields_engine::mesh_component::set_texture(unique<vis::texture>&& new_texture) {
     m_texture = move(new_texture);
     if (m_texture != nullptr) {
         m_texture->set_unit(0);
     }
 }
 
-void fields_engine::mesh::set_normal_texture(unique<vis::texture>&& new_normal_texture) {
+void fields_engine::mesh_component::set_normal_texture(unique<vis::texture>&& new_normal_texture) {
     m_normal_texture = move(new_normal_texture);
     if (m_normal_texture != nullptr) {
         m_normal_texture->set_unit(1);

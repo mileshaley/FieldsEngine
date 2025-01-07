@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~* 
- * File: mesh.h                                                              *
+ * File: mesh_component.h                                                              *
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
@@ -15,7 +15,7 @@
 
 namespace fields_engine::vis {
 	class texture;
-	class mesh_resource;
+	class mesh;
 } // namespace fields_engine::vis
 
 /*~-------------------------------------------------------------------------~*\
@@ -23,28 +23,27 @@ namespace fields_engine::vis {
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
-	/// TODO: Consider rename to mesh_component
-	class mesh : public spatial_component {
+	class mesh_component : public spatial_component {
 	public:
 
-		mesh();
-		mesh(mesh const& other);
-		~mesh();
+		mesh_component();
+		mesh_component(mesh_component const& other);
+		~mesh_component();
 
-		FE_GEN_COMPONENT(mesh, spatial_component);
+		FE_GEN_COMPONENT(mesh_component, spatial_component);
 
 		virtual void draw(vis::shader const& shader) const override;
 
 		vis::material      & ref_material()       { return m_material; }
 		vis::material const& get_material() const { return m_material; }
-		vis::mesh_resource      & ref_resource()		{ return *m_resource; }
-		vis::mesh_resource const& get_resource() const { return *m_resource; }
+		vis::mesh      & ref_mesh()		{ return *m_mesh; }
+		vis::mesh const& get_mesh() const { return *m_mesh; }
 
 		void set_texture(unique<vis::texture>&& new_texture);
 		void set_normal_texture(unique<vis::texture>&& new_normal_texture);
 
 	private:
-		unique<vis::mesh_resource> m_resource;
+		unique<vis::mesh> m_mesh;
 		unique<vis::texture> m_texture;
 		unique<vis::texture> m_normal_texture;
 		vis::material m_material;

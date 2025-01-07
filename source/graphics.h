@@ -15,7 +15,7 @@
 #endif // ^^^ !defined(DEBUG)
 
 namespace fields_engine {
-	class mesh;
+	class mesh_component;
 }
 
 namespace fields_engine::vis {

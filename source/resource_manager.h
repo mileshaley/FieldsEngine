@@ -15,7 +15,7 @@
 
 namespace fields_engine {
 	namespace vis {
-		class mesh_resource;
+		class mesh;
 	}
 }
 
@@ -31,7 +31,7 @@ namespace fields_engine {
 		~resource_manager();
 
 	private: // Since we use contexts for factories, we don't have to expose anything
-		local_context<resource_factory<vis::mesh_resource> > m_mesh_resources;
+		local_context<resource_factory<vis::mesh> > m_mesh_resources;
 
 	};
 

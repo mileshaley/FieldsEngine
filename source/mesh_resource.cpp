@@ -17,7 +17,7 @@
 
 namespace fields_engine::vis {
 
-    mesh_resource::mesh_resource()
+    mesh::mesh()
         : m_vertices()
         , m_triangles()
         , m_textures()
@@ -25,7 +25,7 @@ namespace fields_engine::vis {
         , m_vao_id(0)
     {}
 
-    mesh_resource::mesh_resource(mesh_resource const& other)
+    mesh::mesh(mesh const& other)
         : m_vertices(other.m_vertices)
         , m_triangles(other.m_triangles)
         , m_textures(other.m_textures)
@@ -37,12 +37,12 @@ namespace fields_engine::vis {
         }
     }
 
-    mesh_resource::~mesh_resource() {
+    mesh::~mesh() {
         glDeleteBuffers(1, &m_vao_id);
         VIS_VERIFY;
     }
 
-    void mesh_resource::draw() const {
+    void mesh::draw() const {
         glBindVertexArray(m_vao_id);
         VIS_VERIFY;
         glDrawElements(GL_TRIANGLES,
@@ -54,8 +54,8 @@ namespace fields_engine::vis {
         VIS_VERIFY;
     }
 
-    void mesh_resource::generate() {
-        // Give this mesh a vertex object array
+    void mesh::generate() {
+        // Give this mesh_component a vertex object array
         glGenVertexArrays(1, &m_vao_id);
         glBindVertexArray(m_vao_id);
         // Generate vertex buffer
@@ -130,7 +130,7 @@ namespace fields_engine::vis {
         VIS_VERIFY;
     }
 
-    void mesh_resource::add_face(mat4 const& tr) {
+    void mesh::add_face(mat4 const& tr) {
         constexpr int num_corners = 4;
         constexpr vec4 verts[num_corners]{
             { 0.5f,  0.5f, 0.5f, 1.0f},
@@ -158,7 +158,7 @@ namespace fields_engine::vis {
         sequential_tris_for_quad(n);
     }
 
-    void mesh_resource::add_cube() {
+    void mesh::add_cube() {
         constexpr float rot_90 = glm::radians(90.0f);
         constexpr vec3 i{ 1, 0, 0 };
         constexpr vec3 j{ 0, 1, 0 };
@@ -174,11 +174,11 @@ namespace fields_engine::vis {
         add_face(glm::rotate(face_mat, 2 * rot_90, i));
     }
 
-    void mesh_resource::add_sphere(int subdivisions) {
+    void mesh::add_sphere(int subdivisions) {
 
     }
 
-    void mesh_resource::add_cylinder(int sides, float height) {
+    void mesh::add_cylinder(int sides, float height) {
         const float half_height = height * 0.5f;
         const vec4 top_mid_vert{ 0, 0, half_height, 1 };
         const vec4 bot_mid_vert{ 0, 0, -half_height, 1 };
@@ -264,7 +264,7 @@ namespace fields_engine::vis {
         }
     }
 
-    void mesh_resource::add_pyramid(int sides, float height) {
+    void mesh::add_pyramid(int sides, float height) {
         constexpr vec3 bot_norm{ 0, 0, -1 };
         const float half_height = height * 0.5f;
         const vec4 bot_middle_vert{ 0, 0, -half_height, 1 };
@@ -315,17 +315,17 @@ namespace fields_engine::vis {
         }
     }
 
-    void mesh_resource::sequential_tris(int i) {
+    void mesh::sequential_tris(int i) {
         m_triangles.emplace_back(i, i + 1, i + 2);
 
     }
 
-    void mesh_resource::tris_for_quad(ivec4 const& indices) {
+    void mesh::tris_for_quad(ivec4 const& indices) {
         m_triangles.emplace_back(indices.x, indices.y, indices.z);
         m_triangles.emplace_back(indices.x, indices.z, indices.w);
     }
 
-    void mesh_resource::sequential_tris_for_quad(int i) {
+    void mesh::sequential_tris_for_quad(int i) {
         tris_for_quad({ i, i + 1, i + 2, i + 3 });
     }
 

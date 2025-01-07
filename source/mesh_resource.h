@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~* 
- * File: mesh_resource.h                                                     *
+ * File: mesh.h                                                     *
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
@@ -16,11 +16,11 @@
 
 namespace fields_engine::vis {
 
-	class mesh_resource {
+	class mesh {
 	public:
-		mesh_resource();
-		mesh_resource(mesh_resource const& other);
-		~mesh_resource();
+		mesh();
+		mesh(mesh const& other);
+		~mesh();
 
 		void draw() const;
 
@@ -43,6 +43,6 @@ namespace fields_engine::vis {
 		vector<vec2> m_textures;
 		// Indices within vertices, normals, and textures
 		vector<ivec3> m_triangles;
-	}; // class mesh_resource
+	}; // class mesh
 
 } // namespace fields_engine::vis
