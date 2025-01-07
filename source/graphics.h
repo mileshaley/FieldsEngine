@@ -19,6 +19,7 @@ namespace fields_engine {
 	class mesh;
 }
 
+/// TODO: Rename graphics namespace to vis
 namespace fields_engine::graphics {
 
 	void check_graphics_error(string_view file = "", int line = 0);

@@ -13,6 +13,7 @@
 #include "precompiled.h"
 #include <unordered_map>
 #include "polymorphic.h" // clone()
+#include "assert.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Resource Factory Class Template                                           *
@@ -20,23 +21,26 @@
 
 namespace fields_engine {
 
-	template<typename T, typename KeyT>
-	class default_resource_factory_handler {
-	public:
+	template<typename T>
+	struct default_resource_factory_copier {
 		static inline unique<T> copy(T const& source) {
 			return FE clone(source);
 		}
-
-		static inline void post_allocate(T const& resource, KeyT const& key) {
-
-		}
 	};
+
+	//template<typename T, typename KeyT>
+	//struct default_resource_factory_handler {
+	//public:
+	//	static inline void post_allocate(T& resource, KeyT const& key) {
+	//
+	//	}
+	//};
 
 	// Wrapper for a map for managing a heap allocated resource
 	template<
-		typename T, 
-		typename KeyT = string, 
-		class Handler = default_resource_factory_handler<T, KeyT>
+		typename T,
+		typename KeyT = string,
+		class Copier = default_resource_factory_copier<T>
 	> class resource_factory {
 	public:
 		inline resource_factory()
@@ -62,12 +66,23 @@ namespace fields_engine {
 			}
 
 			T& new_item = m_map.emplace(key);
-			Handler::post_allocate(new_item, key);
 			return new_item;
 		}
 
-		inline unique<T> make_unique(KeyT const& key) {
-			return Handler::copy(*get(key));
+		// Makes a duplicate of an existing item at key.
+		//
+		inline T& duplicate(KeyT const& key, KeyT const& duplicated_item_key) {
+			FE_ASSERT(key != duplicated_item_key);
+			auto it = m_map.find(key);
+			if (it != m_map.end()) {
+				T& duplicated_item = m_map.emplace(key, move(Copier::Copy(*it)));
+				return duplicated_item;
+			}
+			return m_map.emplace(duplicated_item_key);
+		}
+
+		inline unique<T> make_unique_copy(KeyT const& key) {
+			return Copier::copy(*get(key));
 		}
 
 		// Resets the state of the resource factory, freeing all of its resources

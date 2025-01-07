@@ -9,7 +9,7 @@
 #include "entity.h"
 
 /*~-------------------------------------------------------------------------~*\
- * Component Definitions                                                     *
+ * Spatial Component Lifecycle                                               *
 \*~-------------------------------------------------------------------------~*/
 
 fields_engine::spatial_component::spatial_component()
@@ -29,6 +29,10 @@ fields_engine::spatial_component::spatial_component(spatial_component const& oth
 {
 	m_transform.set_owner(this);
 }
+
+/*~-------------------------------------------------------------------------~*\
+ * Spatial Component Definitions                                             *
+\*~-------------------------------------------------------------------------~*/
 
 void fields_engine::spatial_component::dirtify_transforms() const {
 	m_transform.set_only_this_dirty();

@@ -111,6 +111,7 @@ namespace fields_engine::common {
 
 	template<typename T>
 	using unique = std::unique_ptr<T>;
+	/// TODO: Remove unique_r alias
 	template<typename T>
 	using unique_r = std::unique_ptr<T>&;
 	template<typename T>

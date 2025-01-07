@@ -23,6 +23,7 @@ namespace fields_engine::graphics {
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
+	/// TODO: Rename to mesh_component
 
 	class mesh : public spatial_component {
 	public:
