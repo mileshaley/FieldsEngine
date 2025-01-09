@@ -14,7 +14,7 @@
 
 namespace fields_engine {
 	class entity;
-	class camera;
+	class camera_component;
 	namespace vis {
 		class shader;
 	} // namespace vis
@@ -41,8 +41,8 @@ namespace fields_engine {
 		bool display_window();
 #endif // EDITOR
 
-		void register_camera(camera* cam);
-		void unregister_camera(camera* cam);
+		void register_camera(camera_component* cam);
+		void unregister_camera(camera_component* cam);
 
 	private: /// TODO: remove variables in this section
 
@@ -56,8 +56,8 @@ namespace fields_engine {
 		vec4 m_background_color = { 0.55f, 0.75f, 1.0f, 1 };
 
 		dyn_arr<unique<entity>> m_entities;
-		dyn_arr<camera*> m_cameras;
-		camera* m_active_camera;
+		dyn_arr<camera_component*> m_cameras;
+		camera_component* m_active_camera;
 	};
 
 } // namespace fields_engine

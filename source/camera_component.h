@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~* 
- * File: camera.h                                                            *
+ * File: camera_component.h                                                  *
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
@@ -19,12 +19,12 @@
 namespace fields_engine {
 
 	/// TODO: Rename to camera_component
-	class camera : public spatial_component {
+	class camera_component : public spatial_component {
 	public:
-		camera();
-		camera(camera const& other);
+		camera_component();
+		camera_component(camera_component const& other);
 
-		FE_GEN_COMPONENT(camera, spatial_component);
+		FE_GEN_COMPONENT(camera_component, spatial_component);
 
 
 		virtual void init() override;

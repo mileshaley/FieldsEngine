@@ -1,11 +1,11 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~*
- * File: camera.cpp                                                          *
+ * File: camera_component.cpp                                                *
 \*~-------------------------------------------------------------------------~*/
 
 #include "precompiled.h"
-#include "camera.h"
+#include "camera_component.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "context.h"
 #include "scene.h"
@@ -14,14 +14,14 @@
 #include "editor.h"
 
 /*~-------------------------------------------------------------------------~*\
- * Camera Definitions                                                        *
+ * Camera Component Definitions                                              *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::camera::camera() 
+fields_engine::camera_component::camera_component() 
 	: spatial_component()
 {}
 
-fields_engine::camera::camera(camera const& other) 
+fields_engine::camera_component::camera_component(camera_component const& other) 
 	: spatial_component(other)
 	, m_zoom(other.m_zoom)
 	, m_fov(other.m_fov)
@@ -32,21 +32,21 @@ fields_engine::camera::camera(camera const& other)
 {
 }
 
-void fields_engine::camera::init() {
+void fields_engine::camera_component::init() {
 	context<scene>().register_camera(this);
 }
 
-void fields_engine::camera::tick(float dt) {
+void fields_engine::camera_component::tick(float dt) {
 	recalculate_view_matrix();
 	recalculate_proj_matrix();
 }
 
-void fields_engine::camera::exit() {
+void fields_engine::camera_component::exit() {
 	context<scene>().unregister_camera(this);
 }
 
 #ifdef EDITOR
-bool fields_engine::camera::display() {
+bool fields_engine::camera_component::display() {
 	bool modif = spatial_component::display();
 	modif |= ImGui::DragFloat("Zoom", &m_zoom);
 	modif |= ImGui::DragFloat("FOV", &m_fov);
@@ -57,12 +57,12 @@ bool fields_engine::camera::display() {
 }
 #endif // EDITOR
 
-void fields_engine::camera::recalculate_view_matrix() {
+void fields_engine::camera_component::recalculate_view_matrix() {
 	transform const& tr = ref_transform();
 	m_world_view_matrix = glm::inverse(tr.world_matrix());
 }
 
-void fields_engine::camera::recalculate_proj_matrix() {
+void fields_engine::camera_component::recalculate_proj_matrix() {
 	/// TODO: fix this
 	const vec2 win_size = context<editor>().get_game_window_size();
 	// context<application>().get_window_size();
@@ -81,36 +81,36 @@ void fields_engine::camera::recalculate_proj_matrix() {
 	}
 }
 
-fe::mat4 const& fields_engine::camera::world_view_matrix() const {
+fe::mat4 const& fields_engine::camera_component::world_view_matrix() const {
 	return m_world_view_matrix;
 }
 
-fe::mat4 const& fields_engine::camera::world_proj_matrix() const {
+fe::mat4 const& fields_engine::camera_component::world_proj_matrix() const {
 	return m_world_proj_matrix;
 }
 
-float fields_engine::camera::get_zoom() const {
+float fields_engine::camera_component::get_zoom() const {
 	return m_zoom;
 }
-float fields_engine::camera::get_fov() const {
+float fields_engine::camera_component::get_fov() const {
 	return m_fov;
 }
-float fields_engine::camera::get_near() const {
+float fields_engine::camera_component::get_near() const {
 	return m_near;
 }
-float fields_engine::camera::get_far() const {
+float fields_engine::camera_component::get_far() const {
 	return m_far;
 }
 
-void fields_engine::camera::set_zoom(float new_zoom) {
+void fields_engine::camera_component::set_zoom(float new_zoom) {
 	m_zoom = new_zoom;
 }
-void fields_engine::camera::set_fov(float new_fov) {
+void fields_engine::camera_component::set_fov(float new_fov) {
 	m_fov = new_fov;
 }
-void fields_engine::camera::set_near(float new_near) {
+void fields_engine::camera_component::set_near(float new_near) {
 	m_near = new_near;
 }
-void fields_engine::camera::set_far(float new_far) {
+void fields_engine::camera_component::set_far(float new_far) {
 	m_far = new_far;
 }

@@ -17,7 +17,7 @@
 #include "application.h"
 #include "imgui.h"
 #include "entity.h"
-#include "camera.h"
+#include "camera_component.h"
 #include "camera_controller.h"
 #include "editor.h"
 #include <random>
@@ -293,7 +293,7 @@ void fields_engine::scene::startup() {
 	{ // Camera
 		//unique<spatial_component> root = make_unique<spatial_component>();
 		//spatial_component* p_root = root.get();
-		unique<camera> cam = make_unique<camera>();
+		unique<camera_component> cam = make_unique<camera_component>();
 		//unique<mesh_component> m = make_unique<mesh_component>();
 		//m->add_cube();
 		//m->generate();
@@ -472,14 +472,14 @@ bool fields_engine::scene::display_window() {
 }
 #endif // EDITOR
 
-void fields_engine::scene::register_camera(camera* cam) {
+void fields_engine::scene::register_camera(camera_component* cam) {
 	if (m_cameras.size() == 0) {
 		m_active_camera = cam;
 	}
 	m_cameras.push_back(cam);
 }
 
-void fields_engine::scene::unregister_camera(camera* cam) {
+void fields_engine::scene::unregister_camera(camera_component* cam) {
 	m_cameras.erase(std::find(m_cameras.begin(), m_cameras.end(), cam));
 	if (cam == m_active_camera) {
 		if (m_cameras.size() == 0) {
