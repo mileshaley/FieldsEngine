@@ -18,6 +18,7 @@
 
 namespace fields_engine {
 
+	/// TODO: Rename to camera_component
 	class camera : public spatial_component {
 	public:
 		camera();

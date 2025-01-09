@@ -96,7 +96,7 @@ static fe::unique<fe::entity> make_snowman() {
 			m3->ref_mesh().add_cube();
 			m3->ref_mesh().generate();
 			m3->ref_material() = snow_mat;
-			m3->set_texture(make_unique<vis::texture>("content/miles.png"));
+			m3->set_texture(make_unique<vis::texture>("assets/miles.png"));
 			transform& tr = m3->ref_transform();
 			const float scale = 0.75;
 			tr.set_local_position({ 0, 0, 1 });
@@ -247,13 +247,13 @@ void fields_engine::scene::startup() {
 
 	{ // Direction Indicator
 		unique<mesh_component> d = make_unique<mesh_component>();
-		d->ref_mesh().add_cube();
+		d->ref_mesh().add_cylinder(30);
 		d->ref_mesh().generate();
 		d->ref_material() = d_mat;
 		auto& ent = m_entities.emplace_back(make_unique<entity>("Direction Indicator", move(d)));
 		transform& dtr = ent->ref_transform();
 		const float scale = 1;
-		constexpr vec3 off{ 10, 0, 0 };
+		constexpr vec3 off{ 10, 0, 3 };
 		dtr.set_local_position(off);
 
 		{ // X
@@ -324,6 +324,9 @@ void fields_engine::scene::startup() {
 		m->ref_mesh().add_pyramid(15);
 		m->ref_mesh().generate();
 		m->ref_material() = snow_mat;
+		//m->set_texture(make_unique<vis::texture>("content/brick.png"));
+		//m->set_normal_texture(make_unique<vis::texture>("content/brick_normal.png"));
+
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ 0, 0, 0 });

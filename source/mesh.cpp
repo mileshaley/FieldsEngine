@@ -205,7 +205,7 @@ namespace fields_engine::vis {
         const float half_height = height * 0.5f;
         const vec4 top_mid_vert{ 0, 0, half_height, 1 };
         const vec4 bot_mid_vert{ 0, 0, -half_height, 1 };
-        constexpr vec3 top_norm{ 0, 0, -1 };
+        constexpr vec3 top_norm{ 0, 0, 1 };
         constexpr vec3 bot_norm{ 0, 0, -1 };
 
         vec4 prev_bot_vert{ 0, 0.5f, -half_height, 1 };
@@ -229,39 +229,34 @@ namespace fields_engine::vis {
             int n = int(m_vertices.size());
 
             m_vertices.emplace_back(top_vert);
-            m_vertices.emplace_back(prev_top_vert);
-            m_vertices.emplace_back(prev_bot_vert);
             m_vertices.emplace_back(bot_vert);
+            m_vertices.emplace_back(prev_bot_vert);
+            m_vertices.emplace_back(prev_top_vert);
 
             m_tex_uvs.emplace_back(1, 1);
-            m_tex_uvs.emplace_back(0, 1);
-            m_tex_uvs.emplace_back(0, 0);
             m_tex_uvs.emplace_back(1, 0);
+            m_tex_uvs.emplace_back(0, 0);
+            m_tex_uvs.emplace_back(0, 1);
 
             // Vector from origin to midpoint of the outer quad is equal to the midpoint in this case
             const vec3 out_norm = (prev_bot_vert + top_vert) * 0.5f;
 
-            m_normals.emplace_back(out_norm);
-            m_normals.emplace_back(out_norm);
-            m_normals.emplace_back(out_norm);
-            m_normals.emplace_back(out_norm);
+            m_normals.insert(m_normals.end(), 4, out_norm);
 
             sequential_tris_for_quad(n);
 
             // Top of cylinder
 
             n = int(m_vertices.size());
-            m_vertices.emplace_back(top_mid_vert);
-            m_vertices.emplace_back(prev_top_vert);
             m_vertices.emplace_back(top_vert);
+            m_vertices.emplace_back(prev_top_vert);
+            m_vertices.emplace_back(top_mid_vert);
 
-            m_tex_uvs.emplace_back(1, 0);
-            m_tex_uvs.emplace_back(0, 1);
             m_tex_uvs.emplace_back(0, 0);
+            m_tex_uvs.emplace_back(0, 1);
+            m_tex_uvs.emplace_back(1, 0);
 
-            m_normals.emplace_back(top_norm);
-            m_normals.emplace_back(top_norm);
-            m_normals.emplace_back(top_norm);
+            m_normals.insert(m_normals.end(), 3, top_norm);
 
             sequential_tris(n);
 
@@ -269,17 +264,15 @@ namespace fields_engine::vis {
 
             n = int(m_vertices.size());
 
+            m_vertices.emplace_back(bot_vert);
             m_vertices.emplace_back(bot_mid_vert);
             m_vertices.emplace_back(prev_bot_vert);
-            m_vertices.emplace_back(bot_vert);
 
+            m_tex_uvs.emplace_back(0, 0);
             m_tex_uvs.emplace_back(1, 0);
             m_tex_uvs.emplace_back(0, 1);
-            m_tex_uvs.emplace_back(0, 0);
 
-            m_normals.emplace_back(bot_norm);
-            m_normals.emplace_back(bot_norm);
-            m_normals.emplace_back(bot_norm);
+            m_normals.insert(m_normals.end(), 3, bot_norm);
 
             sequential_tris(n);
 
@@ -306,30 +299,28 @@ namespace fields_engine::vis {
             };
 
             int n = int(m_vertices.size());
+            // Top triangle
+            m_vertices.emplace_back(vert);
+            m_vertices.emplace_back(prev_vert);
             m_vertices.emplace_back(tip_vert);
-            m_vertices.emplace_back(prev_vert);
-            m_vertices.emplace_back(vert);
 
-            m_vertices.emplace_back(vert);
-            m_vertices.emplace_back(prev_vert);
-            m_vertices.emplace_back(bot_middle_vert);
-
-            m_tex_uvs.emplace_back(1, 1);
-            m_tex_uvs.emplace_back(0, 1);
-            m_tex_uvs.emplace_back(1, 0);
-
-            m_tex_uvs.emplace_back(1, 0);
-            m_tex_uvs.emplace_back(0, 1);
-            m_tex_uvs.emplace_back(0, 0);
+            m_tex_uvs.emplace_back(vert);
+            m_tex_uvs.emplace_back(prev_vert);
+            m_tex_uvs.emplace_back(tip_vert);
 
             const vec3 top_norm = glm::cross(vec3(tip_vert - prev_vert), vec3(vert - prev_vert));
-            m_normals.emplace_back(top_norm);
-            m_normals.emplace_back(top_norm);
-            m_normals.emplace_back(top_norm);
+            m_normals.insert(m_normals.end(), 3, top_norm);
 
-            m_normals.emplace_back(bot_norm);
-            m_normals.emplace_back(bot_norm);
-            m_normals.emplace_back(bot_norm);
+            // Bottom triangle
+            m_vertices.emplace_back(vert);
+            m_vertices.emplace_back(bot_middle_vert);
+            m_vertices.emplace_back(prev_vert);
+
+            m_tex_uvs.emplace_back(vert);
+            m_tex_uvs.emplace_back(bot_middle_vert);
+            m_tex_uvs.emplace_back(prev_vert);
+
+            m_normals.insert(m_normals.end(), 3, bot_norm);
 
             sequential_tris(n);
             sequential_tris(n + 3);
