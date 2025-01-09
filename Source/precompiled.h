@@ -10,6 +10,7 @@
  * Common Includes                                                           *
 \*~-------------------------------------------------------------------------~*/
 
+
 #include <stddef.h>
 #include <stdint.h>
 #include <vector>
@@ -25,16 +26,8 @@
 #include "imgui.h"
 #endif // EDITOR
 
-#include "box.h"
-
-/*~-------------------------------------------------------------------------~*\
- * Defines                                                                   *
-\*~-------------------------------------------------------------------------~*/
-
-#define FE ::fe::
-#define FIELDS_ENGINE
-#define FE_NODISCARD [[nodiscard]]
-#define FE_FALLTHROUGH [[fallthrough]]
+#include "fields_engine_defines.h"
+#include "mem_util.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Application Platform Defines                                              *
@@ -62,7 +55,7 @@
 #define FE_USING_SDL3 1
 #endif // FEI_PLATFORM_SDL3
 
-namespace fields_engine::common {
+namespace fields_engine {
 
 /*~-------------------------------------------------------------------------~*\
  * Primitive Type Aliases                                                    *
@@ -105,12 +98,6 @@ namespace fields_engine::common {
 	using glm::ivec4;
 
 /*~-------------------------------------------------------------------------~*\
- * Utility Function Aliases                                                  *
-\*~-------------------------------------------------------------------------~*/
-
-	using std::move;
-
-/*~-------------------------------------------------------------------------~*\
  * Data Structure Aliases                                                    *
 \*~-------------------------------------------------------------------------~*/
 
@@ -133,14 +120,16 @@ namespace fields_engine::common {
 	template<typename T>
 	using ordered_set = std::set<T>;
 
-} // namespace fields_engine::common
+/*~-------------------------------------------------------------------------~*\
+ * Move Semantics Function Alias                                             *
+\*~-------------------------------------------------------------------------~*/
+
+	using std::move;
+
+} // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
  * Fields Engine Namespace                                                   *
 \*~-------------------------------------------------------------------------~*/
-
-namespace fields_engine {
-	using namespace common;
-} // namespace fields_engine
 
 namespace fe = fields_engine;

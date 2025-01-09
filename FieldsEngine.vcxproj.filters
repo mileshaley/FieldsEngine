@@ -140,6 +140,7 @@
     <ClInclude Include="source\resource_factory.h" />
     <ClInclude Include="source\camera_controller.h" />
     <ClInclude Include="source\polymorphic.h" />
-    <ClInclude Include="source\box.h" />
+    <ClInclude Include="source\mem_util.h" />
+    <ClInclude Include="source\fields_engine_defines.h" />
   </ItemGroup>
 </Project>

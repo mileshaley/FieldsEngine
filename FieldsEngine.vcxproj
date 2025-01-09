@@ -98,6 +98,7 @@
     <ClInclude Include="source\component.h" />
     <ClInclude Include="source\context.h" />
     <ClInclude Include="source\context_ownership.h" />
+    <ClInclude Include="source\fields_engine_defines.h" />
     <ClInclude Include="source\editor.h" />
     <ClInclude Include="source\editor_icons.h" />
     <ClInclude Include="source\editor_icons_all.h" />
@@ -109,7 +110,7 @@
     <ClInclude Include="source\input.h" />
     <ClInclude Include="source\log.h" />
     <ClInclude Include="source\material.h" />
-    <ClInclude Include="source\box.h" />
+    <ClInclude Include="source\mem_util.h" />
     <ClInclude Include="source\mesh_component.h" />
     <ClInclude Include="source\mesh.h" />
     <ClInclude Include="source\camera_controller.h" />
