@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 *.ini
 /enc_temp_folder
+/content
