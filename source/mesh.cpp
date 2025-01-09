@@ -12,7 +12,7 @@
 #include "graphics.h"
 
 /*~-------------------------------------------------------------------------~*\
- * Mesh Resource Definitions                                                 *
+ * Mesh Definitions                                                          *
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine::vis {
@@ -20,16 +20,18 @@ namespace fields_engine::vis {
     mesh::mesh()
         : m_vertices()
         , m_triangles()
-        , m_textures()
+        , m_tex_uvs()
         , m_normals()
+        , m_tangents()
         , m_vao_id(0)
     {}
 
     mesh::mesh(mesh const& other)
         : m_vertices(other.m_vertices)
         , m_triangles(other.m_triangles)
-        , m_textures(other.m_textures)
+        , m_tex_uvs(other.m_tex_uvs)
         , m_normals(other.m_normals)
+        , m_tangents(other.m_tangents)
         , m_vao_id(0)
     {
         if (other.m_vao_id != 0) {
@@ -38,8 +40,10 @@ namespace fields_engine::vis {
     }
 
     mesh::~mesh() {
-        glDeleteBuffers(1, &m_vao_id);
-        VIS_VERIFY;
+        if (m_vao_id != 0) {
+            glDeleteBuffers(1, &m_vao_id);
+            VIS_VERIFY;
+        }
     }
 
     void mesh::draw() const {
@@ -95,7 +99,7 @@ namespace fields_engine::vis {
             VIS_VERIFY;
         }
 
-        if (!m_textures.empty()) {
+        if (!m_tex_uvs.empty()) {
 
             GLuint tex_buf = 0;
             glGenBuffers(1, &tex_buf);
@@ -103,13 +107,32 @@ namespace fields_engine::vis {
             glBindBuffer(GL_ARRAY_BUFFER, tex_buf);
             VIS_VERIFY;
             glBufferData(GL_ARRAY_BUFFER,
-                m_textures.size() * sizeof(vec2),
-                glm::value_ptr(m_textures[0]), // float ptr
+                m_tex_uvs.size() * sizeof(vec2),
+                glm::value_ptr(m_tex_uvs[0]), // float ptr
                 GL_STATIC_DRAW);
             VIS_VERIFY;
             glEnableVertexAttribArray(2);
             VIS_VERIFY;
             glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
+            VIS_VERIFY;
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            VIS_VERIFY;
+        }
+
+        if (!m_tangents.empty()) {
+            GLuint tan_buf = 0;
+            glGenBuffers(1, &tan_buf);
+            VIS_VERIFY;
+            glBindBuffer(GL_ARRAY_BUFFER, tan_buf);
+            VIS_VERIFY;
+            glBufferData(GL_ARRAY_BUFFER,
+                m_normals.size() * sizeof(vec3),
+                glm::value_ptr(m_tangents[0]), // float ptr
+                GL_STATIC_DRAW);
+            VIS_VERIFY;
+            glEnableVertexAttribArray(3);
+            VIS_VERIFY;
+            glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, 0);
             VIS_VERIFY;
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             VIS_VERIFY;
@@ -145,14 +168,14 @@ namespace fields_engine::vis {
             {1.0f, 0.0f}
         };
 
-        const vec3 normal{ tr * vec4(0, 0, 1, 0) };
+        // Insert num_corners amount of duplicate attributes now
+        m_normals.insert(m_normals.end(), num_corners, static_cast<vec3 const&>(tr * vec4(0, 0, 1, 0)));
+        m_tangents.insert(m_tangents.end(), num_corners, static_cast<vec3 const&>(tr * vec4(1, 0, 0, 0)));
 
         const int n = int(m_vertices.size());
-
         for (int i = 0; i < num_corners; ++i) {
             m_vertices.emplace_back(tr * verts[i]);
-            m_textures.emplace_back(tex_coords[i]);
-            m_normals.emplace_back(normal);
+            m_tex_uvs.emplace_back(tex_coords[i]);
         }
 
         sequential_tris_for_quad(n);
@@ -210,10 +233,10 @@ namespace fields_engine::vis {
             m_vertices.emplace_back(prev_bot_vert);
             m_vertices.emplace_back(bot_vert);
 
-            m_textures.emplace_back(1, 1);
-            m_textures.emplace_back(0, 1);
-            m_textures.emplace_back(0, 0);
-            m_textures.emplace_back(1, 0);
+            m_tex_uvs.emplace_back(1, 1);
+            m_tex_uvs.emplace_back(0, 1);
+            m_tex_uvs.emplace_back(0, 0);
+            m_tex_uvs.emplace_back(1, 0);
 
             // Vector from origin to midpoint of the outer quad is equal to the midpoint in this case
             const vec3 out_norm = (prev_bot_vert + top_vert) * 0.5f;
@@ -232,9 +255,9 @@ namespace fields_engine::vis {
             m_vertices.emplace_back(prev_top_vert);
             m_vertices.emplace_back(top_vert);
 
-            m_textures.emplace_back(1, 0);
-            m_textures.emplace_back(0, 1);
-            m_textures.emplace_back(0, 0);
+            m_tex_uvs.emplace_back(1, 0);
+            m_tex_uvs.emplace_back(0, 1);
+            m_tex_uvs.emplace_back(0, 0);
 
             m_normals.emplace_back(top_norm);
             m_normals.emplace_back(top_norm);
@@ -250,9 +273,9 @@ namespace fields_engine::vis {
             m_vertices.emplace_back(prev_bot_vert);
             m_vertices.emplace_back(bot_vert);
 
-            m_textures.emplace_back(1, 0);
-            m_textures.emplace_back(0, 1);
-            m_textures.emplace_back(0, 0);
+            m_tex_uvs.emplace_back(1, 0);
+            m_tex_uvs.emplace_back(0, 1);
+            m_tex_uvs.emplace_back(0, 0);
 
             m_normals.emplace_back(bot_norm);
             m_normals.emplace_back(bot_norm);
@@ -291,13 +314,13 @@ namespace fields_engine::vis {
             m_vertices.emplace_back(prev_vert);
             m_vertices.emplace_back(bot_middle_vert);
 
-            m_textures.emplace_back(1, 1);
-            m_textures.emplace_back(0, 1);
-            m_textures.emplace_back(1, 0);
+            m_tex_uvs.emplace_back(1, 1);
+            m_tex_uvs.emplace_back(0, 1);
+            m_tex_uvs.emplace_back(1, 0);
 
-            m_textures.emplace_back(1, 0);
-            m_textures.emplace_back(0, 1);
-            m_textures.emplace_back(0, 0);
+            m_tex_uvs.emplace_back(1, 0);
+            m_tex_uvs.emplace_back(0, 1);
+            m_tex_uvs.emplace_back(0, 0);
 
             const vec3 top_norm = glm::cross(vec3(tip_vert - prev_vert), vec3(vert - prev_vert));
             m_normals.emplace_back(top_norm);

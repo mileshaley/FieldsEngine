@@ -39,9 +39,10 @@ namespace fields_engine::vis {
 
 		unsigned m_vao_id;
 		vector<vec4> m_vertices;
+		vector<vec2> m_tex_uvs;
 		vector<vec3> m_normals;
-		vector<vec2> m_textures;
-		// Indices within vertices, normals, and textures
+		vector<vec3> m_tangents;
+		// Indices within vertices, normals, tangents, and texture uvs
 		vector<ivec3> m_triangles;
 	}; // class mesh
 

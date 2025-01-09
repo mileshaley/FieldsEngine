@@ -67,31 +67,31 @@ void fields_engine::mesh_component::draw(vis::shader const& shader) const {
     glUniform1f(loc, m_material.m_shininess);
     VIS_VERIFY;
 
-    int has_texture = m_texture != nullptr;
-    int has_normal_texture = m_normal_texture != nullptr;
     loc = shader.uniform_location("texScale");
     glUniform2fv(loc, 1, glm::value_ptr(vec2(1, 1)));
     VIS_VERIFY;
     loc = shader.uniform_location("texRot");
-    glUniform1f(loc, 0);
+    glUniform1f(loc, 0.0f);
     VIS_VERIFY;
 
-    if (has_texture) {
+    if (m_texture) {
         m_texture->use();
-        loc = shader.uniform_location("tex");
+        int loc = shader.uniform_location("tex");
         glUniform1i(loc, m_texture->get_unit());
     }
-    loc = shader.uniform_location("hasTexture");
-    glUniform1i(loc, has_texture);
-    VIS_VERIFY;
 
-    if (has_normal_texture) {
+    if (m_normal_texture) {
         m_normal_texture->use();
-        loc = shader.uniform_location("norm");
+        int loc = shader.uniform_location("norm");
         glUniform1i(loc, m_normal_texture->get_unit());
     }
+
+    loc = shader.uniform_location("hasTexture");
+    glUniform1i(loc, int(m_texture != nullptr));
+    VIS_VERIFY;
+
     loc = shader.uniform_location("hasNormal");
-    glUniform1i(loc, has_normal_texture);
+    glUniform1i(loc, int(m_normal_texture != nullptr));
     VIS_VERIFY;
 
     m_mesh->draw();

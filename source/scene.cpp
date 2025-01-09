@@ -97,7 +97,6 @@ static fe::unique<fe::entity> make_snowman() {
 			m3->ref_mesh().generate();
 			m3->ref_material() = snow_mat;
 			m3->set_texture(make_unique<vis::texture>("content/miles.png"));
-			//m3->set_normal_texture(make_unique<vis::texture>("miles.png"));
 			transform& tr = m3->ref_transform();
 			const float scale = 0.75;
 			tr.set_local_position({ 0, 0, 1 });
@@ -313,6 +312,7 @@ void fields_engine::scene::startup() {
 		m->ref_mesh().add_cube();
 		m->ref_mesh().generate();
 		m->ref_material() = grass_mat;
+
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ 0, 0, -1 });
@@ -410,10 +410,6 @@ void fields_engine::scene::draw() const {
 	vis::reset_frame();
 	m_shader->use();
 
-	const vec3 ambient(0.2f, 0.2f, 0.2f);
-	const vec3 light(3.5f, 3.5f, 3.5f);
-
-
 	GLint loc = m_shader->uniform_location("eyePos");
 	glUniform3fv(loc, 1, (float*)&(*world_view)[3][0]);
 	loc = m_shader->uniform_location("WorldView");
@@ -435,10 +431,10 @@ void fields_engine::scene::draw() const {
 
 
 	loc = m_shader->uniform_location("Ambient");
-	glUniform3fv(loc, 1, glm::value_ptr(ambient));
+	glUniform3fv(loc, 1, glm::value_ptr(m_ambient_color));
 	VIS_VERIFY;
 	loc = m_shader->uniform_location("Light");
-	glUniform3fv(loc, 1, glm::value_ptr(light));
+	glUniform3fv(loc, 1, glm::value_ptr(m_light_color));
 	VIS_VERIFY;
 
 	for (unique_cr<entity> ent : m_entities) {
@@ -459,6 +455,8 @@ bool fields_engine::scene::display_window() {
 	bool modif = false;
 	modif |= ImGui::DragFloat3("Light Position", &m_light_pos.x);
 	modif |= ImGui::ColorPicker3("Background color", &m_background_color.x);
+	modif |= ImGui::ColorPicker3("Light color", &m_light_color.x);
+	modif |= ImGui::ColorPicker3("Ambient color", &m_ambient_color.x);
 	editor& edit = context<editor>();
 	const entity* curr_selected = edit.get_selected_entity();
 	for (unique_cr<entity> ent : m_entities) {

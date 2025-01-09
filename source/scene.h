@@ -51,7 +51,8 @@ namespace fields_engine {
 
 	private:
 		// { 0.1f, 0.1f, 0.1f, 1 } // Gray
-
+		vec3 m_ambient_color = { 0.2f, 0.2f, 0.2f };
+		vec3 m_light_color = { 3.5f, 3.5f, 3.5f };
 		vec4 m_background_color = { 0.55f, 0.75f, 1.0f, 1 };
 		dyn_arr<unique<entity>> m_entities;
 		dyn_arr<camera*> m_cameras;

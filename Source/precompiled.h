@@ -61,12 +61,11 @@
 #define FE_USING_SDL3 1
 #endif // FEI_PLATFORM_SDL3
 
+namespace fields_engine::common {
 
 /*~-------------------------------------------------------------------------~*\
  * Primitive Type Aliases                                                    *
 \*~-------------------------------------------------------------------------~*/
-
-namespace fields_engine::common {
 
 	using i8 = int8_t;
 	using i16 = int16_t;
