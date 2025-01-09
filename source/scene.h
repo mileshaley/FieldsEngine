@@ -49,13 +49,13 @@ namespace fields_engine {
 		vec3 m_light_pos = { 9, 9, 11 };
 		vec3 m_light_color = { 3.5f, 3.5f, 3.5f };
 		vec3 m_ambient_color = { 0.2f, 0.2f, 0.2f };
-		unique<vis::shader> m_shader;
+		box<vis::shader> m_shader;
 
 	private:
 		// { 0.1f, 0.1f, 0.1f, 1 } // Gray
 		vec4 m_background_color = { 0.55f, 0.75f, 1.0f, 1 };
 
-		dyn_arr<unique<entity>> m_entities;
+		dyn_arr<box<entity>> m_entities;
 		dyn_arr<camera_component*> m_cameras;
 		camera_component* m_active_camera;
 	};

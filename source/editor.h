@@ -58,7 +58,7 @@ namespace fields_engine {
 		bool root_window();
 
 	private: // Helpers
-		editor_window& add_window(unique<editor_window>&& new_win);
+		editor_window& add_window(box<editor_window>&& new_win);
 		void reset_style() const;
 
 	private:
@@ -75,7 +75,7 @@ namespace fields_engine {
 		editor_icon m_new_window_icon = ICON_ELLIPSIS_VERTICAL;
 		// Editor
 		vis::dual_frame_buffer m_dual_fb;
-		vector<unique<editor_window>> m_windows;
+		vector<box<editor_window>> m_windows;
 		ImGuiContext* m_gui_context;
 		vector<ImFont*> m_fonts;
 		vector<int> m_recent_windows;

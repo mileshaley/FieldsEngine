@@ -31,9 +31,9 @@ namespace fields_engine {
 	public:
 		/// TODO: Remove name constructors
 		entity(string_view name);
-		entity(string_view name, unique<spatial_component>&& root_component);
+		entity(string_view name, box<spatial_component>&& root_component);
 
-		entity(unique<spatial_component>&& root_component);
+		entity(box<spatial_component>&& root_component);
 		entity(entity const& other);
 
 		~entity();
@@ -55,20 +55,20 @@ namespace fields_engine {
 		transform& ref_transform();
 		transform const& ref_transform() const;
 
-		component& attach_basic_component(unique<component>&& comp);
+		component& attach_basic_component(box<component>&& comp);
 		// Set as or attach to root
-		spatial_component& attach_spatial_component(unique<spatial_component>&& comp);
+		spatial_component& attach_spatial_component(box<spatial_component>&& comp);
 
-		void acquire_basic_component(unique<component>&& comp_to_own);
-		void acquire_spatial_component(unique<spatial_component>&& comp_to_own);
+		void acquire_basic_component(box<component>&& comp_to_own);
+		void acquire_spatial_component(box<spatial_component>&& comp_to_own);
 
 		spatial_component const* get_root() const;
 		spatial_component* get_root();
 		void set_root(spatial_component* new_root);
 
 	private:
-		dyn_arr<unique<component>> m_basic_components;
-		dyn_arr<unique<spatial_component>> m_spatial_components;
+		dyn_arr<box<component>> m_basic_components;
+		dyn_arr<box<spatial_component>> m_spatial_components;
 		spatial_component* m_root_component;
 		string m_name;
 	};

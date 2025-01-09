@@ -24,7 +24,7 @@ namespace fields_engine {
 	public:
 		using type = impl::remove_all_t<T>;
 
-		unique_context(unique<type>&& ptr)
+		unique_context(box<type>&& ptr)
 			: m_ptr(move(ptr))
 		{
 			T*& current = impl::context_storage<type>::ptr;
@@ -41,7 +41,7 @@ namespace fields_engine {
 			}
 		}
 
-		unique_context& operator=(unique<type>&& rhs) {
+		unique_context& operator=(box<type>&& rhs) {
 			type*& current = impl::context_storage<type>::ptr;
 			if (current == m_ptr.get()) {
 				current = rhs.get();
@@ -55,7 +55,7 @@ namespace fields_engine {
 		}
 
 		inline void reset(type* new_ptr = nullptr) {
-			*this = unique<type>(new_ptr);
+			*this = box<type>(new_ptr);
 		}
 
 		inline void use() {
@@ -74,7 +74,7 @@ namespace fields_engine {
 		}
 
 	private:
-		unique<type> m_ptr;
+		box<type> m_ptr;
 	};
 
 /*~-------------------------------------------------------------------------~*\

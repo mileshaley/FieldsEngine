@@ -26,7 +26,7 @@
 #include "spatial_component.h"
 
 fields_engine::scene::scene() {
-	m_shader = make_unique<vis::shader>();
+	m_shader = make_box<vis::shader>();
 	m_shader->add("lighting.vert", GL_VERTEX_SHADER);
 	m_shader->add("lighting.frag", GL_FRAGMENT_SHADER);
 	glBindAttribLocation(m_shader->id(), 0, "vertex");
@@ -38,7 +38,7 @@ fields_engine::scene::scene() {
 
 fields_engine::scene::~scene() {}
 
-static fe::unique<fe::entity> make_snowman() {
+static fe::box<fe::entity> make_snowman() {
 	using namespace fields_engine;
 	vis::material snow_mat;
 	snow_mat.m_diffuse_color = { 0.95f, 0.95f, 1.0f };
@@ -59,19 +59,19 @@ static fe::unique<fe::entity> make_snowman() {
 	nose_mat.m_diffuse_color = { 0.9f, 0.35f, 0.1f };
 	nose_mat.m_specular_color = { 0.9f, 0.5f, 0.1f };
 	nose_mat.m_shininess = 1.0f;
-	unique<mesh_component> m0 = make_unique<mesh_component>();
+	box<mesh_component> m0 = make_box<mesh_component>();
 	m0->ref_mesh().add_cube();
 	m0->ref_mesh().generate();
 	m0->ref_material() = snow_mat;
 	mesh_component* pm0 = m0.get();
-	auto ent = make_unique<entity>("Snowman", move(m0));
+	auto ent = make_box<entity>("Snowman", move(m0));
 	transform& tr = ent->ref_transform();
 	const float scale = 1;
 	tr.set_local_position({ 0, 0, 0.8f });
 	tr.set_local_scale({ scale, scale, scale });
 
 	{ // Middle
-		unique<mesh_component> m1 = make_unique<mesh_component>();
+		box<mesh_component> m1 = make_box<mesh_component>();
 		m1->ref_mesh().add_cube();
 		m1->ref_mesh().generate();
 		m1->ref_material() = snow_mat;
@@ -82,7 +82,7 @@ static fe::unique<fe::entity> make_snowman() {
 		mesh_component* pm1 = m1.get();
 		pm0->attach_spatial_component(move(m1));
 		{ // Scarf
-			unique<mesh_component> m2 = make_unique<mesh_component>();
+			box<mesh_component> m2 = make_box<mesh_component>();
 			m2->ref_mesh().add_cube();
 			m2->ref_mesh().generate();
 			m2->ref_material() = scarf_mat;
@@ -92,11 +92,11 @@ static fe::unique<fe::entity> make_snowman() {
 			pm1->attach_spatial_component(move(m2));
 		}
 		{ // Head
-			unique<mesh_component> m3 = make_unique<mesh_component>();
+			box<mesh_component> m3 = make_box<mesh_component>();
 			m3->ref_mesh().add_cube();
 			m3->ref_mesh().generate();
 			m3->ref_material() = snow_mat;
-			m3->set_texture(make_unique<vis::texture>("assets/miles.png"));
+			m3->set_texture(make_box<vis::texture>("assets/miles.png"));
 			transform& tr = m3->ref_transform();
 			const float scale = 0.75;
 			tr.set_local_position({ 0, 0, 1 });
@@ -104,7 +104,7 @@ static fe::unique<fe::entity> make_snowman() {
 			mesh_component* pm3 = m3.get();
 			pm1->attach_spatial_component(move(m3));
 			{ // Face
-				unique<spatial_component> face = make_unique<spatial_component>();
+				box<spatial_component> face = make_box<spatial_component>();
 				transform& tr = face->ref_transform();
 				tr.set_local_position({ 0, 0.75f, 0.075f });
 				tr.set_local_rotation(vec3{ -90, 0, 0 });
@@ -112,7 +112,7 @@ static fe::unique<fe::entity> make_snowman() {
 				pm3->attach_spatial_component(move(face));
 
 				{ // Nose
-					unique<mesh_component> m6 = make_unique<mesh_component>();
+					box<mesh_component> m6 = make_box<mesh_component>();
 					m6->ref_mesh().add_pyramid(32, 1);
 					m6->ref_mesh().generate();
 					m6->ref_material() = nose_mat;
@@ -122,7 +122,7 @@ static fe::unique<fe::entity> make_snowman() {
 					pf->attach_spatial_component(move(m6));
 				}
 				{ // Eye 1
-					unique<mesh_component> m7 = make_unique<mesh_component>();
+					box<mesh_component> m7 = make_box<mesh_component>();
 					m7->ref_mesh().add_cylinder(7, 1);
 					m7->ref_mesh().generate();
 					m7->ref_material() = hat_mat;
@@ -133,7 +133,7 @@ static fe::unique<fe::entity> make_snowman() {
 					pf->attach_spatial_component(move(m7));
 				}
 				{ // Eye 2
-					unique<mesh_component> m8 = make_unique<mesh_component>();
+					box<mesh_component> m8 = make_box<mesh_component>();
 					m8->ref_mesh().add_cylinder(7, 1);
 					m8->ref_mesh().generate();
 					m8->ref_material() = hat_mat;
@@ -146,7 +146,7 @@ static fe::unique<fe::entity> make_snowman() {
 			}
 
 			{ // Hat base
-				unique<mesh_component> m4 = make_unique<mesh_component>();
+				box<mesh_component> m4 = make_box<mesh_component>();
 				m4->ref_mesh().add_cube();
 				m4->ref_mesh().generate();
 				m4->ref_material() = hat_mat;
@@ -156,7 +156,7 @@ static fe::unique<fe::entity> make_snowman() {
 				mesh_component* pm4 = m4.get();
 				pm3->attach_spatial_component(move(m4));
 				{ // Hat top
-					unique<mesh_component> m5 = make_unique<mesh_component>();
+					box<mesh_component> m5 = make_box<mesh_component>();
 					m5->ref_mesh().add_cube();
 					m5->ref_mesh().generate();
 					m5->ref_material() = hat_mat;
@@ -172,7 +172,7 @@ static fe::unique<fe::entity> make_snowman() {
 	return ent;
 }
 
-static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
+static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 	using namespace fields_engine;
 	vis::material needle_mat;
 	needle_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
@@ -189,12 +189,12 @@ static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
 	//needle_mat.m_shininess = 1.0f;
 
 	const float h = 10;
-	unique<mesh_component> m0 = make_unique<mesh_component>();
+	box<mesh_component> m0 = make_box<mesh_component>();
 	m0->ref_mesh().add_cylinder(16, h);
 	m0->ref_mesh().generate();
 	m0->ref_material() = wood_mat;
 	mesh_component* pm0 = m0.get();
-	auto ent = make_unique<entity>("Tree", move(m0));
+	auto ent = make_box<entity>("Tree", move(m0));
 	transform& tr = ent->ref_transform();
 	tr.set_local_position({ 0, 0, h * 0.5f  });
 	tr.set_local_scale({ 1, 1, 1 });
@@ -202,7 +202,7 @@ static fe::unique<fe::entity> make_tree(unsigned top_segments = 3) {
 	const float cone_offset = 3;
 	const float downscale = 0.8f;
 	for (unsigned i = 0; i < top_segments; ++i) {
-		unique<mesh_component> m = make_unique<mesh_component>();
+		box<mesh_component> m = make_box<mesh_component>();
 		m->ref_mesh().add_pyramid(16);
 		m->ref_mesh().generate();
 		m->ref_material() = needle_mat;
@@ -246,42 +246,42 @@ void fields_engine::scene::startup() {
 	z_mat.m_shininess = 1.0f;
 
 	{ // Direction Indicator
-		unique<mesh_component> d = make_unique<mesh_component>();
+		box<mesh_component> d = make_box<mesh_component>();
 		d->ref_mesh().add_cylinder(30);
 		d->ref_mesh().generate();
 		d->ref_material() = d_mat;
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Direction Indicator", move(d)));
+		auto& ent = m_entities.emplace_back(make_box<entity>("Direction Indicator", move(d)));
 		transform& dtr = ent->ref_transform();
 		const float scale = 1;
 		constexpr vec3 off{ 10, 0, 3 };
 		dtr.set_local_position(off);
 
 		{ // X
-			unique<mesh_component> xm = make_unique<mesh_component>();
+			box<mesh_component> xm = make_box<mesh_component>();
 			xm->ref_mesh().add_cube();
 			xm->ref_mesh().generate();
 			xm->ref_material() = x_mat;
-			auto& xent = m_entities.emplace_back(make_unique<entity>("Dx", move(xm)));
+			auto& xent = m_entities.emplace_back(make_box<entity>("Dx", move(xm)));
 			transform& tr = xent->ref_transform();
 			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
 			tr.set_local_position(off + dtr.get_local_right_vector());
 		}
 		{ // Y
-			unique<mesh_component> ym = make_unique<mesh_component>();
+			box<mesh_component> ym = make_box<mesh_component>();
 			ym->ref_mesh().add_cube();
 			ym->ref_mesh().generate();
 			ym->ref_material() = y_mat;
-			auto& yent = m_entities.emplace_back(make_unique<entity>("Yx", move(ym)));
+			auto& yent = m_entities.emplace_back(make_box<entity>("Yx", move(ym)));
 			transform& tr = yent->ref_transform();
 			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
 			tr.set_local_position(off + dtr.get_local_forward_vector());
 		}
 		{ // Z
-			unique<mesh_component> zm = make_unique<mesh_component>();
+			box<mesh_component> zm = make_box<mesh_component>();
 			zm->ref_mesh().add_cube();
 			zm->ref_mesh().generate();
 			zm->ref_material() = z_mat;
-			auto& zent = m_entities.emplace_back(make_unique<entity>("Zx", move(zm)));
+			auto& zent = m_entities.emplace_back(make_box<entity>("Zx", move(zm)));
 			transform& tr = zent->ref_transform();
 			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
 			tr.set_local_position(off + dtr.get_local_up_vector());
@@ -291,10 +291,10 @@ void fields_engine::scene::startup() {
 
 
 	{ // Camera
-		//unique<spatial_component> root = make_unique<spatial_component>();
+		//box<spatial_component> root = make_box<spatial_component>();
 		//spatial_component* p_root = root.get();
-		unique<camera_component> cam = make_unique<camera_component>();
-		//unique<mesh_component> m = make_unique<mesh_component>();
+		box<camera_component> cam = make_box<camera_component>();
+		//box<mesh_component> m = make_box<mesh_component>();
 		//m->add_cube();
 		//m->generate();
 		//m->ref_material() = nose_mat;
@@ -303,12 +303,12 @@ void fields_engine::scene::startup() {
 		tr.set_local_position({ 3, 2, 3 });
 		tr.set_local_rotation(vec3{90, 0, -240});
 		tr.set_local_scale({ 1, 1, 1 });
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Camera", move(cam)));
+		auto& ent = m_entities.emplace_back(make_box<entity>("Camera", move(cam)));
 		//p_root->attach_spatial_component(move(cam));
-		ent->attach_basic_component(make_unique<camera_controller>());
+		ent->attach_basic_component(make_box<camera_controller>());
 	}
 	{ // Ground
-		unique<mesh_component> m = make_unique<mesh_component>();
+		box<mesh_component> m = make_box<mesh_component>();
 		m->ref_mesh().add_cube();
 		m->ref_mesh().generate();
 		m->ref_material() = grass_mat;
@@ -317,21 +317,21 @@ void fields_engine::scene::startup() {
 		const float scale = 1;
 		tr.set_local_position({ 0, 0, -1 });
 		tr.set_local_scale({ 200, 200, scale });
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Ground", move(m)));
+		auto& ent = m_entities.emplace_back(make_box<entity>("Ground", move(m)));
 	}
 	{ // Mound
-		unique<mesh_component> m = make_unique<mesh_component>();
+		box<mesh_component> m = make_box<mesh_component>();
 		m->ref_mesh().add_pyramid(15);
 		m->ref_mesh().generate();
 		m->ref_material() = snow_mat;
-		//m->set_texture(make_unique<vis::texture>("content/brick.png"));
-		//m->set_normal_texture(make_unique<vis::texture>("content/brick_normal.png"));
+		//m->set_texture(make_box<vis::texture>("content/brick.png"));
+		//m->set_normal_texture(make_box<vis::texture>("content/brick_normal.png"));
 
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ 0, 0, 0 });
 		tr.set_local_scale({ 20, 20, scale });
-		auto& ent = m_entities.emplace_back(make_unique<entity>("Mound", move(m)));
+		auto& ent = m_entities.emplace_back(make_box<entity>("Mound", move(m)));
 	}
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -370,7 +370,7 @@ void fields_engine::scene::startup() {
 		m_entities.emplace_back(move(ent));
 	}
 
-	for (unique_cr<entity> ent : m_entities) {
+	for (box<entity> const& ent : m_entities) {
 		ent->init();
 	}
 }
@@ -382,7 +382,7 @@ void fields_engine::scene::tick(float dt) {
 			if (m_entities[i]->get_name().find("nowm") != string::npos) {
 				for (int j = i + 1; j < m_entities.size(); ++j) {
 					if (m_entities[j]->get_name().find("amera") != string::npos) {
-						auto& new_ent = m_entities.emplace_back(make_unique<entity>(*m_entities[i]));
+						auto& new_ent = m_entities.emplace_back(make_box<entity>(*m_entities[i]));
 						new_ent->ref_transform().set_local_position(m_entities[j]->ref_transform().get_local_position());
 						goto done;
 					}
@@ -392,7 +392,7 @@ void fields_engine::scene::tick(float dt) {
 	}
 	done:
 
-	for (unique_cr<entity> ent : m_entities) {
+	for (box<entity> const& ent : m_entities) {
 		ent->tick(dt);
 	}
 }
@@ -440,7 +440,7 @@ void fields_engine::scene::draw() const {
 	glUniform3fv(loc, 1, glm::value_ptr(m_light_color));
 	VIS_VERIFY;
 
-	for (unique_cr<entity> ent : m_entities) {
+	for (box<entity> const& ent : m_entities) {
 		ent->draw(*m_shader);
 	}
 
@@ -448,7 +448,7 @@ void fields_engine::scene::draw() const {
 }
 
 void fields_engine::scene::shutdown() {
-	for (unique_cr<entity> ent : m_entities) {
+	for (box<entity> const& ent : m_entities) {
 		ent->exit();
 	}
 }
@@ -462,7 +462,7 @@ bool fields_engine::scene::display_window() {
 	modif |= ImGui::ColorPicker3("Ambient color", &m_ambient_color.x);
 	editor& edit = context<editor>();
 	const entity* curr_selected = edit.get_selected_entity();
-	for (unique_cr<entity> ent : m_entities) {
+	for (box<entity> const& ent : m_entities) {
 		// This assumes that all entities in the scene have unique names
 		if (ImGui::Selectable(ent->get_name().c_str(), ent.get() == curr_selected)) {
 			edit.set_selected_entity(ent.get());

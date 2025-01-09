@@ -93,9 +93,9 @@ bool fields_engine::application::startup() {
 	input::impl::initialize_callbacks(m_window);
 	vis::impl::initialize();
 
-	m_scene = make_unique<scene>();
+	m_scene = make_box<scene>();
 #if EDITOR
-	m_editor = make_unique<editor>(m_window.get());
+	m_editor = make_box<editor>(m_window.get());
 #endif // EDITOR
 
 	m_scene->startup();

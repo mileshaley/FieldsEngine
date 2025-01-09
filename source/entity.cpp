@@ -21,11 +21,11 @@
 \*~-------------------------------------------------------------------------~*/
 
 fields_engine::entity::entity(string_view name) 
-	: entity(name, make_unique<spatial_component>())
+	: entity(name, make_box<spatial_component>())
 {
 }
 
-fields_engine::entity::entity(string_view name, unique<spatial_component>&& root_component)
+fields_engine::entity::entity(string_view name, box<spatial_component>&& root_component)
 	: m_name(name)
 	, m_basic_components()
 	, m_spatial_components()
@@ -34,7 +34,7 @@ fields_engine::entity::entity(string_view name, unique<spatial_component>&& root
 	attach_spatial_component(move(root_component));
 }
 
-fields_engine::entity::entity(unique<spatial_component>&& root_component)
+fields_engine::entity::entity(box<spatial_component>&& root_component)
 	: m_name()
 	, m_basic_components()
 	, m_spatial_components()
@@ -64,14 +64,14 @@ fields_engine::entity::~entity() {
 }
 
 void fields_engine::entity::init() {
-	for (unique<component> const& comp : m_basic_components) {
+	for (box<component> const& comp : m_basic_components) {
 		comp->init();
 	}
 	m_root_component->init_all();
 }
 
 void fields_engine::entity::tick(float dt) {
-	for (unique<component> const& comp : m_basic_components) {
+	for (box<component> const& comp : m_basic_components) {
 		comp->tick(dt);
 	}
 	m_root_component->tick_all(dt);
@@ -83,7 +83,7 @@ void fields_engine::entity::draw(vis::shader const& shader) const {
 	glUniform1i(loc, 5);
 	VIS_VERIFY;
 
-	for (unique<component> const& comp : m_basic_components) {
+	for (box<component> const& comp : m_basic_components) {
 		comp->draw(shader);
 	}
 	m_root_component->draw_all(shader);
@@ -102,7 +102,7 @@ bool fields_engine::entity::display() {
 	bool modif = false;
 	ImGui::Text(m_name.c_str());
 
-	for (unique<spatial_component> const& comp : m_spatial_components) {
+	for (box<spatial_component> const& comp : m_spatial_components) {
 		ImGui::PushID(comp.get());
 		if (comp.get() == m_root_component) {
 			ImGui::SeparatorText((string(comp->get_type_name()) + " (root)").c_str());
@@ -112,7 +112,7 @@ bool fields_engine::entity::display() {
 		modif |= comp->display();
 		ImGui::PopID();
 	}
-	for (unique<component> const& comp : m_basic_components) {
+	for (box<component> const& comp : m_basic_components) {
 		ImGui::PushID(comp.get());
 		ImGui::SeparatorText(comp->get_type_name().data());
 		modif |= comp->display();
@@ -151,13 +151,13 @@ fe::spatial_component const* fields_engine::entity::get_root() const {
 	return m_root_component;
 }
 
-fe::component& fields_engine::entity::attach_basic_component(unique<component>&& comp) {
+fe::component& fields_engine::entity::attach_basic_component(box<component>&& comp) {
 	component* comp_ptr = comp.get();
 	acquire_basic_component(move(comp));
 	return *comp_ptr;
 }
 
-fe::spatial_component& fields_engine::entity::attach_spatial_component(unique<spatial_component>&& comp) {
+fe::spatial_component& fields_engine::entity::attach_spatial_component(box<spatial_component>&& comp) {
 	spatial_component* comp_ptr = comp.get();
 	acquire_spatial_component(move(comp));
 	if (m_root_component) {
@@ -168,12 +168,12 @@ fe::spatial_component& fields_engine::entity::attach_spatial_component(unique<sp
 	return *comp_ptr;
 }
 
-void fields_engine::entity::acquire_basic_component(unique<component>&& comp_to_own) {
+void fields_engine::entity::acquire_basic_component(box<component>&& comp_to_own) {
 	comp_to_own->set_owner(this);
 	m_basic_components.emplace_back(move(comp_to_own));
 }
 
-void fields_engine::entity::acquire_spatial_component(unique<spatial_component>&& comp_to_own) {
+void fields_engine::entity::acquire_spatial_component(box<spatial_component>&& comp_to_own) {
 	comp_to_own->set_owner(this);
 	m_spatial_components.emplace_back(move(comp_to_own));
 }

@@ -23,7 +23,7 @@ namespace fields_engine {
 
 	template<typename T>
 	struct default_resource_factory_copier {
-		static inline unique<T> copy(T const& source) {
+		static inline box<T> copy(T const& source) {
 			return FE clone(source);
 		}
 	};
@@ -81,7 +81,7 @@ namespace fields_engine {
 			return m_map.emplace(duplicated_item_key);
 		}
 
-		inline unique<T> make_unique_copy(KeyT const& key) {
+		inline box<T> make_unique_copy(KeyT const& key) {
 			return Copier::copy(*get(key));
 		}
 

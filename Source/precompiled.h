@@ -12,7 +12,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <memory>
 #include <vector>
 #include <string>
 #include <set>
@@ -25,6 +24,8 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui.h"
 #endif // EDITOR
+
+#include "box.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Defines                                                                   *
@@ -104,16 +105,10 @@ namespace fields_engine::common {
 	using glm::ivec4;
 
 /*~-------------------------------------------------------------------------~*\
- * Pointer Intention Aliases                                                 *
+ * Utility Function Aliases                                                  *
 \*~-------------------------------------------------------------------------~*/
 
-	using std::make_unique;
 	using std::move;
-
-	template<typename T>
-	using unique = std::unique_ptr<T>;
-	template<typename T>
-	using unique_cr = std::unique_ptr<T> const&;
 
 /*~-------------------------------------------------------------------------~*\
  * Data Structure Aliases                                                    *

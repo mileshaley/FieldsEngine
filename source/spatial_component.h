@@ -37,7 +37,7 @@ namespace fields_engine {
 		virtual bool display() override;
 #endif // EDITOR
 
-		spatial_component& attach_spatial_component(unique<spatial_component>&& comp);
+		spatial_component& attach_spatial_component(box<spatial_component>&& comp);
 		void adopt_owned_component(spatial_component* new_child);
 
 		void set_parent(spatial_component* new_parent);
@@ -48,8 +48,8 @@ namespace fields_engine {
 
 		//void deep_resolve_clone_relations(
 		//	spatial_component* original_root, 
-		//	dyn_arr<unique<component>> const& original,
-		//	dyn_arr<unique<component>> const& comps
+		//	dyn_arr<box<component>> const& original,
+		//	dyn_arr<box<component>> const& comps
 		//);
 
 		void deep_copy_into_entity(entity& other_owner) const;

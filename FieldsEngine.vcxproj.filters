@@ -140,5 +140,6 @@
     <ClInclude Include="source\resource_factory.h" />
     <ClInclude Include="source\camera_controller.h" />
     <ClInclude Include="source\polymorphic.h" />
+    <ClInclude Include="source\memory.h" />
   </ItemGroup>
 </Project>

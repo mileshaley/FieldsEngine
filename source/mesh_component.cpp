@@ -19,7 +19,7 @@ namespace fields_engine {
 
 fields_engine::mesh_component::mesh_component()
 	: spatial_component()
-    , m_mesh(make_unique<mesh>())
+    , m_mesh(make_box<mesh>())
     , m_texture(nullptr)
     , m_normal_texture(nullptr)
     , m_material()
@@ -27,17 +27,17 @@ fields_engine::mesh_component::mesh_component()
 
 fields_engine::mesh_component::mesh_component(mesh_component const& other)
     : spatial_component(other)
-    , m_mesh(make_unique<mesh>(*other.m_mesh))
+    , m_mesh(make_box<mesh>(*other.m_mesh))
     , m_texture(nullptr)
     , m_normal_texture(nullptr)
     , m_material(other.m_material)
 {
     /// TODO: Copy texture when we are using resource manager
     //if (other.m_texture) {
-    //    m_texture = make_unique<texture>(other.m_texture);
+    //    m_texture = make_box<texture>(other.m_texture);
     //}
     //if (other.m_normal_texture) {
-    //    m_normal_texture = make_unique<texture>(other.m_texture);
+    //    m_normal_texture = make_box<texture>(other.m_texture);
     //}
 }
 
@@ -97,14 +97,14 @@ void fields_engine::mesh_component::draw(vis::shader const& shader) const {
     m_mesh->draw();
 }
 
-void fields_engine::mesh_component::set_texture(unique<vis::texture>&& new_texture) {
+void fields_engine::mesh_component::set_texture(box<vis::texture>&& new_texture) {
     m_texture = move(new_texture);
     if (m_texture != nullptr) {
         m_texture->set_unit(0);
     }
 }
 
-void fields_engine::mesh_component::set_normal_texture(unique<vis::texture>&& new_normal_texture) {
+void fields_engine::mesh_component::set_normal_texture(box<vis::texture>&& new_normal_texture) {
     m_normal_texture = move(new_normal_texture);
     if (m_normal_texture != nullptr) {
         m_normal_texture->set_unit(1);
