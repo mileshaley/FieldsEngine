@@ -102,7 +102,7 @@ bool fields_engine::entity::display() {
 	bool modif = false;
 	ImGui::Text(m_name.c_str());
 
-	for (unique<component> const& comp : m_basic_components) {
+	for (unique<spatial_component> const& comp : m_spatial_components) {
 		ImGui::PushID(comp.get());
 		if (comp.get() == m_root_component) {
 			ImGui::SeparatorText((string(comp->get_type_name()) + " (root)").c_str());
@@ -112,7 +112,6 @@ bool fields_engine::entity::display() {
 		modif |= comp->display();
 		ImGui::PopID();
 	}
-	// Update basic components first
 	for (unique<component> const& comp : m_basic_components) {
 		ImGui::PushID(comp.get());
 		ImGui::SeparatorText(comp->get_type_name().data());
