@@ -120,9 +120,6 @@ namespace fields_engine::common {
 	using std::string_view;
 	using std::vector;
 
-	template<typename T>
-	using dyn_arr = std::vector<T>;
-
 	/// TODO: Make a Fields Engine map type
 	template<typename KeyT, typename ValT>
 	using map = std::unordered_map<KeyT, ValT>;

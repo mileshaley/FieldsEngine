@@ -55,8 +55,8 @@ namespace fields_engine {
 		// { 0.1f, 0.1f, 0.1f, 1 } // Gray
 		vec4 m_background_color = { 0.55f, 0.75f, 1.0f, 1 };
 
-		dyn_arr<box<entity>> m_entities;
-		dyn_arr<camera_component*> m_cameras;
+		vector<box<entity>> m_entities;
+		vector<camera_component*> m_cameras;
 		camera_component* m_active_camera;
 	};
 

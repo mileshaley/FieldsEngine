@@ -48,8 +48,8 @@ namespace fields_engine {
 
 		//void deep_resolve_clone_relations(
 		//	spatial_component* original_root, 
-		//	dyn_arr<box<component>> const& original,
-		//	dyn_arr<box<component>> const& comps
+		//	vector<box<component>> const& original,
+		//	vector<box<component>> const& comps
 		//);
 
 		void deep_copy_into_entity(entity& other_owner) const;
@@ -59,7 +59,7 @@ namespace fields_engine {
 
 		transform m_transform;
 		spatial_component* m_parent;
-		dyn_arr<spatial_component*> m_children;
+		vector<spatial_component*> m_children;
 	};
 
 } // namespace fields_engine

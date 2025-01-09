@@ -67,8 +67,8 @@ namespace fields_engine {
 		void set_root(spatial_component* new_root);
 
 	private:
-		dyn_arr<box<component>> m_basic_components;
-		dyn_arr<box<spatial_component>> m_spatial_components;
+		vector<box<component>> m_basic_components;
+		vector<box<spatial_component>> m_spatial_components;
 		spatial_component* m_root_component;
 		string m_name;
 	};

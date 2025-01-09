@@ -60,7 +60,7 @@ namespace fields_engine {
 		public:
 			input_state state;
 			//float time;
-			//dyn_arr<input_callback> input_events;
+			//vector<input_callback> input_events;
 		};
 
 	private:
