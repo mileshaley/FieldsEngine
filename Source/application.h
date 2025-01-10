@@ -52,9 +52,9 @@ namespace fields_engine {
 		local_context<window> m_window;
 		local_context<input_manager> m_input_manager;
 		//vis::dual_frame_buffer m_dual_fb;
-		unique_context<scene> m_scene;
+		box_context<scene> m_scene;
 #if EDITOR
-		unique_context<editor> m_editor{nullptr};
+		box_context<editor> m_editor{nullptr};
 #endif // EDITOR
 		bool m_running;
 	};

@@ -20,11 +20,11 @@ namespace fields_engine {
 
 	using namespace fields_engine;
 	template<class T>
-	class unique_context {
+	class box_context {
 	public:
 		using type = impl::remove_all_t<T>;
 
-		unique_context(box<type>&& ptr)
+		box_context(box<type>&& ptr)
 			: m_ptr(move(ptr))
 		{
 			T*& current = impl::context_storage<type>::ptr;
@@ -34,14 +34,14 @@ namespace fields_engine {
 			}
 		}
 
-		~unique_context() {
+		~box_context() {
 			type*& current = impl::context_storage<type>::ptr;
 			if (current == m_ptr.get()) {
 				current = nullptr;
 			}
 		}
 
-		unique_context& operator=(box<type>&& rhs) {
+		box_context& operator=(box<type>&& rhs) {
 			type*& current = impl::context_storage<type>::ptr;
 			if (current == m_ptr.get()) {
 				current = rhs.get();
