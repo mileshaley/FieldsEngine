@@ -43,7 +43,6 @@ fields_engine::scene::~scene() {}
 
 static fe::vis::material needle_mat;
 static fe::vis::material wood_mat;
-static fe::vis::material snow_mat;
 static fe::vis::material scarf_mat;
 static fe::vis::material hat_mat;
 static fe::vis::material nose_mat;
@@ -56,26 +55,27 @@ static fe::vis::material z_mat;
 
 static fe::box<fe::entity> make_snowman() {
 	using namespace fields_engine;
-	snow_mat.m_diffuse_color = { 0.95f, 0.95f, 1.0f };
-	snow_mat.m_specular_color = { 0.7f, 0.7f, 0.8f };
-	snow_mat.m_shininess = 4.0f;
-	snow_mat.set_texture(context<asset_manager>().get_asset("miles")->get_data<vis::texture>());
+	//snow_mat.m_diffuse = { 0.95f, 0.95f, 1.0f };
+	//snow_mat.m_specular = { 0.7f, 0.7f, 0.8f };
+	//snow_mat.m_shininess = 4.0f;
+	//snow_mat.set_texture(context<asset_manager>().get_asset("miles")->get_data<vis::texture>());
+	vis::material const* p_snow_mat = get_asset<vis::material>("snow");
 
-	scarf_mat.m_diffuse_color = { 0.95f, 0.2f, 0.2f };
-	scarf_mat.m_specular_color = { 0.7f, 0.7f, 0.8f };
+	scarf_mat.m_diffuse = { 0.95f, 0.2f, 0.2f };
+	scarf_mat.m_specular = { 0.7f, 0.7f, 0.8f };
 	scarf_mat.m_shininess = 0.2f;
 
-	hat_mat.m_diffuse_color = { 0.1f, 0.1f, 0.1f };
-	hat_mat.m_specular_color = { 0.3f, 0.3f, 0.3f };
+	hat_mat.m_diffuse = { 0.1f, 0.1f, 0.1f };
+	hat_mat.m_specular = { 0.3f, 0.3f, 0.3f };
 	hat_mat.m_shininess = 1.0f;
 
-	nose_mat.m_diffuse_color = { 0.9f, 0.35f, 0.1f };
-	nose_mat.m_specular_color = { 0.9f, 0.5f, 0.1f };
+	nose_mat.m_diffuse = { 0.9f, 0.35f, 0.1f };
+	nose_mat.m_specular = { 0.9f, 0.5f, 0.1f };
 	nose_mat.m_shininess = 1.0f;
 	box<mesh_component> m0 = make_box<mesh_component>();
 	m0->ref_mesh().add_cube();
 	m0->ref_mesh().generate();
-	m0->set_material(&snow_mat);
+	m0->set_material(p_snow_mat);
 
 	mesh_component* pm0 = m0.get();
 	auto ent = make_box<entity>("Snowman", move(m0));
@@ -88,7 +88,7 @@ static fe::box<fe::entity> make_snowman() {
 		box<mesh_component> m1 = make_box<mesh_component>();
 		m1->ref_mesh().add_cube();
 		m1->ref_mesh().generate();
-		m1->set_material(&snow_mat);
+		m1->set_material(p_snow_mat);
 
 		transform& tr = m1->ref_transform();
 		const float scale = 0.75f;
@@ -110,7 +110,7 @@ static fe::box<fe::entity> make_snowman() {
 			box<mesh_component> m3 = make_box<mesh_component>();
 			m3->ref_mesh().add_cube();
 			m3->ref_mesh().generate();
-			m3->set_material(&snow_mat);
+			m3->set_material(p_snow_mat);
 			std::cerr << "hi" << std::endl;
 			transform& tr = m3->ref_transform();
 			const float scale = 0.75;
@@ -191,16 +191,16 @@ static fe::box<fe::entity> make_snowman() {
 
 static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 	using namespace fields_engine;
-	needle_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
-	needle_mat.m_specular_color = vec3{ 0.0f, 0.0f, 1.0f };
+	needle_mat.m_diffuse = { 0.25f, 0.95f, 0.3f };
+	needle_mat.m_specular = vec3{ 0.0f, 0.0f, 1.0f };
 	needle_mat.m_shininess = 0.2f;
 	
-	wood_mat.m_diffuse_color = { 0.2f, 0.25f, 0.04f };
-	wood_mat.m_specular_color = vec3{ 1.0f, 0.0f, 0.0f };
+	wood_mat.m_diffuse = { 0.2f, 0.25f, 0.04f };
+	wood_mat.m_specular = vec3{ 1.0f, 0.0f, 0.0f };
 	wood_mat.m_shininess = 0.2f;
 
-	//needle_mat.m_diffuse_color = { 0.95f, 0.95f, 1.0f };
-	//needle_mat.m_specular_color = { 0.4f, 0.4f, 0.5f };
+	//needle_mat.m_diffuse = { 0.95f, 0.95f, 1.0f };
+	//needle_mat.m_specular = { 0.4f, 0.4f, 0.5f };
 	//needle_mat.m_shininess = 1.0f;
 
 	const float h = 10;
@@ -233,20 +233,20 @@ static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 }
 
 void fields_engine::scene::startup() {
-	grass_mat.m_diffuse_color = { 0.25f, 0.95f, 0.3f };
-	grass_mat.m_specular_color = vec3{0.0f, 0.0f, 1.0f};//{ 0.7f, 0.7f, 0.8f };
+	grass_mat.m_diffuse = { 0.25f, 0.95f, 0.3f };
+	grass_mat.m_specular = vec3{0.0f, 0.0f, 1.0f};//{ 0.7f, 0.7f, 0.8f };
 	grass_mat.m_shininess = 0.2f;
-	d_mat.m_diffuse_color = { 0.1f, 0.1f, 0.1f };
-	d_mat.m_specular_color = { 0.3f, 0.3f, 0.3f };
+	d_mat.m_diffuse = { 0.1f, 0.1f, 0.1f };
+	d_mat.m_specular = { 0.3f, 0.3f, 0.3f };
 	d_mat.m_shininess = 1.0f;
-	x_mat.m_diffuse_color = { 1, 0.2f, 0.2f };
-	x_mat.m_specular_color = { 1, 0.2f, 0.2f };
+	x_mat.m_diffuse = { 1, 0.2f, 0.2f };
+	x_mat.m_specular = { 1, 0.2f, 0.2f };
 	x_mat.m_shininess = 1.0f;
-	y_mat.m_diffuse_color = { 0.2f, 1, 0.2f };
-	y_mat.m_specular_color = { 0.2f, 1, 0.2f };
+	y_mat.m_diffuse = { 0.2f, 1, 0.2f };
+	y_mat.m_specular = { 0.2f, 1, 0.2f };
 	y_mat.m_shininess = 1.0f;
-	z_mat.m_diffuse_color = { 0.2f, 0.2f, 1 };
-	z_mat.m_specular_color = { 0.2f, 0.2f, 1 };
+	z_mat.m_diffuse = { 0.2f, 0.2f, 1 };
+	z_mat.m_specular = { 0.2f, 0.2f, 1 };
 	z_mat.m_shininess = 1.0f;
 
 	{ // Direction Indicator
@@ -327,7 +327,7 @@ void fields_engine::scene::startup() {
 		box<mesh_component> m = make_box<mesh_component>();
 		m->ref_mesh().add_pyramid(15);
 		m->ref_mesh().generate();
-		m->set_material(&snow_mat);
+		m->set_material(get_asset<vis::material>("snow"));
 		//m->set_texture(make_box<vis::texture>("content/brick.png"));
 		//m->set_normal_texture(make_box<vis::texture>("content/brick_normal.png"));
 

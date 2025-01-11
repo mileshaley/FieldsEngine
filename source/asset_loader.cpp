@@ -48,7 +48,9 @@ void* fields_engine::asset_loader::load_asset_from_data(
 	type_name const& type
 ) {
 	if (type == "material") {
-		return new vis::material();
+		vis::material* mat = new vis::material();
+		*mat = data;
+		return mat;
 	} else {
 
 	}

@@ -11,6 +11,7 @@
 \*~-------------------------------------------------------------------------~*/
 
 #include "asset.h"
+#include "context.h" // For convenience functions
 
 /*~-------------------------------------------------------------------------~*\
  * Asset Manager Class                                                       *
@@ -36,5 +37,21 @@ namespace fields_engine {
 	private:
 		unordered_map<string, asset> m_assets;
 	};
+
+} // namespace fields_engine
+
+/*~-------------------------------------------------------------------------~*\
+ * Asset Convenience Functions                                               *
+\*~-------------------------------------------------------------------------~*/
+
+namespace fields_engine {
+
+	template<typename T>
+	inline T* get_asset(string const& asset_name) {
+		if (asset* a = context<asset_manager>().get_asset(asset_name)) {
+			return a->get_data<T>();
+		}
+		return nullptr;
+	}
 
 } // namespace fields_engine

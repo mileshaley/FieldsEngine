@@ -39,7 +39,7 @@ fields_engine::asset::asset(std::filesystem::path const& info_path)
 	} else { // Data is not at an external location
 		auto data_it = info.find("data");
 		if (data_it == info.end()) { return; }
-		m_data_source = move(*data_path_it);
+		m_data_source = move(*data_it);
 		m_data_source_is_path = false;
 	}
 	// Wait until we know all data is present to take it

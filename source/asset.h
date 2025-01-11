@@ -14,10 +14,6 @@ namespace std::filesystem {
 	class path;
 } // namespace std::filesystem
 
-namespace fields_engine {
-	class asset_loader;
-} // namespace fields_engine
-
 /*~-------------------------------------------------------------------------~*\
  * Asset Class                                                               *
 \*~-------------------------------------------------------------------------~*/
@@ -68,3 +64,4 @@ namespace fields_engine {
 	};
 
 } // namespace fields_engine
+
