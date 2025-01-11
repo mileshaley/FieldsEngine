@@ -148,5 +148,6 @@
     <ClInclude Include="source\asset.h" />
     <ClInclude Include="source\asset_manager.h" />
     <ClInclude Include="source\asset_loader.h" />
+    <ClInclude Include="source\serial_conversion.h" />
   </ItemGroup>
 </Project>

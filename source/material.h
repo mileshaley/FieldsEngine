@@ -24,7 +24,7 @@ namespace fields_engine::vis {
 		material(material const& other);
 
 
-
+		friend void from_json(json const& in, material& out);
 
 	//private:
 		float m_shininess;

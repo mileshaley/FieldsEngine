@@ -127,6 +127,7 @@
     <ClInclude Include="source\polymorphic.h" />
     <ClInclude Include="source\asset_manager.h" />
     <ClInclude Include="source\asset_loader.h" />
+    <ClInclude Include="source\serial_conversion.h" />
     <ClInclude Include="source\this_type.h" />
     <ClInclude Include="source\stubs\stub.h" />
     <ClInclude Include="source\text.h" />

@@ -56,14 +56,13 @@ namespace fields_engine {
 		}
 
 	private:
-		string m_name;
-		type_name m_type;
-		/// TODO: We will eventually need to deal with the fact that this path
-		/// should be a wide string and the fact that the json library doesn't support it
-		string m_data_path;
-
 		/// TODO: Use a safer, more C++-like mechanism to store data
 		void* m_data;
+		string m_name;
+		type_name m_type;
+		// May be a path to data file or the data itself
+		json m_data_source;
+		bool m_data_source_is_path;
 		bool m_valid;
 		bool m_loaded;
 	};

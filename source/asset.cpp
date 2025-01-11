@@ -16,41 +16,48 @@
 \*~-------------------------------------------------------------------------~*/
 
 fields_engine::asset::asset(std::filesystem::path const& info_path)
-	: m_name()
+	: m_data(nullptr)
+	, m_name()
 	, m_type()
-	, m_data(nullptr)
+	, m_data_source()
+	, m_data_source_is_path(false)
 	, m_valid(false)
 	, m_loaded(false)
 {
+	/// TODO: Add error reporting/logging to this function
 	std::ifstream info_file(info_path);
 	if (!info_file) { return; }
-	/// TODO: Add error reporting/logging to this
 	json info = json::parse(info_file, nullptr, false);
 	if (info.is_discarded()) { return; }
-	//auto name_it = info.find("name");
-	//if (name_it == info.end()) { return; }
 	auto type_it = info.find("type");
 	if (type_it == info.end()) { return; }
-	auto data_path_it = info.find("data_path");
-	if (data_path_it == info.end()) { return; }
-	/// TODO: check if the data path extension is supported with function
 
+	auto data_path_it = info.find("data_path");
+	if (data_path_it != info.end()) {
+		m_data_source = move(*data_path_it);
+		m_data_source_is_path = true;
+	} else { // Data is not at an external location
+		auto data_it = info.find("data");
+		if (data_it == info.end()) { return; }
+		m_data_source = move(*data_path_it);
+		m_data_source_is_path = false;
+	}
 	// Wait until we know all data is present to take it
-	//m_name = move(name_it->get<string>());
 	m_name = info_path.stem().string();
 	m_type = move(type_it->get<string>());
-	m_data_path = move(data_path_it->get<string>());
 	m_valid = true;
 }
 
 fields_engine::asset::asset(asset&& other) noexcept 
-	: m_name(move(other.m_name))
+	: m_data(other.m_data)
+	, m_name(move(other.m_name))
 	, m_type(move(other.m_type))
-	, m_data_path(move(other.m_data_path))
-	, m_data(other.m_data)
+	, m_data_source(move(other.m_data_source))
+	, m_data_source_is_path(other.m_data_source_is_path)
 	, m_valid(other.m_valid)
 	, m_loaded(other.m_loaded)
 {
+	other.m_data = nullptr;
 }
 
 fields_engine::asset::~asset() {
@@ -59,8 +66,13 @@ fields_engine::asset::~asset() {
 
 bool fields_engine::asset::load() {
 	if (m_loaded) { return true; }
-	if (m_data_path.empty()) { return false; }
-	m_data = asset_loader::load_asset(m_data_path, m_type);
+	if (!m_valid) { return false; }
+	if (m_data_source_is_path) {
+		m_data = asset_loader::load_asset_from_path(m_data_source/*.get<string>()*/, m_type);
+	} else {
+		m_data = asset_loader::load_asset_from_data(m_data_source, m_type);
+
+	}
 	m_loaded = m_data != nullptr;;
 	return m_loaded;
 }
