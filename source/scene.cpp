@@ -41,16 +41,74 @@ fields_engine::scene::scene() {
 
 fields_engine::scene::~scene() {}
 
-static fe::vis::material needle_mat;
-static fe::vis::material wood_mat;
-static fe::vis::material scarf_mat;
-static fe::vis::material hat_mat;
-static fe::vis::material nose_mat;
-static fe::vis::material grass_mat;
-static fe::vis::material d_mat;
-static fe::vis::material x_mat;
-static fe::vis::material y_mat;
-static fe::vis::material z_mat;
+//#include <fstream>
+//static void save_material(fe::vis::material const& mat, fe::string const& name) {
+//	using namespace fields_engine;
+//	std::ofstream out("content/" + name + ".fea");
+//	json jout = { {"type", "material"}, {"data", mat} };
+//	out << std::setw(4) << jout << std::endl;
+//}
+//
+//#define SAVE_MATERIAL(Name) save_material(Name##_mat, #Name);
+//
+//static fe::vis::material needle_mat;
+//static fe::vis::material wood_mat;
+//static fe::vis::material scarf_mat;
+//static fe::vis::material hat_mat;
+//static fe::vis::material nose_mat;
+//static fe::vis::material grass_mat;
+//static fe::vis::material d_mat;
+//static fe::vis::material x_mat;
+//static fe::vis::material y_mat;
+//static fe::vis::material z_mat;
+//
+//SAVE_MATERIAL(needle)
+//SAVE_MATERIAL(wood)
+//SAVE_MATERIAL(scarf)
+//SAVE_MATERIAL(hat)
+//SAVE_MATERIAL(nose)
+//SAVE_MATERIAL(grass)
+//SAVE_MATERIAL(d)
+//SAVE_MATERIAL(x)
+//SAVE_MATERIAL(y)
+//SAVE_MATERIAL(z)
+//
+//scarf_mat.m_diffuse = { 0.95f, 0.2f, 0.2f };
+//scarf_mat.m_specular = { 0.7f, 0.7f, 0.8f };
+//scarf_mat.m_shininess = 0.2f;
+//
+//hat_mat.m_diffuse = { 0.1f, 0.1f, 0.1f };
+//hat_mat.m_specular = { 0.3f, 0.3f, 0.3f };
+//hat_mat.m_shininess = 1.0f;
+//
+//nose_mat.m_diffuse = { 0.9f, 0.35f, 0.1f };
+//nose_mat.m_specular = { 0.9f, 0.5f, 0.1f };
+//nose_mat.m_shininess = 1.0f;
+//
+//needle_mat.m_diffuse = { 0.25f, 0.95f, 0.3f };
+//needle_mat.m_specular = vec3{ 0.0f, 0.0f, 1.0f };
+//needle_mat.m_shininess = 0.2f;
+//
+//wood_mat.m_diffuse = { 0.2f, 0.25f, 0.04f };
+//wood_mat.m_specular = vec3{ 1.0f, 0.0f, 0.0f };
+//wood_mat.m_shininess = 0.2f;
+//
+//grass_mat.m_diffuse = { 0.25f, 0.95f, 0.3f };
+//grass_mat.m_specular = vec3{ 0.0f, 0.0f, 1.0f };//{ 0.7f, 0.7f, 0.8f };
+//grass_mat.m_shininess = 0.2f;
+//d_mat.m_diffuse = { 0.1f, 0.1f, 0.1f };
+//d_mat.m_specular = { 0.3f, 0.3f, 0.3f };
+//d_mat.m_shininess = 1.0f;
+//x_mat.m_diffuse = { 1, 0.2f, 0.2f };
+//x_mat.m_specular = { 1, 0.2f, 0.2f };
+//x_mat.m_shininess = 1.0f;
+//y_mat.m_diffuse = { 0.2f, 1, 0.2f };
+//y_mat.m_specular = { 0.2f, 1, 0.2f };
+//y_mat.m_shininess = 1.0f;
+//z_mat.m_diffuse = { 0.2f, 0.2f, 1 };
+//z_mat.m_specular = { 0.2f, 0.2f, 1 };
+//z_mat.m_shininess = 1.0f;
+
 
 
 static fe::box<fe::entity> make_snowman() {
@@ -61,17 +119,7 @@ static fe::box<fe::entity> make_snowman() {
 	//snow_mat.set_texture(context<asset_manager>().get_asset("miles")->get_data<vis::texture>());
 	vis::material const* p_snow_mat = get_asset<vis::material>("snow");
 
-	scarf_mat.m_diffuse = { 0.95f, 0.2f, 0.2f };
-	scarf_mat.m_specular = { 0.7f, 0.7f, 0.8f };
-	scarf_mat.m_shininess = 0.2f;
 
-	hat_mat.m_diffuse = { 0.1f, 0.1f, 0.1f };
-	hat_mat.m_specular = { 0.3f, 0.3f, 0.3f };
-	hat_mat.m_shininess = 1.0f;
-
-	nose_mat.m_diffuse = { 0.9f, 0.35f, 0.1f };
-	nose_mat.m_specular = { 0.9f, 0.5f, 0.1f };
-	nose_mat.m_shininess = 1.0f;
 	box<mesh_component> m0 = make_box<mesh_component>();
 	m0->ref_mesh().add_cube();
 	m0->ref_mesh().generate();
@@ -100,7 +148,7 @@ static fe::box<fe::entity> make_snowman() {
 			box<mesh_component> m2 = make_box<mesh_component>();
 			m2->ref_mesh().add_cube();
 			m2->ref_mesh().generate();
-			m2->set_material(&scarf_mat);
+			m2->set_material(get_asset<vis::material>("scarf"));
 			transform& tr = m2->ref_transform();
 			tr.set_local_position({ 0, 0, 0.6f });
 			tr.set_local_scale({ 0.8f, 0.8f, 0.2f });
@@ -130,7 +178,7 @@ static fe::box<fe::entity> make_snowman() {
 					box<mesh_component> m6 = make_box<mesh_component>();
 					m6->ref_mesh().add_pyramid(32, 1);
 					m6->ref_mesh().generate();
-					m6->set_material(&nose_mat);
+					m6->set_material(get_asset<vis::material>("nose"));
 					transform& tr = m6->ref_transform();
 					tr.set_local_position({ 0, 0, 0.25f });
 					tr.set_local_scale({ 0.35f, 0.35f, 1 });
@@ -140,7 +188,7 @@ static fe::box<fe::entity> make_snowman() {
 					box<mesh_component> m7 = make_box<mesh_component>();
 					m7->ref_mesh().add_cylinder(7, 1);
 					m7->ref_mesh().generate();
-					m7->set_material(&hat_mat);
+					m7->set_material(get_asset<vis::material>("hat"));
 					transform& tr = m7->ref_transform();
 					tr.set_local_position({ 0.25f, -0.25f, -0.23f });
 					tr.set_local_scale({ 0.25f, 0.25f, 0.05f });
@@ -151,7 +199,7 @@ static fe::box<fe::entity> make_snowman() {
 					box<mesh_component> m8 = make_box<mesh_component>();
 					m8->ref_mesh().add_cylinder(7, 1);
 					m8->ref_mesh().generate();
-					m8->set_material(&hat_mat);
+					m8->set_material(get_asset<vis::material>("hat"));
 					transform& tr = m8->ref_transform();
 					tr.set_local_position({ -0.25f, -0.25f, -0.23f });
 					tr.set_local_scale({ 0.25f, 0.25f, 0.05f });
@@ -164,7 +212,7 @@ static fe::box<fe::entity> make_snowman() {
 				box<mesh_component> m4 = make_box<mesh_component>();
 				m4->ref_mesh().add_cube();
 				m4->ref_mesh().generate();
-				m4->set_material(&hat_mat);
+				m4->set_material(get_asset<vis::material>("har"));
 				transform& tr = m4->ref_transform();
 				tr.set_local_position({ 0, 0, 0.57f });
 				tr.set_local_scale({ 1.5f, 1.5f, 0.15f });
@@ -174,7 +222,7 @@ static fe::box<fe::entity> make_snowman() {
 					box<mesh_component> m5 = make_box<mesh_component>();
 					m5->ref_mesh().add_cube();
 					m5->ref_mesh().generate();
-					m5->set_material(&hat_mat);
+					m5->set_material(get_asset<vis::material>("hat"));
 					transform& tr = m5->ref_transform();
 					tr.set_local_position({ 0, 0, 4.75f });
 					tr.set_local_scale({ 0.67f, 0.67f, 8.67f });
@@ -191,13 +239,6 @@ static fe::box<fe::entity> make_snowman() {
 
 static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 	using namespace fields_engine;
-	needle_mat.m_diffuse = { 0.25f, 0.95f, 0.3f };
-	needle_mat.m_specular = vec3{ 0.0f, 0.0f, 1.0f };
-	needle_mat.m_shininess = 0.2f;
-	
-	wood_mat.m_diffuse = { 0.2f, 0.25f, 0.04f };
-	wood_mat.m_specular = vec3{ 1.0f, 0.0f, 0.0f };
-	wood_mat.m_shininess = 0.2f;
 
 	//needle_mat.m_diffuse = { 0.95f, 0.95f, 1.0f };
 	//needle_mat.m_specular = { 0.4f, 0.4f, 0.5f };
@@ -207,7 +248,7 @@ static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 	box<mesh_component> m0 = make_box<mesh_component>();
 	m0->ref_mesh().add_cylinder(16, h);
 	m0->ref_mesh().generate();
-	m0->set_material(&wood_mat);
+	m0->set_material(get_asset<vis::material>("wood"));
 	mesh_component* pm0 = m0.get();
 	auto ent = make_box<entity>("Tree", move(m0));
 	transform& tr = ent->ref_transform();
@@ -220,7 +261,7 @@ static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 		box<mesh_component> m = make_box<mesh_component>();
 		m->ref_mesh().add_pyramid(16);
 		m->ref_mesh().generate();
-		m->set_material(&needle_mat);
+		m->set_material(get_asset<vis::material>("needle"));
 		mesh_component* pm = m.get();
 		pm0->attach_spatial_component(move(m));
 		transform& tr = pm->ref_transform();
@@ -233,27 +274,13 @@ static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 }
 
 void fields_engine::scene::startup() {
-	grass_mat.m_diffuse = { 0.25f, 0.95f, 0.3f };
-	grass_mat.m_specular = vec3{0.0f, 0.0f, 1.0f};//{ 0.7f, 0.7f, 0.8f };
-	grass_mat.m_shininess = 0.2f;
-	d_mat.m_diffuse = { 0.1f, 0.1f, 0.1f };
-	d_mat.m_specular = { 0.3f, 0.3f, 0.3f };
-	d_mat.m_shininess = 1.0f;
-	x_mat.m_diffuse = { 1, 0.2f, 0.2f };
-	x_mat.m_specular = { 1, 0.2f, 0.2f };
-	x_mat.m_shininess = 1.0f;
-	y_mat.m_diffuse = { 0.2f, 1, 0.2f };
-	y_mat.m_specular = { 0.2f, 1, 0.2f };
-	y_mat.m_shininess = 1.0f;
-	z_mat.m_diffuse = { 0.2f, 0.2f, 1 };
-	z_mat.m_specular = { 0.2f, 0.2f, 1 };
-	z_mat.m_shininess = 1.0f;
+
 
 	{ // Direction Indicator
 		box<mesh_component> d = make_box<mesh_component>();
 		d->ref_mesh().add_cylinder(30);
 		d->ref_mesh().generate();
-		d->set_material(&d_mat);
+		d->set_material(get_asset<vis::material>("d"));
 		auto& ent = m_entities.emplace_back(make_box<entity>("Direction Indicator", move(d)));
 		transform& dtr = ent->ref_transform();
 		const float scale = 1;
@@ -264,7 +291,7 @@ void fields_engine::scene::startup() {
 			box<mesh_component> xm = make_box<mesh_component>();
 			xm->ref_mesh().add_cube();
 			xm->ref_mesh().generate();
-			xm->set_material(&x_mat);
+			xm->set_material(get_asset<vis::material>("x"));
 			auto& xent = m_entities.emplace_back(make_box<entity>("Dx", move(xm)));
 			transform& tr = xent->ref_transform();
 			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
@@ -274,7 +301,7 @@ void fields_engine::scene::startup() {
 			box<mesh_component> ym = make_box<mesh_component>();
 			ym->ref_mesh().add_cube();
 			ym->ref_mesh().generate();
-			ym->set_material(&y_mat);
+			ym->set_material(get_asset<vis::material>("y"));
 			auto& yent = m_entities.emplace_back(make_box<entity>("Yx", move(ym)));
 			transform& tr = yent->ref_transform();
 			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
@@ -284,7 +311,7 @@ void fields_engine::scene::startup() {
 			box<mesh_component> zm = make_box<mesh_component>();
 			zm->ref_mesh().add_cube();
 			zm->ref_mesh().generate();
-			zm->set_material(&z_mat);
+			zm->set_material(get_asset<vis::material>("z"));
 			auto& zent = m_entities.emplace_back(make_box<entity>("Zx", move(zm)));
 			transform& tr = zent->ref_transform();
 			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
@@ -315,7 +342,7 @@ void fields_engine::scene::startup() {
 		box<mesh_component> m = make_box<mesh_component>();
 		m->ref_mesh().add_cube();
 		m->ref_mesh().generate();
-		m->set_material(&grass_mat);
+		m->set_material(get_asset<vis::material>("grass"));
 
 		transform& tr = m->ref_transform();
 		const float scale = 1;
