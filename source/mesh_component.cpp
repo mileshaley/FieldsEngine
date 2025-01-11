@@ -28,8 +28,8 @@ fields_engine::mesh_component::mesh_component()
 fields_engine::mesh_component::mesh_component(mesh_component const& other)
     : spatial_component(other)
     , m_mesh(make_box<mesh>(*other.m_mesh))
-    , m_texture(nullptr)
-    , m_normal_texture(nullptr)
+    , m_texture(other.m_texture)
+    , m_normal_texture(other.m_normal_texture)
     , m_material(other.m_material)
 {
     /// TODO: Copy texture when we are using resource manager
@@ -77,13 +77,13 @@ void fields_engine::mesh_component::draw(vis::shader const& shader) const {
     if (m_texture) {
         m_texture->use();
         int loc = shader.uniform_location("tex");
-        glUniform1i(loc, m_texture->get_unit());
+        glUniform1i(loc, 0);
     }
 
     if (m_normal_texture) {
         m_normal_texture->use();
         int loc = shader.uniform_location("norm");
-        glUniform1i(loc, m_normal_texture->get_unit());
+        glUniform1i(loc, 1);
     }
 
     loc = shader.uniform_location("hasTexture");
@@ -97,16 +97,10 @@ void fields_engine::mesh_component::draw(vis::shader const& shader) const {
     m_mesh->draw();
 }
 
-void fields_engine::mesh_component::set_texture(box<vis::texture>&& new_texture) {
-    m_texture = move(new_texture);
-    if (m_texture != nullptr) {
-        m_texture->set_unit(0);
-    }
+void fields_engine::mesh_component::set_texture(vis::texture const* new_texture) {
+    m_texture = new_texture;
 }
 
-void fields_engine::mesh_component::set_normal_texture(box<vis::texture>&& new_normal_texture) {
-    m_normal_texture = move(new_normal_texture);
-    if (m_normal_texture != nullptr) {
-        m_normal_texture->set_unit(1);
-    }
+void fields_engine::mesh_component::set_normal_texture(vis::texture const* new_normal_texture) {
+    m_normal_texture = new_normal_texture;
 }

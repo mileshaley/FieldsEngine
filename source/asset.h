@@ -45,7 +45,15 @@ namespace fields_engine {
 		string const& get_name() const;
 		type_name const& get_type() const;
 
-		void* get_data();
+		template<typename T>
+		T* get_data() {
+			return reinterpret_cast<T*>(m_data);
+		}
+
+		template<typename T>
+		T const* get_data() const {
+			return reinterpret_cast<T*>(m_data);
+		}
 
 	private:
 		string m_name;

@@ -60,7 +60,7 @@ fields_engine::asset::~asset() {
 bool fields_engine::asset::load() {
 	if (m_loaded) { return true; }
 	if (m_data_path.empty()) { return false; }
-	m_data = context<asset_loader>().load_asset(m_data_path, m_type);
+	m_data = asset_loader::load_asset(m_data_path, m_type);
 	m_loaded = m_data != nullptr;;
 	return m_loaded;
 }
@@ -87,8 +87,4 @@ fe::string const& fields_engine::asset::get_name() const {
 
 fe::type_name const& fields_engine::asset::get_type() const {
 	return m_type;
-}
-
-void* fields_engine::asset::get_data() {
-	return m_data;
 }

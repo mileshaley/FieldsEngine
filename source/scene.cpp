@@ -24,6 +24,9 @@
 #include "texture.h"
 #include "mesh.h"
 #include "spatial_component.h"
+#include "asset_loader.h"
+
+#include <iostream>
 
 fields_engine::scene::scene() {
 	m_shader = make_box<vis::shader>();
@@ -63,6 +66,8 @@ static fe::box<fe::entity> make_snowman() {
 	m0->ref_mesh().add_cube();
 	m0->ref_mesh().generate();
 	m0->ref_material() = snow_mat;
+	m0->set_texture(context<asset_manager>().get_asset("miles")->get_data<vis::texture>());
+
 	mesh_component* pm0 = m0.get();
 	auto ent = make_box<entity>("Snowman", move(m0));
 	transform& tr = ent->ref_transform();
@@ -75,6 +80,8 @@ static fe::box<fe::entity> make_snowman() {
 		m1->ref_mesh().add_cube();
 		m1->ref_mesh().generate();
 		m1->ref_material() = snow_mat;
+		m1->set_texture(context<asset_manager>().get_asset("miles")->get_data<vis::texture>());
+
 		transform& tr = m1->ref_transform();
 		const float scale = 0.75f;
 		tr.set_local_position({ 0, 0, 0.75f });
@@ -96,7 +103,8 @@ static fe::box<fe::entity> make_snowman() {
 			m3->ref_mesh().add_cube();
 			m3->ref_mesh().generate();
 			m3->ref_material() = snow_mat;
-			m3->set_texture(make_box<vis::texture>("assets/miles.png"));
+			std::cerr << "hi" << std::endl;
+			m3->set_texture(context<asset_manager>().get_asset("miles")->get_data<vis::texture>());
 			transform& tr = m3->ref_transform();
 			const float scale = 0.75;
 			tr.set_local_position({ 0, 0, 1 });

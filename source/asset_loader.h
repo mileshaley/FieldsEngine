@@ -31,8 +31,15 @@ namespace fields_engine {
 			return false;
 		}
 
-		void* load_asset(
-			std::filesystem::path const& data_path, 
+		/// TODO: Make not static
+		static void* load_asset(
+			std::filesystem::path const& data_path,
+			string const& type_name
+		);// const;
+
+		/// TODO: Use or remove this
+		void unload_asset(
+			void* loaded_asset,
 			string const& type_name
 		) const;
 

@@ -38,16 +38,16 @@ namespace fields_engine {
 		vis::mesh      & ref_mesh()		{ return *m_mesh; }
 		vis::mesh const& get_mesh() const { return *m_mesh; }
 
-		void set_texture(box<vis::texture>&& new_texture);
-		void set_normal_texture(box<vis::texture>&& new_normal_texture);
+		void set_texture(vis::texture const* new_texture);
+		void set_normal_texture(vis::texture const* new_normal_texture);
 
 	private:
 		/// TODO: Make material and mesh both managed resource ptrs
 		/// TODO: Allow for multiple material slots per mesh
 		vis::material m_material;
 		box<vis::mesh> m_mesh;
-		box<vis::texture> m_texture;
-		box<vis::texture> m_normal_texture;
+		vis::texture const* m_texture;
+		vis::texture const* m_normal_texture;
 	};
 
 } // namespace fields_engine

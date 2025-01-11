@@ -23,7 +23,8 @@ fields_engine::asset_manager::asset_manager()
 bool fields_engine::asset_manager::startup() {
 	for (auto const& file : std::filesystem::directory_iterator("content")) {
 		std::filesystem::path in_path = file;
-		if (in_path.extension() != "fea") {
+		auto ext = in_path.extension();
+		if (ext != ".fea") {
 			/// TODO: Use proper error logger
 			std::cerr << "Incorrect asset extension for \"" 
 					  << in_path << "\"." << std::endl;
