@@ -89,7 +89,7 @@ bool fields_engine::application::startup() {
 	if (!m_input_manager->startup()) {
 		return false;
 	}
-
+	m_asset_manager->startup();
 	input::impl::initialize_callbacks(m_window);
 	vis::impl::initialize();
 
@@ -150,6 +150,7 @@ bool fields_engine::application::shutdown() {
 	m_editor.reset();
 	m_scene.reset();
 	m_input_manager->shutdown();
+	m_asset_manager->shutdown();
 #if FE_USING_GLFW
 	glfwDestroyWindow(m_window->handle);
 	glfwTerminate();

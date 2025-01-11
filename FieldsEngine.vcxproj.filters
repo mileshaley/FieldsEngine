@@ -74,6 +74,9 @@
     <ClCompile Include="source\mesh.cpp" />
     <ClCompile Include="source\resource_manager.cpp" />
     <ClCompile Include="source\camera_controller.cpp" />
+    <ClCompile Include="source\asset.cpp" />
+    <ClCompile Include="source\asset_manager.cpp" />
+    <ClCompile Include="source\asset_loader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -142,5 +145,8 @@
     <ClInclude Include="source\polymorphic.h" />
     <ClInclude Include="source\mem_util.h" />
     <ClInclude Include="source\fields_engine_defines.h" />
+    <ClInclude Include="source\asset.h" />
+    <ClInclude Include="source\asset_manager.h" />
+    <ClInclude Include="source\asset_loader.h" />
   </ItemGroup>
 </Project>

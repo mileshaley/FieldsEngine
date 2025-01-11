@@ -24,7 +24,7 @@ namespace fields_engine {
 	public:
 		using type = impl::remove_all_t<T>;
 
-		box_context(box<type>&& ptr)
+		inline box_context(box<type>&& ptr)
 			: m_ptr(move(ptr))
 		{
 			T*& current = impl::context_storage<type>::ptr;
@@ -34,14 +34,14 @@ namespace fields_engine {
 			}
 		}
 
-		~box_context() {
+		inline ~box_context() {
 			type*& current = impl::context_storage<type>::ptr;
 			if (current == m_ptr.get()) {
 				current = nullptr;
 			}
 		}
 
-		box_context& operator=(box<type>&& rhs) {
+		inline box_context& operator=(box<type>&& rhs) {
 			type*& current = impl::context_storage<type>::ptr;
 			if (current == m_ptr.get()) {
 				current = rhs.get();
@@ -87,7 +87,7 @@ namespace fields_engine {
 		using type = impl::remove_all_t<T>;
 
 		template<typename... Ts>
-		local_context(Ts&&... args)
+		inline local_context(Ts&&... args)
 			: m_data(std::forward<Ts>(args)...)
 		{
 			type*& current = impl::context_storage<type>::ptr;
@@ -97,7 +97,7 @@ namespace fields_engine {
 			}
 		}
 
-		~local_context() {
+		inline ~local_context() {
 			type*& current = impl::context_storage<type>::ptr;
 			if (current == &m_data) {
 				current = nullptr;

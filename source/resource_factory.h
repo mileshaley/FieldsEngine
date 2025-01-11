@@ -92,7 +92,7 @@ namespace fields_engine {
 		}
 		
 	private:
-		map<KeyT, T> m_map;
+		unordered_map<KeyT, T> m_map;
 	};
 
 } // namespace fields_engine

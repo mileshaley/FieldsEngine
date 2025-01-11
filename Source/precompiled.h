@@ -101,27 +101,28 @@ namespace fields_engine {
  * Data Structure Aliases                                                    *
 \*~-------------------------------------------------------------------------~*/
 
+	using type_name = std::string;
+
 	using nlohmann::json;
 	using std::string;
 	using string_cr = string const&;
 	using std::string_view;
 	using std::vector;
+	using std::set;
+	using std::unordered_set;
 
 	/// TODO: Make a Fields Engine map type
-	template<typename KeyT, typename ValT>
-	using map = std::unordered_map<KeyT, ValT>;
 
-	template<typename KeyT, typename ValT>
-	using ordered_map = std::map<KeyT, ValT>;
+	using std::unordered_map;
 
-	template<typename T>
-	using set = std::unordered_set<T>;
-
-	template<typename T>
-	using ordered_set = std::set<T>;
 
 /*~-------------------------------------------------------------------------~*\
- * Move Semantics Function Alias                                             *
+ * Utility Type Aliases                                                      *
+\*~-------------------------------------------------------------------------~*/
+
+
+/*~-------------------------------------------------------------------------~*\
+ * Move Semantics Function Aliases                                           *
 \*~-------------------------------------------------------------------------~*/
 
 	using std::move;

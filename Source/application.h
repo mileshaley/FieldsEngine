@@ -14,6 +14,7 @@
 #include "window.h" // window
 #include "input.h"
 #include "frame_buffer.h"
+#include "asset_manager.h"
 
 namespace fields_engine {
 	class editor;
@@ -51,6 +52,7 @@ namespace fields_engine {
 		ivec2 m_win_size;
 		local_context<window> m_window;
 		local_context<input_manager> m_input_manager;
+		local_context<asset_manager> m_asset_manager;
 		//vis::dual_frame_buffer m_dual_fb;
 		box_context<scene> m_scene;
 #if EDITOR
