@@ -32,9 +32,8 @@ fields_engine::vis::material::material(material const& other)
 \*~-------------------------------------------------------------------------~*/
 
 void fields_engine::vis::from_json(json const& in, material& out) {
-	{
-		auto generated_json_iterator = in.find("diffuse"); if (generated_json_iterator != in.end()) {
-			out.m_diffuse_color = *generated_json_iterator;
-		}
-	};
+	TRY_JSON_READ(out.m_diffuse_color, in, "diffuse");
+	TRY_JSON_READ(out.m_specular_color, in, "specular");
+	TRY_JSON_READ(out.m_shininess, in, "shininess");
+
 }
