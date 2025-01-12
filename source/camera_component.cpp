@@ -64,8 +64,12 @@ void fields_engine::camera_component::recalculate_view_matrix() {
 
 void fields_engine::camera_component::recalculate_proj_matrix() {
 	/// TODO: fix this
-	const vec2 win_size = context<editor>().get_game_window_size();
-	// context<application>().get_window_size();
+	const vec2 win_size
+#if EDITOR
+		= context<editor>().get_game_window_size();
+#else
+		= context<application>().get_window_size();
+#endif
 	
 	if (m_orthographic) {
 		constexpr float ortho_zoom_factor = 20;

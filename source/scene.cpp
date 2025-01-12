@@ -111,15 +111,11 @@ fields_engine::scene::~scene() {}
 
 
 
+
 static fe::box<fe::entity> make_snowman() {
 	using namespace fields_engine;
-	//snow_mat.m_diffuse = { 0.95f, 0.95f, 1.0f };
-	//snow_mat.m_specular = { 0.7f, 0.7f, 0.8f };
-	//snow_mat.m_shininess = 4.0f;
-	//snow_mat.set_texture(context<asset_manager>().get_asset("miles")->get_data<vis::texture>());
+
 	vis::material const* p_snow_mat = get_asset<vis::material>("snow");
-
-
 	box<mesh_component> m0 = make_box<mesh_component>();
 	m0->ref_mesh().add_cube();
 	m0->ref_mesh().generate();

@@ -128,11 +128,11 @@ void fields_engine::application::run() {
 
 		/// draw logic goes here
 
-		m_editor->tick(m_delta_time);
 #if EDITOR
+		m_editor->tick(m_delta_time);
 		m_editor->ref_dual_frame_buffer().swap();
-		glfwSwapBuffers(m_window->handle);
 #elif FE_USING_GLFW
+		glfwSwapBuffers(m_window->handle);
 #elif FE_USING_SDL3
 		/// RenderClear
 #endif // FE_USING_SDL3
@@ -147,7 +147,9 @@ m_running; /// using input
 
 bool fields_engine::application::shutdown() {
 	m_scene->shutdown();
+#if EDITOR
 	m_editor.reset();
+#endif
 	m_scene.reset();
 	m_input_manager->shutdown();
 	m_asset_manager->shutdown();
