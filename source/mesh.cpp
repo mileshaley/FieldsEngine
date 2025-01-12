@@ -10,6 +10,7 @@
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "graphics.h"
+#include "error.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Mesh Definitions                                                          *
@@ -23,6 +24,7 @@ namespace fields_engine::vis {
         , m_tex_uvs()
         , m_normals()
         , m_tangents()
+        , m_prim_type(primitive_type::none)
         , m_vao_id(0)
     {}
 
@@ -32,6 +34,7 @@ namespace fields_engine::vis {
         , m_tex_uvs(other.m_tex_uvs)
         , m_normals(other.m_normals)
         , m_tangents(other.m_tangents)
+        , m_prim_type(other.m_prim_type)
         , m_vao_id(0)
     {
         if (other.m_vao_id != 0) {
@@ -151,6 +154,19 @@ namespace fields_engine::vis {
         VIS_VERIFY;
         glBindVertexArray(0);
         VIS_VERIFY;
+    }
+
+    void mesh::reset() {
+        if (m_vao_id != 0) {
+            glDeleteBuffers(1, &m_vao_id);
+            VIS_VERIFY;
+        }
+        m_vao_id = 0;
+        m_vertices.clear();
+        m_normals.clear();
+        m_tex_uvs.clear();
+        m_triangles.clear();
+        m_tangents.clear();
     }
 
     void mesh::add_face(mat4 const& tr) {
@@ -331,7 +347,6 @@ namespace fields_engine::vis {
 
     void mesh::sequential_tris(int i) {
         m_triangles.emplace_back(i, i + 1, i + 2);
-
     }
 
     void mesh::tris_for_quad(ivec4 const& indices) {
@@ -342,5 +357,56 @@ namespace fields_engine::vis {
     void mesh::sequential_tris_for_quad(int i) {
         tris_for_quad({ i, i + 1, i + 2, i + 3 });
     }
-
 } // namespace fields_engine::vis
+
+void fields_engine::vis::from_json(json const& in, mesh& out) {
+    out.reset();
+
+    auto prim_it = in.find("primitive");
+    if (prim_it != in.end()) {
+        out.m_prim_type = static_cast<mesh::primitive_type>((*prim_it)["type"]);
+        switch (out.m_prim_type) {
+        case mesh::primitive_type::cube:
+            out.add_cube();
+            break;
+        case mesh::primitive_type::cylinder:
+            out.add_cylinder((*prim_it)["divisions"], (*prim_it)["height"]);
+            break;
+        case mesh::primitive_type::pyramid:
+            out.add_pyramid((*prim_it)["divisions"], (*prim_it)["height"]);
+            break;
+        case mesh::primitive_type::sphere:
+            out.add_sphere((*prim_it)["divisions"]);
+            break;
+        default:
+            /// TODO: Handle this error properly
+            FE_FAILED_ASSERT("Failed to read unknown primitive mesh type");
+        }
+
+        out.generate();
+    } else {
+        /// TODO: Read in vertices here (may not be worth the time since we want to instead read object files)
+    }
+}
+
+void fields_engine::vis::to_json(json& out, mesh const& in) {
+    if (in.m_prim_type == mesh::primitive_type::none) {
+        /// TODO: Write vertices here
+        return;
+    }
+    json& prim_json = out["primitive"];
+    prim_json["type"] = static_cast<int>(in.m_prim_type);
+    switch (in.m_prim_type) {
+    case mesh::primitive_type::cylinder:
+        out["divisions"] = in.m_divisions;
+        out["height"] = in.m_height;
+        break;
+    case mesh::primitive_type::pyramid:
+        out["divisions"] = in.m_divisions;
+        out["height"] = in.m_height;
+        break;
+    case mesh::primitive_type::sphere:
+        out["divisions"] = in.m_divisions;
+        break;
+    }
+}

@@ -39,7 +39,6 @@ namespace fields_engine {
 		vis::mesh const& get_mesh() const { return *m_mesh; }
 
 
-
 	private:
 		const vis::material* m_material;
 		box<vis::mesh> m_mesh;

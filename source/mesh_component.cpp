@@ -13,19 +13,15 @@
 #include "texture.h"
 #include "mesh.h"
 
-namespace fields_engine {
-    using namespace vis;
-} // namespace fields_engine
-
 fields_engine::mesh_component::mesh_component()
 	: spatial_component()
-    , m_mesh(make_box<mesh>())
+    , m_mesh(make_box<vis::mesh>())
     , m_material(nullptr)
 {}
 
 fields_engine::mesh_component::mesh_component(mesh_component const& other)
     : spatial_component(other)
-    , m_mesh(make_box<mesh>(*other.m_mesh))
+    , m_mesh(make_box<vis::mesh>(*other.m_mesh))
     , m_material(other.m_material)
 {
     /// TODO: Copy texture when we are using resource manager
@@ -55,7 +51,7 @@ void fields_engine::mesh_component::draw(vis::shader const& shader) const {
     if (m_material) {
         m_material->use(shader);
     } else {
-        /// TODO: handle no material
+        /// TODO: hand
     }
     m_mesh->draw();
 }

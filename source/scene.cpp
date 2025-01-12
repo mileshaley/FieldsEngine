@@ -235,14 +235,8 @@ static fe::box<fe::entity> make_snowman() {
 	return ent;
 }
 
-
-
 static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 	using namespace fields_engine;
-
-	//needle_mat.m_diffuse = { 0.95f, 0.95f, 1.0f };
-	//needle_mat.m_specular = { 0.4f, 0.4f, 0.5f };
-	//needle_mat.m_shininess = 1.0f;
 
 	const float h = 10;
 	box<mesh_component> m0 = make_box<mesh_component>();
