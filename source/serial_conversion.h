@@ -34,15 +34,6 @@
  * Math Type Conversion Functions                                            *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine::math::impl {
-	template<typename T>
-	struct is_vector : std::false_type {};
-
-	template<glm::length_t L, typename T, glm::qualifier Q>
-	struct is_vector<glm::vec<L, T, Q>> : std::true_type {};
-
-} // namespace fields_engine::math::impl
-
 namespace glm {
 
 	template<length_t L, typename T, qualifier Q>
@@ -54,8 +45,25 @@ namespace glm {
 
 	template<length_t L, typename T, qualifier Q>
 	void from_json(nlohmann::json const& in, vec<L, T, Q>& out) {
-		FE_ASSERT(in.is_array(), "Vectors must be stored in json as array type");
+		FE_ASSERT(in.is_array(), "Matrices must be stored in json as array type");
 		const int bound = std::min(L, length_t(in.size()));
+		for (int i = 0; i < bound; ++i) {
+			out[i] = in[i].get<T>();
+		}
+	}
+
+	/// TODO: Test orientation of matrix converters
+	template<length_t C, length_t R, typename T, qualifier Q>
+	void to_json(nlohmann::json& out, mat<C, R, T, Q> const& in) {
+		for (int i = 0; i < C; ++i) {
+			out.push_back(in[i]);
+		}
+	}
+
+	template<length_t C, length_t R, typename T, qualifier Q>
+	void from_json(nlohmann::json const& in, mat<C, R, T, Q>& out) {
+		FE_ASSERT(in.is_array(), "Matrices must be stored in json as array type");
+		const int bound = std::min(C, length_t(in.size()));
 		for (int i = 0; i < bound; ++i) {
 			out[i] = in[i].get<T>();
 		}
