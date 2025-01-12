@@ -15,22 +15,15 @@
 
 fields_engine::mesh_component::mesh_component()
 	: spatial_component()
-    , m_mesh(make_box<vis::mesh>())
+    , m_mesh(nullptr)
     , m_material(nullptr)
 {}
 
 fields_engine::mesh_component::mesh_component(mesh_component const& other)
     : spatial_component(other)
-    , m_mesh(make_box<vis::mesh>(*other.m_mesh))
+    , m_mesh(other.m_mesh)
     , m_material(other.m_material)
 {
-    /// TODO: Copy texture when we are using resource manager
-    //if (other.m_texture) {
-    //    m_texture = make_box<texture>(other.m_texture);
-    //}
-    //if (other.m_normal_texture) {
-    //    m_normal_texture = make_box<texture>(other.m_texture);
-    //}
 }
 
 fields_engine::mesh_component::~mesh_component() {}
@@ -51,7 +44,12 @@ void fields_engine::mesh_component::draw(vis::shader const& shader) const {
     if (m_material) {
         m_material->use(shader);
     } else {
+        /// TODO: hand what????
         /// TODO: hand
     }
-    m_mesh->draw();
+
+    /// TODO: remove the possibility that m_mesh is null
+    if (m_mesh) {
+        m_mesh->draw();
+    }
 }

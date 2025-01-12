@@ -10,6 +10,10 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+namespace fields_engine::vis {
+	class material;
+} // namespace fields_engine::vis
+
 /*~-------------------------------------------------------------------------~*\
  * Mesh Class                                                                *
 \*~-------------------------------------------------------------------------~*/
@@ -45,6 +49,10 @@ namespace fields_engine::vis {
 		friend void from_json(json const& in, mesh& out);
 		friend void to_json(json& out, mesh const& in);
 
+#if EDITOR // Editor data
+		material* m_default_material;
+#endif // EDITOR
+
 	private:
 		void sequential_tris(int first_vert_index);
 		void tris_for_quad(ivec4 const& indices);
@@ -64,6 +72,7 @@ namespace fields_engine::vis {
 		vector<vec3> m_tangents;
 		// Indices within vertices, normals, tangents, and texture uvs
 		vector<ivec3> m_triangles;
+
 	}; // class mesh
 
 } // namespace fields_engine::vis

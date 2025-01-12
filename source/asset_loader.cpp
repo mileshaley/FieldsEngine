@@ -12,6 +12,7 @@
 /// TODO: Remove
 #include "texture.h"
 #include "material.h"
+#include "mesh.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Asset Loader Definitions                                                  *
@@ -24,8 +25,6 @@ fields_engine::asset_loader::asset_loader()
 fields_engine::asset_loader::~asset_loader()
 {
 }
-
-
 
 void* fields_engine::asset_loader::load_asset_from_path(
 	std::filesystem::path const& data_path, 
@@ -52,7 +51,9 @@ void* fields_engine::asset_loader::load_asset_from_data(
 		*mat = data;
 		return mat;
 	} else {
-
+		vis::mesh* mesh = new vis::mesh();
+		*mesh = data;
+		return mesh;
 	}
 	return nullptr;
 }

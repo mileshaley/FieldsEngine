@@ -11,6 +11,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "graphics.h"
 #include "error.h"
+#include "asset_manager.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Mesh Definitions                                                          *
@@ -213,11 +214,13 @@ namespace fields_engine::vis {
         add_face(glm::rotate(face_mat, 2 * rot_90, i));
     }
 
-    void mesh::add_sphere(int subdivisions) {
-
+    void mesh::add_sphere(int divisions) {
+        m_divisions = divisions;
     }
 
     void mesh::add_cylinder(int sides, float height) {
+        m_divisions = sides;
+        m_height = height;
         const float half_height = height * 0.5f;
         const vec4 top_mid_vert{ 0, 0, half_height, 1 };
         const vec4 bot_mid_vert{ 0, 0, -half_height, 1 };
@@ -297,6 +300,8 @@ namespace fields_engine::vis {
     }
 
     void mesh::add_pyramid(int sides, float height) {
+        m_divisions = sides;
+        m_height = height;
         constexpr vec3 bot_norm{ 0, 0, -1 };
         const float half_height = height * 0.5f;
         const vec4 bot_middle_vert{ 0, 0, -half_height, 1 };
@@ -387,6 +392,13 @@ void fields_engine::vis::from_json(json const& in, mesh& out) {
     } else {
         /// TODO: Read in vertices here (may not be worth the time since we want to instead read object files)
     }
+
+#if EDITOR
+    auto default_mat_it = in.find("default_material"); 
+    if (default_mat_it != in.end()) {
+        out.m_default_material = get_asset<material>(*default_mat_it);
+    }
+#endif
 }
 
 void fields_engine::vis::to_json(json& out, mesh const& in) {

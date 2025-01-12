@@ -109,16 +109,25 @@ fields_engine::scene::~scene() {}
 //z_mat.m_specular = { 0.2f, 0.2f, 1 };
 //z_mat.m_shininess = 1.0f;
 
-
+//#include <fstream>
+//static void save_mesh(fe::vis::mesh const& mat, fe::string const& name) {
+//	using namespace fields_engine;
+//	std::ofstream out("content/" + name + ".fea");
+//	json jout = { {"type", "material"}, {"data", mat} };
+//	out << std::setw(4) << jout << std::endl;
+//}
+//#define SAVE_MESH(Name) save_mesh(Name, #Name);
 
 
 static fe::box<fe::entity> make_snowman() {
 	using namespace fields_engine;
 
 	vis::material const* p_snow_mat = get_asset<vis::material>("snow");
+	vis::mesh const& cube_mesh = *get_asset<vis::mesh>("cube");
+	vis::mesh const& eye_mesh = *get_asset<vis::mesh>("eye_mesh");
+
 	box<mesh_component> m0 = make_box<mesh_component>();
-	m0->ref_mesh().add_cube();
-	m0->ref_mesh().generate();
+	m0->set_mesh(cube_mesh);
 	m0->set_material(p_snow_mat);
 
 	mesh_component* pm0 = m0.get();
@@ -130,8 +139,7 @@ static fe::box<fe::entity> make_snowman() {
 
 	{ // Middle
 		box<mesh_component> m1 = make_box<mesh_component>();
-		m1->ref_mesh().add_cube();
-		m1->ref_mesh().generate();
+		m1->set_mesh(cube_mesh);
 		m1->set_material(p_snow_mat);
 
 		transform& tr = m1->ref_transform();
@@ -142,8 +150,7 @@ static fe::box<fe::entity> make_snowman() {
 		pm0->attach_spatial_component(move(m1));
 		{ // Scarf
 			box<mesh_component> m2 = make_box<mesh_component>();
-			m2->ref_mesh().add_cube();
-			m2->ref_mesh().generate();
+			m2->set_mesh(cube_mesh);
 			m2->set_material(get_asset<vis::material>("scarf"));
 			transform& tr = m2->ref_transform();
 			tr.set_local_position({ 0, 0, 0.6f });
@@ -152,8 +159,7 @@ static fe::box<fe::entity> make_snowman() {
 		}
 		{ // Head
 			box<mesh_component> m3 = make_box<mesh_component>();
-			m3->ref_mesh().add_cube();
-			m3->ref_mesh().generate();
+			m3->set_mesh(cube_mesh);
 			m3->set_material(p_snow_mat);
 			std::cerr << "hi" << std::endl;
 			transform& tr = m3->ref_transform();
@@ -169,11 +175,10 @@ static fe::box<fe::entity> make_snowman() {
 				tr.set_local_rotation(vec3{ -90, 0, 0 });
 				spatial_component* pf = face.get();
 				pm3->attach_spatial_component(move(face));
-
+			
 				{ // Nose
 					box<mesh_component> m6 = make_box<mesh_component>();
-					m6->ref_mesh().add_pyramid(32, 1);
-					m6->ref_mesh().generate();
+					m6->set_mesh(*get_asset<vis::mesh>("nose_mesh"));
 					m6->set_material(get_asset<vis::material>("nose"));
 					transform& tr = m6->ref_transform();
 					tr.set_local_position({ 0, 0, 0.25f });
@@ -182,8 +187,7 @@ static fe::box<fe::entity> make_snowman() {
 				}
 				{ // Eye 1
 					box<mesh_component> m7 = make_box<mesh_component>();
-					m7->ref_mesh().add_cylinder(7, 1);
-					m7->ref_mesh().generate();
+					m7->set_mesh(eye_mesh);
 					m7->set_material(get_asset<vis::material>("hat"));
 					transform& tr = m7->ref_transform();
 					tr.set_local_position({ 0.25f, -0.25f, -0.23f });
@@ -193,8 +197,7 @@ static fe::box<fe::entity> make_snowman() {
 				}
 				{ // Eye 2
 					box<mesh_component> m8 = make_box<mesh_component>();
-					m8->ref_mesh().add_cylinder(7, 1);
-					m8->ref_mesh().generate();
+					m8->set_mesh(eye_mesh);
 					m8->set_material(get_asset<vis::material>("hat"));
 					transform& tr = m8->ref_transform();
 					tr.set_local_position({ -0.25f, -0.25f, -0.23f });
@@ -206,8 +209,7 @@ static fe::box<fe::entity> make_snowman() {
 
 			{ // Hat base
 				box<mesh_component> m4 = make_box<mesh_component>();
-				m4->ref_mesh().add_cube();
-				m4->ref_mesh().generate();
+				m4->set_mesh(cube_mesh);
 				m4->set_material(get_asset<vis::material>("har"));
 				transform& tr = m4->ref_transform();
 				tr.set_local_position({ 0, 0, 0.57f });
@@ -216,8 +218,7 @@ static fe::box<fe::entity> make_snowman() {
 				pm3->attach_spatial_component(move(m4));
 				{ // Hat top
 					box<mesh_component> m5 = make_box<mesh_component>();
-					m5->ref_mesh().add_cube();
-					m5->ref_mesh().generate();
+					m5->set_mesh(cube_mesh);
 					m5->set_material(get_asset<vis::material>("hat"));
 					transform& tr = m5->ref_transform();
 					tr.set_local_position({ 0, 0, 4.75f });
@@ -233,11 +234,13 @@ static fe::box<fe::entity> make_snowman() {
 
 static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 	using namespace fields_engine;
+	vis::mesh const& tree_top_mesh = *get_asset<vis::mesh>("tree_top");
+	vis::mesh const& tree_trunk_mesh = *get_asset<vis::mesh>("tree_trunk");
+
 
 	const float h = 10;
 	box<mesh_component> m0 = make_box<mesh_component>();
-	m0->ref_mesh().add_cylinder(16, h);
-	m0->ref_mesh().generate();
+	m0->set_mesh(tree_trunk_mesh);
 	m0->set_material(get_asset<vis::material>("wood"));
 	mesh_component* pm0 = m0.get();
 	auto ent = make_box<entity>("Tree", move(m0));
@@ -245,12 +248,11 @@ static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 	tr.set_local_position({ 0, 0, h * 0.5f  });
 	tr.set_local_scale({ 1, 1, 1 });
 	//spatial_component* prev = pm0;
-	const float cone_offset = 3;
 	const float downscale = 0.8f;
+	const float cone_offset = 3;
 	for (unsigned i = 0; i < top_segments; ++i) {
 		box<mesh_component> m = make_box<mesh_component>();
-		m->ref_mesh().add_pyramid(16);
-		m->ref_mesh().generate();
+		m->set_mesh(tree_top_mesh);
 		m->set_material(get_asset<vis::material>("needle"));
 		mesh_component* pm = m.get();
 		pm0->attach_spatial_component(move(m));
@@ -265,22 +267,21 @@ static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 
 void fields_engine::scene::startup() {
 
+	vis::mesh const& cube_mesh = *get_asset<vis::mesh>("cube");
 
 	{ // Direction Indicator
 		box<mesh_component> d = make_box<mesh_component>();
-		d->ref_mesh().add_cylinder(30);
-		d->ref_mesh().generate();
+		d->set_mesh(cube_mesh);
 		d->set_material(get_asset<vis::material>("d"));
 		auto& ent = m_entities.emplace_back(make_box<entity>("Direction Indicator", move(d)));
 		transform& dtr = ent->ref_transform();
 		const float scale = 1;
 		constexpr vec3 off{ 10, 0, 3 };
 		dtr.set_local_position(off);
-
+	
 		{ // X
 			box<mesh_component> xm = make_box<mesh_component>();
-			xm->ref_mesh().add_cube();
-			xm->ref_mesh().generate();
+			xm->set_mesh(cube_mesh);
 			xm->set_material(get_asset<vis::material>("x"));
 			auto& xent = m_entities.emplace_back(make_box<entity>("Dx", move(xm)));
 			transform& tr = xent->ref_transform();
@@ -289,8 +290,7 @@ void fields_engine::scene::startup() {
 		}
 		{ // Y
 			box<mesh_component> ym = make_box<mesh_component>();
-			ym->ref_mesh().add_cube();
-			ym->ref_mesh().generate();
+			ym->set_mesh(cube_mesh);
 			ym->set_material(get_asset<vis::material>("y"));
 			auto& yent = m_entities.emplace_back(make_box<entity>("Yx", move(ym)));
 			transform& tr = yent->ref_transform();
@@ -299,8 +299,7 @@ void fields_engine::scene::startup() {
 		}
 		{ // Z
 			box<mesh_component> zm = make_box<mesh_component>();
-			zm->ref_mesh().add_cube();
-			zm->ref_mesh().generate();
+			zm->set_mesh(cube_mesh);
 			zm->set_material(get_asset<vis::material>("z"));
 			auto& zent = m_entities.emplace_back(make_box<entity>("Zx", move(zm)));
 			transform& tr = zent->ref_transform();
@@ -330,8 +329,7 @@ void fields_engine::scene::startup() {
 	}
 	{ // Ground
 		box<mesh_component> m = make_box<mesh_component>();
-		m->ref_mesh().add_cube();
-		m->ref_mesh().generate();
+		m->set_mesh(cube_mesh);
 		m->set_material(get_asset<vis::material>("grass"));
 
 		transform& tr = m->ref_transform();
@@ -342,12 +340,11 @@ void fields_engine::scene::startup() {
 	}
 	{ // Mound
 		box<mesh_component> m = make_box<mesh_component>();
-		m->ref_mesh().add_pyramid(15);
-		m->ref_mesh().generate();
+		m->set_mesh(*get_asset<vis::mesh>("mound"));
 		m->set_material(get_asset<vis::material>("snow"));
 		//m->set_texture(make_box<vis::texture>("content/brick.png"));
 		//m->set_normal_texture(make_box<vis::texture>("content/brick_normal.png"));
-
+	
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ 0, 0, 0 });
@@ -387,7 +384,7 @@ void fields_engine::scene::startup() {
 			}
 		}
 		tr.set_local_position(pos);
-
+	
 		m_entities.emplace_back(move(ent));
 	}
 

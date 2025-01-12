@@ -35,13 +35,13 @@ namespace fields_engine {
 
 		void set_material(vis::material const* new_material) { m_material = new_material; }
 		vis::material const* get_material() const { return m_material; }
-		vis::mesh      & ref_mesh()		{ return *m_mesh; }
+		void set_mesh(vis::mesh const& new_mesh) { m_mesh = &new_mesh; }
 		vis::mesh const& get_mesh() const { return *m_mesh; }
 
 
 	private:
 		const vis::material* m_material;
-		box<vis::mesh> m_mesh;
+		vis::mesh const* m_mesh;
 
 	};
 

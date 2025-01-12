@@ -131,7 +131,9 @@ void fields_engine::application::run() {
 #if EDITOR
 		m_editor->tick(m_delta_time);
 		m_editor->ref_dual_frame_buffer().swap();
-#elif FE_USING_GLFW
+#endif
+
+#if FE_USING_GLFW
 		glfwSwapBuffers(m_window->handle);
 #elif FE_USING_SDL3
 		/// RenderClear

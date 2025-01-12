@@ -1,0 +1,10 @@
+{
+  "data": {
+    "primitive": {
+      "type": 3,
+	"divisions":10,
+	"height":1
+    }
+  },
+  "type": "mesh"
+}
