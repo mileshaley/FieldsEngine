@@ -50,6 +50,7 @@ namespace fields_engine {
 		entity* get_selected_entity();
 		void set_selected_entity(entity* new_selected);
 
+		editor_window& add_window(box<editor_window>&& new_win);
 
 	private: // Windows
 		bool game_window();
@@ -58,7 +59,6 @@ namespace fields_engine {
 		bool root_window();
 
 	private: // Helpers
-		editor_window& add_window(box<editor_window>&& new_win);
 		void reset_style() const;
 
 	private:

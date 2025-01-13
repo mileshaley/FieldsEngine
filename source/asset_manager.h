@@ -24,6 +24,8 @@ namespace fields_engine {
 		asset_manager();
 		~asset_manager() = default;
 
+
+
 		bool startup();
 
 		bool shutdown();
@@ -34,6 +36,11 @@ namespace fields_engine {
 		// Get an asset and load it if it hasn't already been
 		// Returns null in the case of nonexistent/invali asset
 		asset const* get_asset(string const& asset_name) const;
+
+#if EDITOR
+		bool content_browser_window();
+#endif // EDITOR
+
 	private:
 		unordered_map<string, asset> m_assets;
 	};

@@ -89,7 +89,6 @@ bool fields_engine::application::startup() {
 	if (!m_input_manager->startup()) {
 		return false;
 	}
-	m_asset_manager->startup();
 	input::impl::initialize_callbacks(m_window);
 	vis::impl::initialize();
 
@@ -97,6 +96,7 @@ bool fields_engine::application::startup() {
 #if EDITOR
 	m_editor = make_box<editor>(m_window.get());
 #endif // EDITOR
+	m_asset_manager->startup();
 
 	m_scene->startup();
 
