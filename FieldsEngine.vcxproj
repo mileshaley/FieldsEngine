@@ -68,7 +68,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseEditor|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="source\resource_manager.cpp" />
     <ClCompile Include="source\scene.cpp" />
     <ClCompile Include="source\shader.cpp" />
     <ClCompile Include="source\spatial_component.cpp" />
@@ -119,8 +118,6 @@
     <ClInclude Include="source\mesh.h" />
     <ClInclude Include="source\camera_controller.h" />
     <ClInclude Include="source\precompiled.h" />
-    <ClInclude Include="source\resource_factory.h" />
-    <ClInclude Include="source\resource_manager.h" />
     <ClInclude Include="source\scene.h" />
     <ClInclude Include="source\shader.h" />
     <ClInclude Include="source\spatial_component.h" />

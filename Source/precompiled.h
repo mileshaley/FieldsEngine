@@ -26,8 +26,10 @@
 #include "imgui.h"
 #endif // EDITOR
 
+#include "serial_conversion.h"
 #include "fields_engine_defines.h"
 #include "mem_util.h"
+
 //#include "serial_conversion.h"
 
 /*~-------------------------------------------------------------------------~*\

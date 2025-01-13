@@ -72,7 +72,6 @@
     <ClCompile Include="source\frame_buffer.cpp" />
     <ClCompile Include="source\texture.cpp" />
     <ClCompile Include="source\mesh.cpp" />
-    <ClCompile Include="source\resource_manager.cpp" />
     <ClCompile Include="source\camera_controller.cpp" />
     <ClCompile Include="source\asset.cpp" />
     <ClCompile Include="source\asset_manager.cpp" />
@@ -138,9 +137,7 @@
     <ClInclude Include="source\frame_buffer.h" />
     <ClInclude Include="source\texture.h" />
     <ClInclude Include="source\mesh.h" />
-    <ClInclude Include="source\resource_manager.h" />
     <ClInclude Include="source\this_type.h" />
-    <ClInclude Include="source\resource_factory.h" />
     <ClInclude Include="source\camera_controller.h" />
     <ClInclude Include="source\polymorphic.h" />
     <ClInclude Include="source\mem_util.h" />

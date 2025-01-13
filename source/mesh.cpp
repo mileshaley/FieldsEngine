@@ -13,6 +13,10 @@
 #include "error.h"
 #include "asset_manager.h"
 
+/// TODO: Remove
+#include "iostream"
+#include "serial_conversion.h"
+
 /*~-------------------------------------------------------------------------~*\
  * Mesh Definitions                                                          *
 \*~-------------------------------------------------------------------------~*/
@@ -328,6 +332,11 @@ namespace fields_engine::vis {
             m_tex_uvs.emplace_back(vert);
             m_tex_uvs.emplace_back(prev_vert);
             m_tex_uvs.emplace_back(tip_vert);
+            
+            std::cout << "Pyramid [i=" << i << "/" << (sides + 1) << "]" << std::endl
+                      << "Top UV [vert]:      " << vert << std::endl
+                      << "Top UV [prev_vert]: " << vert << std::endl
+                      << "Top UV [tip_vert]:  " << vert << std::endl;
 
             const vec3 top_norm = glm::cross(vec3(tip_vert - prev_vert), vec3(vert - prev_vert));
             m_normals.insert(m_normals.end(), 3, top_norm);
