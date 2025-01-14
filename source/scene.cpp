@@ -124,7 +124,7 @@ static fe::box<fe::entity> make_snowman() {
 
 	vis::material const* p_snow_mat = get_asset<vis::material>("snow");
 	vis::mesh const& cube_mesh = *get_asset<vis::mesh>("cube");
-	vis::mesh const& eye_mesh = *get_asset<vis::mesh>("eye_mesh");
+	vis::mesh const& eye_mesh = *get_asset<vis::mesh>("eye");
 
 	box<mesh_component> m0 = make_box<mesh_component>();
 	m0->set_mesh(cube_mesh);
@@ -178,7 +178,7 @@ static fe::box<fe::entity> make_snowman() {
 			
 				{ // Nose
 					box<mesh_component> m6 = make_box<mesh_component>();
-					m6->set_mesh(*get_asset<vis::mesh>("nose_mesh"));
+					m6->set_mesh(*get_asset<vis::mesh>("carrot"));
 					m6->set_material(get_asset<vis::material>("nose"));
 					transform& tr = m6->ref_transform();
 					tr.set_local_position({ 0, 0, 0.25f });
@@ -340,7 +340,8 @@ void fields_engine::scene::startup() {
 	}
 	{ // Mound
 		box<mesh_component> m = make_box<mesh_component>();
-		m->set_mesh(*get_asset<vis::mesh>("tree_trunk"));
+		//m->set_mesh(*get_asset<vis::mesh>("tree_trunk"));
+		m->set_mesh(*get_asset<vis::mesh>("mound"));
 		m->set_material(get_asset<vis::material>("fround"));
 		//m->set_texture(make_box<vis::texture>("content/brick.png"));
 		//m->set_normal_texture(make_box<vis::texture>("content/brick_normal.png"));
