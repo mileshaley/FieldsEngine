@@ -76,6 +76,7 @@
     <ClCompile Include="source\asset.cpp" />
     <ClCompile Include="source\asset_manager.cpp" />
     <ClCompile Include="source\asset_loader.cpp" />
+    <ClCompile Include="source\string_util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -146,5 +147,6 @@
     <ClInclude Include="source\asset_manager.h" />
     <ClInclude Include="source\asset_loader.h" />
     <ClInclude Include="source\serial_conversion.h" />
+    <ClInclude Include="source\string_util.h" />
   </ItemGroup>
 </Project>

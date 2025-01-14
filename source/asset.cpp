@@ -28,10 +28,8 @@ fields_engine::asset::asset(std::filesystem::path const& info_path)
 	std::ifstream info_file(info_path);
 	if (!info_file) { return; }
 	json info = json::parse(info_file, nullptr, false);
+	// json will be in discarded state if parse failure occurs with exceptions disabled
 	if (info.is_discarded()) { return; }
-	auto type_it = info.find("type");
-	if (type_it == info.end()) { return; }
-
 	auto data_path_it = info.find("data_path");
 	if (data_path_it != info.end()) {
 		m_data_source = move(*data_path_it);
@@ -42,10 +40,10 @@ fields_engine::asset::asset(std::filesystem::path const& info_path)
 		m_data_source = move(*data_it);
 		m_data_source_is_path = false;
 	}
-	// Wait until we know all data is present to take it
-	m_name = info_path.stem().string();
-	m_type = move(type_it->get<string>());
+	// Wait until we know all data is present
 	m_valid = true;
+	m_type = move(string(info_path.stem().extension().string().c_str() + 1));
+	m_name = move(info_path.stem().stem().string());
 }
 
 fields_engine::asset::asset(asset&& other) noexcept 

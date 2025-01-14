@@ -40,7 +40,7 @@ namespace fields_engine {
 		bool is_loaded() const;
 		string const& get_name() const;
 		type_name const& get_type() const;
-
+		
 		template<typename T>
 		T* get_data() {
 			return reinterpret_cast<T*>(m_data);

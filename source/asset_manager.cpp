@@ -40,7 +40,12 @@ bool fields_engine::asset_manager::startup() {
 					  << in_path << "\"." << std::endl;
 			continue; 
 		}
-		m_assets.emplace(in_path.stem().string(), in_path);
+		//string name = in_path.stem().stem().string();
+		//string type = in_path.stem().extension().string();
+		m_assets.emplace(
+			in_path.stem().stem().string(), 
+			in_path
+		);
 	}
 	return true;
 }
