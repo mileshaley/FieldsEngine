@@ -70,9 +70,13 @@ namespace glm {
 		}
 	}
 
-	
-	inline std::ostream& operator<<(std::ostream& os, glm::vec3 const& vec) {
-		os << "<" << vec[0] << ", " << vec[1] << ", " << vec[2] << ">";
+	template<length_t L, typename T, qualifier Q>
+	inline std::ostream& operator<<(std::ostream& os, vec<L, T, Q> const& vec) {
+		os << "<" << std::fixed << std::setprecision(1) << vec[0];
+		for (int i = 1; i < L; ++i) {
+			os << ", " << std::fixed << std::setprecision(1) << vec[i];
+		}
+		os << ">";
 		return os;
 	}
 } // namespace glm

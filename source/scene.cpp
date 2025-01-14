@@ -340,8 +340,8 @@ void fields_engine::scene::startup() {
 	}
 	{ // Mound
 		box<mesh_component> m = make_box<mesh_component>();
-		m->set_mesh(*get_asset<vis::mesh>("mound"));
-		m->set_material(get_asset<vis::material>("snow"));
+		m->set_mesh(*get_asset<vis::mesh>("tree_trunk"));
+		m->set_material(get_asset<vis::material>("fround"));
 		//m->set_texture(make_box<vis::texture>("content/brick.png"));
 		//m->set_normal_texture(make_box<vis::texture>("content/brick_normal.png"));
 	

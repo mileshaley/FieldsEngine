@@ -13,10 +13,6 @@
 #include "error.h"
 #include "asset_manager.h"
 
-/// TODO: Remove
-#include "iostream"
-#include "serial_conversion.h"
-
 /*~-------------------------------------------------------------------------~*\
  * Mesh Definitions                                                          *
 \*~-------------------------------------------------------------------------~*/
@@ -275,9 +271,9 @@ namespace fields_engine::vis {
             m_vertices.emplace_back(prev_top_vert);
             m_vertices.emplace_back(top_mid_vert);
 
-            m_tex_uvs.emplace_back(0, 0);
-            m_tex_uvs.emplace_back(0, 1);
-            m_tex_uvs.emplace_back(1, 0);
+            m_tex_uvs.emplace_back(top_vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(prev_top_vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(top_mid_vert + vec4{ 0.5f });
 
             m_normals.insert(m_normals.end(), 3, top_norm);
 
@@ -291,9 +287,9 @@ namespace fields_engine::vis {
             m_vertices.emplace_back(bot_mid_vert);
             m_vertices.emplace_back(prev_bot_vert);
 
-            m_tex_uvs.emplace_back(0, 0);
-            m_tex_uvs.emplace_back(1, 0);
-            m_tex_uvs.emplace_back(0, 1);
+            m_tex_uvs.emplace_back(bot_vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(bot_mid_vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(prev_bot_vert + vec4{ 0.5f });
 
             m_normals.insert(m_normals.end(), 3, bot_norm);
 
@@ -329,14 +325,14 @@ namespace fields_engine::vis {
             m_vertices.emplace_back(prev_vert);
             m_vertices.emplace_back(tip_vert);
 
-            m_tex_uvs.emplace_back(vert);
-            m_tex_uvs.emplace_back(prev_vert);
-            m_tex_uvs.emplace_back(tip_vert);
+            m_tex_uvs.emplace_back(vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(prev_vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(tip_vert + vec4{ 0.5f });
             
-            std::cout << "Pyramid [i=" << i << "/" << (sides + 1) << "]" << std::endl
-                      << "Top UV [vert]:      " << vert << std::endl
-                      << "Top UV [prev_vert]: " << vert << std::endl
-                      << "Top UV [tip_vert]:  " << vert << std::endl;
+            //std::cout << "Pyramid [i=" << i << "/" << (sides + 1) << "]" << std::endl
+            //          << "Top UV [vert]:      " << vec2(vert) << std::endl
+            //          << "Top UV [prev_vert]: " << vec2(prev_vert) << std::endl
+            //          << "Top UV [tip_vert]:  " << vec2(tip_vert) << std::endl;
 
             const vec3 top_norm = glm::cross(vec3(tip_vert - prev_vert), vec3(vert - prev_vert));
             m_normals.insert(m_normals.end(), 3, top_norm);
@@ -346,9 +342,9 @@ namespace fields_engine::vis {
             m_vertices.emplace_back(bot_middle_vert);
             m_vertices.emplace_back(prev_vert);
 
-            m_tex_uvs.emplace_back(vert);
-            m_tex_uvs.emplace_back(bot_middle_vert);
-            m_tex_uvs.emplace_back(prev_vert);
+            m_tex_uvs.emplace_back(vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(bot_middle_vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(prev_vert + vec4{ 0.5f });
 
             m_normals.insert(m_normals.end(), 3, bot_norm);
 
