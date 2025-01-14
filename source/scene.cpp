@@ -352,6 +352,17 @@ void fields_engine::scene::startup() {
 		tr.set_local_scale({ 20, 20, scale });
 		auto& ent = m_entities.emplace_back(make_box<entity>("Mound", move(m)));
 	}
+	{ // Object Test
+		box<mesh_component> m = make_box<mesh_component>();
+		m->set_mesh(*get_asset<vis::mesh>("obj"));
+		m->set_material(get_asset<vis::material>("grass"));
+
+		transform& tr = m->ref_transform();
+		const float scale = 1;
+		tr.set_local_position({ 5, 5, 5 });
+		tr.set_local_scale({ 1, 1, 1 });
+		auto& ent = m_entities.emplace_back(make_box<entity>("Object", move(m)));
+	}
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> pos_range(-50, 50);

@@ -13,6 +13,12 @@
 #include "error.h"
 #include "asset_manager.h"
 
+#include <fstream>
+#include "rapidobj/include/rapidobj/rapidobj.hpp"
+
+/// TODO: Remove
+#include <iostream>
+
 /*~-------------------------------------------------------------------------~*\
  * Mesh Definitions                                                          *
 \*~-------------------------------------------------------------------------~*/
@@ -395,7 +401,62 @@ void fields_engine::vis::from_json(json const& in, mesh& out) {
 
         out.generate();
     } else {
-        /// TODO: Read in vertices here (may not be worth the time since we want to instead read object files)
+        auto path_it = in.find("path");
+        if (path_it == in.end()) { return; }
+
+        //std::fstream data_file{ string(*path_it) };
+        auto result = rapidobj::ParseFile(*path_it);
+        if (result.error) {
+            std::cerr << result.error.code.message() << '\n';
+            return;
+        }
+        if (!rapidobj::Triangulate(result)) {
+            return;
+        }
+        auto& verts = result.attributes.positions;
+        auto& normals = result.attributes.normals;
+        auto& tex_uvs = result.attributes.texcoords;
+        auto& shapes = result.shapes;
+        //const vec3* p_norm_begin = reinterpret_cast<const vec3*>(normals.data());
+        //const vec2* p_tex_uv_begin = reinterpret_cast<const vec2*>(tex_uvs.data());
+        //out.m_normals = std::vector<vec3>{ p_norm_begin, p_norm_begin + normals.size() / 3 };
+        //out.m_tex_uvs = std::vector<vec2>{ p_tex_uv_begin, p_tex_uv_begin + normals.size() / 2 };
+        //
+        //for (int i = 0; i < vertices.size(); i += 3) {
+        //    out.m_vertices.emplace_back(vertices[i], vertices[i + 1], vertices[i + 2], 1.0f);
+        //}
+        //FE_ASSERT(std::equal(out.m_vertices.size(), out.m_normals.size(), out.m_tex_uvs.size()), "Mesh attributes have differing amounts");
+
+        for (auto const& shape : shapes) {
+            auto const& indices = shape.mesh.indices;
+            for (int i = 0; i < indices.size(); i += 3) {
+
+                int n = int(out.m_vertices.size());
+                //out.m_triangles.emplace_back(indices[i].position_index, indices[i + 1].position_index, indices[i + 2].position_index);
+                for (int j = 0; j < 3; ++j) { // Each triangle index
+                    rapidobj::Index const& index = indices[j + i];
+                    vec3* p_vert = reinterpret_cast<vec3*>(&verts[index.position_index * 3]);
+                    out.m_vertices.emplace_back(*p_vert, 1.0f);
+                    if (index.normal_index == -1) {
+                        // Default to normals facing directly out of vertices
+                        out.m_normals.emplace_back(*p_vert);
+                    } else {
+                        vec3* p_norm = reinterpret_cast<vec3*>(&normals[index.normal_index * 3]);
+                        out.m_normals.emplace_back(*p_norm);
+                    }
+                    if (index.texcoord_index == -1) {
+                        // Default to normals mapped directly to xy of vertices
+                        out.m_tex_uvs.emplace_back(*p_vert);
+                    } else {
+                        vec2* p_tex_uv = reinterpret_cast<vec2*>(&tex_uvs[index.texcoord_index * 3]);
+                        out.m_tex_uvs.emplace_back(*p_tex_uv);
+                    }
+                }
+                out.sequential_tris(n);
+            }
+        }
+
+        out.generate();
     }
 
 #if EDITOR
