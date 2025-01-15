@@ -359,7 +359,7 @@ void fields_engine::scene::startup() {
 
 		transform& tr = m->ref_transform();
 		const float scale = 1;
-		tr.set_local_position({ 5, 5, 5 });
+		tr.set_local_position({ -5, -5, 2 });
 		tr.set_local_scale({ 1, 1, 1 });
 		auto& ent = m_entities.emplace_back(make_box<entity>("Object", move(m)));
 	}

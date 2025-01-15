@@ -27,7 +27,7 @@
 namespace fields_engine::vis {
 
     mesh::mesh()
-        : m_vertices()
+        : m_positions()
         , m_triangles()
         , m_tex_uvs()
         , m_normals()
@@ -37,7 +37,7 @@ namespace fields_engine::vis {
     {}
 
     mesh::mesh(mesh const& other)
-        : m_vertices(other.m_vertices)
+        : m_positions(other.m_positions)
         , m_triangles(other.m_triangles)
         , m_tex_uvs(other.m_tex_uvs)
         , m_normals(other.m_normals)
@@ -60,11 +60,25 @@ namespace fields_engine::vis {
     void mesh::draw() const {
         glBindVertexArray(m_vao_id);
         VIS_VERIFY;
-        glDrawElements(GL_TRIANGLES,
-            GLsizei(m_triangles.size() * 3),
-            GL_UNSIGNED_INT,
-            0);
-        VIS_VERIFY;
+        if (m_sections.empty()) {
+            glDrawElements(GL_TRIANGLES,
+                GLsizei(m_triangles.size() * 3),
+                GL_UNSIGNED_INT,
+                nullptr
+            );
+            VIS_VERIFY;
+        } else {
+            for (section const& section : m_sections) {
+                glDrawElements(GL_TRIANGLES,
+                    GLsizei(section.index_count * 3),
+                    GL_UNSIGNED_INT,
+                    reinterpret_cast<void*>(section.index * sizeof(m_triangles[0].x))
+                );
+                
+                VIS_VERIFY;
+            }
+        }
+      
         glBindVertexArray(0);
         VIS_VERIFY;
     }
@@ -80,8 +94,8 @@ namespace fields_engine::vis {
         glBindBuffer(GL_ARRAY_BUFFER, vert_buf);
         VIS_VERIFY;
         glBufferData(GL_ARRAY_BUFFER,
-            m_vertices.size() * sizeof(vec4),
-            glm::value_ptr(m_vertices[0]), // float ptr
+            m_positions.size() * sizeof(vec4),
+            glm::value_ptr(m_positions[0]), // float ptr
             GL_STATIC_DRAW);
         VIS_VERIFY;
         glEnableVertexAttribArray(0);
@@ -170,7 +184,7 @@ namespace fields_engine::vis {
             VIS_VERIFY;
         }
         m_vao_id = 0;
-        m_vertices.clear();
+        m_positions.clear();
         m_normals.clear();
         m_tex_uvs.clear();
         m_triangles.clear();
@@ -196,9 +210,9 @@ namespace fields_engine::vis {
         m_normals.insert(m_normals.end(), num_corners, static_cast<vec3 const&>(tr * vec4(0, 0, 1, 0)));
         m_tangents.insert(m_tangents.end(), num_corners, static_cast<vec3 const&>(tr * vec4(1, 0, 0, 0)));
 
-        const int n = int(m_vertices.size());
+        const int n = int(m_positions.size());
         for (int i = 0; i < num_corners; ++i) {
-            m_vertices.emplace_back(tr * verts[i]);
+            m_positions.emplace_back(tr * verts[i]);
             m_tex_uvs.emplace_back(tex_coords[i]);
         }
 
@@ -252,12 +266,12 @@ namespace fields_engine::vis {
 
             // Side quad
 
-            int n = int(m_vertices.size());
+            int n = int(m_positions.size());
 
-            m_vertices.emplace_back(top_vert);
-            m_vertices.emplace_back(bot_vert);
-            m_vertices.emplace_back(prev_bot_vert);
-            m_vertices.emplace_back(prev_top_vert);
+            m_positions.emplace_back(top_vert);
+            m_positions.emplace_back(bot_vert);
+            m_positions.emplace_back(prev_bot_vert);
+            m_positions.emplace_back(prev_top_vert);
 
             m_tex_uvs.emplace_back(1, 1);
             m_tex_uvs.emplace_back(1, 0);
@@ -273,10 +287,10 @@ namespace fields_engine::vis {
 
             // Top of cylinder
 
-            n = int(m_vertices.size());
-            m_vertices.emplace_back(top_vert);
-            m_vertices.emplace_back(prev_top_vert);
-            m_vertices.emplace_back(top_mid_vert);
+            n = int(m_positions.size());
+            m_positions.emplace_back(top_vert);
+            m_positions.emplace_back(prev_top_vert);
+            m_positions.emplace_back(top_mid_vert);
 
             m_tex_uvs.emplace_back(top_vert + vec4{ 0.5f });
             m_tex_uvs.emplace_back(prev_top_vert + vec4{ 0.5f });
@@ -288,11 +302,11 @@ namespace fields_engine::vis {
 
             // Bottom of cylinder
 
-            n = int(m_vertices.size());
+            n = int(m_positions.size());
 
-            m_vertices.emplace_back(bot_vert);
-            m_vertices.emplace_back(bot_mid_vert);
-            m_vertices.emplace_back(prev_bot_vert);
+            m_positions.emplace_back(bot_vert);
+            m_positions.emplace_back(bot_mid_vert);
+            m_positions.emplace_back(prev_bot_vert);
 
             m_tex_uvs.emplace_back(bot_vert + vec4{ 0.5f });
             m_tex_uvs.emplace_back(bot_mid_vert + vec4{ 0.5f });
@@ -326,11 +340,11 @@ namespace fields_engine::vis {
                 1
             };
 
-            int n = int(m_vertices.size());
+            int n = int(m_positions.size());
             // Top triangle
-            m_vertices.emplace_back(vert);
-            m_vertices.emplace_back(prev_vert);
-            m_vertices.emplace_back(tip_vert);
+            m_positions.emplace_back(vert);
+            m_positions.emplace_back(prev_vert);
+            m_positions.emplace_back(tip_vert);
 
             m_tex_uvs.emplace_back(vert + vec4{ 0.5f });
             m_tex_uvs.emplace_back(prev_vert + vec4{ 0.5f });
@@ -345,9 +359,9 @@ namespace fields_engine::vis {
             m_normals.insert(m_normals.end(), 3, top_norm);
 
             // Bottom triangle
-            m_vertices.emplace_back(vert);
-            m_vertices.emplace_back(bot_middle_vert);
-            m_vertices.emplace_back(prev_vert);
+            m_positions.emplace_back(vert);
+            m_positions.emplace_back(bot_middle_vert);
+            m_positions.emplace_back(prev_vert);
 
             m_tex_uvs.emplace_back(vert + vec4{ 0.5f });
             m_tex_uvs.emplace_back(bot_middle_vert + vec4{ 0.5f });
@@ -406,7 +420,7 @@ void fields_engine::vis::from_json(json const& in, mesh& out) {
         if (path_it == in.end()) { return; }
 
         //std::fstream data_file{ string(*path_it) };
-        auto result = rapidobj::ParseFile(*path_it);
+        rapidobj::Result result = rapidobj::ParseFile(*path_it);
         if (result.error) {
             std::cerr << result.error.code.message() << '\n';
             return;
@@ -420,12 +434,13 @@ void fields_engine::vis::from_json(json const& in, mesh& out) {
         auto& shapes = result.shapes;
         for (auto const& shape : shapes) {
             auto const& indices = shape.mesh.indices;
+            const int section_idx = int(out.m_triangles.size());
             for (int i = 0; i < indices.size(); i += 3) {
-                const int n = int(out.m_vertices.size());
+                const int n = int(out.m_positions.size());
                 for (int j = 0; j < 3; ++j) { // Each triangle index
                     rapidobj::Index const& index = indices[j + i];
                     const vec3 vert = vec_y_up_to_z_up(reinterpret_cast<vec3&>(verts[index.position_index * 3]));
-                    out.m_vertices.emplace_back(vert, 1.0f);
+                    out.m_positions.emplace_back(vert, 1.0f);
                     if (index.normal_index == -1) {
                         // Default to normals facing directly out of vertices
                         out.m_normals.emplace_back(vert);
@@ -443,6 +458,7 @@ void fields_engine::vis::from_json(json const& in, mesh& out) {
                 }
                 out.sequential_tris(n);
             }
+            out.m_sections.push_back( { section_idx, int(out.m_triangles.size()), 0 } );
         }
 
         out.generate();

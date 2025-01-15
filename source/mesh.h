@@ -64,15 +64,23 @@ namespace fields_engine::vis {
 		int m_height;
 
 	private:
+		class section {
+		public:
+			int index;
+			int index_count;
+			int material_index;
+		};
+
 		primitive_type m_prim_type;
 		unsigned m_vao_id;
-		vector<vec4> m_vertices;
+		vector<vec4> m_positions;
 		vector<vec2> m_tex_uvs;
 		vector<vec3> m_normals;
 		vector<vec3> m_tangents;
-		// Indices within vertices, normals, tangents, and texture uvs
-		vector<ivec3> m_triangles;
+		// Indices within positions, normals, tangents, and texture uvs
+		vector<glm::vec<3, u32>> m_triangles;
 
+		vector<section> m_sections;
 	}; // class mesh
 
 } // namespace fields_engine::vis
