@@ -61,7 +61,7 @@ namespace fields_engine::vis {
 
 	private: /// TODO: Remove variables in this section
 		int m_divisions;
-		int m_height;
+		float m_height;
 
 	private:
 		class section {

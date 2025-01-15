@@ -37,6 +37,15 @@ namespace fields_engine {
 		// Returns null in the case of nonexistent/invali asset
 		asset const* get_asset(string const& asset_name) const;
 
+
+
+		//asset* get_or_create_asset(string const& asset_name);
+
+		// Add a new asset
+		// Returns a pointer to the moved asset on success
+		// Returns nullptr if asset with that name already exists
+		fe::asset* add_asset(asset&& new_asset);
+
 #if EDITOR
 		bool content_browser_window();
 #endif // EDITOR

@@ -72,9 +72,8 @@ namespace fields_engine::vis {
                 glDrawElements(GL_TRIANGLES,
                     GLsizei(section.index_count * 3),
                     GL_UNSIGNED_INT,
-                    reinterpret_cast<void*>(section.index * sizeof(m_triangles[0].x))
+                    reinterpret_cast<void*>(section.index * 4llu)
                 );
-                
                 VIS_VERIFY;
             }
         }
@@ -435,30 +434,31 @@ void fields_engine::vis::from_json(json const& in, mesh& out) {
         for (auto const& shape : shapes) {
             auto const& indices = shape.mesh.indices;
             const int section_idx = int(out.m_triangles.size());
-            for (int i = 0; i < indices.size(); i += 3) {
+            for (size_t i = 0; i < indices.size(); i += 3) {
                 const int n = int(out.m_positions.size());
                 for (int j = 0; j < 3; ++j) { // Each triangle index
                     rapidobj::Index const& index = indices[j + i];
-                    const vec3 vert = vec_y_up_to_z_up(reinterpret_cast<vec3&>(verts[index.position_index * 3]));
+                    const vec3 vert = vec_y_up_to_z_up(reinterpret_cast<vec3&>(verts[index.position_index * 3ll]));
                     out.m_positions.emplace_back(vert, 1.0f);
                     if (index.normal_index == -1) {
                         // Default to normals facing directly out of vertices
                         out.m_normals.emplace_back(vert);
                     } else {
-                        vec3 norm = vec_y_up_to_z_up(reinterpret_cast<vec3&>(normals[index.normal_index * 3]));
+                        vec3 norm = vec_y_up_to_z_up(reinterpret_cast<vec3&>(normals[index.normal_index * 3ll]));
                         out.m_normals.emplace_back(norm);
                     }
                     if (index.texcoord_index == -1) {
                         // Default to normals mapped directly to xy of vertices
                         out.m_tex_uvs.emplace_back(vert);
                     } else {
-                        vec2 const* p_tex_uv = reinterpret_cast<vec2*>(&tex_uvs[index.texcoord_index * 3]);
+                        vec2 const* p_tex_uv = reinterpret_cast<vec2*>(&tex_uvs[index.texcoord_index * 3ll]);
                         out.m_tex_uvs.emplace_back(*p_tex_uv);
                     }
                 }
                 out.sequential_tris(n);
             }
-            out.m_sections.push_back( { section_idx, int(out.m_triangles.size()), 0 } );
+            // We assume all material ids are the same and the mesh has been sectioned by material
+            out.m_sections.push_back( { section_idx, int(out.m_triangles.size()), shape.mesh.material_ids[0]});
         }
 
         out.generate();

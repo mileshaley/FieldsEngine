@@ -269,6 +269,75 @@ void fields_engine::scene::startup() {
 
 	vis::mesh const& cube_mesh = *get_asset<vis::mesh>("cube");
 
+	{ // Camera
+	//box<spatial_component> root = make_box<spatial_component>();
+	//spatial_component* p_root = root.get();
+		box<camera_component> cam = make_box<camera_component>();
+		camera_component* p_cam = cam.get();
+		//box<mesh_component> m = make_box<mesh_component>();
+		//m->add_cube();
+		//m->generate();
+		//m->ref_material() = nose_mat;
+		//mesh_component* pm = m.get();
+		transform& tr = p_cam->ref_transform();
+		tr.set_local_position({ 3, 2, 3 });
+		tr.set_local_rotation(vec3{ 90, 0, -240 });
+		tr.set_local_scale({ 1, 1, 1 });
+		auto& ent = m_entities.emplace_back(make_box<entity>("Camera", move(cam)));
+		//p_cam->attach_spatial_component(move(m))
+		//p_root->attach_spatial_component(move(cam));
+		ent->attach_basic_component(make_box<camera_controller>());
+	}
+	{ // Nutcracker
+		box<mesh_component> m = make_box<mesh_component>();
+		m->set_mesh(*get_asset<vis::mesh>("nutcracker"));
+		m->set_material(get_asset<vis::material>("nose"));
+
+		transform& tr = m->ref_transform();
+		const float scale = 1;
+		tr.set_local_position({ -5, -5, 2 });
+		tr.set_local_scale({ 1, 1, 1 });
+		auto& ent = m_entities.emplace_back(make_box<entity>("Object", move(m)));
+	}
+	{ // Bed
+		box<mesh_component> m = make_box<mesh_component>();
+		m->set_mesh(*get_asset<vis::mesh>("bed"));
+		m->set_material(get_asset<vis::material>("grass"));
+
+		transform& tr = m->ref_transform();
+		const float scale = 1;
+		tr.set_local_position({ -5, -5, 0.75f });
+		tr.set_local_scale({ 1, 1, 1 });
+		auto& ent = m_entities.emplace_back(make_box<entity>("Object", move(m)));
+	}
+	{ // Ground
+		box<mesh_component> m = make_box<mesh_component>();
+		m->set_mesh(cube_mesh);
+		m->set_material(get_asset<vis::material>("grass"));
+
+		transform& tr = m->ref_transform();
+		const float scale = 1;
+		tr.set_local_position({ 0, 0, -1 });
+		tr.set_local_scale({ 200, 200, scale });
+		auto& ent = m_entities.emplace_back(make_box<entity>("Ground", move(m)));
+	}
+	{ // Mound
+		box<mesh_component> m = make_box<mesh_component>();
+		//m->set_mesh(*get_asset<vis::mesh>("tree_trunk"));
+		m->set_mesh(*get_asset<vis::mesh>("mound"));
+		m->set_material(get_asset<vis::material>("fround"));
+		//m->set_texture(make_box<vis::texture>("content/brick.png"));
+		//m->set_normal_texture(make_box<vis::texture>("content/brick_normal.png"));
+
+		transform& tr = m->ref_transform();
+		const float scale = 1;
+		tr.set_local_position({ 0, 0, 0 });
+		tr.set_local_scale({ 20, 20, scale });
+		auto& ent = m_entities.emplace_back(make_box<entity>("Mound", move(m)));
+	}
+
+
+
 	{ // Direction Indicator
 		box<mesh_component> d = make_box<mesh_component>();
 		d->set_mesh(cube_mesh);
@@ -310,59 +379,7 @@ void fields_engine::scene::startup() {
 	m_entities.emplace_back(make_snowman());
 
 
-	{ // Camera
-		//box<spatial_component> root = make_box<spatial_component>();
-		//spatial_component* p_root = root.get();
-		box<camera_component> cam = make_box<camera_component>();
-		//box<mesh_component> m = make_box<mesh_component>();
-		//m->add_cube();
-		//m->generate();
-		//m->ref_material() = nose_mat;
-		//mesh_component* pm = m.get();
-		transform& tr = cam->ref_transform();
-		tr.set_local_position({ 3, 2, 3 });
-		tr.set_local_rotation(vec3{90, 0, -240});
-		tr.set_local_scale({ 1, 1, 1 });
-		auto& ent = m_entities.emplace_back(make_box<entity>("Camera", move(cam)));
-		//p_root->attach_spatial_component(move(cam));
-		ent->attach_basic_component(make_box<camera_controller>());
-	}
-	{ // Ground
-		box<mesh_component> m = make_box<mesh_component>();
-		m->set_mesh(cube_mesh);
-		m->set_material(get_asset<vis::material>("grass"));
 
-		transform& tr = m->ref_transform();
-		const float scale = 1;
-		tr.set_local_position({ 0, 0, -1 });
-		tr.set_local_scale({ 200, 200, scale });
-		auto& ent = m_entities.emplace_back(make_box<entity>("Ground", move(m)));
-	}
-	{ // Mound
-		box<mesh_component> m = make_box<mesh_component>();
-		//m->set_mesh(*get_asset<vis::mesh>("tree_trunk"));
-		m->set_mesh(*get_asset<vis::mesh>("mound"));
-		m->set_material(get_asset<vis::material>("fround"));
-		//m->set_texture(make_box<vis::texture>("content/brick.png"));
-		//m->set_normal_texture(make_box<vis::texture>("content/brick_normal.png"));
-	
-		transform& tr = m->ref_transform();
-		const float scale = 1;
-		tr.set_local_position({ 0, 0, 0 });
-		tr.set_local_scale({ 20, 20, scale });
-		auto& ent = m_entities.emplace_back(make_box<entity>("Mound", move(m)));
-	}
-	{ // Object Test
-		box<mesh_component> m = make_box<mesh_component>();
-		m->set_mesh(*get_asset<vis::mesh>("obj"));
-		m->set_material(get_asset<vis::material>("nose"));
-
-		transform& tr = m->ref_transform();
-		const float scale = 1;
-		tr.set_local_position({ -5, -5, 2 });
-		tr.set_local_scale({ 1, 1, 1 });
-		auto& ent = m_entities.emplace_back(make_box<entity>("Object", move(m)));
-	}
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> pos_range(-50, 50);

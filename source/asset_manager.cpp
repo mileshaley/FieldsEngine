@@ -68,6 +68,13 @@ fe::asset const* fields_engine::asset_manager::get_asset(string const& asset_nam
 	return &it->second;
 }
 
+fe::asset* fields_engine::asset_manager::add_asset(asset&& new_asset) {
+	string name(new_asset.get_name());
+	const auto [it, success] = m_assets.try_emplace(move(name), move(new_asset));
+	if (success) { return &it->second; }
+	else		 { return nullptr; }
+}
+
 #if EDITOR
 bool fields_engine::asset_manager::content_browser_window() {
 	for (auto const& asset : m_assets) {
