@@ -15,6 +15,7 @@
 
 #include <fstream>
 #include "rapidobj/include/rapidobj/rapidobj.hpp"
+#include "vector_util.h"
 
 /// TODO: Remove
 #include <iostream>
@@ -417,38 +418,26 @@ void fields_engine::vis::from_json(json const& in, mesh& out) {
         auto& normals = result.attributes.normals;
         auto& tex_uvs = result.attributes.texcoords;
         auto& shapes = result.shapes;
-        //const vec3* p_norm_begin = reinterpret_cast<const vec3*>(normals.data());
-        //const vec2* p_tex_uv_begin = reinterpret_cast<const vec2*>(tex_uvs.data());
-        //out.m_normals = std::vector<vec3>{ p_norm_begin, p_norm_begin + normals.size() / 3 };
-        //out.m_tex_uvs = std::vector<vec2>{ p_tex_uv_begin, p_tex_uv_begin + normals.size() / 2 };
-        //
-        //for (int i = 0; i < vertices.size(); i += 3) {
-        //    out.m_vertices.emplace_back(vertices[i], vertices[i + 1], vertices[i + 2], 1.0f);
-        //}
-        //FE_ASSERT(std::equal(out.m_vertices.size(), out.m_normals.size(), out.m_tex_uvs.size()), "Mesh attributes have differing amounts");
-
         for (auto const& shape : shapes) {
             auto const& indices = shape.mesh.indices;
             for (int i = 0; i < indices.size(); i += 3) {
-
-                int n = int(out.m_vertices.size());
-                //out.m_triangles.emplace_back(indices[i].position_index, indices[i + 1].position_index, indices[i + 2].position_index);
+                const int n = int(out.m_vertices.size());
                 for (int j = 0; j < 3; ++j) { // Each triangle index
                     rapidobj::Index const& index = indices[j + i];
-                    vec3* p_vert = reinterpret_cast<vec3*>(&verts[index.position_index * 3]);
-                    out.m_vertices.emplace_back(*p_vert, 1.0f);
+                    const vec3 vert = vec_y_up_to_z_up(reinterpret_cast<vec3&>(verts[index.position_index * 3]));
+                    out.m_vertices.emplace_back(vert, 1.0f);
                     if (index.normal_index == -1) {
                         // Default to normals facing directly out of vertices
-                        out.m_normals.emplace_back(*p_vert);
+                        out.m_normals.emplace_back(vert);
                     } else {
-                        vec3* p_norm = reinterpret_cast<vec3*>(&normals[index.normal_index * 3]);
-                        out.m_normals.emplace_back(*p_norm);
+                        vec3 norm = vec_y_up_to_z_up(reinterpret_cast<vec3&>(normals[index.normal_index * 3]));
+                        out.m_normals.emplace_back(norm);
                     }
                     if (index.texcoord_index == -1) {
                         // Default to normals mapped directly to xy of vertices
-                        out.m_tex_uvs.emplace_back(*p_vert);
+                        out.m_tex_uvs.emplace_back(vert);
                     } else {
-                        vec2* p_tex_uv = reinterpret_cast<vec2*>(&tex_uvs[index.texcoord_index * 3]);
+                        vec2 const* p_tex_uv = reinterpret_cast<vec2*>(&tex_uvs[index.texcoord_index * 3]);
                         out.m_tex_uvs.emplace_back(*p_tex_uv);
                     }
                 }

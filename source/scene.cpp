@@ -355,7 +355,7 @@ void fields_engine::scene::startup() {
 	{ // Object Test
 		box<mesh_component> m = make_box<mesh_component>();
 		m->set_mesh(*get_asset<vis::mesh>("obj"));
-		m->set_material(get_asset<vis::material>("grass"));
+		m->set_material(get_asset<vis::material>("nose"));
 
 		transform& tr = m->ref_transform();
 		const float scale = 1;
