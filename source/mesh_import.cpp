@@ -50,10 +50,13 @@ fe::json fields_engine::import_vis_mesh(std::filesystem::path const& in_path) {
                 out_positions.emplace_back(vert.y);
                 out_positions.emplace_back(vert.z);
                 if (index.normal_index == -1) {
+                    out_normals.emplace_back(0.0f);
+                    out_normals.emplace_back(0.0f);
+                    out_normals.emplace_back(0.0f);
                     // Default to normals facing directly out of vertices
-                    out_normals.emplace_back(vert.x);
-                    out_normals.emplace_back(vert.y);
-                    out_normals.emplace_back(vert.z);
+                    //out_normals.emplace_back(vert.x);
+                    //out_normals.emplace_back(vert.y);
+                    //out_normals.emplace_back(vert.z);
                 } else {
                     const vec3 norm = vec_y_up_to_z_up(reinterpret_cast<vec3&>(normals[index.normal_index * 3ll]));
                     out_normals.emplace_back(norm.x);
@@ -61,9 +64,11 @@ fe::json fields_engine::import_vis_mesh(std::filesystem::path const& in_path) {
                     out_normals.emplace_back(norm.z);
                 }
                 if (index.texcoord_index == -1) {
+                    out_tex_uvs.emplace_back(0.0f);
+                    out_tex_uvs.emplace_back(0.0f);
                     // Default to normals mapped directly to xy of vertices
-                    out_tex_uvs.emplace_back(vert.x);
-                    out_tex_uvs.emplace_back(vert.y);
+                    //out_tex_uvs.emplace_back(vert.x);
+                    //out_tex_uvs.emplace_back(vert.y);
                 } else {
                     const vec2 tex_uv = reinterpret_cast<vec2&>(tex_uvs[index.texcoord_index * 3ll]);
                     out_tex_uvs.emplace_back(tex_uv.x);

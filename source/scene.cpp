@@ -281,10 +281,8 @@ static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 void fields_engine::scene::startup() {
 
 	vis::mesh const& cube_mesh = *get_asset<vis::mesh>("cube");
-
+	constexpr vec3 xyz_scale{ 2,2,2 };
 	{ // Camera
-	//box<spatial_component> root = make_box<spatial_component>();
-	//spatial_component* p_root = root.get();
 		box<camera_component> cam = make_box<camera_component>();
 		camera_component* p_cam = cam.get();
 		//box<mesh_component> m = make_box<mesh_component>();
@@ -300,42 +298,75 @@ void fields_engine::scene::startup() {
 		//p_cam->attach_spatial_component(move(m))
 		//p_root->attach_spatial_component(move(cam));
 		ent->attach_basic_component(make_box<camera_controller>());
+
+
+		{ // X
+			box<mesh_component> xm = make_box<mesh_component>();
+			xm->set_mesh(cube_mesh);
+			xm->set_material(get_asset<vis::material>("x"));
+			transform& tr = xm->ref_transform();
+			p_cam->attach_spatial_component(move(xm));
+			tr.set_local_scale(xyz_scale);
+			tr.set_local_position({ 2.1f,0,0 });;
+		}
+		{ // Y
+			box<mesh_component> ym = make_box<mesh_component>();
+			ym->set_mesh(cube_mesh);
+			ym->set_material(get_asset<vis::material>("y"));
+			transform& tr = ym->ref_transform();
+			p_cam->attach_spatial_component(move(ym));
+			tr.set_local_scale(xyz_scale);
+			tr.set_local_position({ 0,2.1f,0 });
+		}
+		{ // Z
+			box<mesh_component> zm = make_box<mesh_component>();
+			zm->set_mesh(cube_mesh);
+			zm->set_material(get_asset<vis::material>("z"));
+			transform& tr = zm->ref_transform();
+			p_cam->attach_spatial_component(move(zm));
+			tr.set_local_scale(xyz_scale);
+			tr.set_local_position({ 0,0,2.1f });
+		}
 	}
 
+	{ // Nutcracker
+		box<mesh_component> m = make_box<mesh_component>();
+		m->set_mesh(*get_asset<vis::mesh>("nutcracker"));
+		m->set_material(get_asset<vis::material>("nose"));
+	
+		transform& tr = m->ref_transform();
+		const float scale = 1;
+		tr.set_local_position({ -5, -5, 2 });
+		tr.set_local_scale({ 1, 1, 1 });
+		auto& ent = m_entities.emplace_back(make_box<entity>("Nutcracker", move(m)));
+	}
+	{ // Bed
+		box<mesh_component> m = make_box<mesh_component>();
+		m->set_mesh(*get_asset<vis::mesh>("bed"));
+		m->set_material(get_asset<vis::material>("grass"));
+	
+		transform& tr = m->ref_transform();
+		const float scale = 1;
+		tr.set_local_position({ -5, -5, 0.75f });
+		tr.set_local_scale({ 1, 1, 1 });
+		auto& ent = m_entities.emplace_back(make_box<entity>("Bed", move(m)));
+	}
 	//{
-	//	std::fstream out_file("content/nutcracker.mesh.fea");
-	//	json out{ {"data", import_vis_mesh("content_data/nutcracker.obj")}};
-	//	out_file << std::setw(4) << out;
+	//	std::fstream out_file("content/mound.mesh.fea");
+	//	json out{ {"data", import_vis_mesh("content_data/bear.obj")} };
+	//	out_file << std::setw(4) << out << std::endl;
 	//}
-	//{
-	//	std::fstream out_file("content/bed.mesh.fea");
-	//	json out{ {"data", import_vis_mesh("content_data/bed.obj")} };
-	//	out_file << std::setw(4) << out;
-	//}
-
-	//{ // Nutcracker
+	//{ // Bear
 	//	box<mesh_component> m = make_box<mesh_component>();
-	//	m->set_mesh(*get_asset<vis::mesh>("nutcracker"));
+	//	m->set_mesh(*get_asset<vis::mesh>("bear"));
 	//	m->set_material(get_asset<vis::material>("nose"));
 	//
 	//	transform& tr = m->ref_transform();
 	//	const float scale = 1;
-	//	tr.set_local_position({ -5, -5, 2 });
+	//	tr.set_local_position({ -4, -4, 1 });
 	//	tr.set_local_scale({ 1, 1, 1 });
-	//	auto& ent = m_entities.emplace_back(make_box<entity>("Nutcracker", move(m)));
+	//	auto& ent = m_entities.emplace_back(make_box<entity>("Bear", move(m)));
 	//}
-	//{ // Bed
-	//	box<mesh_component> m = make_box<mesh_component>();
-	//	m->set_mesh(*get_asset<vis::mesh>("bed"));
-	//	m->set_material(get_asset<vis::material>("grass"));
-	//
-	//	transform& tr = m->ref_transform();
-	//	const float scale = 1;
-	//	tr.set_local_position({ -5, -5, 0.75f });
-	//	tr.set_local_scale({ 1, 1, 1 });
-	//	auto& ent = m_entities.emplace_back(make_box<entity>("Bed", move(m)));
-	//}
-	
 	
 	
 	{ // Ground
@@ -364,10 +395,15 @@ void fields_engine::scene::startup() {
 		auto& ent = m_entities.emplace_back(make_box<entity>("Mound", move(m)));
 	}
 
-
+	//{
+	//	std::ofstream out_file("content/bear.mesh.fea");
+	//	json out{ {"data", import_vis_mesh("content_data/bear.obj")} };
+	//	out_file << std::setw(4) << out;
+	//}
 
 	{ // Direction Indicator
 		box<mesh_component> d = make_box<mesh_component>();
+		mesh_component* p_d = d.get();
 		d->set_mesh(cube_mesh);
 		d->set_material(get_asset<vis::material>("d"));
 		auto& ent = m_entities.emplace_back(make_box<entity>("Direction Indicator", move(d)));
@@ -375,33 +411,117 @@ void fields_engine::scene::startup() {
 		const float scale = 1;
 		constexpr vec3 off{ 10, 0, 3 };
 		dtr.set_local_position(off);
-	
 		{ // X
 			box<mesh_component> xm = make_box<mesh_component>();
 			xm->set_mesh(cube_mesh);
 			xm->set_material(get_asset<vis::material>("x"));
-			auto& xent = m_entities.emplace_back(make_box<entity>("Dx", move(xm)));
-			transform& tr = xent->ref_transform();
-			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
-			tr.set_local_position(off + dtr.get_local_right_vector());
+			transform& tr = xm->ref_transform();
+			p_d->attach_spatial_component(move(xm));
+			tr.set_local_scale(xyz_scale);
+			tr.set_local_position({ 2.1f,0,0 });;
 		}
 		{ // Y
 			box<mesh_component> ym = make_box<mesh_component>();
 			ym->set_mesh(cube_mesh);
 			ym->set_material(get_asset<vis::material>("y"));
-			auto& yent = m_entities.emplace_back(make_box<entity>("Yx", move(ym)));
-			transform& tr = yent->ref_transform();
-			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
-			tr.set_local_position(off + dtr.get_local_forward_vector());
+			transform& tr = ym->ref_transform();
+			p_d->attach_spatial_component(move(ym));
+			tr.set_local_scale(xyz_scale);
+			tr.set_local_position({ 0,2.1f,0 });
 		}
 		{ // Z
 			box<mesh_component> zm = make_box<mesh_component>();
 			zm->set_mesh(cube_mesh);
 			zm->set_material(get_asset<vis::material>("z"));
-			auto& zent = m_entities.emplace_back(make_box<entity>("Zx", move(zm)));
+			transform& tr = zm->ref_transform();
+			p_d->attach_spatial_component(move(zm));
+			tr.set_local_scale(xyz_scale);
+			tr.set_local_position({ 0,0,2.1f });
+		}
+
+
+		//{ // X
+		//	box<mesh_component> xm = make_box<mesh_component>();
+		//	xm->set_mesh(cube_mesh);
+		//	xm->set_material(get_asset<vis::material>("x"));
+		//	auto& xent = m_entities.emplace_back(make_box<entity>("Vx", move(xm)));
+		//	transform& tr = xent->ref_transform();
+		//	tr.set_local_scale(xyz_scale / 2.0f);
+		//	tr.set_local_position(off + dtr.get_local_forward_vector() * 4.0f);
+		//}
+		//{ // Y
+		//	box<mesh_component> ym = make_box<mesh_component>();
+		//	ym->set_mesh(cube_mesh);
+		//	ym->set_material(get_asset<vis::material>("y"));
+		//	auto& yent = m_entities.emplace_back(make_box<entity>("Vy", move(ym)));
+		//	transform& tr = yent->ref_transform();
+		//	tr.set_local_scale(xyz_scale / 2.0f);
+		//	tr.set_local_position(off + dtr.get_local_right_vector() * 4.0f);
+		//}
+		//{ // Z
+		//	box<mesh_component> zm = make_box<mesh_component>();
+		//	zm->set_mesh(cube_mesh);
+		//	zm->set_material(get_asset<vis::material>("z"));
+		//	auto& zent = m_entities.emplace_back(make_box<entity>("Vz", move(zm)));
+		//	transform& tr = zent->ref_transform();
+		//	tr.set_local_scale(xyz_scale / 2.0f);
+		//	tr.set_local_position(off + dtr.get_local_up_vector() * 4.0f);
+		//}
+
+		{ // X
+			box<mesh_component> xm = make_box<mesh_component>();
+			xm->set_mesh(cube_mesh);
+			xm->set_material(get_asset<vis::material>("x"));
+			auto& xent = m_entities.emplace_back(make_box<entity>("Wx", move(xm)));
+			transform& tr = xent->ref_transform();
+			tr.set_local_scale(xyz_scale / 4.0f);
+			tr.set_local_position(off + vec3{1,0,0} * 6.0f);
+		}
+		{ // Y
+			box<mesh_component> ym = make_box<mesh_component>();
+			ym->set_mesh(cube_mesh);
+			ym->set_material(get_asset<vis::material>("y"));
+			auto& yent = m_entities.emplace_back(make_box<entity>("Wy", move(ym)));
+			transform& tr = yent->ref_transform();
+			tr.set_local_scale(xyz_scale / 4.0f);
+			tr.set_local_position(off + vec3{ 0,1,0 } * 6.0f);
+		}
+		{ // Z
+			box<mesh_component> zm = make_box<mesh_component>();
+			zm->set_mesh(cube_mesh);
+			zm->set_material(get_asset<vis::material>("z"));
+			auto& zent = m_entities.emplace_back(make_box<entity>("Wz", move(zm)));
 			transform& tr = zent->ref_transform();
-			tr.set_local_scale({ 0.5f, 0.5f, 0.5f });
-			tr.set_local_position(off + dtr.get_local_up_vector());
+			tr.set_local_scale(xyz_scale / 4.0f);
+			tr.set_local_position(off + vec3{ 0,0,1 } * 6.0f);
+		}
+
+		{ // X
+			box<mesh_component> xm = make_box<mesh_component>();
+			xm->set_mesh(cube_mesh);
+			xm->set_material(get_asset<vis::material>("x"));
+			auto& xent = m_entities.emplace_back(make_box<entity>("Cx", move(xm)));
+			transform& tr = xent->ref_transform();
+			tr.set_local_scale(xyz_scale / 8.0f);
+			tr.set_local_position(off + glm::cross(dtr.get_local_forward_vector(), dtr.get_local_up_vector()) * 8.0f);
+		}
+		{ // Y
+			box<mesh_component> ym = make_box<mesh_component>();
+			ym->set_mesh(cube_mesh);
+			ym->set_material(get_asset<vis::material>("y"));
+			auto& yent = m_entities.emplace_back(make_box<entity>("Cy", move(ym)));
+			transform& tr = yent->ref_transform();
+			tr.set_local_scale(xyz_scale / 8.0f);
+			tr.set_local_position(off + glm::cross(dtr.get_local_up_vector(), dtr.get_local_right_vector()) * 8.0f);
+		}
+		{ // Z
+			box<mesh_component> zm = make_box<mesh_component>();
+			zm->set_mesh(cube_mesh);
+			zm->set_material(get_asset<vis::material>("z"));
+			auto& zent = m_entities.emplace_back(make_box<entity>("Cz", move(zm)));
+			transform& tr = zent->ref_transform();
+			tr.set_local_scale(xyz_scale / 8.0f);
+			tr.set_local_position(off + glm::cross(dtr.get_local_right_vector(), dtr.get_local_forward_vector()) * 8.0f);
 		}
 	}
 	m_entities.emplace_back(make_snowman());
