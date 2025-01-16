@@ -74,7 +74,7 @@ namespace fields_engine::vis {
 
 		primitive_type m_prim_type;
 		unsigned m_vao_id;
-		vector<vec4> m_positions;
+		vector<vec3> m_positions;
 		vector<vec2> m_tex_uvs;
 		vector<vec3> m_normals;
 		vector<vec3> m_tangents;

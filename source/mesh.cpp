@@ -13,13 +13,6 @@
 #include "error.h"
 #include "asset_manager.h"
 
-#include <fstream>
-#include "rapidobj/include/rapidobj/rapidobj.hpp"
-#include "vector_util.h"
-
-/// TODO: Remove
-#include <iostream>
-
 /*~-------------------------------------------------------------------------~*\
  * Mesh Definitions                                                          *
 \*~-------------------------------------------------------------------------~*/
@@ -93,13 +86,13 @@ namespace fields_engine::vis {
         glBindBuffer(GL_ARRAY_BUFFER, vert_buf);
         VIS_VERIFY;
         glBufferData(GL_ARRAY_BUFFER,
-            m_positions.size() * sizeof(vec4),
+            m_positions.size() * sizeof(vec3),
             glm::value_ptr(m_positions[0]), // float ptr
             GL_STATIC_DRAW);
         VIS_VERIFY;
         glEnableVertexAttribArray(0);
         VIS_VERIFY;
-        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
         VIS_VERIFY;
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         VIS_VERIFY;
@@ -188,11 +181,12 @@ namespace fields_engine::vis {
         m_tex_uvs.clear();
         m_triangles.clear();
         m_tangents.clear();
+        m_sections.clear();
     }
 
     void mesh::add_face(mat4 const& tr) {
         constexpr int num_corners = 4;
-        constexpr vec4 verts[num_corners]{
+        constexpr vec4 positions[num_corners]{
             { 0.5f,  0.5f, 0.5f, 1.0f},
             {-0.5f,  0.5f, 0.5f, 1.0f},
             {-0.5f, -0.5f, 0.5f, 1.0f},
@@ -211,7 +205,7 @@ namespace fields_engine::vis {
 
         const int n = int(m_positions.size());
         for (int i = 0; i < num_corners; ++i) {
-            m_positions.emplace_back(tr * verts[i]);
+            m_positions.emplace_back(tr * positions[i]);
             m_tex_uvs.emplace_back(tex_coords[i]);
         }
 
@@ -242,35 +236,34 @@ namespace fields_engine::vis {
         m_divisions = sides;
         m_height = height;
         const float half_height = height * 0.5f;
-        const vec4 top_mid_vert{ 0, 0, half_height, 1 };
-        const vec4 bot_mid_vert{ 0, 0, -half_height, 1 };
+        const vec3 top_mid_pos{ 0, 0, half_height};
+        const vec3 bot_mid_pos{ 0, 0, -half_height};
         constexpr vec3 top_norm{ 0, 0, 1 };
         constexpr vec3 bot_norm{ 0, 0, -1 };
 
-        vec4 prev_bot_vert{ 0, 0.5f, -half_height, 1 };
-        // Offset by 1 (same # iterations) to make use of prev_bot_vert
+        vec3 prev_bot_pos{ 0, 0.5f, -half_height};
+        // Offset by 1 (same # iterations) to make use of prev_bot_pos
         for (int i = 1; i < sides + 1; ++i) {
             constexpr float two_pi = glm::pi<float>() * 2.0f;
             const float percent = i / float(sides);
-            const vec4 bot_vert{
+            const vec3 bot_pos{
                 sin(percent * two_pi) * 0.5f,
                 cos(percent * two_pi) * 0.5f,
-                -half_height,
-                1
+                -half_height
             };
-            vec4 top_vert = bot_vert;
-            vec4 prev_top_vert = prev_bot_vert;
-            top_vert.z *= -1;
-            prev_top_vert.z *= -1;
+            vec3 top_pos = bot_pos;
+            vec3 prev_top_pos = prev_bot_pos;
+            top_pos.z *= -1;
+            prev_top_pos.z *= -1;
 
             // Side quad
 
             int n = int(m_positions.size());
 
-            m_positions.emplace_back(top_vert);
-            m_positions.emplace_back(bot_vert);
-            m_positions.emplace_back(prev_bot_vert);
-            m_positions.emplace_back(prev_top_vert);
+            m_positions.emplace_back(top_pos);
+            m_positions.emplace_back(bot_pos);
+            m_positions.emplace_back(prev_bot_pos);
+            m_positions.emplace_back(prev_top_pos);
 
             m_tex_uvs.emplace_back(1, 1);
             m_tex_uvs.emplace_back(1, 0);
@@ -278,7 +271,7 @@ namespace fields_engine::vis {
             m_tex_uvs.emplace_back(0, 1);
 
             // Vector from origin to midpoint of the outer quad is equal to the midpoint in this case
-            const vec3 out_norm = (prev_bot_vert + top_vert) * 0.5f;
+            const vec3 out_norm = (prev_bot_pos + top_pos) * 0.5f;
 
             m_normals.insert(m_normals.end(), 4, out_norm);
 
@@ -287,13 +280,13 @@ namespace fields_engine::vis {
             // Top of cylinder
 
             n = int(m_positions.size());
-            m_positions.emplace_back(top_vert);
-            m_positions.emplace_back(prev_top_vert);
-            m_positions.emplace_back(top_mid_vert);
+            m_positions.emplace_back(top_pos);
+            m_positions.emplace_back(prev_top_pos);
+            m_positions.emplace_back(top_mid_pos);
 
-            m_tex_uvs.emplace_back(top_vert + vec4{ 0.5f });
-            m_tex_uvs.emplace_back(prev_top_vert + vec4{ 0.5f });
-            m_tex_uvs.emplace_back(top_mid_vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(top_pos + vec3{ 0.5f });
+            m_tex_uvs.emplace_back(prev_top_pos + vec3{ 0.5f });
+            m_tex_uvs.emplace_back(top_mid_pos + vec3{ 0.5f });
 
             m_normals.insert(m_normals.end(), 3, top_norm);
 
@@ -303,19 +296,19 @@ namespace fields_engine::vis {
 
             n = int(m_positions.size());
 
-            m_positions.emplace_back(bot_vert);
-            m_positions.emplace_back(bot_mid_vert);
-            m_positions.emplace_back(prev_bot_vert);
+            m_positions.emplace_back(bot_pos);
+            m_positions.emplace_back(bot_mid_pos);
+            m_positions.emplace_back(prev_bot_pos);
 
-            m_tex_uvs.emplace_back(bot_vert + vec4{ 0.5f });
-            m_tex_uvs.emplace_back(bot_mid_vert + vec4{ 0.5f });
-            m_tex_uvs.emplace_back(prev_bot_vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(bot_pos + vec3{ 0.5f });
+            m_tex_uvs.emplace_back(bot_mid_pos + vec3{ 0.5f });
+            m_tex_uvs.emplace_back(prev_bot_pos + vec3{ 0.5f });
 
             m_normals.insert(m_normals.end(), 3, bot_norm);
 
             sequential_tris(n);
 
-            prev_bot_vert = bot_vert;
+            prev_bot_pos = bot_pos;
         }
     }
 
@@ -324,54 +317,54 @@ namespace fields_engine::vis {
         m_height = height;
         constexpr vec3 bot_norm{ 0, 0, -1 };
         const float half_height = height * 0.5f;
-        const vec4 bot_middle_vert{ 0, 0, -half_height, 1 };
-        const vec4 tip_vert{ 0, 0, half_height, 1 };
+        const vec3 bot_mid_pos{ 0, 0, -half_height};
+        const vec3 top_mid_pos{ 0, 0, half_height};
 
-        vec4 prev_vert{ 0, 0.5f, -half_height, 1 };
-        // Offset by 1 (same # iterations) to make use of prev_vert
+        vec3 prev_pos{ 0, 0.5f, -half_height};
+        // Offset by 1 (same # iterations) to make use of prev_pos
         for (int i = 1; i < sides + 1; ++i) {
             constexpr float two_pi = glm::pi<float>() * 2.0f;
             const float percent = i / float(sides);
-            const vec4 vert{
+            const vec3 pos{
                 sin(percent * two_pi) * 0.5f,
                 cos(percent * two_pi) * 0.5f,
-                -half_height,
-                1
+                -half_height
             };
 
             int n = int(m_positions.size());
             // Top triangle
-            m_positions.emplace_back(vert);
-            m_positions.emplace_back(prev_vert);
-            m_positions.emplace_back(tip_vert);
+            m_positions.emplace_back(pos);
+            m_positions.emplace_back(prev_pos);
+            m_positions.emplace_back(top_mid_pos);
 
-            m_tex_uvs.emplace_back(vert + vec4{ 0.5f });
-            m_tex_uvs.emplace_back(prev_vert + vec4{ 0.5f });
-            m_tex_uvs.emplace_back(tip_vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(pos + vec3{ 0.5f });
+            m_tex_uvs.emplace_back(prev_pos + vec3{ 0.5f });
+            m_tex_uvs.emplace_back(top_mid_pos + vec3{ 0.5f });
             
             //std::cout << "Pyramid [i=" << i << "/" << (sides + 1) << "]" << std::endl
-            //          << "Top UV [vert]:      " << vec2(vert) << std::endl
-            //          << "Top UV [prev_vert]: " << vec2(prev_vert) << std::endl
-            //          << "Top UV [tip_vert]:  " << vec2(tip_vert) << std::endl;
+            //          << "Top UV [pos]:      " << vec2(pos) << std::endl
+            //          << "Top UV [prev_pos]: " << vec2(prev_pos) << std::endl
+            //          << "Top UV [top_mid_pos]:  " << vec2(top_mid_pos) << std::endl;
 
-            const vec3 top_norm = glm::cross(vec3(tip_vert - prev_vert), vec3(vert - prev_vert));
+            const vec3 top_norm = 
+                glm::cross(vec3(top_mid_pos - prev_pos), vec3(pos - prev_pos));
             m_normals.insert(m_normals.end(), 3, top_norm);
 
             // Bottom triangle
-            m_positions.emplace_back(vert);
-            m_positions.emplace_back(bot_middle_vert);
-            m_positions.emplace_back(prev_vert);
+            m_positions.emplace_back(pos);
+            m_positions.emplace_back(bot_mid_pos);
+            m_positions.emplace_back(prev_pos);
 
-            m_tex_uvs.emplace_back(vert + vec4{ 0.5f });
-            m_tex_uvs.emplace_back(bot_middle_vert + vec4{ 0.5f });
-            m_tex_uvs.emplace_back(prev_vert + vec4{ 0.5f });
+            m_tex_uvs.emplace_back(pos + vec3{ 0.5f });
+            m_tex_uvs.emplace_back(bot_mid_pos + vec3{ 0.5f });
+            m_tex_uvs.emplace_back(prev_pos + vec3{ 0.5f });
 
             m_normals.insert(m_normals.end(), 3, bot_norm);
 
             sequential_tris(n);
             sequential_tris(n + 3);
 
-            prev_vert = vert;
+            prev_pos = pos;
         }
     }
 
@@ -438,11 +431,7 @@ void fields_engine::vis::from_json(json const& in, mesh& out) {
         json const& in_triangles = in["triangles"];
         json const& in_sections = in["sections"];
 
-        for (int i = 0; i < in_positions.size(); i += 3) {
-            out.m_positions.push_back(
-                vec4(in_positions[i], in_positions[i + 1], in_positions[i + 2], 1.0f)
-            );
-        }
+        copy_unflatten_vec_buf(in_positions, out.m_positions);
         copy_unflatten_vec_buf(in_normals, out.m_normals);
         copy_unflatten_vec_buf(in_tex_uvs, out.m_tex_uvs);
         copy_unflatten_vec_buf(in_tangents, out.m_tangents);

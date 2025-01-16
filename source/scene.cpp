@@ -120,6 +120,17 @@ fields_engine::scene::~scene() {}
 //}
 //#define SAVE_MESH(Name) save_mesh(Name, #Name);
 
+//{
+//	std::fstream out_file("content/nutcracker.mesh.fea");
+//	json out{ {"data", import_vis_mesh("content_data/nutcracker.obj")}};
+//	out_file << std::setw(4) << out;
+//}
+//{
+//	std::fstream out_file("content/bed.mesh.fea");
+//	json out{ {"data", import_vis_mesh("content_data/bed.obj")} };
+//	out_file << std::setw(4) << out;
+//}
+
 
 static fe::box<fe::entity> make_snowman() {
 	using namespace fields_engine;
@@ -290,29 +301,7 @@ void fields_engine::scene::startup() {
 		//p_root->attach_spatial_component(move(cam));
 		ent->attach_basic_component(make_box<camera_controller>());
 	}
-	{ // Nutcracker
-		box<mesh_component> m = make_box<mesh_component>();
-		m->set_mesh(*get_asset<vis::mesh>("nutcracker"));
-		m->set_material(get_asset<vis::material>("nose"));
-	
-		transform& tr = m->ref_transform();
-		const float scale = 1;
-		tr.set_local_position({ -5, -5, 2 });
-		tr.set_local_scale({ 1, 1, 1 });
-		auto& ent = m_entities.emplace_back(make_box<entity>("Nutcracker", move(m)));
-	}
-	{ // Bed
-		box<mesh_component> m = make_box<mesh_component>();
-		m->set_mesh(*get_asset<vis::mesh>("bed"));
-		m->set_material(get_asset<vis::material>("grass"));
-	
-		transform& tr = m->ref_transform();
-		const float scale = 1;
-		tr.set_local_position({ -5, -5, 0.75f });
-		tr.set_local_scale({ 1, 1, 1 });
-		auto& ent = m_entities.emplace_back(make_box<entity>("Bed", move(m)));
-	}
-	
+
 	//{
 	//	std::fstream out_file("content/nutcracker.mesh.fea");
 	//	json out{ {"data", import_vis_mesh("content_data/nutcracker.obj")}};
@@ -324,11 +313,36 @@ void fields_engine::scene::startup() {
 	//	out_file << std::setw(4) << out;
 	//}
 
+	//{ // Nutcracker
+	//	box<mesh_component> m = make_box<mesh_component>();
+	//	m->set_mesh(*get_asset<vis::mesh>("nutcracker"));
+	//	m->set_material(get_asset<vis::material>("nose"));
+	//
+	//	transform& tr = m->ref_transform();
+	//	const float scale = 1;
+	//	tr.set_local_position({ -5, -5, 2 });
+	//	tr.set_local_scale({ 1, 1, 1 });
+	//	auto& ent = m_entities.emplace_back(make_box<entity>("Nutcracker", move(m)));
+	//}
+	//{ // Bed
+	//	box<mesh_component> m = make_box<mesh_component>();
+	//	m->set_mesh(*get_asset<vis::mesh>("bed"));
+	//	m->set_material(get_asset<vis::material>("grass"));
+	//
+	//	transform& tr = m->ref_transform();
+	//	const float scale = 1;
+	//	tr.set_local_position({ -5, -5, 0.75f });
+	//	tr.set_local_scale({ 1, 1, 1 });
+	//	auto& ent = m_entities.emplace_back(make_box<entity>("Bed", move(m)));
+	//}
+	
+	
+	
 	{ // Ground
 		box<mesh_component> m = make_box<mesh_component>();
 		m->set_mesh(cube_mesh);
 		m->set_material(get_asset<vis::material>("grass"));
-
+	
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ 0, 0, -1 });
@@ -342,7 +356,7 @@ void fields_engine::scene::startup() {
 		m->set_material(get_asset<vis::material>("fround"));
 		//m->set_texture(make_box<vis::texture>("content/brick.png"));
 		//m->set_normal_texture(make_box<vis::texture>("content/brick_normal.png"));
-
+	
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ 0, 0, 0 });

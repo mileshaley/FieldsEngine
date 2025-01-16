@@ -9,7 +9,7 @@ uniform mat4 WorldView, WorldInverse, WorldProj, ModelTr, NormalTr;
 
 uniform vec3 Light, Ambient;
 
-in vec4 vertex;
+in vec3 vertex;
 in vec3 vertexNormal;
 in vec2 vertexTexture;
 in vec3 vertexTangent;
@@ -32,10 +32,11 @@ uniform vec3 lightPos;
 
 void main()
 {      
+    vec4 h_vertex = vec4(vertex, 1);
     // Needed to feed into the graphics pipeline
-    gl_Position = WorldProj*WorldView*ModelTr*vertex;
+    gl_Position = WorldProj*WorldView*ModelTr*h_vertex;
     
-    vec3 worldPos = (ModelTr*vertex).xyz;
+    vec3 worldPos = (ModelTr * h_vertex).xyz;
     
     vec3 eyePos = (WorldInverse*vec4(0,0,0,1)).xyz;
     // Outputs fed into frag shader
