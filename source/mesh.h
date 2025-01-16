@@ -60,13 +60,14 @@ namespace fields_engine::vis {
 
 
 	private: /// TODO: Remove variables in this section
+		/// Currently used for testing primitive mesh serialization options
 		int m_divisions;
 		float m_height;
 
 	private:
 		class section {
 		public:
-			int index;
+			int first_index;
 			int index_count;
 			int material_index;
 		};
@@ -78,7 +79,7 @@ namespace fields_engine::vis {
 		vector<vec3> m_normals;
 		vector<vec3> m_tangents;
 		// Indices within positions, normals, tangents, and texture uvs
-		vector<glm::vec<3, u32>> m_triangles;
+		vector<vec<3, u32>> m_triangles;
 
 		vector<section> m_sections;
 	}; // class mesh

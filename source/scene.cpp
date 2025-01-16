@@ -27,6 +27,8 @@
 #include "asset_loader.h"
 
 #include <iostream>
+#include "mesh_import.h"
+#include <fstream>
 
 fields_engine::scene::scene() {
 	m_shader = make_box<vis::shader>();
@@ -292,24 +294,36 @@ void fields_engine::scene::startup() {
 		box<mesh_component> m = make_box<mesh_component>();
 		m->set_mesh(*get_asset<vis::mesh>("nutcracker"));
 		m->set_material(get_asset<vis::material>("nose"));
-
+	
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ -5, -5, 2 });
 		tr.set_local_scale({ 1, 1, 1 });
-		auto& ent = m_entities.emplace_back(make_box<entity>("Object", move(m)));
+		auto& ent = m_entities.emplace_back(make_box<entity>("Nutcracker", move(m)));
 	}
 	{ // Bed
 		box<mesh_component> m = make_box<mesh_component>();
 		m->set_mesh(*get_asset<vis::mesh>("bed"));
 		m->set_material(get_asset<vis::material>("grass"));
-
+	
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ -5, -5, 0.75f });
 		tr.set_local_scale({ 1, 1, 1 });
-		auto& ent = m_entities.emplace_back(make_box<entity>("Object", move(m)));
+		auto& ent = m_entities.emplace_back(make_box<entity>("Bed", move(m)));
 	}
+	
+	//{
+	//	std::fstream out_file("content/nutcracker.mesh.fea");
+	//	json out{ {"data", import_vis_mesh("content_data/nutcracker.obj")}};
+	//	out_file << std::setw(4) << out;
+	//}
+	//{
+	//	std::fstream out_file("content/bed.mesh.fea");
+	//	json out{ {"data", import_vis_mesh("content_data/bed.obj")} };
+	//	out_file << std::setw(4) << out;
+	//}
+
 	{ // Ground
 		box<mesh_component> m = make_box<mesh_component>();
 		m->set_mesh(cube_mesh);

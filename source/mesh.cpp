@@ -72,7 +72,7 @@ namespace fields_engine::vis {
                 glDrawElements(GL_TRIANGLES,
                     GLsizei(section.index_count * 3),
                     GL_UNSIGNED_INT,
-                    reinterpret_cast<void*>(section.index * 4llu)
+                    reinterpret_cast<void*>(section.first_index * 3llu)
                 );
                 VIS_VERIFY;
             }
@@ -389,6 +389,21 @@ namespace fields_engine::vis {
     }
 } // namespace fields_engine::vis
 
+namespace fields_engine::vis {
+    template<glm::length_t L, typename T, glm::qualifier Q>
+    static void copy_unflatten_vec_buf(json const& in, vector<vec<L,T,Q>>& out) {
+        for (int i = 0; i < in.size(); i += L) {
+            if constexpr (L == 2) {
+                out.push_back(vec<L, T, Q>(in[i], in[i + 1]));
+            } else if constexpr (L == 3) {
+                out.push_back(vec<L, T, Q>(in[i], in[i + 1], in[i + 2]));
+            } else if constexpr (L == 4) {
+                out.push_back(vec<L, T, Q>(in[i], in[i + 1], in[i + 2], in[1 + 3]));
+            }
+        }
+    }
+} // namespace fields_engine::vis
+
 void fields_engine::vis::from_json(json const& in, mesh& out) {
     out.reset();
 
@@ -415,50 +430,30 @@ void fields_engine::vis::from_json(json const& in, mesh& out) {
 
         out.generate();
     } else {
-        auto path_it = in.find("path");
-        if (path_it == in.end()) { return; }
+        
+        json const& in_positions = in["positions"];
+        json const& in_normals = in["normals"];
+        json const& in_tex_uvs = in["tex_uvs"];
+        json const& in_tangents = in["tangents"]; /// Empty for now
+        json const& in_triangles = in["triangles"];
+        json const& in_sections = in["sections"];
 
-        //std::fstream data_file{ string(*path_it) };
-        rapidobj::Result result = rapidobj::ParseFile(*path_it);
-        if (result.error) {
-            std::cerr << result.error.code.message() << '\n';
-            return;
+        for (int i = 0; i < in_positions.size(); i += 3) {
+            out.m_positions.push_back(
+                vec4(in_positions[i], in_positions[i + 1], in_positions[i + 2], 1.0f)
+            );
         }
-        if (!rapidobj::Triangulate(result)) {
-            return;
-        }
-        auto& verts = result.attributes.positions;
-        auto& normals = result.attributes.normals;
-        auto& tex_uvs = result.attributes.texcoords;
-        auto& shapes = result.shapes;
-        for (auto const& shape : shapes) {
-            auto const& indices = shape.mesh.indices;
-            const int section_idx = int(out.m_triangles.size());
-            for (size_t i = 0; i < indices.size(); i += 3) {
-                const int n = int(out.m_positions.size());
-                for (int j = 0; j < 3; ++j) { // Each triangle index
-                    rapidobj::Index const& index = indices[j + i];
-                    const vec3 vert = vec_y_up_to_z_up(reinterpret_cast<vec3&>(verts[index.position_index * 3ll]));
-                    out.m_positions.emplace_back(vert, 1.0f);
-                    if (index.normal_index == -1) {
-                        // Default to normals facing directly out of vertices
-                        out.m_normals.emplace_back(vert);
-                    } else {
-                        vec3 norm = vec_y_up_to_z_up(reinterpret_cast<vec3&>(normals[index.normal_index * 3ll]));
-                        out.m_normals.emplace_back(norm);
-                    }
-                    if (index.texcoord_index == -1) {
-                        // Default to normals mapped directly to xy of vertices
-                        out.m_tex_uvs.emplace_back(vert);
-                    } else {
-                        vec2 const* p_tex_uv = reinterpret_cast<vec2*>(&tex_uvs[index.texcoord_index * 3ll]);
-                        out.m_tex_uvs.emplace_back(*p_tex_uv);
-                    }
-                }
-                out.sequential_tris(n);
-            }
-            // We assume all material ids are the same and the mesh has been sectioned by material
-            out.m_sections.push_back( { section_idx, int(out.m_triangles.size()), shape.mesh.material_ids[0]});
+        copy_unflatten_vec_buf(in_normals, out.m_normals);
+        copy_unflatten_vec_buf(in_tex_uvs, out.m_tex_uvs);
+        copy_unflatten_vec_buf(in_tangents, out.m_tangents);
+        copy_unflatten_vec_buf(in_triangles, out.m_triangles);
+
+        for (int i = 0; i < in_sections.size(); ++i) {
+            out.m_sections.push_back(mesh::section{
+               in_sections[i]["first_index"],
+               in_sections[i]["index_count"],
+               in_sections[i]["material_index"]
+            });
         }
 
         out.generate();
