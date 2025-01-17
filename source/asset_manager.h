@@ -13,6 +13,8 @@
 #include "asset.h"
 #include "context.h" // For convenience functions
 
+#include <filesystem>
+
 /*~-------------------------------------------------------------------------~*\
  * Asset Manager Class                                                       *
 \*~-------------------------------------------------------------------------~*/
@@ -52,6 +54,10 @@ namespace fields_engine {
 
 	private:
 		unordered_map<string, asset> m_assets;
+
+#if EDITOR
+
+#endif // EDITOR
 	};
 
 } // namespace fields_engine

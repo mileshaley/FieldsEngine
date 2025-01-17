@@ -387,9 +387,14 @@ void fields_engine::scene::startup() {
 		auto& ent = m_entities.emplace_back(make_box<entity>("Bed", move(m)));
 	}
 	//{
-	//	std::fstream out_file("content/mound.mesh.fea");
-	//	json out{ {"data", import_vis_mesh("content_data/bear.obj")} };
-	//	out_file << std::setw(4) << out << std::endl;
+	//	std::ofstream out_file("content/grphone.txt");
+	//	
+	//	out_file 
+	//		<< std::setw(4) 
+	//		<< json{ {"data", std::vector<vec4>{ vec4(1,2,3,4), vec4(1,2,3,4) , vec4(1,2,3,4) }}}
+	//		<< std::endl;
+	//	out_file.close();
+	//
 	//}
 	//{ // Bear
 	//	box<mesh_component> m = make_box<mesh_component>();
@@ -569,7 +574,7 @@ void fields_engine::scene::tick(float dt) {
 	if (context<input_manager>().was_button_triggered(GLFW_KEY_C)) {
 		for (int i = 0; i < m_entities.size(); ++i) {
 			if (m_entities[i]->get_name().find("nowm") != string::npos) {
-				for (int j = i + 1; j < m_entities.size(); ++j) {
+				for (int j = 0; j < m_entities.size(); ++j) {
 					if (m_entities[j]->get_name().find("amera") != string::npos) {
 						auto& new_ent = m_entities.emplace_back(make_box<entity>(*m_entities[i]));
 						new_ent->ref_transform().set_local_position(m_entities[j]->ref_transform().get_local_position());

@@ -212,12 +212,12 @@ fe::quat const& fields_engine::transform::get_local_rotation() const {
 	return m_data.rotation;
 }
 
-fe::vec3 fields_engine::transform::get_local_forward_vector() const {
-	return m_data.rotation * vec3{ 0, 1, 0 };
-}
-
 fe::vec3 fields_engine::transform::get_local_right_vector() const {
 	return m_data.rotation * vec3{ 1, 0, 0 };
+}
+
+fe::vec3 fields_engine::transform::get_local_forward_vector() const {
+	return m_data.rotation * vec3{ 0, 1, 0 };
 }
 
 fe::vec3 fields_engine::transform::get_local_up_vector() const {
@@ -240,9 +240,9 @@ fe::vec3 fields_engine::matrix_decompose_rotation(mat4 const& mat) {
 fe::vec3 fields_engine::matrix_decompose_rotation(mat4 const& mat, vec3 const& scale) {
 	/// TODO: Support decomposing into quaternion
 	const mat3 rot_mat{
-		(vec3 const&)mat[0] / scale.x,
-		(vec3 const&)mat[1] / scale.y,
-		(vec3 const&)mat[2] / scale.z,
+		static_cast<vec3 const&>(mat[0]) / scale.x,
+		static_cast<vec3 const&>(mat[1]) / scale.y,
+		static_cast<vec3 const&>(mat[2]) / scale.z,
 	};
 	const vec2 rm12_22{ rot_mat[1][2], rot_mat[2][2] };
 	return vec3{

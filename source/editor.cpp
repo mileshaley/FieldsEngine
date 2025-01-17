@@ -69,7 +69,7 @@ fields_engine::editor::editor(window& win)
 
 	reset_style();
 
-	ImGui::SetNextWindowSize({ 300.0f, 500.0f });
+	//ImGui::SetNextWindowSize({ 300.0f, 500.0f });
 
 	add_window(make_box<editor_window>(
 		"Root", std::bind(&editor::root_window, this), ICON_FACE_SMILE)).close();

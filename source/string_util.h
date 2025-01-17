@@ -18,6 +18,6 @@
 
 namespace fields_engine {
 
-	
+	string ellipsis_compress_middle(string_view str, int char_max);
 
 } // namespace fields_engine
