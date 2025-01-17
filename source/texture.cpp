@@ -81,6 +81,10 @@ namespace fields_engine::vis {
         return m_size;
     }
 
+    u32 texture::get_id() const {
+        return m_tex_id;
+    }
+
     void texture::set_unit(int new_unit_num) {
         m_active_unit = new_unit_num;
     }

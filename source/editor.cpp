@@ -263,6 +263,7 @@ bool fields_engine::editor::game_window() {
 	ImGui::Image(
 		(ImTextureID)(i64)m_dual_fb.get_texture_id(),
 		{ size },
+	// Flip the uvs for ImGui
 		{ 0, 1 },
 		{ 1, 0 }
 	);

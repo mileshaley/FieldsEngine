@@ -22,7 +22,9 @@ namespace fields_engine::vis {
 
 		ivec2 get_size() const;
 
-		// Must check that new_unit_num is between 0 and 31
+		u32 get_id() const;
+
+		// User must check that new_unit_num is between 0 and 31
 		void set_unit(int new_unit_num);
 		int get_unit() const;
 
