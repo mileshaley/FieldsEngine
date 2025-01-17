@@ -279,7 +279,42 @@ static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 }
 
 void fields_engine::scene::startup() {
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> pos_range(-50, 50);
+	std::uniform_real_distribution<> scale_range(0.8, 1.6);
 
+	// Trees
+	for (int i = 0; i < 20; ++i) {
+		auto ent = make_tree();
+		ent->ref_name() += std::to_string(i);
+		transform& tr = ent->ref_transform();
+		const float scale = 1;//scale_range(gen);
+		tr.set_local_scale(vec3{ scale, scale, scale });
+		const float z = tr.get_world_position().z + 4;
+		vec3 pos{};
+		while (true) {
+			pos = { pos_range(gen), pos_range(gen), z };
+			if (glm::length(pos) < 6) {
+				continue;
+			}
+			bool collision = false;
+			for (auto const& e : m_entities) {
+				if (e->get_name().find("Tree") != string::npos) {
+					if (glm::distance(e->ref_transform().get_world_position(), pos) < 30) {
+						collision = true;
+						break;
+					}
+				}
+			}
+			if (!collision) {
+				break;
+			}
+		}
+		tr.set_local_position(pos);
+
+		m_entities.emplace_back(move(ent));
+	}
 	vis::mesh const& cube_mesh = *get_asset<vis::mesh>("cube");
 	constexpr vec3 xyz_scale{ 2,2,2 };
 	{ // Camera
@@ -395,12 +430,6 @@ void fields_engine::scene::startup() {
 		auto& ent = m_entities.emplace_back(make_box<entity>("Mound", move(m)));
 	}
 
-	//{
-	//	std::ofstream out_file("content/bear.mesh.fea");
-	//	json out{ {"data", import_vis_mesh("content_data/bear.obj")} };
-	//	out_file << std::setw(4) << out;
-	//}
-
 	{ // Direction Indicator
 		box<mesh_component> d = make_box<mesh_component>();
 		mesh_component* p_d = d.get();
@@ -440,33 +469,33 @@ void fields_engine::scene::startup() {
 		}
 
 
-		//{ // X
-		//	box<mesh_component> xm = make_box<mesh_component>();
-		//	xm->set_mesh(cube_mesh);
-		//	xm->set_material(get_asset<vis::material>("x"));
-		//	auto& xent = m_entities.emplace_back(make_box<entity>("Vx", move(xm)));
-		//	transform& tr = xent->ref_transform();
-		//	tr.set_local_scale(xyz_scale / 2.0f);
-		//	tr.set_local_position(off + dtr.get_local_forward_vector() * 4.0f);
-		//}
-		//{ // Y
-		//	box<mesh_component> ym = make_box<mesh_component>();
-		//	ym->set_mesh(cube_mesh);
-		//	ym->set_material(get_asset<vis::material>("y"));
-		//	auto& yent = m_entities.emplace_back(make_box<entity>("Vy", move(ym)));
-		//	transform& tr = yent->ref_transform();
-		//	tr.set_local_scale(xyz_scale / 2.0f);
-		//	tr.set_local_position(off + dtr.get_local_right_vector() * 4.0f);
-		//}
-		//{ // Z
-		//	box<mesh_component> zm = make_box<mesh_component>();
-		//	zm->set_mesh(cube_mesh);
-		//	zm->set_material(get_asset<vis::material>("z"));
-		//	auto& zent = m_entities.emplace_back(make_box<entity>("Vz", move(zm)));
-		//	transform& tr = zent->ref_transform();
-		//	tr.set_local_scale(xyz_scale / 2.0f);
-		//	tr.set_local_position(off + dtr.get_local_up_vector() * 4.0f);
-		//}
+		{ // X
+			box<mesh_component> xm = make_box<mesh_component>();
+			xm->set_mesh(cube_mesh);
+			xm->set_material(get_asset<vis::material>("x"));
+			auto& xent = m_entities.emplace_back(make_box<entity>("Vx", move(xm)));
+			transform& tr = xent->ref_transform();
+			tr.set_local_scale(xyz_scale / 2.0f);
+			tr.set_local_position(off + dtr.get_local_right_vector() * 4.0f);
+		}
+		{ // Y
+			box<mesh_component> ym = make_box<mesh_component>();
+			ym->set_mesh(cube_mesh);
+			ym->set_material(get_asset<vis::material>("y"));
+			auto& yent = m_entities.emplace_back(make_box<entity>("Vy", move(ym)));
+			transform& tr = yent->ref_transform();
+			tr.set_local_scale(xyz_scale / 2.0f);
+			tr.set_local_position(off + dtr.get_local_forward_vector() * 4.0f);
+		}
+		{ // Z
+			box<mesh_component> zm = make_box<mesh_component>();
+			zm->set_mesh(cube_mesh);
+			zm->set_material(get_asset<vis::material>("z"));
+			auto& zent = m_entities.emplace_back(make_box<entity>("Vz", move(zm)));
+			transform& tr = zent->ref_transform();
+			tr.set_local_scale(xyz_scale / 2.0f);
+			tr.set_local_position(off + dtr.get_local_up_vector() * 4.0f);
+		}
 
 		{ // X
 			box<mesh_component> xm = make_box<mesh_component>();
@@ -528,42 +557,7 @@ void fields_engine::scene::startup() {
 
 
 
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> pos_range(-50, 50);
-	std::uniform_real_distribution<> scale_range(0.8, 1.6);
 
-	// Trees
-	for (int i = 0; i < 20; ++i) {
-		auto ent = make_tree();
-		ent->ref_name() += std::to_string(i);
-		transform& tr = ent->ref_transform();
-		const float scale = 1;//scale_range(gen);
-		tr.set_local_scale(vec3{ scale, scale, scale });
-		const float z  = tr.get_world_position().z + 4;
-		vec3 pos{};
-		while (true) {
-			pos = { pos_range(gen), pos_range(gen), z };
-			if (glm::length(pos) < 6) {
-				continue;
-			}
-			bool collision = false;
-			for (auto const& e : m_entities) {
-				if (e->get_name().find("Tree") != string::npos) {
-					if (glm::distance(e->ref_transform().get_world_position(), pos) < 30) {
-						collision = true;
-						break;
-					}
-				}
-			}
-			if (!collision) {
-				break;
-			}
-		}
-		tr.set_local_position(pos);
-	
-		m_entities.emplace_back(move(ent));
-	}
 
 	for (box<entity> const& ent : m_entities) {
 		ent->init();
@@ -635,9 +629,18 @@ void fields_engine::scene::draw() const {
 	glUniform3fv(loc, 1, glm::value_ptr(m_light_color));
 	VIS_VERIFY;
 
+	//bool after = false;
+	//glDepthRange(0.001, 1.0);
 	for (box<entity> const& ent : m_entities) {
+		//if (!after && ent->get_name() == "Direction Indicator") {
+		//	glDepthRange(0, 0.001);
+		//
+		//	glClear(GL_DEPTH_BUFFER_BIT);
+		//	after = true;
+		//}
 		ent->draw(*m_shader);
 	}
+	//glDepthRange(0, 1.0);
 
 	m_shader->unuse();
 }
