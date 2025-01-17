@@ -13,6 +13,7 @@
 
 
 #include <iostream>
+#include "texture.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Asset Definitions                                                         *
@@ -100,4 +101,16 @@ fe::string const& fields_engine::asset::get_name() const {
 
 fe::type_name const& fields_engine::asset::get_type() const {
 	return m_type;
+}
+
+
+
+void* fields_engine::asset::get_thumbnail() const {
+	/// TODO: Put this elsewhere
+	if (m_type == "texture") {
+		if (vis::texture const* tex = get_data<vis::texture>()) {
+			return reinterpret_cast<void*>(static_cast<intptr_t>(tex->get_id()));
+		}
+	}
+	return nullptr;
 }

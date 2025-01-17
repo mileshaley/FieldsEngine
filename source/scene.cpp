@@ -335,33 +335,33 @@ void fields_engine::scene::startup() {
 		ent->attach_basic_component(make_box<camera_controller>());
 
 
-		{ // X
-			box<mesh_component> xm = make_box<mesh_component>();
-			xm->set_mesh(cube_mesh);
-			xm->set_material(get_asset<vis::material>("x"));
-			transform& tr = xm->ref_transform();
-			p_cam->attach_spatial_component(move(xm));
-			tr.set_local_scale(xyz_scale);
-			tr.set_local_position({ 2.1f,0,0 });;
-		}
-		{ // Y
-			box<mesh_component> ym = make_box<mesh_component>();
-			ym->set_mesh(cube_mesh);
-			ym->set_material(get_asset<vis::material>("y"));
-			transform& tr = ym->ref_transform();
-			p_cam->attach_spatial_component(move(ym));
-			tr.set_local_scale(xyz_scale);
-			tr.set_local_position({ 0,2.1f,0 });
-		}
-		{ // Z
-			box<mesh_component> zm = make_box<mesh_component>();
-			zm->set_mesh(cube_mesh);
-			zm->set_material(get_asset<vis::material>("z"));
-			transform& tr = zm->ref_transform();
-			p_cam->attach_spatial_component(move(zm));
-			tr.set_local_scale(xyz_scale);
-			tr.set_local_position({ 0,0,2.1f });
-		}
+		//{ // X
+		//	box<mesh_component> xm = make_box<mesh_component>();
+		//	xm->set_mesh(cube_mesh);
+		//	xm->set_material(get_asset<vis::material>("x"));
+		//	transform& tr = xm->ref_transform();
+		//	p_cam->attach_spatial_component(move(xm));
+		//	tr.set_local_scale(xyz_scale);
+		//	tr.set_local_position({ 2.1f,0,0 });;
+		//}
+		//{ // Y
+		//	box<mesh_component> ym = make_box<mesh_component>();
+		//	ym->set_mesh(cube_mesh);
+		//	ym->set_material(get_asset<vis::material>("y"));
+		//	transform& tr = ym->ref_transform();
+		//	p_cam->attach_spatial_component(move(ym));
+		//	tr.set_local_scale(xyz_scale);
+		//	tr.set_local_position({ 0,2.1f,0 });
+		//}
+		//{ // Z
+		//	box<mesh_component> zm = make_box<mesh_component>();
+		//	zm->set_mesh(cube_mesh);
+		//	zm->set_material(get_asset<vis::material>("z"));
+		//	transform& tr = zm->ref_transform();
+		//	p_cam->attach_spatial_component(move(zm));
+		//	tr.set_local_scale(xyz_scale);
+		//	tr.set_local_position({ 0,0,2.1f });
+		//}
 	}
 
 	{ // Nutcracker

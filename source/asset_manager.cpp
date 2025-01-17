@@ -72,29 +72,45 @@ fe::asset* fields_engine::asset_manager::add_asset(asset&& new_asset) {
 
 #if EDITOR
 bool fields_engine::asset_manager::content_browser_window() {
-	
+	constexpr ImVec2 entry_size{ 80, 80 };
+	constexpr ImVec2 thumbnail_size{ 60, 60 };
+	constexpr ImVec2 thumbnail_margin{
+		(entry_size.x - thumbnail_size.x) / 2,
+		2
+	};
+	constexpr float pad_between = 15;
+	constexpr float offscreen_tolerance = 0.1f;
+	constexpr ImVec2 text_offset{
+		2,
+		thumbnail_margin.y * 2 + thumbnail_size.y
+	};
+	constexpr ImGuiSelectableFlags entry_selectable_flags
+		= ImGuiSelectableFlags_AllowDoubleClick
+		| ImGuiSelectableFlags_Disabled;
+
 	if (ImGui::BeginChild("content_browser_child")) {
-		constexpr ImVec2 entry_size(75, 75);
-		constexpr float between_pad = 15;
-		constexpr float offscreen_tolerance = 0.1f;
 		const ImVec2 max = ImGui::GetContentRegionMax();
-		const ImVec2 avail = ImGui::GetContentRegionAvail();
-		
+
 		for (auto const& asset : m_assets) {
-			ImVec2 cursor_pos = ImGui::GetCursorPos();
+			const ImVec2 cursor_pos = ImGui::GetCursorPos();
 			ImGui::PushID(&asset.second);
-			ImGui::Selectable(""/*(asset.first + asset.second.get_type()).c_str()*/, false, 0, entry_size);
-			ImGui::SetCursorPos(cursor_pos);
+			ImGui::Selectable("", false, entry_selectable_flags, entry_size);
+			ImGui::SetCursorPos(cursor_pos + text_offset);
 			ImGui::Text(ellipsis_compress_middle(asset.first, 10).c_str());
+			if (void* texture = asset.second.get_thumbnail()) {
+				ImGui::SetCursorPos(cursor_pos + thumbnail_margin);
+				// For some reason ImGui textures are flipped, so we adjust uvs manually here
+				ImGui::Image(texture, thumbnail_size, ImVec2(0,1), ImVec2(1,0));
+			}
 			// We want to check if the next item will be put offscreen
-			if (cursor_pos.x + (2.0f - offscreen_tolerance) * entry_size.x + between_pad > max.x) {
+			if (cursor_pos.x + (2.0f - offscreen_tolerance) * entry_size.x + pad_between > max.x) {
 				// Start a new line
-				ImGui::SetCursorPosY(cursor_pos.y + entry_size.y + between_pad);
+				ImGui::SetCursorPosY(cursor_pos.y + entry_size.y + pad_between);
 			} else {
 				// Continue with next item horizontally
-				ImGui::SetCursorPos(cursor_pos + ImVec2(entry_size.x + between_pad, 0));
+				ImGui::SetCursorPos(cursor_pos + ImVec2(entry_size.x + pad_between, 0));
 			}
-			ImGui::PopID();
+			ImGui::PopID(); // asset address
 		}
 	}
 	ImGui::EndChild();
