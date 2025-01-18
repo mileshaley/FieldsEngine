@@ -13,7 +13,11 @@
 #include "asset.h"
 #include "context.h" // For convenience functions
 
-#include <filesystem>
+///#include <filesystem>
+
+namespace fields_engine::vis {
+	class texture;
+} // namespace fields_engine::vis
 
 /*~-------------------------------------------------------------------------~*\
  * Asset Manager Class                                                       *
@@ -24,7 +28,7 @@ namespace fields_engine {
 	class asset_manager {
 	public:
 		asset_manager();
-		~asset_manager() = default;
+		~asset_manager();
 
 
 
@@ -56,7 +60,9 @@ namespace fields_engine {
 		unordered_map<string, asset> m_assets;
 
 #if EDITOR
-
+		/// TODO: Remove
+		box<vis::texture> m_mesh_thumbnail = nullptr;
+		box<vis::texture> m_missing_thumbnail = nullptr;
 #endif // EDITOR
 	};
 

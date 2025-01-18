@@ -51,7 +51,9 @@ namespace fields_engine {
 			return reinterpret_cast<T*>(m_data);
 		}
 
+#if EDITOR
 		void* get_thumbnail() const;
+#endif // EDITOR
 
 	private:
 		/// TODO: Use a safer, more C++-like mechanism to store data

@@ -104,7 +104,7 @@ fe::type_name const& fields_engine::asset::get_type() const {
 }
 
 
-
+#if EDITOR
 void* fields_engine::asset::get_thumbnail() const {
 	/// TODO: Put this elsewhere
 	if (m_type == "texture") {
@@ -114,3 +114,4 @@ void* fields_engine::asset::get_thumbnail() const {
 	}
 	return nullptr;
 }
+#endif // EDITOR
