@@ -321,11 +321,11 @@ void fields_engine::editor::reset_style() const {
 	style.ScrollbarSize		= 15;
 	style.GrabMinSize		= 10;
 	static constexpr float borderSize = 0.0f;
-	style.WindowBorderSize	= 0;// = borderSize;
+	style.WindowBorderSize	= borderSize;
 	style.ChildBorderSize	= borderSize;
 	style.PopupBorderSize	= borderSize;
 	style.FrameBorderSize	= borderSize;
-	style.TabBorderSize     = 0; //borderSize;
+	style.TabBorderSize     = borderSize;
 	static constexpr float rounding = 0.0f;
 	style.WindowRounding	= rounding;
 	style.ChildRounding		= rounding;

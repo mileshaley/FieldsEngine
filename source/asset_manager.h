@@ -50,7 +50,7 @@ namespace fields_engine {
 		// Add a new asset
 		// Returns a pointer to the moved asset on success
 		// Returns nullptr if asset with that name already exists
-		fe::asset* add_asset(asset&& new_asset);
+		asset* add_asset(asset&& new_asset);
 
 #if EDITOR
 		bool content_browser_window();
@@ -60,9 +60,21 @@ namespace fields_engine {
 		unordered_map<string, asset> m_assets;
 
 #if EDITOR
-		/// TODO: Remove
+		/// TODO: Find a better way to do this. Perhaps keep a working tree
+		/// structure of directory and update when needed
+		enum class file_type { asset, folder, other };
+		struct file_entry {
+			string name;
+			file_type type;
+		};
+		vector<file_entry> m_browser_entries;
+		string browser_current_directory = "content/";
+
+		/// TODO: Relocate
 		box<vis::texture> m_mesh_thumbnail = nullptr;
+		box<vis::texture> m_material_thumbnail = nullptr;
 		box<vis::texture> m_missing_thumbnail = nullptr;
+		box<vis::texture> m_folder_thumbnail = nullptr;
 #endif // EDITOR
 	};
 
