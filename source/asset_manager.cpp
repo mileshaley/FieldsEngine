@@ -28,17 +28,6 @@ fields_engine::asset_manager::asset_manager()
 fields_engine::asset_manager::~asset_manager() = default;
 
 bool fields_engine::asset_manager::startup() {
-#if EDITOR
-	context<editor>().add_window(make_box<editor_window>(
-		"Content Browser",
-		std::bind(&asset_manager::content_browser_window, this),
-		ICON_FOLDER
-	));
-	m_missing_thumbnail = make_box<vis::texture>("assets/missing_asset_thumbnail.png");
-	m_mesh_thumbnail = make_box<vis::texture>("assets/mesh_asset_thumbnail.png");
-
-#endif // EDITOR
-
 	std::filesystem::recursive_directory_iterator content_directory("content");
 	for (auto const& file : content_directory) {
 		std::filesystem::path in_path = file;
@@ -52,6 +41,18 @@ bool fields_engine::asset_manager::startup() {
 		);
 	}
 
+#if EDITOR
+	context<editor>().add_window(make_box<editor_window>(
+		"Content Browser",
+		std::bind(&asset_manager::content_browser_window, this),
+		ICON_FOLDER
+	));
+	m_missing_thumbnail = make_box<vis::texture>("assets/missing_asset_thumbnail.png");
+	m_mesh_thumbnail = make_box<vis::texture>("assets/mesh_asset_thumbnail.png");
+	m_material_thumbnail = make_box<vis::texture>("assets/material_asset_thumbnail.png");
+	m_folder_thumbnail = make_box<vis::texture>("assets/folder_thumbnail.png");
+	refresh_content_browser();
+#endif // EDITOR
 
 	return true;
 }
@@ -60,6 +61,8 @@ bool fields_engine::asset_manager::shutdown() {
 #if EDITOR
 	m_missing_thumbnail.reset();
 	m_mesh_thumbnail.reset();
+	m_material_thumbnail.reset();
+	m_folder_thumbnail.reset();
 #endif // EDITOR
 	m_assets.clear();
 	return true;
@@ -110,24 +113,49 @@ bool fields_engine::asset_manager::content_browser_window() {
 	if (ImGui::BeginChild("content_browser_child")) {
 		const ImVec2 max = ImGui::GetContentRegionMax();
 
-		for (auto const& asset : m_assets) {
+		for (auto const& entry : m_browser_entries) {
 			const ImVec2 cursor_pos = ImGui::GetCursorPos();
-			ImGui::PushID(&asset.second);
+			/// TODO: this doesn't make sense, fix it
+			ImGui::PushID(&entry);
+			//ImGui::Button();
 			//if (ImGui::Selectable("", false, entry_selectable_flags, entry_size)) {}
 			ImGui::SetCursorPos(cursor_pos + type_text_offset);
-			ImGui::TextColored(
-				ImVec4(1,1,1,0.65f), 
-				asset.second.get_type().c_str()
-			);
+
+			asset* asset = nullptr;
+			if (entry.type == file_type::asset) {
+				asset = &m_assets.at(entry.name);
+				ImGui::TextColored(
+					ImVec4(1, 1, 1, 0.65f),
+					asset->get_type().c_str()
+				);
+			} else if (entry.type == file_type::other) {
+				ImGui::TextColored(
+					ImVec4(1, 1, 1, 0.65f),
+					"unknown"
+				);
+			}
+
 			ImGui::SetCursorPos(cursor_pos + name_text_offset);
-			ImGui::Text(ellipsis_compress_middle(asset.first, 10).c_str());
-			void* thumbnail = asset.second.get_thumbnail();
-			if (!thumbnail) {
-				if (asset.second.get_type() == "mesh") {
-					thumbnail = reinterpret_cast<void*>((i64)m_mesh_thumbnail->get_id());
-				} else {
-					thumbnail = reinterpret_cast<void*>((i64)m_missing_thumbnail->get_id());
+			ImGui::Text(ellipsis_compress_middle(entry.name, 10).c_str());
+
+			void* thumbnail = nullptr;
+			if (entry.type == file_type::asset) {
+				thumbnail = asset->get_thumbnail();
+				if (!thumbnail) {
+					if (asset->get_type() == "mesh") {
+						thumbnail = m_mesh_thumbnail->get_void_ptr_id();
+					}
+					else if (asset->get_type() == "material") {
+						thumbnail = m_material_thumbnail->get_void_ptr_id();
+					}
+					else {
+						thumbnail = m_missing_thumbnail->get_void_ptr_id();
+					}
 				}
+			} else if (entry.type == file_type::folder) {
+				thumbnail = m_folder_thumbnail->get_void_ptr_id();
+			} else if (entry.type == file_type::other) {
+				thumbnail = m_missing_thumbnail->get_void_ptr_id();
 			}
 			ImGui::SetCursorPos(cursor_pos + thumbnail_margin);
 			// For some reason ImGui textures are flipped, so we adjust uvs manually here
@@ -140,10 +168,35 @@ bool fields_engine::asset_manager::content_browser_window() {
 				// Continue with next item horizontally
 				ImGui::SetCursorPos(cursor_pos + ImVec2(entry_size.x + pad_between, 0));
 			}
-			ImGui::PopID(); // asset address
+			ImGui::PopID(); // entry address
 		}
 	}
 	ImGui::EndChild();
 	return false;
+}
+
+void fields_engine::asset_manager::refresh_content_browser() {
+	std::filesystem::directory_iterator curr_directory(m_browser_current_directory);
+	m_browser_entries.clear();
+	for (std::filesystem::directory_entry const& entry : curr_directory) {
+		std::filesystem::path const& path = entry.path();
+		if (entry.is_directory()) {
+			m_browser_entries.push_back(file_entry{path.filename().string(), file_type::folder});
+			continue;
+		}
+		if (path.extension() == ".fea") {
+			auto it = m_assets.find(path.stem().stem().string());
+			if (it != m_assets.end()) {
+				m_browser_entries.push_back(file_entry{ it->first, file_type::asset });
+				continue;
+			}
+		}
+		m_browser_entries.push_back(file_entry{path.filename().string(), file_type::other });
+	}
+
+	std::sort(m_browser_entries.begin(), m_browser_entries.end(), 
+		[](file_entry const& l, file_entry const& r) {
+			return int(l.type) < int(r.type);
+		});
 }
 #endif // EDITOR

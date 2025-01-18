@@ -85,6 +85,10 @@ namespace fields_engine::vis {
         return m_tex_id;
     }
 
+    void* texture::get_void_ptr_id() const {
+        return reinterpret_cast<void*>(static_cast<i64>(m_tex_id));
+    }
+
     void texture::set_unit(int new_unit_num) {
         m_active_unit = new_unit_num;
     }

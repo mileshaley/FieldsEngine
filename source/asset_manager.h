@@ -52,23 +52,25 @@ namespace fields_engine {
 		// Returns nullptr if asset with that name already exists
 		asset* add_asset(asset&& new_asset);
 
-#if EDITOR
-		bool content_browser_window();
-#endif // EDITOR
+
 
 	private:
 		unordered_map<string, asset> m_assets;
-
+	
 #if EDITOR
+	public:
+		bool content_browser_window();
+	private:
+		void refresh_content_browser();
 		/// TODO: Find a better way to do this. Perhaps keep a working tree
 		/// structure of directory and update when needed
-		enum class file_type { asset, folder, other };
+		enum class file_type { folder, asset, other };
 		struct file_entry {
 			string name;
 			file_type type;
 		};
 		vector<file_entry> m_browser_entries;
-		string browser_current_directory = "content/";
+		string m_browser_current_directory = "content";
 
 		/// TODO: Relocate
 		box<vis::texture> m_mesh_thumbnail = nullptr;
