@@ -13,7 +13,7 @@
 #include "asset.h"
 #include "context.h" // For convenience functions
 
-///#include <filesystem>
+#include <filesystem>
 
 namespace fields_engine::vis {
 	class texture;
@@ -62,6 +62,7 @@ namespace fields_engine {
 		struct file_entry {
 			string name;
 			file_type type;
+			bool selected;
 		};
 		vector<file_entry> m_browser_entries;
 		string m_browser_current_directory = "assets";

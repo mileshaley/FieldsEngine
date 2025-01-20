@@ -118,17 +118,43 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		ImGui::PushStyleColor(ImGuiCol_Border, border);
 		ImGui::PushStyleColor(ImGuiCol_BorderShadow, border_shadow);
 		
-		for (auto const& entry : m_browser_entries) {
-			const ImVec2 cursor_pos = ImGui::GetCursorPos();
+
+		for (int i = 0; i < m_browser_entries.size(); ++i) {
+			file_entry const& entry = m_browser_entries[i];
 			/// TODO: this doesn't really make sense, fix it
 			/// Also when fixed, update the comment on the matching PopID() call
 			ImGui::PushID(&entry);
+			const ImVec2 cursor_pos = ImGui::GetCursorPos();
+			const ImVec2 window_pos = ImGui::GetWindowPos();
 
-			ImVec2 window_pos = ImGui::GetWindowPos();
+			bool& selected = m_browser_entries[i].selected;
+			// Show the button border if the entry type is a hovered folder or any other type
 			if (entry.type != file_type::folder || ImGui::IsMouseHoveringRect(
-					window_pos + cursor_pos, window_pos + cursor_pos + entry_size)) {
+					window_pos + cursor_pos, window_pos + cursor_pos + entry_size)
+			) {
+				// If so, if the button is also left clicked, handle the selection
+				// If we change selected this frame we still want to revert the color change
+				const bool was_selected = selected;
+				if (was_selected) {
+					//ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.5f,1.0f,1.0f }); // Blue
+					ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,1.0f,0.5f,1.0f }); // Green
+				}
 				if (ImGui::Button("", entry_size)) {
-				
+					if (ImGui::GetIO().KeyShift) {
+
+					}
+					else if (ImGui::GetIO().KeyCtrl) {
+						selected = !selected;
+					}
+					else {
+						for (int j = 0; j < m_browser_entries.size(); ++j) {
+							m_browser_entries[j].selected = false;
+						}
+						selected = true;
+					}
+				}
+				if (was_selected) {
+					ImGui::PopStyleColor(); // Border
 				}
 			}
 
