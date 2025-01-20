@@ -26,9 +26,10 @@
 #include "spatial_component.h"
 #include "asset_loader.h"
 
+/// TODO: Remove
 #include <iostream>
-#include "mesh_import.h"
 #include <fstream>
+#include "texture_import.h"
 
 fields_engine::scene::scene() {
 	m_shader = make_box<vis::shader>();
@@ -223,7 +224,7 @@ static fe::box<fe::entity> make_snowman() {
 			{ // Hat base
 				box<mesh_component> m4 = make_box<mesh_component>();
 				m4->set_mesh(cube_mesh);
-				m4->set_material(get_asset<vis::material>("har"));
+				m4->set_material(get_asset<vis::material>("hat"));
 				transform& tr = m4->ref_transform();
 				tr.set_local_position({ 0, 0, 0.57f });
 				tr.set_local_scale({ 1.5f, 1.5f, 0.15f });
@@ -386,6 +387,37 @@ void fields_engine::scene::startup() {
 		tr.set_local_scale({ 1, 1, 1 });
 		auto& ent = m_entities.emplace_back(make_box<entity>("Bed", move(m)));
 	}
+
+	///{
+	///	json out_json{};
+	///	out_json["data"] = vis_texture_import("content_data/miles.png");
+	///	std::ofstream out("content/miles.texture.json");
+	///	out << std::setw(2) << out_json << std::endl;
+	///	out.close();
+	///}
+
+	//{
+	//	//std::ifstream in("content_data/miles.png");
+	//	ivec2 size;
+	//	int num_channels = 4;
+	//	stbi_set_flip_vertically_on_load(true);
+	//	stbi_uc* data = stbi_load("content_data/miles.png",
+	//		&size.x, &size.y, &num_channels, num_channels);
+	//	std::vector<stbi_uc> data_vector(data, data + (size.x * size.y * num_channels) + 50'000);
+	//
+	//	json out_json{};
+	//	out_json["data"] = {
+	//		{"raw", move(data_vector)},
+	//		{"size", size },
+	//		{"channels", 4}
+	//	};
+	//
+	//	std::ofstream out("content/miles.texture.json");
+	//	out << std::setw(2) << out_json << std::endl;
+	//	out.close();
+	//	stbi_image_free(data);
+	//}
+
 	//{
 	//	std::ofstream out_file("content/grphone.txt");
 	//	

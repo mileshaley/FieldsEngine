@@ -30,8 +30,6 @@ namespace fields_engine {
 		asset_manager();
 		~asset_manager();
 
-
-
 		bool startup();
 
 		bool shutdown();
@@ -43,16 +41,12 @@ namespace fields_engine {
 		// Returns null in the case of nonexistent/invali asset
 		asset const* get_asset(string const& asset_name) const;
 
-
-
 		//asset* get_or_create_asset(string const& asset_name);
 
 		// Add a new asset
 		// Returns a pointer to the moved asset on success
 		// Returns nullptr if asset with that name already exists
 		asset* add_asset(asset&& new_asset);
-
-
 
 	private:
 		unordered_map<string, asset> m_assets;

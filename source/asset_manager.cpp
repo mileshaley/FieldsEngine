@@ -47,10 +47,10 @@ bool fields_engine::asset_manager::startup() {
 		std::bind(&asset_manager::content_browser_window, this),
 		ICON_FOLDER
 	));
-	m_missing_thumbnail = make_box<vis::texture>("assets/missing_asset_thumbnail.png");
-	m_mesh_thumbnail = make_box<vis::texture>("assets/mesh_asset_thumbnail.png");
-	m_material_thumbnail = make_box<vis::texture>("assets/material_asset_thumbnail.png");
-	m_folder_thumbnail = make_box<vis::texture>("assets/folder_thumbnail.png");
+	m_missing_thumbnail = make_box<vis::texture>(string_view("assets/missing_asset_thumbnail.png"));
+	m_mesh_thumbnail = make_box<vis::texture>(string_view("assets/mesh_asset_thumbnail.png"));
+	m_material_thumbnail = make_box<vis::texture>(string_view("assets/material_asset_thumbnail.png"));
+	m_folder_thumbnail = make_box<vis::texture>(string_view("assets/folder_thumbnail.png"));
 	refresh_content_browser();
 #endif // EDITOR
 
@@ -90,22 +90,22 @@ fe::asset* fields_engine::asset_manager::add_asset(asset&& new_asset) {
 
 #if EDITOR
 bool fields_engine::asset_manager::content_browser_window() {
-	constexpr ImVec2 entry_size{ 80, 105 };
-	constexpr ImVec2 thumbnail_size{ 60, 60 };
+	constexpr ImVec2 entry_size{ 120, 156 };
+	constexpr ImVec2 thumbnail_size{ 100, 100 };
 	constexpr ImVec2 thumbnail_margin{
 		(entry_size.x - thumbnail_size.x) / 2,
-		2
+		(entry_size.x - thumbnail_size.x) / 2
 	};
 	constexpr float pad_between = 15;
-	constexpr float offscreen_tolerance = 0.1f;
-	constexpr ImVec2 type_text_offset{
-		2,
+	constexpr ImVec2 name_text_offset{
+		7,
 		thumbnail_margin.y * 2 + thumbnail_size.y
 	};
-	constexpr ImVec2 name_text_offset{
-		2,
-		type_text_offset.y + 15
+	constexpr ImVec2 type_text_offset{
+		name_text_offset.x,
+		name_text_offset.y + 15
 	};
+	constexpr float offscreen_tolerance = 0.1f;
 	constexpr ImGuiSelectableFlags entry_selectable_flags
 		= ImGuiSelectableFlags_AllowDoubleClick
 		| ImGuiSelectableFlags_Disabled;
@@ -117,8 +117,8 @@ bool fields_engine::asset_manager::content_browser_window() {
 			const ImVec2 cursor_pos = ImGui::GetCursorPos();
 			/// TODO: this doesn't make sense, fix it
 			ImGui::PushID(&entry);
-			//ImGui::Button();
 			//if (ImGui::Selectable("", false, entry_selectable_flags, entry_size)) {}
+			//if (ImGui::Button("", entry_size)) { }
 			ImGui::SetCursorPos(cursor_pos + type_text_offset);
 
 			asset* asset = nullptr;
@@ -136,7 +136,7 @@ bool fields_engine::asset_manager::content_browser_window() {
 			}
 
 			ImGui::SetCursorPos(cursor_pos + name_text_offset);
-			ImGui::Text(ellipsis_compress_middle(entry.name, 10).c_str());
+			ImGui::Text(ellipsis_compress_middle(entry.name, 14).c_str());
 
 			void* thumbnail = nullptr;
 			if (entry.type == file_type::asset) {

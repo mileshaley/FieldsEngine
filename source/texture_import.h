@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~* 
- * File: texture.h                                                           *
+ * File: texture_import.h                                                    *
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
@@ -10,37 +10,16 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+namespace std::filesystem {
+	class path;
+} // namespace std::filesystem
+
 /*~-------------------------------------------------------------------------~*\
- * Texture Class                                                             *
+ * Texture Import Functions                                                  *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine::vis {
-	class texture {
-	public:
-		texture();
-		texture(texture&& other) noexcept;
-		texture(string_view filename);
-		~texture();
+namespace fields_engine {
 
-		void load(json const& in);
+	json vis_texture_import(std::filesystem::path const& path);
 
-		ivec2 get_size() const;
-
-		u32 get_id() const;
-		void* get_void_ptr_id() const;
-
-		// User must check that new_unit_num is between 0 and 31
-		void set_unit(int new_unit_num);
-		int get_unit() const;
-
-		void use() const;
-		void unuse() const;
-
-	private:
-		u32 m_tex_id;
-		ivec2 m_size;
-		i8 m_num_channels;
-		i8 m_active_unit = 0; // 0-31
-	};
-
-} // namespace fields_engine::vis
+} // namespace fields_engine

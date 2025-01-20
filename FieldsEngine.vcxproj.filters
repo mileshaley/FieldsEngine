@@ -78,6 +78,7 @@
     <ClCompile Include="source\asset_loader.cpp" />
     <ClCompile Include="source\string_util.cpp" />
     <ClCompile Include="source\mesh_import.cpp" />
+    <ClCompile Include="source\texture_import.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -151,5 +152,6 @@
     <ClInclude Include="source\string_util.h" />
     <ClInclude Include="source\vector_util.h" />
     <ClInclude Include="source\mesh_import.h" />
+    <ClInclude Include="source\texture_import.h" />
   </ItemGroup>
 </Project>

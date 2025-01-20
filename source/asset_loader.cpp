@@ -34,7 +34,7 @@ void* fields_engine::asset_loader::load_asset_from_path(
 	//if (!data_file) { return nullptr; }
 
 	if (type == "texture") {
-		return new vis::texture(data_path.string());
+		return new vis::texture(string_view(data_path.string()));
 	} else {
 		
 	}
@@ -50,10 +50,14 @@ void* fields_engine::asset_loader::load_asset_from_data(
 		vis::material* mat = new vis::material();
 		*mat = data;
 		return mat;
-	} else {
+	} else if (type == "mesh") {
 		vis::mesh* mesh = new vis::mesh();
 		*mesh = data;
 		return mesh;
+	} else if (type == "texture") {
+		vis::texture* texture = new vis::texture();
+		texture->load(data);
+		return texture;
 	}
 	return nullptr;
 }

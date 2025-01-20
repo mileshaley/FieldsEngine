@@ -21,8 +21,7 @@ void fields_engine::vis::check_error(string_view file, int line) {
 		if (file.empty()) {
 			// TODO: use proper error logger
 			std::cerr << "Graphical error [" << error << "]" << std::endl;
-		}
-		else {
+		} else {
 			std::cerr << "Graphical error [" << error << "] in file "
 				<< file << " at line " << line << std::endl;
 		}
@@ -51,7 +50,6 @@ void fields_engine::vis::set_background_color(glm::vec4 const& color) {
 
 void fields_engine::vis::impl::initialize() {
 	glEnable(GL_DEPTH_TEST);
-	/// TODO: Fix all of our meshes so we can do face culling
 	glEnable(GL_CULL_FACE);
 
 	VIS_VERIFY;
