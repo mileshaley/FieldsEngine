@@ -32,6 +32,8 @@ fields_engine::vis::texture::texture()
     , m_size(-1, -1)
     , m_num_channels(0)
     , m_active_unit(0)
+    , m_upscale_filter()
+    , m_downscale_filter()
 {
 }
 
@@ -40,6 +42,8 @@ fields_engine::vis::texture::texture(texture&& other) noexcept
     , m_size(other.m_size)
     , m_num_channels(other.m_num_channels)
     , m_active_unit(other.m_active_unit)
+    , m_upscale_filter(other.m_upscale_filter)
+    , m_downscale_filter(other.m_downscale_filter)
 {
 }
 
@@ -48,6 +52,8 @@ fields_engine::vis::texture::texture(std::filesystem::path const& file)
     , m_size(-1, -1)
     , m_num_channels(0)
     , m_active_unit(0)
+    , m_upscale_filter()
+    , m_downscale_filter()
 {
     int num_channels = 4;
     // Flip for OpenGL
@@ -71,7 +77,7 @@ fields_engine::vis::texture::~texture() {
 }
 
 void fields_engine::vis::texture::load(json const& in) {
-    vector<u8> raw_data = base64::decode_into<vector<u8>>(in);
+    vector<u8> raw_data = base64::decode_into<vector<u8>>(in["raw"]);
     int num_channels = -1;
     stbi_set_flip_vertically_on_load(true);
     stbi_uc* image_data = stbi_load_from_memory(raw_data.data(), raw_data.size(),
@@ -80,6 +86,8 @@ void fields_engine::vis::texture::load(json const& in) {
         return;
     }
     m_num_channels = static_cast<i8>(num_channels);
+    m_upscale_filter = in["upscale_filter"];
+    m_downscale_filter = in["downscale_filter"];
     generate(image_data);
     stbi_image_free(image_data);
 }
@@ -118,6 +126,31 @@ void fields_engine::vis::texture::unuse() const {
     VIS_VERIFY;
 }
 
+namespace fields_engine::vis {
+    static int upscale_filter_to_gl(texture::upscale_filter filter) {
+        if (filter == decltype(filter)::linear) {
+            return GL_LINEAR;
+        } else if (filter == decltype(filter)::nearest) {
+            return GL_NEAREST;
+        }
+        return -1;
+    }
+
+    static int downscale_filter_to_gl(texture::downscale_filter filter) {
+        using enum_t = texture::downscale_filter;
+        switch (filter) {
+        case enum_t::linear_mipmap_linear: return GL_LINEAR_MIPMAP_LINEAR;
+        case enum_t::nearest_mipmap_nearest: return GL_NEAREST_MIPMAP_NEAREST;
+        case enum_t::linear_mipmap_nearest: return GL_LINEAR_MIPMAP_NEAREST;
+        case enum_t::nearest_mipmap_linear: return GL_NEAREST_MIPMAP_LINEAR;
+        case enum_t::linear: return GL_LINEAR;
+        case enum_t::nearest: return GL_NEAREST;
+        default: return -1;
+        }
+    }
+} // namespace fields_engine::vis
+
+
 void fields_engine::vis::texture::generate(u8* image_data) {
     glGenTextures(1, &m_tex_id);
     VIS_VERIFY;
@@ -135,10 +168,14 @@ void fields_engine::vis::texture::generate(u8* image_data) {
     VIS_VERIFY;
     glGenerateMipmap(GL_TEXTURE_2D);
     VIS_VERIFY;
-    /// TODO: Make this a parameter/variable
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);//GL_LINEAR);
+    
+    // Upscale
+    glTexParameteri(GL_TEXTURE_2D, 
+        GL_TEXTURE_MAG_FILTER, upscale_filter_to_gl(m_upscale_filter));
     VIS_VERIFY;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);//GL_LINEAR_MIPMAP_LINEAR);
+    // Downscale
+    glTexParameteri(GL_TEXTURE_2D, 
+        GL_TEXTURE_MIN_FILTER, downscale_filter_to_gl(m_downscale_filter));
     VIS_VERIFY;
     // Horizontal wrap
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);

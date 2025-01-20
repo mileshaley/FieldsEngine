@@ -20,5 +20,9 @@ fe::json fields_engine::vis_texture_import(std::filesystem::path const& path) {
 		return nullptr;
 	}
 	vector<u8> data_vector(std::istreambuf_iterator(in_stream), {});
-	return base64::encode_into<string>(data_vector.begin(), data_vector.end());
+	json out{};
+	out["data"] = base64::encode_into<string>(data_vector.begin(), data_vector.end());
+	out["upscale_filter"] = 0;
+	out["downscale_filter"] = 0;
+	return out;
 }

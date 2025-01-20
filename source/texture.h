@@ -19,6 +19,9 @@ namespace std::filesystem {
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine::vis {
+
+
+
 	class texture {
 	public:
 		texture();
@@ -40,6 +43,22 @@ namespace fields_engine::vis {
 		void use() const;
 		void unuse() const;
 
+		// Do not reorder
+		enum class upscale_filter : i8 {
+			linear,
+			nearest,
+		};
+
+		// Do not reorder
+		enum class downscale_filter : i8 {
+			linear_mipmap_linear,
+			nearest_mipmap_nearest,
+			linear_mipmap_nearest,
+			nearest_mipmap_linear,
+			linear,
+			nearest,
+		};
+
 	private:
 		void generate(u8* image_data);
 
@@ -47,6 +66,8 @@ namespace fields_engine::vis {
 		ivec2 m_size;
 		i8 m_num_channels;
 		i8 m_active_unit = 0; // 0-31
+		upscale_filter m_upscale_filter;
+		downscale_filter m_downscale_filter;
 	};
 
 } // namespace fields_engine::vis
