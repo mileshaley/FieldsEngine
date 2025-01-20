@@ -30,7 +30,7 @@ fields_engine::editor::editor(window& win)
 	: m_gui_context(ImGui::CreateContext())
 	, m_fonts()
 	, m_windows()
-	, m_dual_fb(ivec2{1920, 1080})
+	, m_frame_buffer(ivec2{1920, 1080})
 {
 	ImGui::SetCurrentContext(m_gui_context);
 	ImGuiIO& io = ImGui::GetIO();
@@ -143,16 +143,16 @@ void fields_engine::editor::tick(float dt) {
 	for (int i = 0; i < m_windows.size(); ++i) {
 		m_windows[i]->display();
 	}
-	m_dual_fb.unuse();
+	m_frame_buffer.unuse();
 	//if (context<input_manager>().was_button_triggered(GLFW_KEY_R)) {
-	//	m_dual_fb.resize(context<application>().get_window_size());
+	//	m_frame_buffer.resize(context<application>().get_window_size());
 	//}
 	ImGui::Render();
 
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	m_dual_fb.use();
-	m_dual_fb.viewport();
+	m_frame_buffer.use();
+	m_frame_buffer.viewport();
 
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 		ImGui::UpdatePlatformWindows();
@@ -233,8 +233,8 @@ bool fields_engine::editor::is_capturing_keyboard() const {
 	return ImGui::GetIO().WantCaptureKeyboard && !m_game_window_hovered;
 }
 
-fe::vis::dual_frame_buffer& fields_engine::editor::ref_dual_frame_buffer() {
-	return m_dual_fb;
+fe::vis::frame_buffer& fields_engine::editor::ref_frame_buffer() {
+	return m_frame_buffer;
 }
 
 fe::ivec2 fields_engine::editor::get_game_window_size() const {
@@ -261,7 +261,7 @@ bool fields_engine::editor::game_window() {
 	const ImVec2 size = ImGui::GetWindowSize();
 	m_game_window_size = { size.x, size.y };
 	ImGui::Image(
-		(ImTextureID)(i64)m_dual_fb.get_texture_id(),
+		(ImTextureID)(i64)m_frame_buffer.get_texture_id(),
 		{ size },
 	// Flip the uvs for ImGui
 		{ 0, 1 },

@@ -42,7 +42,7 @@ namespace fields_engine {
 		bool is_capturing_mouse() const;
 		bool is_capturing_keyboard() const;
 
-		vis::dual_frame_buffer& ref_dual_frame_buffer();
+		vis::frame_buffer& ref_frame_buffer();
 
 		ivec2 get_game_window_size() const;
 
@@ -74,7 +74,7 @@ namespace fields_engine {
 		string m_new_window_buf;
 		editor_icon m_new_window_icon = ICON_ELLIPSIS_VERTICAL;
 		// Editor
-		vis::dual_frame_buffer m_dual_fb;
+		vis::frame_buffer m_frame_buffer;
 		vector<box<editor_window>> m_windows;
 		ImGuiContext* m_gui_context;
 		vector<ImFont*> m_fonts;

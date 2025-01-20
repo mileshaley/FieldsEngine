@@ -43,15 +43,15 @@ bool fields_engine::asset_manager::startup() {
 
 #if EDITOR
 	context<editor>().add_window(make_box<editor_window>(
-		"Content Browser",
-		std::bind(&asset_manager::content_browser_window, this),
+		"Asset Browser",
+		std::bind(&asset_manager::asset_browser_window, this),
 		ICON_FOLDER
 	));
 	m_missing_thumbnail = make_box<vis::texture>(string_view("assets/missing_asset_thumbnail.png"));
 	m_mesh_thumbnail = make_box<vis::texture>(string_view("assets/mesh_asset_thumbnail.png"));
 	m_material_thumbnail = make_box<vis::texture>(string_view("assets/material_asset_thumbnail.png"));
 	m_folder_thumbnail = make_box<vis::texture>(string_view("assets/folder_thumbnail.png"));
-	refresh_content_browser();
+	refresh_asset_browser();
 #endif // EDITOR
 
 	return true;
@@ -89,7 +89,7 @@ fe::asset* fields_engine::asset_manager::add_asset(asset&& new_asset) {
 }
 
 #if EDITOR
-bool fields_engine::asset_manager::content_browser_window() {
+bool fields_engine::asset_manager::asset_browser_window() {
 	constexpr ImVec2 entry_size{ 120, 156 };
 	constexpr ImVec2 thumbnail_size{ 100, 100 };
 	constexpr ImVec2 thumbnail_margin{
@@ -175,7 +175,7 @@ bool fields_engine::asset_manager::content_browser_window() {
 	return false;
 }
 
-void fields_engine::asset_manager::refresh_content_browser() {
+void fields_engine::asset_manager::refresh_asset_browser() {
 	std::filesystem::directory_iterator curr_directory(m_browser_current_directory);
 	m_browser_entries.clear();
 	for (std::filesystem::directory_entry const& entry : curr_directory) {

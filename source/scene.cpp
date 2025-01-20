@@ -176,7 +176,6 @@ static fe::box<fe::entity> make_snowman() {
 			box<mesh_component> m3 = make_box<mesh_component>();
 			m3->set_mesh(cube_mesh);
 			m3->set_material(p_snow_mat);
-			std::cerr << "hi" << std::endl;
 			transform& tr = m3->ref_transform();
 			const float scale = 0.75;
 			tr.set_local_position({ 0, 0, 1 });

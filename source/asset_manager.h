@@ -53,9 +53,9 @@ namespace fields_engine {
 	
 #if EDITOR
 	public:
-		bool content_browser_window();
+		bool asset_browser_window();
 	private:
-		void refresh_content_browser();
+		void refresh_asset_browser();
 		/// TODO: Find a better way to do this. Perhaps keep a working tree
 		/// structure of directory and update when needed
 		enum class file_type { folder, asset, other };

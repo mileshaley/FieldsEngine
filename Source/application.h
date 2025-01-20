@@ -53,7 +53,6 @@ namespace fields_engine {
 		local_context<window> m_window;
 		local_context<input_manager> m_input_manager;
 		local_context<asset_manager> m_asset_manager;
-		//vis::dual_frame_buffer m_dual_fb;
 		box_context<scene> m_scene;
 #if EDITOR
 		box_context<editor> m_editor{nullptr};
