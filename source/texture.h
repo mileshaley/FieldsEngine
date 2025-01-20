@@ -10,6 +10,10 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+namespace std::filesystem {
+	class path;
+} // namespace std::filesystem
+
 /*~-------------------------------------------------------------------------~*\
  * Texture Class                                                             *
 \*~-------------------------------------------------------------------------~*/
@@ -19,7 +23,7 @@ namespace fields_engine::vis {
 	public:
 		texture();
 		texture(texture&& other) noexcept;
-		texture(string_view filename);
+		texture(std::filesystem::path const& file);
 		~texture();
 
 		void load(json const& in);
@@ -37,6 +41,8 @@ namespace fields_engine::vis {
 		void unuse() const;
 
 	private:
+		void generate(u8* image_data);
+
 		u32 m_tex_id;
 		ivec2 m_size;
 		i8 m_num_channels;

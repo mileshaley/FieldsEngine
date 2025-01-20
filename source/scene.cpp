@@ -388,46 +388,14 @@ void fields_engine::scene::startup() {
 		auto& ent = m_entities.emplace_back(make_box<entity>("Bed", move(m)));
 	}
 
-	///{
-	///	json out_json{};
-	///	out_json["data"] = vis_texture_import("content_data/miles.png");
-	///	std::ofstream out("content/miles.texture.json");
-	///	out << std::setw(2) << out_json << std::endl;
-	///	out.close();
-	///}
-
 	//{
-	//	//std::ifstream in("content_data/miles.png");
-	//	ivec2 size;
-	//	int num_channels = 4;
-	//	stbi_set_flip_vertically_on_load(true);
-	//	stbi_uc* data = stbi_load("content_data/miles.png",
-	//		&size.x, &size.y, &num_channels, num_channels);
-	//	std::vector<stbi_uc> data_vector(data, data + (size.x * size.y * num_channels) + 50'000);
-	//
 	//	json out_json{};
-	//	out_json["data"] = {
-	//		{"raw", move(data_vector)},
-	//		{"size", size },
-	//		{"channels", 4}
-	//	};
-	//
-	//	std::ofstream out("content/miles.texture.json");
-	//	out << std::setw(2) << out_json << std::endl;
+	//	out_json["data"] = vis_texture_import("content_data/miles_compressed.png");
+	//	std::ofstream out("content/miles_compressed.texture.fea");
+	//	out << out_json << std::endl;
 	//	out.close();
-	//	stbi_image_free(data);
 	//}
-
-	//{
-	//	std::ofstream out_file("content/grphone.txt");
-	//	
-	//	out_file 
-	//		<< std::setw(4) 
-	//		<< json{ {"data", std::vector<vec4>{ vec4(1,2,3,4), vec4(1,2,3,4) , vec4(1,2,3,4) }}}
-	//		<< std::endl;
-	//	out_file.close();
-	//
-	//}
+	
 	//{ // Bear
 	//	box<mesh_component> m = make_box<mesh_component>();
 	//	m->set_mesh(*get_asset<vis::mesh>("bear"));
@@ -439,7 +407,6 @@ void fields_engine::scene::startup() {
 	//	tr.set_local_scale({ 1, 1, 1 });
 	//	auto& ent = m_entities.emplace_back(make_box<entity>("Bear", move(m)));
 	//}
-	
 	
 	{ // Ground
 		box<mesh_component> m = make_box<mesh_component>();

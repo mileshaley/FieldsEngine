@@ -18,10 +18,10 @@
 #include "stb_image.h"
 
 #include "base64/base64.hpp"
+#include <filesystem>
 
 /// TODO: remove when using proper error logger
 #include <iostream>
-#include <fstream>
 
 /*~-------------------------------------------------------------------------~*\
  * Texture Definitions                                                       *
@@ -43,7 +43,7 @@ fields_engine::vis::texture::texture(texture&& other) noexcept
 {
 }
 
-fields_engine::vis::texture::texture(string_view filename)
+fields_engine::vis::texture::texture(std::filesystem::path const& file)
     : m_tex_id(0)
     , m_size(-1, -1)
     , m_num_channels(0)
@@ -52,41 +52,16 @@ fields_engine::vis::texture::texture(string_view filename)
     int num_channels = 4;
     // Flip for OpenGL
     stbi_set_flip_vertically_on_load(true);
-    stbi_uc* image_data = stbi_load(filename.data(), &m_size.x, &m_size.y, 
-        &num_channels, num_channels);
+    stbi_uc* image_data = stbi_load(file.string().c_str(), 
+        &m_size.x, &m_size.y, &num_channels, num_channels);
     if (image_data == nullptr) {
-        /// TODO: use proper error logger
+        /// TODO: Do proper error logging
         std::cerr << "Load failed for texture \""
-            << filename << "\"" << std::endl;
+            << file << "\"" << std::endl;
         return;
     }
-    m_num_channels = num_channels;
-
-    glGenTextures(1, &m_tex_id);
-    VIS_VERIFY;
-    glBindTexture(GL_TEXTURE_2D, m_tex_id);
-    VIS_VERIFY;
-    // Copy the image into a gl texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_size.x, m_size.y,
-        0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
-    VIS_VERIFY;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
-    VIS_VERIFY;
-    glGenerateMipmap(GL_TEXTURE_2D);
-    VIS_VERIFY;
-    /// TODO: Make this a parameter/variable
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);//GL_LINEAR);
-    VIS_VERIFY;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);//GL_LINEAR_MIPMAP_LINEAR);
-    VIS_VERIFY;
-    // Horizontal wrap
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    VIS_VERIFY;
-    // Vertical wrap
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    VIS_VERIFY;
-    glBindTexture(GL_TEXTURE_2D, 0);
-    VIS_VERIFY;
+    m_num_channels = static_cast<i8>(num_channels);
+    generate(image_data);
     stbi_image_free(image_data);
 }
 
@@ -105,32 +80,7 @@ void fields_engine::vis::texture::load(json const& in) {
         return;
     }
     m_num_channels = static_cast<i8>(num_channels);
-
-    glGenTextures(1, &m_tex_id);
-    VIS_VERIFY;
-    glBindTexture(GL_TEXTURE_2D, m_tex_id);
-    VIS_VERIFY;
-    // Copy the image into a gl texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_size.x, m_size.y,
-        0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
-    VIS_VERIFY;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
-    VIS_VERIFY;
-    glGenerateMipmap(GL_TEXTURE_2D);
-    VIS_VERIFY;
-    /// TODO: Make this a parameter/variable
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);//GL_LINEAR);
-    VIS_VERIFY;
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);//GL_LINEAR_MIPMAP_LINEAR);
-    VIS_VERIFY;
-    // Horizontal wrap
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    VIS_VERIFY;
-    // Vertical wrap
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    VIS_VERIFY;
-    glBindTexture(GL_TEXTURE_2D, 0);
-    VIS_VERIFY;
+    generate(image_data);
     stbi_image_free(image_data);
 }
 
@@ -163,6 +113,35 @@ void fields_engine::vis::texture::use() const {
 
 void fields_engine::vis::texture::unuse() const {
     glActiveTexture(GL_TEXTURE0 + int(m_active_unit));
+    VIS_VERIFY;
+    glBindTexture(GL_TEXTURE_2D, 0);
+    VIS_VERIFY;
+}
+
+void fields_engine::vis::texture::generate(u8* image_data) {
+    glGenTextures(1, &m_tex_id);
+    VIS_VERIFY;
+    glBindTexture(GL_TEXTURE_2D, m_tex_id);
+    VIS_VERIFY;
+    // Copy the image into a gl texture
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_size.x, m_size.y,
+        0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+    VIS_VERIFY;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
+    VIS_VERIFY;
+    glGenerateMipmap(GL_TEXTURE_2D);
+    VIS_VERIFY;
+    /// TODO: Make this a parameter/variable
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);//GL_LINEAR);
+    VIS_VERIFY;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);//GL_LINEAR_MIPMAP_LINEAR);
+    VIS_VERIFY;
+    // Horizontal wrap
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    VIS_VERIFY;
+    // Vertical wrap
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    VIS_VERIFY;
     glBindTexture(GL_TEXTURE_2D, 0);
     VIS_VERIFY;
 }
