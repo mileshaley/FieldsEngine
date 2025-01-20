@@ -48,7 +48,7 @@ fields_engine::scene::~scene() {}
 //#include <fstream>
 //static void save_material(fe::vis::material const& mat, fe::string const& name) {
 //	using namespace fields_engine;
-//	std::ofstream out("content/" + name + ".fea");
+//	std::ofstream out("assets/" + name + ".fea");
 //	json jout = { {"type", "material"}, {"data", mat} };
 //	out << std::setw(4) << jout << std::endl;
 //}
@@ -116,20 +116,20 @@ fields_engine::scene::~scene() {}
 //#include <fstream>
 //static void save_mesh(fe::vis::mesh const& mat, fe::string const& name) {
 //	using namespace fields_engine;
-//	std::ofstream out("content/" + name + ".fea");
+//	std::ofstream out("assets/" + name + ".fea");
 //	json jout = { {"type", "material"}, {"data", mat} };
 //	out << std::setw(4) << jout << std::endl;
 //}
 //#define SAVE_MESH(Name) save_mesh(Name, #Name);
 
 //{
-//	std::fstream out_file("content/nutcracker.mesh.fea");
-//	json out{ {"data", import_vis_mesh("content_data/nutcracker.obj")}};
+//	std::fstream out_file("assets/nutcracker.mesh.fea");
+//	json out{ {"data", import_vis_mesh("test_assets/nutcracker.obj")}};
 //	out_file << std::setw(4) << out;
 //}
 //{
-//	std::fstream out_file("content/bed.mesh.fea");
-//	json out{ {"data", import_vis_mesh("content_data/bed.obj")} };
+//	std::fstream out_file("assets/bed.mesh.fea");
+//	json out{ {"data", import_vis_mesh("test_assets/bed.obj")} };
 //	out_file << std::setw(4) << out;
 //}
 
@@ -390,8 +390,8 @@ void fields_engine::scene::startup() {
 
 	//{
 	//	json out_json{};
-	//	out_json["data"] = vis_texture_import("content_data/miles_compressed.png");
-	//	std::ofstream out("content/miles_compressed2.texture.fea");
+	//	out_json["data"] = vis_texture_import("test_assets/miles_compressed.png");
+	//	std::ofstream out("assets/miles_compressed2.texture.fea");
 	//	out << std::setw(2) << out_json << std::endl;
 	//	out.close();
 	//
@@ -403,8 +403,8 @@ void fields_engine::scene::startup() {
 	
 	//{
 	//	json out_json{};
-	//	out_json["data"] = vis_texture_import("content_data/miles.png");
-	//	std::ofstream out("content/miles2.texture.fea");
+	//	out_json["data"] = vis_texture_import("test_assets/miles.png");
+	//	std::ofstream out("assets/miles2.texture.fea");
 	//	out << std::setw(2) << out_json << std::endl;
 	//	out.close();
 	//}
@@ -437,8 +437,8 @@ void fields_engine::scene::startup() {
 		//m->set_mesh(*get_asset<vis::mesh>("tree_trunk"));
 		m->set_mesh(*get_asset<vis::mesh>("mound"));
 		m->set_material(get_asset<vis::material>("fround"));
-		//m->set_texture(make_box<vis::texture>("content/brick.png"));
-		//m->set_normal_texture(make_box<vis::texture>("content/brick_normal.png"));
+		//m->set_texture(make_box<vis::texture>("assets/brick.png"));
+		//m->set_normal_texture(make_box<vis::texture>("assets/brick_normal.png"));
 	
 		transform& tr = m->ref_transform();
 		const float scale = 1;

@@ -28,7 +28,7 @@ fields_engine::asset_manager::asset_manager()
 fields_engine::asset_manager::~asset_manager() = default;
 
 bool fields_engine::asset_manager::startup() {
-	std::filesystem::recursive_directory_iterator content_directory("content");
+	std::filesystem::recursive_directory_iterator content_directory("assets");
 	for (auto const& file : content_directory) {
 		std::filesystem::path in_path = file;
 		auto ext = in_path.extension();
@@ -107,7 +107,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	};
 	constexpr float offscreen_tolerance = 0.1f;
 
-	if (ImGui::BeginChild("content_browser_child")) {
+	if (ImGui::BeginChild("asset_browser_child")) {
 		const ImVec2 max = ImGui::GetContentRegionMax();
 		// Make outlines visible
 		ImGuiStyle const& style = ImGui::GetStyle();
