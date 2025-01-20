@@ -132,26 +132,35 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			if (entry.type != file_type::folder || ImGui::IsMouseHoveringRect(
 					window_pos + cursor_pos, window_pos + cursor_pos + entry_size)
 			) {
-				// If so, if the button is also left clicked, handle the selection
-				// If we change selected this frame we still want to revert the color change
+				// If we change selected this iteration we still want to revert the color change
 				const bool was_selected = selected;
 				if (was_selected) {
 					//ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.5f,1.0f,1.0f }); // Blue
-					ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,1.0f,0.5f,1.0f }); // Green
+					//ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,1.0f,0.5f,1.0f }); // Green
+					ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.8f,0.45f,1.0f }); // Paler Green
 				}
 				if (ImGui::Button("", entry_size)) {
 					if (ImGui::GetIO().KeyShift) {
-
+						if (m_prev_entry_clicked == -1 || m_prev_entry_clicked == i) {
+							selected = !selected;
+						} else {
+							// Select entries between [prev, current]
+							const auto[lower, upper] = std::minmax(m_prev_entry_clicked, i);
+							for (int j = lower; j <= upper; ++j) {
+								m_browser_entries[j].selected = true;
+							}
+						}
 					}
 					else if (ImGui::GetIO().KeyCtrl) {
 						selected = !selected;
-					}
-					else {
+					} else {
 						for (int j = 0; j < m_browser_entries.size(); ++j) {
 							m_browser_entries[j].selected = false;
 						}
 						selected = true;
 					}
+					// Remember the last click for every type of click
+					m_prev_entry_clicked = i;
 				}
 				if (was_selected) {
 					ImGui::PopStyleColor(); // Border

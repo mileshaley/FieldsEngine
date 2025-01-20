@@ -66,7 +66,7 @@ namespace fields_engine {
 		};
 		vector<file_entry> m_browser_entries;
 		string m_browser_current_directory = "assets";
-
+		int m_prev_entry_clicked = -1;
 		/// TODO: Relocate
 		box<vis::texture> m_mesh_thumbnail = nullptr;
 		box<vis::texture> m_material_thumbnail = nullptr;
