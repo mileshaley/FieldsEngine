@@ -30,6 +30,7 @@
 #include <iostream>
 #include <fstream>
 #include "texture_import.h"
+#include "base64/base64.hpp"
 
 fields_engine::scene::scene() {
 	m_shader = make_box<vis::shader>();
@@ -391,8 +392,21 @@ void fields_engine::scene::startup() {
 	//{
 	//	json out_json{};
 	//	out_json["data"] = vis_texture_import("content_data/miles_compressed.png");
-	//	std::ofstream out("content/miles_compressed.texture.fea");
-	//	out << out_json << std::endl;
+	//	std::ofstream out("content/miles_compressed2.texture.fea");
+	//	out << std::setw(2) << out_json << std::endl;
+	//	out.close();
+	//
+	//	vector<u8> raw_data = base64::decode_into<vector<u8>>(out_json["data"]);
+	//	std::ofstream test_file("milesc.png", std::ios::binary);
+	//	test_file.write(reinterpret_cast<char*>(raw_data.data()), raw_data.size());
+	//	test_file.close();
+	//}
+	
+	//{
+	//	json out_json{};
+	//	out_json["data"] = vis_texture_import("content_data/miles.png");
+	//	std::ofstream out("content/miles2.texture.fea");
+	//	out << std::setw(2) << out_json << std::endl;
 	//	out.close();
 	//}
 	

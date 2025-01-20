@@ -32,13 +32,7 @@ namespace fields_engine {
 		}
 
 		/// TODO: Make not static
-		static void* load_asset_from_path(
-			std::filesystem::path const& data_path,
-			type_name const& type
-		);// const;
-
-		/// TODO: Make not static
-		static void* load_asset_from_data(
+		static void* load_asset(
 			json const& data,
 			type_name const& type
 		);// const;

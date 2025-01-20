@@ -123,9 +123,13 @@ void fields_engine::vis::texture::generate(u8* image_data) {
     VIS_VERIFY;
     glBindTexture(GL_TEXTURE_2D, m_tex_id);
     VIS_VERIFY;
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    VIS_VERIFY;
     // Copy the image into a gl texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_size.x, m_size.y,
-        0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+    
+    const int channel_format = m_num_channels == 3 ? GL_RGB : GL_RGBA;
+    glTexImage2D(GL_TEXTURE_2D, 0, channel_format, m_size.x, m_size.y,
+        0, channel_format, GL_UNSIGNED_BYTE, image_data);
     VIS_VERIFY;
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
     VIS_VERIFY;

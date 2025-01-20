@@ -62,7 +62,6 @@ namespace fields_engine {
 		type_name m_type;
 		// May be a path to data file or the data itself
 		json m_data_source;
-		bool m_data_source_is_path;
 		bool m_valid;
 		bool m_loaded;
 	};
