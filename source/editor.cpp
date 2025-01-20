@@ -39,7 +39,7 @@ fields_engine::editor::editor(window& win)
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	// Setup fonts with icon font
-	std::filesystem::path fonts_path("assets");
+	std::filesystem::path fonts_path("engine_assets");
 	fonts_path /= "fonts";
 	const float font_size = 17.0f;
 	// Add default font so we can merge in icon font

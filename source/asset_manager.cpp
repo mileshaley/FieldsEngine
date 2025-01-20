@@ -47,10 +47,10 @@ bool fields_engine::asset_manager::startup() {
 		std::bind(&asset_manager::asset_browser_window, this),
 		ICON_FOLDER
 	));
-	m_missing_thumbnail = make_box<vis::texture>(string_view("assets/missing_asset_thumbnail.png"));
-	m_mesh_thumbnail = make_box<vis::texture>(string_view("assets/mesh_asset_thumbnail.png"));
-	m_material_thumbnail = make_box<vis::texture>(string_view("assets/material_asset_thumbnail.png"));
-	m_folder_thumbnail = make_box<vis::texture>(string_view("assets/folder_thumbnail.png"));
+	m_missing_thumbnail = make_box<vis::texture>(string_view("engine_assets/missing_asset_thumbnail.png"));
+	m_mesh_thumbnail = make_box<vis::texture>(string_view("engine_assets/mesh_asset_thumbnail.png"));
+	m_material_thumbnail = make_box<vis::texture>(string_view("engine_assets/material_asset_thumbnail.png"));
+	m_folder_thumbnail = make_box<vis::texture>(string_view("engine_assets/folder_thumbnail.png"));
 	refresh_asset_browser();
 #endif // EDITOR
 
@@ -127,7 +127,9 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			ImVec2 window_pos = ImGui::GetWindowPos();
 			if (entry.type != file_type::folder || ImGui::IsMouseHoveringRect(
 					window_pos + cursor_pos, window_pos + cursor_pos + entry_size)) {
-				if (ImGui::Button("", entry_size)) { }
+				if (ImGui::Button("", entry_size)) {
+				
+				}
 			}
 
 			ImGui::SetCursorPos(cursor_pos + type_text_offset);
