@@ -326,7 +326,7 @@ void fields_engine::editor::reset_style() const {
 	style.PopupBorderSize	= borderSize;
 	style.FrameBorderSize	= borderSize;
 	style.TabBorderSize     = borderSize;
-	static constexpr float rounding = 0.0f;
+	static constexpr float rounding = 4.0f;
 	style.WindowRounding	= rounding;
 	style.ChildRounding		= rounding;
 	style.FrameRounding		= rounding;
@@ -435,8 +435,10 @@ void fields_engine::editor::reset_style() const {
     colors[ImGuiCol_WindowBg]              = {0.10f, 0.10f, 0.10f, 1.00f};
     colors[ImGuiCol_ChildBg]               = {0.00f, 0.00f, 0.00f, 0.00f};
     colors[ImGuiCol_PopupBg]               = {0.14f, 0.14f, 0.14f, 0.95f};
-    colors[ImGuiCol_Border]                = {0.39f, 0.39f, 0.39f, 0.39f};
-    colors[ImGuiCol_BorderShadow]          = {0.00f, 0.00f, 0.00f, 0.24f};
+    //colors[ImGuiCol_Border]                = {0.39f, 0.39f, 0.39f, 0.39f};
+    //colors[ImGuiCol_BorderShadow]          = {0.00f, 0.00f, 0.00f, 0.24f};
+    colors[ImGuiCol_Border]                = {0.39f, 0.39f, 0.39f, 0};
+    colors[ImGuiCol_BorderShadow]          = {0.00f, 0.00f, 0.00f, 0};
     colors[ImGuiCol_FrameBg]               = {0.20f, 0.20f, 0.20f, 0.54f};
     colors[ImGuiCol_FrameBgHovered]        = {0.19f, 0.19f, 0.19f, 0.54f};
     colors[ImGuiCol_FrameBgActive]         = {0.20f, 0.22f, 0.23f, 1.00f};

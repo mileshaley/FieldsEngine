@@ -99,26 +99,37 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	constexpr float pad_between = 15;
 	constexpr ImVec2 name_text_offset{
 		7,
-		thumbnail_margin.y * 2 + thumbnail_size.y
+		5 + thumbnail_margin.y + thumbnail_size.y
 	};
 	constexpr ImVec2 type_text_offset{
 		name_text_offset.x,
-		name_text_offset.y + 15
+		name_text_offset.y + 17
 	};
 	constexpr float offscreen_tolerance = 0.1f;
-	constexpr ImGuiSelectableFlags entry_selectable_flags
-		= ImGuiSelectableFlags_AllowDoubleClick
-		| ImGuiSelectableFlags_Disabled;
 
 	if (ImGui::BeginChild("content_browser_child")) {
 		const ImVec2 max = ImGui::GetContentRegionMax();
-
+		// Make outlines visible
+		ImGuiStyle const& style = ImGui::GetStyle();
+		ImVec4 border = style.Colors[ImGuiCol_Border];
+		ImVec4 border_shadow = style.Colors[ImGuiCol_BorderShadow];
+		border.w = border.z;
+		border_shadow.w = border.z;
+		ImGui::PushStyleColor(ImGuiCol_Border, border);
+		ImGui::PushStyleColor(ImGuiCol_BorderShadow, border_shadow);
+		
 		for (auto const& entry : m_browser_entries) {
 			const ImVec2 cursor_pos = ImGui::GetCursorPos();
-			/// TODO: this doesn't make sense, fix it
+			/// TODO: this doesn't really make sense, fix it
+			/// Also when fixed, update the comment on the matching PopID() call
 			ImGui::PushID(&entry);
-			//if (ImGui::Selectable("", false, entry_selectable_flags, entry_size)) {}
-			//if (ImGui::Button("", entry_size)) { }
+
+			ImVec2 window_pos = ImGui::GetWindowPos();
+			if (entry.type != file_type::folder || ImGui::IsMouseHoveringRect(
+					window_pos + cursor_pos, window_pos + cursor_pos + entry_size)) {
+				if (ImGui::Button("", entry_size)) { }
+			}
+
 			ImGui::SetCursorPos(cursor_pos + type_text_offset);
 
 			asset* asset = nullptr;
@@ -170,6 +181,8 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			}
 			ImGui::PopID(); // entry address
 		}
+
+		ImGui::PopStyleColor(2);
 	}
 	ImGui::EndChild();
 	return false;

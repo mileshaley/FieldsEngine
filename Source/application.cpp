@@ -47,7 +47,7 @@ bool fields_engine::application::startup() {
 	glfwSetErrorCallback(vis::gl_error_callback);
 	glfwInit();
 
-	// Use OpenGL version 3.3
+	// Using OpenGL version 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
