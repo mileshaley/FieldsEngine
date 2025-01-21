@@ -56,8 +56,7 @@ namespace fields_engine {
 		bool asset_browser_window();
 	private:
 		void refresh_asset_browser();
-		/// TODO: Find a better way to do this. Perhaps keep a working tree
-		/// structure of directory and update when needed
+
 		enum class file_type : i8 { folder, asset, other };
 		struct file_entry {
 			std::filesystem::path path;
@@ -68,6 +67,7 @@ namespace fields_engine {
 		vector<file_entry> m_browser_entries;
 		std::filesystem::path m_browser_current_directory = "assets";
 		string m_address_bar_buffer;
+		string m_search_bar_buffer;
 		int m_prev_entry_clicked = -1; // For shift multi-select
 		bool m_browser_needs_refresh = true;
 		enum class address_bar_state : i8 {

@@ -106,6 +106,15 @@ namespace fields_engine {
 			//}
 			return 0;
 		}
+
+		static int search_bar_input_callback(ImGuiInputTextCallbackData* data) {
+			asset_manager& manager = *reinterpret_cast<asset_manager*>(data->UserData);
+			if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
+				manager.m_search_bar_buffer.resize(data->BufTextLen, '\0');
+				data->Buf = manager.m_search_bar_buffer.data();
+			}
+			return 0;
+		}
 	};
 }
 
@@ -135,13 +144,16 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	// Address bar
 
 	constexpr ImGuiInputTextFlags address_bar_input_flags
-		= ImGuiInputTextFlags_EnterReturnsTrue
+		= ImGuiInputTextFlags_NoHorizontalScroll
+		| ImGuiInputTextFlags_EnterReturnsTrue
 		| ImGuiInputTextFlags_AutoSelectAll
-		| ImGuiInputTextFlags_CallbackResize
-		| ImGuiInputTextFlags_NoHorizontalScroll;
+		| ImGuiInputTextFlags_CallbackResize;
 		//| ImGuiInputTextFlags_CallbackEdit
 		//| ImGuiInputTextFlags_CallbackCompletion
 		//| ImGuiInputTextFlags_CallbackHistory;
+	constexpr ImGuiInputTextFlags search_bar_input_flags
+		= ImGuiInputTextFlags_NoHorizontalScroll
+		| ImGuiInputTextFlags_CallbackResize;
 
 	constexpr float address_bar_height = 30;
 	constexpr float address_bar_rounding = 3;
@@ -256,12 +268,23 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		}
 		ImGui::PopStyleColor(3);
 	}
+
+	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 0, 40 });
+	if (ImGui::InputText(
+		"###asset_browser_search_bar_input",
+		m_search_bar_buffer.data(),
+		m_search_bar_buffer.size() + 1,
+		search_bar_input_flags,
+		asset_browser_callback_wrapper::search_bar_input_callback,
+		this
+	)) {
+		m_browser_needs_refresh = true;
+	}
 	
 	if (m_browser_needs_refresh) {
 		refresh_asset_browser();
 	}
 
-	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 0, 40 });
 	if (ImGui::BeginChild("asset_browser_child")) {
 
 		ImGuiStyle const& style = ImGui::GetStyle();
@@ -421,27 +444,51 @@ void fields_engine::asset_manager::refresh_asset_browser() {
 	m_browser_entries.clear();
 	m_prev_entry_clicked = -1;
 	m_address_bar_state = address_bar_state::inactive;
-	std::filesystem::directory_iterator curr_directory(m_browser_current_directory);
-	for (std::filesystem::directory_entry const& entry : curr_directory) {
-		std::filesystem::path const& path = entry.path();
-		if (entry.is_directory()) {
-			m_browser_entries.push_back(file_entry{
-				path, nullptr, file_type::folder
-			});
-			continue;
-		}
-		if (path.extension() == ".fea") {
-			auto it = m_assets.find(path.stem().stem().string());
-			if (it != m_assets.end()) {
+
+	if (m_search_bar_buffer.empty()) {
+		std::filesystem::directory_iterator curr_directory(m_browser_current_directory);
+		for (std::filesystem::directory_entry const& entry : curr_directory) {
+			std::filesystem::path const& path = entry.path();
+			if (entry.is_directory()) {
 				m_browser_entries.push_back(file_entry{
-					path, &it->second, file_type::asset
-				});
+					path, nullptr, file_type::folder
+					});
 				continue;
 			}
+			if (path.extension() == ".fea") {
+				auto it = m_assets.find(path.stem().stem().string());
+				if (it != m_assets.end()) {
+					m_browser_entries.push_back(file_entry{
+						path, &it->second, file_type::asset
+						});
+					continue;
+				}
+			}
+			m_browser_entries.push_back(file_entry{
+				path, nullptr, file_type::other
+				});
 		}
-		m_browser_entries.push_back(file_entry{
-			path, nullptr, file_type::other
-		});
+	} else {
+		std::filesystem::recursive_directory_iterator curr_directory(m_browser_current_directory);
+		for (std::filesystem::directory_entry const& entry : curr_directory) {
+			std::filesystem::path const& path = entry.path();
+			if (entry.is_directory()) { continue; }
+			if (path.filename().string().find(m_search_bar_buffer) == string::npos) {
+				continue;
+			}
+			if (path.extension() == ".fea") {
+				auto it = m_assets.find(path.stem().stem().string());
+				if (it != m_assets.end()) {
+					m_browser_entries.push_back(file_entry{
+						path, &it->second, file_type::asset
+					});
+					continue;
+				}
+			}
+			m_browser_entries.push_back(file_entry{
+				path, nullptr, file_type::other
+			});
+		}
 	}
 
 	std::sort(m_browser_entries.begin(), m_browser_entries.end(), 
