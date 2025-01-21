@@ -67,8 +67,16 @@ namespace fields_engine {
 		};
 		vector<file_entry> m_browser_entries;
 		std::filesystem::path m_browser_current_directory = "assets";
-		bool m_browser_needs_refresh = true;
+		string m_address_bar_buffer;
 		int m_prev_entry_clicked = -1; // For shift multi-select
+		bool m_browser_needs_refresh = true;
+		enum class address_bar_state : i8 {
+			inactive = 0,
+			activated,
+			active,
+		} m_address_bar_state = address_bar_state::inactive;
+
+		friend struct asset_browser_callback_wrapper;
 
 		/// TODO: Relocate
 		box<vis::texture> m_mesh_thumbnail = nullptr;
