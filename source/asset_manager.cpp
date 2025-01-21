@@ -114,7 +114,6 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	vector<std::filesystem::path> directories(
 		m_browser_current_directory.begin(), m_browser_current_directory.end());
 	// Index into directories
-	int selected_dropdown_directory = 0;
 	for (int i = 0; i < directories.size(); ++i) {
 		// If the button is pressed and we aren't trying to move to the current directory
 		if (ImGui::Button(directories[i].string().c_str()) 
@@ -128,37 +127,41 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			}
 			break;
 		}
+		const string dropdown_id("ast_ddc" + std::to_string(i));
 		if (i + 1 < directories.size()) {
 			ImGui::SameLine();
-			if (ImGui::Button(ICON_CHEVRON_RIGHT)) {
-				ImGui::OpenPopup("asset_browser_directory_bar_dropdown");
-				selected_dropdown_directory = i;
+			string button_text 
+				= (ImGui::IsPopupOpen(dropdown_id.c_str()) ? ICON_CHEVRON_DOWN : ICON_CHEVRON_RIGHT)
+				+ string("###button")
+				+ std::to_string(i);
+			if (ImGui::Button(button_text.c_str())) {
+				ImGui::OpenPopup(dropdown_id.c_str());
 			}
 			ImGui::SameLine();
 		}
-
-	}
-
-	// Directory navigation dropdown (chevrons)
-	if (ImGui::BeginPopup("asset_browser_directory_bar_dropdown")) {
-		std::filesystem::path selected_path{};
-		for (int i = 0; i <= selected_dropdown_directory; ++i) {
-			selected_path /= directories[i];
-		}
-		std::filesystem::directory_iterator dir_it(selected_path);
-		for (std::filesystem::directory_entry const& entry : dir_it) {
-			if (entry.is_directory()) {
-				// If the button is pressed and we aren't trying to move to the current directory
-				if (ImGui::Selectable(entry.path().filename().string().c_str())
-					&& entry.path().filename() != m_browser_current_directory.filename()
-				) {
-					m_browser_needs_refresh = true;
-					m_browser_current_directory = entry.path();
-					break;
+		
+		// Directory navigation dropdown
+		if (ImGui::BeginPopup(dropdown_id.c_str())) {
+			std::filesystem::path selected_path{};
+			for (int j = 0; j <= i; ++j) {
+				selected_path /= directories[j];
+			}
+			std::filesystem::directory_iterator dir_it(selected_path);
+			for (std::filesystem::directory_entry const& entry : dir_it) {
+				if (entry.is_directory()) {
+					// If the button is pressed and we aren't trying to move to the current directory
+					if (ImGui::Selectable(entry.path().filename().string().c_str())
+						&& entry.path().filename() != m_browser_current_directory.filename()
+					) {
+						m_browser_needs_refresh = true;
+						m_browser_current_directory = entry.path();
+						break;
+					}
 				}
 			}
+			ImGui::EndPopup();
 		}
-		ImGui::EndPopup();
+
 	}
 	
 	if (m_browser_needs_refresh) {
