@@ -43,7 +43,7 @@ bool fields_engine::asset_manager::startup() {
 	}
 
 #if EDITOR
-	context<editor_manager>().add_window(make_box<editor_window>(
+	context<editor::editor_manager>().add_window(make_box<editor_window>(
 		"Asset Browser",
 		std::bind(&asset_manager::asset_browser_window, this),
 		ICON_FOLDER

@@ -675,7 +675,7 @@ bool fields_engine::scene::display_window() {
 	modif |= ImGui::ColorPicker3("Background color", &m_background_color.x);
 	modif |= ImGui::ColorPicker3("Light color", &m_light_color.x);
 	modif |= ImGui::ColorPicker3("Ambient color", &m_ambient_color.x);
-	editor_manager& edit = context<editor_manager>();
+	editor::editor_manager& edit = context<editor::editor_manager>();
 	const entity* curr_selected = edit.get_selected_entity();
 	for (box<entity> const& ent : m_entities) {
 		// This assumes that all entities in the scene have unique names

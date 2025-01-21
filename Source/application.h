@@ -17,7 +17,9 @@
 #include "asset_manager.h"
 
 namespace fields_engine {
-	class editor_manager;
+	namespace editor {
+		class editor_manager;
+	} // namespace editor
 	class scene;
 } // namespace fields_engine
 
@@ -40,7 +42,7 @@ namespace fields_engine {
 		input_manager& ref_input_manager();
 		window& ref_window();
 #if EDITOR
-		editor_manager& ref_editor();
+		editor::editor_manager& ref_editor();
 #endif // EDITOR
 
 		ivec2 get_window_size() const;
@@ -55,7 +57,7 @@ namespace fields_engine {
 		local_context<asset_manager> m_asset_manager;
 		box_context<scene> m_scene;
 #if EDITOR
-		box_context<editor_manager> m_editor{nullptr};
+		box_context<editor::editor_manager> m_editor{nullptr};
 #endif // EDITOR
 		bool m_running;
 	};

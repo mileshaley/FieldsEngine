@@ -28,7 +28,7 @@ namespace fields_engine {
  * Editor Manager Class                                                      *
 \*~-------------------------------------------------------------------------~*/
 
-namespace fields_engine {
+namespace fields_engine::editor {
 	class editor_manager {
 	public:
 		editor_manager(window& win);
@@ -81,6 +81,6 @@ namespace fields_engine {
 		vector<int> m_recent_windows;
 	};
 
-} // namespace fields_engine
+} // namespace fields_engine::editor
 
 #endif // EDITOR

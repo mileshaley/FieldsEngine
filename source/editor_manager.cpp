@@ -26,7 +26,7 @@
  * Editor Manager Definitions                                                *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::editor_manager::editor_manager(window& win)
+fields_engine::editor::editor_manager::editor_manager(window& win)
 	: m_gui_context(ImGui::CreateContext())
 	, m_fonts()
 	, m_windows()
@@ -99,7 +99,7 @@ fields_engine::editor_manager::editor_manager(window& win)
 		ICON_GAMEPAD
 	));
 }
-void fields_engine::editor_manager::tick(float dt) {
+void fields_engine::editor::editor_manager::tick(float dt) {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -161,7 +161,7 @@ void fields_engine::editor_manager::tick(float dt) {
 	}
 }
 
-fields_engine::editor_manager::~editor_manager() {
+fields_engine::editor::editor_manager::~editor_manager() {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -181,12 +181,12 @@ static bool do_nothing() {
 	return false;
 }
 
-void fields_engine::editor_manager::open_icon_selector() {
+void fields_engine::editor::editor_manager::open_icon_selector() {
 	ImGui::OpenPopup("icon_selector_popup");
 }
 
 // static
-bool fields_engine::editor_manager::icon_selector_popup(editor_icon& selected) {
+bool fields_engine::editor::editor_manager::icon_selector_popup(editor_icon& selected) {
 
 	const float width = ImGui::GetContentRegionAvail().x;
 	constexpr float min_width = 20;
@@ -225,31 +225,31 @@ bool fields_engine::editor_manager::icon_selector_popup(editor_icon& selected) {
 	return changed;
 }
 
-bool fields_engine::editor_manager::is_capturing_mouse() const {
+bool fields_engine::editor::editor_manager::is_capturing_mouse() const {
 	return ImGui::GetIO().WantCaptureMouse && !m_game_window_hovered;
 }
 
-bool fields_engine::editor_manager::is_capturing_keyboard() const {
+bool fields_engine::editor::editor_manager::is_capturing_keyboard() const {
 	return ImGui::GetIO().WantCaptureKeyboard && !m_game_window_hovered;
 }
 
-fe::vis::frame_buffer& fields_engine::editor_manager::ref_frame_buffer() {
+fe::vis::frame_buffer& fields_engine::editor::editor_manager::ref_frame_buffer() {
 	return m_frame_buffer;
 }
 
-fe::ivec2 fields_engine::editor_manager::get_game_window_size() const {
+fe::ivec2 fields_engine::editor::editor_manager::get_game_window_size() const {
 	return m_game_window_size;
 }
 
-fe::entity const* fields_engine::editor_manager::get_selected_entity() const {
+fe::entity const* fields_engine::editor::editor_manager::get_selected_entity() const {
 	return m_selected_ent;
 }
 
-fe::entity* fields_engine::editor_manager::get_selected_entity() {
+fe::entity* fields_engine::editor::editor_manager::get_selected_entity() {
 	return m_selected_ent;
 }
 
-void fields_engine::editor_manager::set_selected_entity(entity* new_selected) {
+void fields_engine::editor::editor_manager::set_selected_entity(entity* new_selected) {
 	m_selected_ent = new_selected;
 }
 
@@ -257,7 +257,7 @@ void fields_engine::editor_manager::set_selected_entity(entity* new_selected) {
  * Editor Hosted Windows                                                     *
 \*~-------------------------------------------------------------------------~*/
 
-bool fields_engine::editor_manager::game_window() {
+bool fields_engine::editor::editor_manager::game_window() {
 	const ImVec2 size = ImGui::GetWindowSize();
 	m_game_window_size = { size.x, size.y };
 	ImGui::Image(
@@ -273,12 +273,12 @@ bool fields_engine::editor_manager::game_window() {
 	return false;
 }
 
-bool fields_engine::editor_manager::inspect_window() {
+bool fields_engine::editor::editor_manager::inspect_window() {
 	if (m_selected_ent == nullptr) { return false; }
 	return m_selected_ent->display();
 }
 
-bool fields_engine::editor_manager::root_window() {
+bool fields_engine::editor::editor_manager::root_window() {
 	bool modif = ImGui::InputTextWithHint(
 		"###root_enter_new_window_name", "Enter Window Name", &m_new_window_buf);
 
@@ -300,12 +300,12 @@ bool fields_engine::editor_manager::root_window() {
  * Editor Helper Definitions                                                 *
 \*~-------------------------------------------------------------------------~*/
 
-fe::editor_window& fields_engine::editor_manager::add_window(box<editor_window>&& new_win) {
+fe::editor_window& fields_engine::editor::editor_manager::add_window(box<editor_window>&& new_win) {
 	m_recent_windows.push_back(int(m_windows.size()));
 	return *m_windows.emplace_back(move(new_win));
 }
 
-void fields_engine::editor_manager::reset_style() const {
+void fields_engine::editor::editor_manager::reset_style() const {
 	ImGuiStyle& style = ImGui::GetStyle();
 	ImVec4* colors = style.Colors;
 
