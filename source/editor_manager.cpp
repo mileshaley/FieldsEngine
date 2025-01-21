@@ -26,7 +26,7 @@
  * Editor Manager Definitions                                                *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::editor::editor_manager::editor_manager(window& win)
+fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 	: m_gui_context(ImGui::CreateContext())
 	, m_fonts()
 	, m_windows()

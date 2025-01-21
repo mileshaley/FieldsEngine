@@ -8,7 +8,7 @@
 #include "input.h"
 #include "imgui.h"
 #include <iostream>
-#include "window.h"
+#include "window_handle.h"
 #include "context.h"
 #include "application.h"
 
@@ -79,7 +79,7 @@ namespace fields_engine::input::impl {
 		app.ref_input_manager().report_mouse_scroll({ x, y });
 	}
 
-	void initialize_callbacks(window& win) {
+	void initialize_callbacks(window_handle& win) {
 		glfwSetKeyCallback(win.handle, key_callback);
 		glfwSetMouseButtonCallback(win.handle, mouse_button_callback);
 		glfwSetCursorPosCallback(win.handle, cursor_pos_callback);

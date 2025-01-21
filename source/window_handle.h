@@ -17,11 +17,11 @@ struct SDL_Window;
 #endif // FE_USING_SDL3
 
 /*~-------------------------------------------------------------------------~*\
- * Window Wrapper Class                                                      *
+ * Window Handle Wrapper Class                                               *
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
-	class window {
+	class window_handle {
 	public:
 #if FE_USING_GLFW
 		using handle_type = GLFWwindow;
@@ -30,7 +30,7 @@ namespace fields_engine {
 #endif // FE_USING_SDL3
 
 	public:
-		window(handle_type* win_handle);
+		window_handle(handle_type* win_handle);
 
 		handle_type* handle;
 	};

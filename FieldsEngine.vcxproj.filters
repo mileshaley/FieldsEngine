@@ -60,7 +60,7 @@
     <ClCompile Include="source\precompiled.cpp" />
     <ClCompile Include="source\shader.cpp" />
     <ClCompile Include="source\text.cpp" />
-    <ClCompile Include="source\window.cpp" />
+    <ClCompile Include="source\window_handle.cpp" />
     <ClCompile Include="source\mesh_component.cpp" />
     <ClCompile Include="source\scene.cpp" />
     <ClCompile Include="source\entity.cpp" />
@@ -125,7 +125,7 @@
     <ClInclude Include="source\precompiled.h" />
     <ClInclude Include="source\shader.h" />
     <ClInclude Include="source\text.h" />
-    <ClInclude Include="source\window.h" />
+    <ClInclude Include="source\window_handle.h" />
     <ClInclude Include="source\context.h" />
     <ClInclude Include="source\error.h" />
     <ClInclude Include="source\mesh_component.h" />

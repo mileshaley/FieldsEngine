@@ -20,7 +20,7 @@ struct ImGuiContext;
 struct ImFont;
 
 namespace fields_engine {
-	class window;
+	class window_handle;
 	class entity;
 } // namespace fields_engine
 
@@ -31,7 +31,7 @@ namespace fields_engine {
 namespace fields_engine::editor {
 	class editor_manager {
 	public:
-		editor_manager(window& win);
+		editor_manager(window_handle& win);
 		void tick(float dt);
 		~editor_manager();
 

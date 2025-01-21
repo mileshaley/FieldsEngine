@@ -13,7 +13,7 @@
 #include <unordered_map>
 
 namespace fields_engine {
-	class window;
+	class window_handle;
 } // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
@@ -72,7 +72,7 @@ namespace fields_engine {
 
 
 	namespace input::impl {
-		void initialize_callbacks(window& win);
+		void initialize_callbacks(window_handle& win);
 	} // namespace input::impl
 
 } // namespace fields_engine::input

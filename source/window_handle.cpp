@@ -1,11 +1,11 @@
 /*~-------------------------------------------------------------------------~*\
- * FIELDS ENGINE															 *
+ * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~*
- * File: window.cpp															 *
+ * File: window_handle.cpp                                                   *
 \*~-------------------------------------------------------------------------~*/
 
 #include "precompiled.h"
-#include "window.h"
+#include "window_handle.h"
 
 #if FE_USING_GLFW
 #include "glfw/glfw3.h"
@@ -13,6 +13,6 @@
 #include "SDL3/SDL.h"
 #endif // FE_USING_SDL3
 
-fields_engine::window::window(handle_type* win_handle)
+fields_engine::window_handle::window_handle(handle_type* win_handle)
 	: handle(win_handle)
 {}

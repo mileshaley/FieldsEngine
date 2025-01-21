@@ -85,7 +85,7 @@
     <ClCompile Include="source\text.cpp" />
     <ClCompile Include="source\texture.cpp" />
     <ClCompile Include="source\transform.cpp" />
-    <ClCompile Include="source\window.cpp" />
+    <ClCompile Include="source\window_handle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h" />
@@ -137,7 +137,7 @@
     <ClInclude Include="source\text.h" />
     <ClInclude Include="source\texture.h" />
     <ClInclude Include="source\transform.h" />
-    <ClInclude Include="source\window.h" />
+    <ClInclude Include="source\window_handle.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
