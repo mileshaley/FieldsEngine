@@ -268,10 +268,13 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		}
 		ImGui::PopStyleColor(3);
 	}
-
+	
 	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 0, 40 });
-	if (ImGui::InputText(
+	ImGui::Text(ICON_MAGNIFYING_GLASS);
+	ImGui::SameLine();
+	if (ImGui::InputTextWithHint(
 		"###asset_browser_search_bar_input",
+		("Search " + (--m_browser_current_directory.end())->string()).c_str(),
 		m_search_bar_buffer.data(),
 		m_search_bar_buffer.size() + 1,
 		search_bar_input_flags,
