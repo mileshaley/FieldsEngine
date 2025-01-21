@@ -117,7 +117,13 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		border_shadow.w = border.z;
 		ImGui::PushStyleColor(ImGuiCol_Border, border);
 		ImGui::PushStyleColor(ImGuiCol_BorderShadow, border_shadow);
-		
+
+		const bool ctrl_held = ImGui::GetIO().KeyCtrl;
+		const bool shift_held = ImGui::GetIO().KeyShift;
+
+		// We will need to know if any entries were clicked on
+		// in case the user wants to deselect by clicking on nothing
+		bool entry_was_clicked = false;
 
 		for (int i = 0; i < m_browser_entries.size(); ++i) {
 			file_entry const& entry = m_browser_entries[i];
@@ -128,21 +134,24 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			const ImVec2 window_pos = ImGui::GetWindowPos();
 
 			bool& selected = m_browser_entries[i].selected;
-			// Show the button border if the entry type is a hovered folder or any other type
-			if (entry.type != file_type::folder || ImGui::IsMouseHoveringRect(
+			// Show the button border if the entry type is 
+			// a hovered/selected folder, or any other type in any state
+			if (entry.type != file_type::folder 
+				|| ImGui::IsMouseHoveringRect(
 					window_pos + cursor_pos, window_pos + cursor_pos + entry_size)
+				|| selected
 			) {
 				// If we change selected this iteration we still want to revert the color change
 				const bool was_selected = selected;
 				if (was_selected) {
 					//ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.5f,1.0f,1.0f }); // Blue
-					//ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,1.0f,0.5f,1.0f }); // Green
-					ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.8f,0.45f,1.0f }); // Paler Green
+					ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.8f,0.45f,1.0f }); // Green
 				}
 				if (ImGui::Button("", entry_size)) {
-					if (ImGui::GetIO().KeyShift) {
+					if (shift_held) {
+						// There is no way to deselect with shift click
 						if (m_prev_entry_clicked == -1 || m_prev_entry_clicked == i) {
-							selected = !selected;
+							selected = true;
 						} else {
 							// Select entries between [prev, current]
 							const auto[lower, upper] = std::minmax(m_prev_entry_clicked, i);
@@ -150,8 +159,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 								m_browser_entries[j].selected = true;
 							}
 						}
-					}
-					else if (ImGui::GetIO().KeyCtrl) {
+					} else if (ctrl_held) {
 						selected = !selected;
 					} else {
 						for (int j = 0; j < m_browser_entries.size(); ++j) {
@@ -161,6 +169,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 					}
 					// Remember the last click for every type of click
 					m_prev_entry_clicked = i;
+					entry_was_clicked = true;
 				}
 				if (was_selected) {
 					ImGui::PopStyleColor(); // Border
@@ -217,6 +226,16 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				ImGui::SetCursorPos(cursor_pos + ImVec2(entry_size.x + pad_between, 0));
 			}
 			ImGui::PopID(); // entry address
+		}
+		
+		// Deselect everything if background is clicked without any modifier keys
+		if (!entry_was_clicked && !ctrl_held && !shift_held && 
+			ImGui::IsMouseReleased(ImGuiMouseButton_Left)
+		) {
+			// We arent in the for i loop anymore but j is kept for consistency with above
+			for (int j = 0; j < m_browser_entries.size(); ++j) {
+				m_browser_entries[j].selected = false;
+			}
 		}
 
 		ImGui::PopStyleColor(2);
