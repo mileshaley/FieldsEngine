@@ -109,10 +109,34 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	constexpr float offscreen_tolerance = 0.1f;
 	constexpr int name_compress_max = 14;
 
+	int i = 0;
+	for (auto it = m_browser_current_directory.begin(); 
+		it != m_browser_current_directory.end(); ++it, ++i
+	) {
+		ImGui::SameLine();
+		/// TODO: Consider skipping this logic if it == current directory 
+		if (ImGui::Button(it->string().c_str())) {
+			m_browser_needs_refresh = true;
+			std::filesystem::path new_path;
+			// Reconstruct the entire directory path
+			int j = 0;
+			for (auto jt = m_browser_current_directory.begin(); j <= i; ++jt, ++j) {
+				new_path /= *jt;
+			}
+			m_browser_current_directory = new_path;
+			// We must break since we've invalidated the iterator
+			break;
+		}
+	}
+
+	if (m_browser_needs_refresh) {
+		refresh_asset_browser();
+	}
+
 	if (ImGui::BeginChild("asset_browser_child")) {
 		const ImVec2 max = ImGui::GetContentRegionMax();
-		// Make outlines visible
 		ImGuiStyle const& style = ImGui::GetStyle();
+		// Make outlines visible
 		ImVec4 border = style.Colors[ImGuiCol_Border];
 		ImVec4 border_shadow = style.Colors[ImGuiCol_BorderShadow];
 		border.w = border.z;
@@ -138,12 +162,13 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			// Selection & button display logic
 
 			bool& selected = m_browser_entries[i].selected;
+
 			// Show the button border if the entry type is 
-			// a hovered/selected folder, or any other type in any state
+			// a selected or hovered folder, or any other type in any state
 			if (entry.type != file_type::folder 
+				|| selected
 				|| ImGui::IsMouseHoveringRect(
 					window_pos + cursor_pos, window_pos + cursor_pos + entry_size)
-				|| selected
 			) {
 				// If we change selected this iteration we still want to revert the color change
 				const bool was_selected = selected;
@@ -171,10 +196,18 @@ bool fields_engine::asset_manager::asset_browser_window() {
 						}
 						selected = true;
 					}
-					// Remember the last click for every type of click
+					// Remember the last click for any type of click
 					m_prev_entry_clicked = i;
 					entry_was_clicked = true;
+
+				// Allow double click to enter directory if the button wasn't single clicked
+				} else if (entry.type == file_type::folder
+					&& ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)
+				) {
+					m_browser_current_directory = entry.path;
+					m_browser_needs_refresh = true;
 				}
+
 				if (was_selected) {
 					ImGui::PopStyleColor(); // Border
 				}
@@ -256,8 +289,10 @@ bool fields_engine::asset_manager::asset_browser_window() {
 }
 
 void fields_engine::asset_manager::refresh_asset_browser() {
-	std::filesystem::directory_iterator curr_directory(m_browser_current_directory);
+	m_browser_needs_refresh = false;
 	m_browser_entries.clear();
+	m_prev_entry_clicked = -1;
+	std::filesystem::directory_iterator curr_directory(m_browser_current_directory);
 	for (std::filesystem::directory_entry const& entry : curr_directory) {
 		std::filesystem::path const& path = entry.path();
 		if (entry.is_directory()) {

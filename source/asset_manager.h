@@ -66,8 +66,10 @@ namespace fields_engine {
 			bool selected;
 		};
 		vector<file_entry> m_browser_entries;
-		string m_browser_current_directory = "assets";
-		int m_prev_entry_clicked = -1;
+		std::filesystem::path m_browser_current_directory = "assets";
+		bool m_browser_needs_refresh = true;
+		int m_prev_entry_clicked = -1; // For shift multi-select
+
 		/// TODO: Relocate
 		box<vis::texture> m_mesh_thumbnail = nullptr;
 		box<vis::texture> m_material_thumbnail = nullptr;
