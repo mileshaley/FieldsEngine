@@ -5,7 +5,7 @@
 
 #pragma once
 
-namespace fields_engine {
+namespace fields_engine::editor {
 	using editor_icon = const char*;
 
 	struct editor_icon_info {
@@ -21,7 +21,7 @@ namespace fields_engine {
 			const char* src_filename = __FILE__
 		);
 	} // namespace impl
-} // namespace fields_engine
+} // namespace fields_engine::editor
 
 #define FA_SOLID_ICON_FONT_FILENAME "fa-solid-900.ttf"
 

@@ -300,7 +300,7 @@ bool fields_engine::editor::editor_manager::root_window() {
  * Editor Helper Definitions                                                 *
 \*~-------------------------------------------------------------------------~*/
 
-fe::editor_window& fields_engine::editor::editor_manager::add_window(box<editor_window>&& new_win) {
+fe::editor::editor_window& fields_engine::editor::editor_manager::add_window(box<editor_window>&& new_win) {
 	m_recent_windows.push_back(int(m_windows.size()));
 	return *m_windows.emplace_back(move(new_win));
 }

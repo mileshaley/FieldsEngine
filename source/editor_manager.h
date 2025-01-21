@@ -50,7 +50,7 @@ namespace fields_engine::editor {
 		entity* get_selected_entity();
 		void set_selected_entity(entity* new_selected);
 
-		editor_window& add_window(box<editor_window>&& new_win);
+		editor::editor_window& add_window(box<editor_window>&& new_win);
 
 	private: // Windows
 		bool game_window();

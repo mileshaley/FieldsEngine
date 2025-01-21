@@ -10,7 +10,7 @@
 #include <functional> // callback_t
 
 class editor_manager;
-namespace fields_engine {
+namespace fields_engine::editor {
 
 	/// TODO: Add support for grouping windows by category
 
@@ -49,4 +49,4 @@ namespace fields_engine {
 		editor_icon m_icon;
 	};
 
-} // namespace fields_engine
+} // namespace fields_engine::editor
