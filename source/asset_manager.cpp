@@ -33,11 +33,11 @@ bool fields_engine::asset_manager::startup() {
 		std::filesystem::path in_path = file;
 		auto ext = in_path.extension();
 		if (ext != ".fea") {
-			continue; 
+			continue;
 		}
 		/// TODO: add debug only check for assets with duplicate names
 		m_assets.emplace(
-			in_path.stem().stem().string(), 
+			in_path.stem().stem().string(),
 			in_path
 		);
 	}
@@ -86,7 +86,7 @@ fe::asset* fields_engine::asset_manager::add_asset(asset&& new_asset) {
 	string name(new_asset.get_name());
 	const auto [it, success] = m_assets.try_emplace(move(name), move(new_asset));
 	if (success) { return &it->second; }
-	else		 { return nullptr; }
+	else { return nullptr; }
 }
 
 #if EDITOR
@@ -109,29 +109,63 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	constexpr float offscreen_tolerance = 0.1f;
 	constexpr int name_compress_max = 14;
 
-	int i = 0;
-	for (auto it = m_browser_current_directory.begin(); 
-		it != m_browser_current_directory.end(); ++it, ++i
-	) {
-		ImGui::SameLine();
-		/// TODO: Consider skipping this logic if it == current directory 
-		if (ImGui::Button(it->string().c_str())) {
+	// Directory navigation bar
+
+	vector<std::filesystem::path> directories(
+		m_browser_current_directory.begin(), m_browser_current_directory.end());
+	// Index into directories
+	int selected_dropdown_directory = 0;
+	for (int i = 0; i < directories.size(); ++i) {
+		// If the button is pressed and we aren't trying to move to the current directory
+		if (ImGui::Button(directories[i].string().c_str()) 
+			&& directories[i] != m_browser_current_directory.filename()
+		) {
 			m_browser_needs_refresh = true;
-			std::filesystem::path new_path;
-			// Reconstruct the entire directory path
-			int j = 0;
-			for (auto jt = m_browser_current_directory.begin(); j <= i; ++jt, ++j) {
-				new_path /= *jt;
+			m_browser_current_directory.clear();
+			// Reconstruct the new directory path
+			for (int j = 0; j <= i; ++j) {
+				m_browser_current_directory /= directories[j];
 			}
-			m_browser_current_directory = new_path;
-			// We must break since we've invalidated the iterator
 			break;
 		}
+		if (i + 1 < directories.size()) {
+			ImGui::SameLine();
+			if (ImGui::Button(ICON_CHEVRON_RIGHT)) {
+				ImGui::OpenPopup("asset_browser_directory_bar_dropdown");
+				selected_dropdown_directory = i;
+			}
+			ImGui::SameLine();
+		}
+
 	}
 
+	// Directory navigation dropdown (chevrons)
+	if (ImGui::BeginPopup("asset_browser_directory_bar_dropdown")) {
+		std::filesystem::path selected_path{};
+		for (int i = 0; i <= selected_dropdown_directory; ++i) {
+			selected_path /= directories[i];
+		}
+		std::filesystem::directory_iterator dir_it(selected_path);
+		for (std::filesystem::directory_entry const& entry : dir_it) {
+			if (entry.is_directory()) {
+				// If the button is pressed and we aren't trying to move to the current directory
+				if (ImGui::Selectable(entry.path().filename().string().c_str())
+					&& entry.path().filename() != m_browser_current_directory.filename()
+				) {
+					m_browser_needs_refresh = true;
+					m_browser_current_directory = entry.path();
+					break;
+				}
+			}
+		}
+		ImGui::EndPopup();
+	}
+	
 	if (m_browser_needs_refresh) {
 		refresh_asset_browser();
 	}
+
+	ImGui::Separator();
 
 	if (ImGui::BeginChild("asset_browser_child")) {
 		const ImVec2 max = ImGui::GetContentRegionMax();
@@ -297,7 +331,7 @@ void fields_engine::asset_manager::refresh_asset_browser() {
 		std::filesystem::path const& path = entry.path();
 		if (entry.is_directory()) {
 			m_browser_entries.push_back(file_entry{
-				path/*.filename().string()*/, nullptr, file_type::folder
+				path, nullptr, file_type::folder
 			});
 			continue;
 		}
@@ -311,7 +345,7 @@ void fields_engine::asset_manager::refresh_asset_browser() {
 			}
 		}
 		m_browser_entries.push_back(file_entry{
-			path/*.filename().string()*/, nullptr, file_type::other
+			path, nullptr, file_type::other
 		});
 	}
 
