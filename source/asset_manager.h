@@ -58,9 +58,10 @@ namespace fields_engine {
 		void refresh_asset_browser();
 		/// TODO: Find a better way to do this. Perhaps keep a working tree
 		/// structure of directory and update when needed
-		enum class file_type { folder, asset, other };
+		enum class file_type : i8 { folder, asset, other };
 		struct file_entry {
-			string name;
+			std::filesystem::path path;
+			asset* asset; // So we save some string manipulation and retrieval for assets
 			file_type type;
 			bool selected;
 		};

@@ -17,7 +17,9 @@
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
+	/// TODO: Figure out the naming convention for in place vs creation functions
 
-	string ellipsis_compress_middle(string_view str, int char_max);
+	//void ellipsis_compress_middle_in_place(string& str, int max_chars);
+	string ellipsis_compress_middle(string_view str, int max_chars);
 
 } // namespace fields_engine

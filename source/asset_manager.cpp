@@ -35,6 +35,7 @@ bool fields_engine::asset_manager::startup() {
 		if (ext != ".fea") {
 			continue; 
 		}
+		/// TODO: add debug only check for assets with duplicate names
 		m_assets.emplace(
 			in_path.stem().stem().string(), 
 			in_path
@@ -106,6 +107,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		name_text_offset.y + 17
 	};
 	constexpr float offscreen_tolerance = 0.1f;
+	constexpr int name_compress_max = 14;
 
 	if (ImGui::BeginChild("asset_browser_child")) {
 		const ImVec2 max = ImGui::GetContentRegionMax();
@@ -132,6 +134,8 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			ImGui::PushID(&entry);
 			const ImVec2 cursor_pos = ImGui::GetCursorPos();
 			const ImVec2 window_pos = ImGui::GetWindowPos();
+
+			// Selection & button display logic
 
 			bool& selected = m_browser_entries[i].selected;
 			// Show the button border if the entry type is 
@@ -176,14 +180,14 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				}
 			}
 
-			ImGui::SetCursorPos(cursor_pos + type_text_offset);
+			// Entry info display logic
 
-			asset* asset = nullptr;
+			ImGui::SetCursorPos(cursor_pos + type_text_offset);
 			if (entry.type == file_type::asset) {
-				asset = &m_assets.at(entry.name);
+				// entry.asset is guaranteed to be non-null
 				ImGui::TextColored(
-					ImVec4(1, 1, 1, 0.65f),
-					asset->get_type().c_str()
+					ImVec4(1, 1, 1, 0.65f), // Transparent white
+					entry.asset->get_type().c_str()
 				);
 			} else if (entry.type == file_type::other) {
 				ImGui::TextColored(
@@ -193,19 +197,25 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			}
 
 			ImGui::SetCursorPos(cursor_pos + name_text_offset);
-			ImGui::Text(ellipsis_compress_middle(entry.name, 14).c_str());
+			// Assets have type info in their name and we do not want to display it
+			if (entry.type == file_type::asset) {
+				ImGui::Text(ellipsis_compress_middle(
+					entry.path.stem().stem().string(), name_compress_max).c_str());
+			} else {
+				ImGui::Text(ellipsis_compress_middle(
+					entry.path.filename().string(), name_compress_max).c_str());
+			}
 
 			void* thumbnail = nullptr;
+			
 			if (entry.type == file_type::asset) {
-				thumbnail = asset->get_thumbnail();
+				thumbnail = entry.asset->get_thumbnail();
 				if (!thumbnail) {
-					if (asset->get_type() == "mesh") {
+					if (entry.asset->get_type() == "mesh") {
 						thumbnail = m_mesh_thumbnail->get_void_ptr_id();
-					}
-					else if (asset->get_type() == "material") {
+					} else if (entry.asset->get_type() == "material") {
 						thumbnail = m_material_thumbnail->get_void_ptr_id();
-					}
-					else {
+					} else {
 						thumbnail = m_missing_thumbnail->get_void_ptr_id();
 					}
 				}
@@ -228,9 +238,10 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			ImGui::PopID(); // entry address
 		}
 		
-		// Deselect everything if background is clicked without any modifier keys
-		if (!entry_was_clicked && !ctrl_held && !shift_held && 
-			ImGui::IsMouseReleased(ImGuiMouseButton_Left)
+		// Deselect everything if window background is clicked without any modifier keys
+		if (!entry_was_clicked && !ctrl_held && !shift_held
+			&& ImGui::IsMouseReleased(ImGuiMouseButton_Left)
+			&& ImGui::IsWindowHovered()
 		) {
 			// We arent in the for i loop anymore but j is kept for consistency with above
 			for (int j = 0; j < m_browser_entries.size(); ++j) {
@@ -250,17 +261,23 @@ void fields_engine::asset_manager::refresh_asset_browser() {
 	for (std::filesystem::directory_entry const& entry : curr_directory) {
 		std::filesystem::path const& path = entry.path();
 		if (entry.is_directory()) {
-			m_browser_entries.push_back(file_entry{path.filename().string(), file_type::folder});
+			m_browser_entries.push_back(file_entry{
+				path/*.filename().string()*/, nullptr, file_type::folder
+			});
 			continue;
 		}
 		if (path.extension() == ".fea") {
 			auto it = m_assets.find(path.stem().stem().string());
 			if (it != m_assets.end()) {
-				m_browser_entries.push_back(file_entry{ it->first, file_type::asset });
+				m_browser_entries.push_back(file_entry{
+					path, &it->second, file_type::asset
+				});
 				continue;
 			}
 		}
-		m_browser_entries.push_back(file_entry{path.filename().string(), file_type::other });
+		m_browser_entries.push_back(file_entry{
+			path/*.filename().string()*/, nullptr, file_type::other
+		});
 	}
 
 	std::sort(m_browser_entries.begin(), m_browser_entries.end(), 

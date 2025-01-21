@@ -11,6 +11,10 @@
  * String Utility Definitions                                                *
 \*~-------------------------------------------------------------------------~*/
 
+//void fields_engine::ellipsis_compress_middle_in_place(string& str, int max_chars) {
+//
+//}
+
 fe::string fields_engine::ellipsis_compress_middle(string_view str, int char_max) {
 	constexpr string_view ellipsis("...");
 	const int len(str.size());
