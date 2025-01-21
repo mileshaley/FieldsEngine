@@ -48,7 +48,7 @@
     <ClCompile Include="source\asset.cpp" />
     <ClCompile Include="source\camera_component.cpp" />
     <ClCompile Include="source\component.cpp" />
-    <ClCompile Include="source\editor.cpp" />
+    <ClCompile Include="source\editor_manager.cpp" />
     <ClCompile Include="source\editor_icons.cpp" />
     <ClCompile Include="source\editor_icons_all.cpp" />
     <ClCompile Include="source\editor_window.cpp" />
@@ -105,7 +105,7 @@
     <ClInclude Include="source\context.h" />
     <ClInclude Include="source\context_ownership.h" />
     <ClInclude Include="source\fields_engine_defines.h" />
-    <ClInclude Include="source\editor.h" />
+    <ClInclude Include="source\editor_manager.h" />
     <ClInclude Include="source\editor_icons.h" />
     <ClInclude Include="source\editor_icons_all.h" />
     <ClInclude Include="source\editor_window.h" />

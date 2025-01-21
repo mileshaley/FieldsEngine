@@ -11,7 +11,7 @@
 #include "scene.h"
 #include "application.h"
 
-#include "editor.h"
+#include "editor_manager.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Camera Component Definitions                                              *
@@ -66,7 +66,7 @@ void fields_engine::camera_component::recalculate_proj_matrix() {
 	/// TODO: fix this
 	const vec2 win_size
 #if EDITOR
-		= context<editor>().get_game_window_size();
+		= context<editor_manager>().get_game_window_size();
 #else
 		= context<application>().get_window_size();
 #endif

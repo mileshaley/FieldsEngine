@@ -9,7 +9,7 @@
 #include <filesystem>
 #include "asset_loader.h"
 #include "context.h"
-#include "editor.h"
+#include "editor_manager.h"
 #include "imgui.h"
 #include "string_util.h"
 
@@ -43,7 +43,7 @@ bool fields_engine::asset_manager::startup() {
 	}
 
 #if EDITOR
-	context<editor>().add_window(make_box<editor_window>(
+	context<editor_manager>().add_window(make_box<editor_window>(
 		"Asset Browser",
 		std::bind(&asset_manager::asset_browser_window, this),
 		ICON_FOLDER

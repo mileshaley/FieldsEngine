@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~* 
- * File: editor.h                                                            *
+ * File: editor_manager.h                                                    *
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
@@ -25,15 +25,15 @@ namespace fields_engine {
 } // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
- * Editor Class                                                              *
+ * Editor Manager Class                                                      *
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
-	class editor {
+	class editor_manager {
 	public:
-		editor(window& win);
+		editor_manager(window& win);
 		void tick(float dt);
-		~editor();
+		~editor_manager();
 
 
 		static void open_icon_selector();

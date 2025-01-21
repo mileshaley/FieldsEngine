@@ -13,7 +13,7 @@
 #include "application.h"
 
 #if EDITOR
-#include "editor.h"
+#include "editor_manager.h"
 #endif // EDITOR
 
 #if FE_USING_GLFW

@@ -9,7 +9,7 @@
 #include "editor_icons.h" // fe::editor_icon
 #include <functional> // callback_t
 
-class editor;
+class editor_manager;
 namespace fields_engine {
 
 	/// TODO: Add support for grouping windows by category

@@ -17,7 +17,7 @@
 
 #include "scene.h"
 #if EDITOR 
-#include "editor.h"
+#include "editor_manager.h"
 #endif
 
 #if FE_USING_GLFW
@@ -94,7 +94,7 @@ bool fields_engine::application::startup() {
 
 	m_scene = make_box<scene>();
 #if EDITOR
-	m_editor = make_box<editor>(m_window.get());
+	m_editor = make_box<editor_manager>(m_window.get());
 #endif // EDITOR
 	m_asset_manager->startup();
 
@@ -182,7 +182,7 @@ fe::window& fields_engine::application::ref_window() {
 }
 
 #if EDITOR
-fe::editor& fields_engine::application::ref_editor() {
+fe::editor_manager& fields_engine::application::ref_editor() {
 	return *m_editor;
 }
 #endif // EDITOR

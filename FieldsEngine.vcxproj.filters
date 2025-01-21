@@ -49,7 +49,7 @@
       <Filter>Stubs</Filter>
     </ClCompile>
     <ClCompile Include="source\application.cpp" />
-    <ClCompile Include="source\editor.cpp" />
+    <ClCompile Include="source\editor_manager.cpp" />
     <ClCompile Include="source\editor_icons.cpp" />
     <ClCompile Include="source\editor_icons_all.cpp" />
     <ClCompile Include="source\editor_window.cpp" />
@@ -115,7 +115,7 @@
       <Filter>Stubs</Filter>
     </ClInclude>
     <ClInclude Include="source\application.h" />
-    <ClInclude Include="source\editor.h" />
+    <ClInclude Include="source\editor_manager.h" />
     <ClInclude Include="source\editor_icons.h" />
     <ClInclude Include="source\editor_icons_all.h" />
     <ClInclude Include="source\editor_window.h" />
