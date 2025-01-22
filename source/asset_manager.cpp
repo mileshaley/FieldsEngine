@@ -138,6 +138,8 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	constexpr int name_compress_max = 14;
 	constexpr ImVec4 invisible{ 0,0,0,0 };
 
+	const ImVec2 tall_input_padding{ ImGui::GetStyle().FramePadding.x, 6 };
+
 	const ImVec2 window_pos = ImGui::GetWindowPos();
 	const ImVec2 init_cursor_pos = ImGui::GetCursorPos();
 
@@ -151,9 +153,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		//| ImGuiInputTextFlags_CallbackEdit
 		//| ImGuiInputTextFlags_CallbackCompletion
 		//| ImGuiInputTextFlags_CallbackHistory;
-	constexpr ImGuiInputTextFlags search_bar_input_flags
-		= ImGuiInputTextFlags_NoHorizontalScroll
-		| ImGuiInputTextFlags_CallbackResize;
+
 
 	constexpr float address_bar_height = 30;
 	constexpr float address_bar_rounding = 3;
@@ -166,15 +166,15 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		ImGui::ColorConvertFloat4ToU32({0,0,0,1}), 
 		address_bar_rounding
 	);
+	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 10, 0 });
 	if (m_address_bar_state == address_bar_state::activated
 		|| m_address_bar_state == address_bar_state::active
 	) {
-		ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 10, 0 });
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, invisible);
 		ImGui::PushItemWidth(content_max.x - 20);
 		// Increase the height of the text input to roughly match that of the buttons
 		// This doesn't affect later items so we can afford to be imprecise
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, { ImGui::GetStyle().FramePadding.x, 6 });
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, tall_input_padding);
 		if (ImGui::InputText(
 				"###asset_browser_address_bar_input", 
 				m_address_bar_buffer.data(), 
@@ -203,9 +203,6 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		ImGui::PopStyleColor();
 
 	} else {
-
-		//ImGui::SameLine();
-		ImGui::SetCursorPos(init_cursor_pos + ImVec2{10,0});
 		vector<std::filesystem::path> directories(
 			m_browser_current_directory.begin(), m_browser_current_directory.end());
 		// Index into directories
@@ -270,11 +267,20 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	}
 	
 	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 0, 40 });
-	ImGui::Text(ICON_MAGNIFYING_GLASS);
-	ImGui::SameLine();
+
+	// Search bar
+
+	constexpr ImGuiInputTextFlags search_bar_input_flags
+		= ImGuiInputTextFlags_NoHorizontalScroll
+		| ImGuiInputTextFlags_CallbackResize;
+	const string search_hint = ICON_MAGNIFYING_GLASS" Search " 
+		+ (--m_browser_current_directory.end())->string();
+	const ImVec2 search_avail = ImGui::GetContentRegionAvail();
+	ImGui::PushItemWidth(search_avail.x);
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, tall_input_padding);
 	if (ImGui::InputTextWithHint(
 		"###asset_browser_search_bar_input",
-		("Search " + (--m_browser_current_directory.end())->string()).c_str(),
+		search_hint.c_str(),
 		m_search_bar_buffer.data(),
 		m_search_bar_buffer.size() + 1,
 		search_bar_input_flags,
@@ -283,10 +289,15 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	)) {
 		m_browser_needs_refresh = true;
 	}
+	ImGui::PopItemWidth();
+	ImGui::PopStyleVar();
 	
 	if (m_browser_needs_refresh) {
 		refresh_asset_browser();
 	}
+	
+	// File viewer
+	ImGui::Separator();
 
 	if (ImGui::BeginChild("asset_browser_child")) {
 

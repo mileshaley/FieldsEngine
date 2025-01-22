@@ -75,6 +75,7 @@
     <ClCompile Include="source\asset_loader.cpp" />
     <ClCompile Include="source\string_util.cpp" />
     <ClCompile Include="source\mesh_import.cpp" />
+    <ClCompile Include="source\editor.cpp" />
     <ClCompile Include="source\texture_import.cpp" />
     <ClCompile Include="source\stubs\stub.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -130,6 +131,7 @@
     <ClInclude Include="source\serial_conversion.h" />
     <ClInclude Include="source\string_util.h" />
     <ClInclude Include="source\mesh_import.h" />
+    <ClInclude Include="source\editor.h" />
     <ClInclude Include="source\texture_import.h" />
     <ClInclude Include="source\vector_util.h" />
     <ClInclude Include="source\this_type.h" />

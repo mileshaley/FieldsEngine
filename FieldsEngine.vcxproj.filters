@@ -52,7 +52,6 @@
     <ClCompile Include="source\editor_manager.cpp" />
     <ClCompile Include="source\editor_icons.cpp" />
     <ClCompile Include="source\editor_icons_all.cpp" />
-    <ClCompile Include="source\editor_window.cpp" />
     <ClCompile Include="source\graphics.cpp" />
     <ClCompile Include="source\input.cpp" />
     <ClCompile Include="source\log.cpp" />
@@ -79,6 +78,8 @@
     <ClCompile Include="source\string_util.cpp" />
     <ClCompile Include="source\mesh_import.cpp" />
     <ClCompile Include="source\texture_import.cpp" />
+    <ClCompile Include="source\editor_window.cpp" />
+    <ClCompile Include="source\editor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libraries\includes\imGui\imconfig.h">
@@ -153,5 +154,6 @@
     <ClInclude Include="source\vector_util.h" />
     <ClInclude Include="source\mesh_import.h" />
     <ClInclude Include="source\texture_import.h" />
+    <ClInclude Include="source\editor.h" />
   </ItemGroup>
 </Project>
