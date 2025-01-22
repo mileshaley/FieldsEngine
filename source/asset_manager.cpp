@@ -350,6 +350,13 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		const bool ctrl_held = ImGui::GetIO().KeyCtrl;
 		const bool shift_held = ImGui::GetIO().KeyShift;
 
+		// We only need to do this at most once per frame
+		if (m_browser_wait_for_mouse_trigger
+			&& ImGui::IsMouseClicked(ImGuiMouseButton_Left)
+		) {
+			m_browser_wait_for_mouse_trigger = false;
+		}
+
 		// We will need to know if any entries were clicked on
 		// in case the user wants to deselect by clicking on nothing
 		bool entry_was_clicked = false;
@@ -378,7 +385,10 @@ bool fields_engine::asset_manager::asset_browser_window() {
 					//ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.5f,1.0f,1.0f }); // Blue
 					ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.8f,0.45f,1.0f }); // Green
 				}
-				if (ImGui::Button("", entry_size) || folder_clicked) {
+
+				if (ImGui::Button("", entry_size) || folder_clicked
+					&& !m_browser_wait_for_mouse_trigger
+				) {
 					if (shift_held) {
 						// There is no way to deselect with shift click
 						if (m_prev_entry_clicked == -1 || m_prev_entry_clicked == i) {
@@ -406,7 +416,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				} else if (entry.type == file_type::folder
 					&& ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)
 				) {
-					//ImGui::SetNextFrameWantCaptureMouse(false);
+					m_browser_wait_for_mouse_trigger = true;
 					browse_to_directory(std::filesystem::path(entry.path));
 				}
 

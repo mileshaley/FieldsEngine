@@ -75,7 +75,9 @@ namespace fields_engine {
 		string m_search_bar_buffer;
 		int m_prev_entry_clicked = -1; // For shift multi-select
 		bool m_browser_needs_refresh = true;
-		bool m_browser_wait_for_mouse_trigger;
+		// We make sure that the user doesn't acidentally make an
+		// extra on-release input after double clicking a folder
+		bool m_browser_wait_for_mouse_trigger = false;
 		enum class address_bar_state : i8 {
 			inactive = 0,
 			activated,
