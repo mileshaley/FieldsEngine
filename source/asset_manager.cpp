@@ -89,6 +89,10 @@ fe::asset* fields_engine::asset_manager::add_asset(asset&& new_asset) {
 	else { return nullptr; }
 }
 
+/*~-------------------------------------------------------------------------~*\
+ * Asset Manager Editor Only Definitions                                     *
+\*~-------------------------------------------------------------------------~*/
+
 #if EDITOR
 
 namespace fields_engine {
@@ -98,12 +102,7 @@ namespace fields_engine {
 			if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
 				manager.m_address_bar_buffer.resize(data->BufTextLen, '\0');
 				data->Buf = manager.m_address_bar_buffer.data();
-			} 
-			//else if (data->EventFlag == ImGuiInputTextFlags_CallbackEdit) {
-			//
-			//} else if (data->EventFlag == ImGuiInputTextFlags_CallbackCompletion) {
-			//
-			//}
+			}
 			return 0;
 		}
 
@@ -252,16 +251,12 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				ImGui::EndPopup();
 			}
 		}
-		ImGui::PushStyleColor(ImGuiCol_Button, invisible);
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, invisible);
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, invisible);
 		const ImVec2 avail = ImGui::GetContentRegionAvail();
 		ImGui::SameLine();
-		if (ImGui::Button("###asset_browser_address_bar_activate", ImVec2{content_max.x, address_bar_height})) {
+		if (ImGui::InvisibleButton("###asset_browser_address_bar_activate", ImVec2{content_max.x, address_bar_height})) {
 			m_address_bar_buffer = m_browser_current_directory.string();
 			m_address_bar_state = address_bar_state::activated;
 		}
-		ImGui::PopStyleColor(3);
 	}
 	
 	// Left of search buttons
@@ -337,8 +332,9 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		refresh_asset_browser();
 	}
 	
-	// File viewer
 	ImGui::Separator();
+	
+	// File viewer
 
 	if (ImGui::BeginChild("asset_browser_child")) {
 
@@ -362,25 +358,27 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			file_entry const& entry = m_browser_entries[i];
 			ImGui::PushID(&entry);
 			const ImVec2 cursor_pos = ImGui::GetCursorPos();
-
 			// Selection & button display logic
-
 			bool& selected = m_browser_entries[i].selected;
 
+			bool folder_hovered = selected;
+			bool folder_clicked = false;
+			if (entry.type == file_type::folder && !folder_hovered) {
+				folder_clicked = ImGui::InvisibleButton("", entry_size);
+				//ImGui::Selectable("", false, 0, entry_size);
+				folder_hovered = ImGui::IsItemHovered();
+				ImGui::SetCursorPos(cursor_pos);
+			}
 			// Show the button border if the entry type is 
 			// a selected or hovered folder, or any other type in any state
-			if (entry.type != file_type::folder 
-				|| selected
-				|| ImGui::IsMouseHoveringRect(
-					window_pos + cursor_pos, window_pos + cursor_pos + entry_size)
-			) {
+			if (entry.type != file_type::folder || folder_hovered) {
 				// If we change selected this iteration we still want to revert the color change
 				const bool was_selected = selected;
 				if (was_selected) {
 					//ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.5f,1.0f,1.0f }); // Blue
 					ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.8f,0.45f,1.0f }); // Green
 				}
-				if (ImGui::Button("", entry_size)) {
+				if (ImGui::Button("", entry_size) || folder_clicked) {
 					if (shift_held) {
 						// There is no way to deselect with shift click
 						if (m_prev_entry_clicked == -1 || m_prev_entry_clicked == i) {
@@ -428,7 +426,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				);
 			} else if (entry.type == file_type::other) {
 				ImGui::TextColored(
-					ImVec4(1, 1, 1, 0.65f),
+					ImVec4(1, 1, 1, 0.65f), // Transparent white
 					"unknown"
 				);
 			}

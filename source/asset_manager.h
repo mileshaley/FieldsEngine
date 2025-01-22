@@ -68,12 +68,14 @@ namespace fields_engine {
 		};
 		vector<file_entry> m_browser_entries;
 		std::filesystem::path m_browser_current_directory = "assets";
+	
 		std::stack<std::filesystem::path> m_browser_back_history;
 		std::stack<std::filesystem::path> m_browser_forth_history;
 		string m_address_bar_buffer;
 		string m_search_bar_buffer;
 		int m_prev_entry_clicked = -1; // For shift multi-select
 		bool m_browser_needs_refresh = true;
+		bool m_browser_wait_for_mouse_trigger;
 		enum class address_bar_state : i8 {
 			inactive = 0,
 			activated,
