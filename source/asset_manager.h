@@ -57,7 +57,6 @@ namespace fields_engine {
 		bool asset_browser_window();
 	private:
 		void refresh_asset_browser();
-		void browse_to_directory(std::filesystem::path const& target);
 		void browse_to_directory(std::filesystem::path&& target);
 
 		enum class file_type : i8 { folder, asset, other };

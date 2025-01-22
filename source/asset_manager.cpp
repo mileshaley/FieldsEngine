@@ -244,7 +244,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 						if (ImGui::Selectable(entry.path().filename().string().c_str())
 							&& entry.path().filename() != m_browser_current_directory.filename()
 						) {
-							browse_to_directory(entry.path());
+							browse_to_directory(std::filesystem::path(entry.path()));
 							break;
 						}
 					}
@@ -297,6 +297,9 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	}
 	if (no_forth_history) {
 		ImGui::EndDisabled();
+	} else if (!m_browser_forth_history.empty() && ImGui::BeginItemTooltip()){
+		ImGui::Text(("Forward to " + m_browser_forth_history.top().filename().string()).c_str());
+		ImGui::EndTooltip();
 	}
 	ImGui::SameLine();
 
@@ -401,7 +404,8 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				} else if (entry.type == file_type::folder
 					&& ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)
 				) {
-					browse_to_directory(entry.path);
+					//ImGui::SetNextFrameWantCaptureMouse(false);
+					browse_to_directory(std::filesystem::path(entry.path));
 				}
 
 				if (was_selected) {
@@ -542,14 +546,11 @@ void fields_engine::asset_manager::refresh_asset_browser() {
 		});
 }
 
-void fields_engine::asset_manager::browse_to_directory(std::filesystem::path const& target) {
-	m_browser_back_history.emplace(move(m_browser_current_directory));
-	m_browser_current_directory = target;
-	m_browser_needs_refresh = true;
-}
-
 void fields_engine::asset_manager::browse_to_directory(std::filesystem::path&& target) {
 	m_browser_back_history.emplace(move(m_browser_current_directory));
+	while (!m_browser_forth_history.empty()) {
+		m_browser_forth_history.pop();
+	}
 	m_browser_current_directory = move(target);
 	m_browser_needs_refresh = true;
 }
