@@ -264,11 +264,14 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		ImGui::PopStyleColor(3);
 	}
 	
+	// Left of search buttons
+
 	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 0, 40 });
 	constexpr ImVec2 search_button_size{ address_bar_height, address_bar_height };
 	if (ImGui::Button(ICON_ARROW_ROTATE_RIGHT"###asset_browser_refresh", search_button_size)) {
 		m_browser_needs_refresh = true;
 	}
+	ImGui::SetItemTooltip("Refresh browser for new items");
 
 	const bool no_back_history = m_browser_back_history.empty();
 	const bool no_forth_history = m_browser_forth_history.empty();
@@ -284,6 +287,9 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	}
 	if (no_back_history) {
 		ImGui::EndDisabled();
+	} else if (!m_browser_back_history.empty() && ImGui::BeginItemTooltip()) {
+		ImGui::Text(("Back to " + m_browser_back_history.top().filename().string()).c_str());
+		ImGui::EndTooltip();
 	}
 	if (no_forth_history) {
 		ImGui::BeginDisabled();
@@ -309,7 +315,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		= ImGuiInputTextFlags_NoHorizontalScroll
 		| ImGuiInputTextFlags_CallbackResize;
 	const string search_hint = ICON_MAGNIFYING_GLASS" Search " 
-		+ (--m_browser_current_directory.end())->string();
+		+ m_browser_current_directory.filename().string();
 	const ImVec2 search_avail = ImGui::GetContentRegionAvail();
 	ImGui::PushItemWidth(search_avail.x);
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, tall_input_padding);
@@ -354,8 +360,6 @@ bool fields_engine::asset_manager::asset_browser_window() {
 
 		for (int i = 0; i < m_browser_entries.size(); ++i) {
 			file_entry const& entry = m_browser_entries[i];
-			/// TODO: this doesn't really make sense, fix it
-			/// Also when fixed, update the comment on the matching PopID() call
 			ImGui::PushID(&entry);
 			const ImVec2 cursor_pos = ImGui::GetCursorPos();
 
@@ -468,7 +472,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				// Continue with next item horizontally
 				ImGui::SetCursorPos(cursor_pos + ImVec2(entry_size.x + pad_between, 0));
 			}
-			ImGui::PopID(); // entry address
+			ImGui::PopID(); // entry's address
 		}
 		
 		// Deselect everything if window background is clicked without any modifier keys
