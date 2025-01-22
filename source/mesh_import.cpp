@@ -41,6 +41,7 @@ fe::json fields_engine::import_vis_mesh(std::filesystem::path const& in_path) {
         auto& shapes = result.shapes;
         for (auto const& shape : shapes) {
             auto const& indices = shape.mesh.indices;
+            //if (indices.empty()) { continue; }
             const int first_idx = int(out_triangles.size());
             for (size_t i = 0; i < indices.size(); ++i) {
                 rapidobj::Index const& index = indices[i];

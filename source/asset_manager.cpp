@@ -186,8 +186,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			// Attempt to go to the directory the user typed
 			std::filesystem::path path(m_address_bar_buffer);
 			if (std::filesystem::exists(path)) {
-				m_browser_current_directory = path;
-				m_browser_needs_refresh = true;
+				browse_to_directory(move(path));
 				m_address_bar_state = address_bar_state::inactive;
 			}
 		}
@@ -211,12 +210,12 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			if (ImGui::Button(directories[i].string().c_str(), ImVec2{0, address_bar_height})
 				&& directories[i] != m_browser_current_directory.filename()
 			) {
-				m_browser_needs_refresh = true;
-				m_browser_current_directory.clear();
+				std::filesystem::path new_path{};
 				// Reconstruct the new directory path
 				for (int j = 0; j <= i; ++j) {
-					m_browser_current_directory /= directories[j];
+					new_path /= directories[j];
 				}
+				browse_to_directory(move(new_path));
 				break;
 			}
 
@@ -245,8 +244,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 						if (ImGui::Selectable(entry.path().filename().string().c_str())
 							&& entry.path().filename() != m_browser_current_directory.filename()
 						) {
-							m_browser_needs_refresh = true;
-							m_browser_current_directory = entry.path();
+							browse_to_directory(entry.path());
 							break;
 						}
 					}
@@ -267,6 +265,40 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	}
 	
 	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 0, 40 });
+	constexpr ImVec2 search_button_size{ address_bar_height, address_bar_height };
+	if (ImGui::Button(ICON_ARROW_ROTATE_RIGHT"###asset_browser_refresh", search_button_size)) {
+		m_browser_needs_refresh = true;
+	}
+
+	const bool no_back_history = m_browser_back_history.empty();
+	const bool no_forth_history = m_browser_forth_history.empty();
+	if (no_back_history) {
+		ImGui::BeginDisabled();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button(ICON_CIRCLE_ARROW_LEFT"###asset_browser_back", search_button_size)) {
+		m_browser_forth_history.emplace(move(m_browser_current_directory));
+		m_browser_current_directory = move(m_browser_back_history.top());
+		m_browser_back_history.pop();
+		m_browser_needs_refresh = true;
+	}
+	if (no_back_history) {
+		ImGui::EndDisabled();
+	}
+	if (no_forth_history) {
+		ImGui::BeginDisabled();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button(ICON_CIRCLE_ARROW_RIGHT"###asset_browser_forth", search_button_size)) {
+		m_browser_back_history.emplace(move(m_browser_current_directory));
+		m_browser_current_directory = move(m_browser_forth_history.top());
+		m_browser_forth_history.pop();
+		m_browser_needs_refresh = true;
+	}
+	if (no_forth_history) {
+		ImGui::EndDisabled();
+	}
+	ImGui::SameLine();
 
 	// Search bar
 
@@ -369,8 +401,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				} else if (entry.type == file_type::folder
 					&& ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)
 				) {
-					m_browser_current_directory = entry.path;
-					m_browser_needs_refresh = true;
+					browse_to_directory(entry.path);
 				}
 
 				if (was_selected) {
@@ -509,5 +540,17 @@ void fields_engine::asset_manager::refresh_asset_browser() {
 		[](file_entry const& l, file_entry const& r) {
 			return int(l.type) < int(r.type);
 		});
+}
+
+void fields_engine::asset_manager::browse_to_directory(std::filesystem::path const& target) {
+	m_browser_back_history.emplace(move(m_browser_current_directory));
+	m_browser_current_directory = target;
+	m_browser_needs_refresh = true;
+}
+
+void fields_engine::asset_manager::browse_to_directory(std::filesystem::path&& target) {
+	m_browser_back_history.emplace(move(m_browser_current_directory));
+	m_browser_current_directory = move(target);
+	m_browser_needs_refresh = true;
 }
 #endif // EDITOR

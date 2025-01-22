@@ -14,6 +14,7 @@
 #include "context.h" // For convenience functions
 
 #include <filesystem>
+#include <stack>
 
 namespace fields_engine::vis {
 	class texture;
@@ -56,6 +57,8 @@ namespace fields_engine {
 		bool asset_browser_window();
 	private:
 		void refresh_asset_browser();
+		void browse_to_directory(std::filesystem::path const& target);
+		void browse_to_directory(std::filesystem::path&& target);
 
 		enum class file_type : i8 { folder, asset, other };
 		struct file_entry {
@@ -66,6 +69,8 @@ namespace fields_engine {
 		};
 		vector<file_entry> m_browser_entries;
 		std::filesystem::path m_browser_current_directory = "assets";
+		std::stack<std::filesystem::path> m_browser_back_history;
+		std::stack<std::filesystem::path> m_browser_forth_history;
 		string m_address_bar_buffer;
 		string m_search_bar_buffer;
 		int m_prev_entry_clicked = -1; // For shift multi-select

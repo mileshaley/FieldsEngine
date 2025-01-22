@@ -421,11 +421,12 @@ void fields_engine::scene::startup() {
 	//	tr.set_local_scale({ 1, 1, 1 });
 	//	auto& ent = m_entities.emplace_back(make_box<entity>("Bear", move(m)));
 	//}
-#if 1
+
+#if 0
 	{
 		std::ofstream out_file("assets/gluncher.mesh.fea");
 		json out{ {"data", import_vis_mesh("test_assets/Gluncher.obj")}};
-		out_file << /*std::setw(4) <<*/ out << std::endl;
+		out_file << out.dump() << std::endl;
 		out_file.close();
 	}
 #elif 0
@@ -442,6 +443,7 @@ void fields_engine::scene::startup() {
 	
 	}
 #endif
+
 	{ // Ground
 		box<mesh_component> m = make_box<mesh_component>();
 		m->set_mesh(cube_mesh);
