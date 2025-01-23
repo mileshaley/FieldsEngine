@@ -441,6 +441,15 @@ bool fields_engine::asset_manager::asset_browser_window() {
 						/// TODO: This branch should open specific editor for this type
 					}
 				}
+				if (was_selected) {
+					ImGui::PopStyleColor(); // Border
+				}
+
+				if (ImGui::BeginItemTooltip()) {
+					ImGui::Text("Name: %s", entry.path.stem().stem().string().c_str());
+					ImGui::Text("Path: %s", entry.path.string().c_str());
+					ImGui::EndTooltip();
+				}
 
 				if (ImGui::BeginPopup(asset_right_click_popup_label)) {
 					if (ImGui::MenuItem(ICON_PEN_TO_SQUARE" Edit")) {
@@ -469,9 +478,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 					ImGui::EndPopup();
 				}
 
-				if (was_selected) {
-					ImGui::PopStyleColor(); // Border
-				}
+
 			}
 
 			// Entry info display logic
@@ -529,7 +536,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				ImGui::SetCursorPos(cursor_pos + ImVec2(entry_size.x + pad_between, 0));
 			}
 			ImGui::PopID(); // entry's address
-		}
+		} // for each entry
 		
 		// Deselect everything if window background is clicked without any modifier keys
 		if (!any_entry_was_clicked && !ctrl_held && !shift_held
