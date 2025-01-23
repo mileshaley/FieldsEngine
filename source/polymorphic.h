@@ -15,39 +15,39 @@
 \*~-------------------------------------------------------------------------~*/
 
 // Use within every polymorphic class's body
-#define FE_CLASS_BODY(p_class, p_super)                                 \
-	private: /* Specific to this class */                               \
-		using this_type = p_class;                                      \
-		using super = p_super;                                          \
-		static inline string_view static_type_name() {                  \
-			static constexpr string_view name( #p_class );              \
-			return name;                                                \
-		}                                                               \
-	public: /* Common virtual functions */                              \
-		virtual string_view get_type_name() const override {            \
-			return static_type_name();                                  \
-		}                                                               \
-		virtual p_class* internal_clone() const override {              \
-			return new p_class(*this);                                  \
-		}                                                               \
-	public: /* Macro should only be used in public areas of body */     \
+#define FE_CLASS_BODY(Class, Super)                                   \
+	private: /* Specific to this class */                             \
+		using this_type = Class;                                      \
+		using super = Super;                                          \
+		static inline string_view static_type_name() {                \
+			static constexpr string_view name( #Class );              \
+			return name;                                              \
+		}                                                             \
+	public: /* Common virtual functions */                            \
+		virtual string_view get_type_name() const override {          \
+			return static_type_name();                                \
+		}                                                             \
+		virtual Class* internal_clone() const override {              \
+			return new Class(*this);                                  \
+		}                                                             \
+	public: /* Macro should only be used in public areas of body */   \
 
-#define FE_DEFINING_CLASS_BODY(p_class)                                 \
-	private: /* Specific to this class */                               \
-		using this_type = p_class;                                      \
-		static inline string_view static_type_name() {                  \
-			static constexpr string_view name( #p_class );              \
-			return name;                                                \
-		}                                                               \
-	public: /* Define common virtual functions */                       \
-		using defining_base = p_class;                                  \
-				virtual p_class* internal_clone() const {               \
-			return new p_class(*this);                                  \
-		}                                                               \
-		virtual string_view get_type_name() const {                     \
-			return static_type_name();                                  \
-		}                                                               \
-	public: /* Macro should only be used in public areas of body */     \
+#define FE_DEFINING_CLASS_BODY(Class)                                 \
+	private: /* Specific to this class */                             \
+		using this_type = Class;                                      \
+		static inline string_view static_type_name() {                \
+			static constexpr string_view name( #Class );              \
+			return name;                                              \
+		}                                                             \
+	public: /* Define common virtual functions */                     \
+		using defining_base = Class;                                  \
+				virtual Class* internal_clone() const {               \
+			return new Class(*this);                                  \
+		}                                                             \
+		virtual string_view get_type_name() const {                   \
+			return static_type_name();                                \
+		}                                                             \
+	public: /* Macro should only be used in public areas of body */   \
 
 /*~-------------------------------------------------------------------------~*\
  * Polymorphism Functions                                                    *
