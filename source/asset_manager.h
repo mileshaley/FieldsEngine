@@ -47,7 +47,12 @@ namespace fields_engine {
 		// Add a new asset
 		// Returns a pointer to the moved asset on success
 		// Returns nullptr if asset with that name already exists
-		asset* add_asset(asset&& new_asset);
+		//asset* add_asset(asset&& new_asset);
+		
+		// Add a new asset
+		// Returns a pointer to the created asset on success
+		// Returns nullptr if asset with that name already exists or couldn't be created
+		asset* add_asset(std::filesystem::path const& new_asset_path);
 
 	private:
 		unordered_map<string, asset> m_assets;

@@ -30,16 +30,7 @@ fields_engine::asset_manager::~asset_manager() = default;
 bool fields_engine::asset_manager::startup() {
 	std::filesystem::recursive_directory_iterator content_directory("assets");
 	for (auto const& file : content_directory) {
-		std::filesystem::path in_path = file;
-		auto ext = in_path.extension();
-		if (ext != ".fea") {
-			continue;
-		}
-		/// TODO: add debug only check for assets with duplicate names
-		m_assets.emplace(
-			in_path.stem().stem().string(),
-			in_path
-		);
+		add_asset(file);
 	}
 
 #if EDITOR
@@ -82,10 +73,23 @@ fe::asset const* fields_engine::asset_manager::get_asset(string const& asset_nam
 	return &it->second;
 }
 
-fe::asset* fields_engine::asset_manager::add_asset(asset&& new_asset) {
-	string name(new_asset.get_name());
-	const auto [it, success] = m_assets.try_emplace(move(name), move(new_asset));
-	if (success) { return &it->second; }
+//fe::asset* fields_engine::asset_manager::add_asset(asset&& new_asset) {
+//	string name(new_asset.get_name());
+//	const auto [it, success] = m_assets.try_emplace(move(name), move(new_asset));
+//	if (success) { return &it->second; }
+//	else { return nullptr; }
+//}
+
+fe::asset* fields_engine::asset_manager::add_asset(std::filesystem::path const& new_asset_path) {
+	auto ext = new_asset_path.extension();
+	if (ext != ".fea") {
+		return nullptr;
+	}
+	const auto [it, success] = m_assets.try_emplace(
+		new_asset_path.stem().stem().string(), 
+		new_asset_path
+	);
+	if (success) { return &it->second; } 
 	else { return nullptr; }
 }
 
@@ -446,7 +450,18 @@ bool fields_engine::asset_manager::asset_browser_window() {
 
 					}
 					if (ImGui::MenuItem(ICON_SQUARE_PLUS" Duplicate", "Ctrl+D")) {
-
+						for (int i = 2; i < 100; ++i) {
+							string new_file_name = entry.path.string();
+							const size_t pos = new_file_name.find_first_of('.', 0);
+							new_file_name.insert(pos, "_" + std::to_string(i));
+							std::filesystem::path new_file_path = new_file_name;
+							if (!std::filesystem::exists(new_file_path)) {
+								std::filesystem::copy(entry.path, new_file_path);
+								add_asset(new_file_path);
+								break;
+							}
+						}
+						m_browser_needs_refresh = true;
 					}
 					if (ImGui::MenuItem(ICON_TRASH_CAN" Delete", "Del")) {
 
