@@ -12,7 +12,7 @@
 #include "editor_manager.h"
 #include "imgui.h"
 #include "string_util.h"
-
+#include "imgui_internal.h"
 
 #include "texture.h"
 
@@ -349,8 +349,11 @@ bool fields_engine::asset_manager::asset_browser_window() {
 
 		const bool ctrl_held = ImGui::GetIO().KeyCtrl;
 		const bool shift_held = ImGui::GetIO().KeyShift;
+		const bool left_clicked = ImGui::IsMouseReleased(ImGuiMouseButton_Left);
+		const bool right_clicked = ImGui::IsMouseReleased(ImGuiMouseButton_Right);
 
 		// We only need to do this at most once per frame
+		// Notice how we are checking for click and not release
 		if (m_browser_wait_for_mouse_trigger
 			&& ImGui::IsMouseClicked(ImGuiMouseButton_Left)
 		) {
@@ -359,7 +362,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 
 		// We will need to know if any entries were clicked on
 		// in case the user wants to deselect by clicking on nothing
-		bool entry_was_clicked = false;
+		bool any_entry_was_clicked = false;
 
 		for (int i = 0; i < m_browser_entries.size(); ++i) {
 			file_entry const& entry = m_browser_entries[i];
@@ -376,6 +379,12 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				folder_hovered = ImGui::IsItemHovered();
 				ImGui::SetCursorPos(cursor_pos);
 			}
+
+			constexpr ImGuiButtonFlags entry_button_flags
+				= ImGuiButtonFlags_MouseButtonLeft
+				| ImGuiButtonFlags_MouseButtonRight;
+
+
 			// Show the button border if the entry type is 
 			// a selected or hovered folder, or any other type in any state
 			if (entry.type != file_type::folder || folder_hovered) {
@@ -386,38 +395,63 @@ bool fields_engine::asset_manager::asset_browser_window() {
 					ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.8f,0.45f,1.0f }); // Green
 				}
 
-				if (ImGui::Button("", entry_size) || folder_clicked
+				const char* asset_right_click_popup_label = "###asset_right_click_popup";
+
+				if (ImGui::ButtonEx("", entry_size, entry_button_flags) || folder_clicked
 					&& !m_browser_wait_for_mouse_trigger
 				) {
-					if (shift_held) {
-						// There is no way to deselect with shift click
-						if (m_prev_entry_clicked == -1 || m_prev_entry_clicked == i) {
-							selected = true;
-						} else {
-							// Select entries between [prev, current]
-							const auto[lower, upper] = std::minmax(m_prev_entry_clicked, i);
-							for (int j = lower; j <= upper; ++j) {
-								m_browser_entries[j].selected = true;
+					if (left_clicked) {
+						if (shift_held) {
+							// There is no way to deselect with shift click
+							if (m_prev_entry_clicked == -1 || m_prev_entry_clicked == i) {
+								selected = true;
+							} else {
+								// Select entries between [prev, current]
+								const auto [lower, upper] = std::minmax(m_prev_entry_clicked, i);
+								for (int j = lower; j <= upper; ++j) {
+									m_browser_entries[j].selected = true;
+								}
 							}
+						} else if (ctrl_held) {
+							selected = !selected;
+						} else {
+							for (int j = 0; j < m_browser_entries.size(); ++j) {
+								m_browser_entries[j].selected = false;
+							}
+							selected = true;
 						}
-					} else if (ctrl_held) {
-						selected = !selected;
-					} else {
-						for (int j = 0; j < m_browser_entries.size(); ++j) {
-							m_browser_entries[j].selected = false;
-						}
-						selected = true;
+						m_prev_entry_clicked = i;
+					} else if (right_clicked) {
+						ImGui::OpenPopup(asset_right_click_popup_label);
+
 					}
 					// Remember the last click for any type of click
-					m_prev_entry_clicked = i;
-					entry_was_clicked = true;
+					any_entry_was_clicked = true;
 
 				// Allow double click to enter directory if the button wasn't single clicked
-				} else if (entry.type == file_type::folder
-					&& ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)
-				) {
+				} else if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
 					m_browser_wait_for_mouse_trigger = true;
-					browse_to_directory(std::filesystem::path(entry.path));
+					if (entry.type == file_type::folder) {
+						browse_to_directory(std::filesystem::path(entry.path));
+					} else if (entry.type == file_type::asset) {
+						/// TODO: This branch should open specific editor for this type
+					}
+				}
+
+				if (ImGui::BeginPopup(asset_right_click_popup_label)) {
+					if (ImGui::MenuItem(ICON_PEN_TO_SQUARE" Edit")) {
+
+					}
+					if (ImGui::MenuItem(ICON_I_CURSOR" Rename", "F2")) {
+
+					}
+					if (ImGui::MenuItem(ICON_SQUARE_PLUS" Duplicate", "Ctrl+D")) {
+
+					}
+					if (ImGui::MenuItem(ICON_TRASH_CAN" Delete", "Del")) {
+
+					}
+					ImGui::EndPopup();
 				}
 
 				if (was_selected) {
@@ -452,7 +486,6 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			}
 
 			void* thumbnail = nullptr;
-			
 			if (entry.type == file_type::asset) {
 				thumbnail = entry.asset->get_thumbnail();
 				if (!thumbnail) {
@@ -484,7 +517,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		}
 		
 		// Deselect everything if window background is clicked without any modifier keys
-		if (!entry_was_clicked && !ctrl_held && !shift_held
+		if (!any_entry_was_clicked && !ctrl_held && !shift_held
 			&& ImGui::IsMouseReleased(ImGuiMouseButton_Left)
 			&& ImGui::IsWindowHovered()
 		) {
