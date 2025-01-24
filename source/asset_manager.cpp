@@ -257,7 +257,9 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		}
 		const ImVec2 avail = ImGui::GetContentRegionAvail();
 		ImGui::SameLine();
-		if (ImGui::InvisibleButton("###asset_browser_address_bar_activate", ImVec2{content_max.x, address_bar_height})) {
+		if (ImGui::InvisibleButton("###asset_browser_address_bar_activate", 
+			ImVec2{content_max.x, address_bar_height})
+		) {
 			m_address_bar_buffer = m_browser_current_directory.string();
 			m_address_bar_state = address_bar_state::activated;
 		}
@@ -388,6 +390,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				= ImGuiButtonFlags_MouseButtonLeft
 				| ImGuiButtonFlags_MouseButtonRight;
 
+			void* thumbnail = get_thumbnail(entry);
 
 			// Show the button border if the entry type is 
 			// a selected or hovered folder, or any other type in any state
@@ -449,7 +452,8 @@ bool fields_engine::asset_manager::asset_browser_window() {
 					ImGui::Text("Name: %s", entry.path.stem().stem().string().c_str());
 					ImGui::Text("Path: %s", entry.path.string().c_str());
 					ImGui::EndTooltip();
-				}
+				} // Tooltip
+				
 
 				if (ImGui::BeginPopup(asset_right_click_popup_label)) {
 					if (ImGui::MenuItem(ICON_PEN_TO_SQUARE" Edit")) {
@@ -476,9 +480,47 @@ bool fields_engine::asset_manager::asset_browser_window() {
 
 					}
 					ImGui::EndPopup();
+				} // Popup
+			} // Any file or hovered folder
+
+			// Allow drag drop
+
+			if (ImGui::BeginDragDropSource()) {
+					string path_str = entry.path.string();
+				if (entry.type == file_type::asset) {
+					ImGui::SetDragDropPayload("ab_asset", path_str.c_str(), path_str.size());
+				} else if (entry.type == file_type::folder) {
+					ImGui::SetDragDropPayload("ab_folder", path_str.c_str(), path_str.size());
+				} else if (entry.type == file_type::other) {
+					ImGui::SetDragDropPayload("ab_other", path_str.c_str(), path_str.size());
 				}
+				ImGui::Image(thumbnail, { 80,80 }, ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::Text(entry.path.string().c_str());
+				ImGui::EndDragDropSource();
+			} // Drag drop source
 
-
+			if (entry.type == file_type::folder) {
+				if (ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::GetDragDropPayload()) {
+						if (string(payload->DataType).substr(0, 3) == "ab_") {
+							std::filesystem::path src_path = string((const char*)payload->Data, payload->DataSize);
+							if (std::filesystem::exists(src_path)) {
+								if (ImGui::AcceptDragDropPayload(payload->DataType)) {
+									std::filesystem::rename(src_path, entry.path / src_path.filename());
+									m_browser_needs_refresh = true;
+									// Not worth figuring out how to change the history if you move a folder, just reset it
+									while (!m_browser_back_history.empty()) {
+										m_browser_back_history.pop();
+									}
+									while (!m_browser_forth_history.empty()) {
+										m_browser_forth_history.pop();
+									}
+								}
+							}
+						}
+					}
+					ImGui::EndDragDropTarget();
+				}
 			}
 
 			// Entry info display logic
@@ -507,23 +549,6 @@ bool fields_engine::asset_manager::asset_browser_window() {
 					entry.path.filename().string(), name_compress_max).c_str());
 			}
 
-			void* thumbnail = nullptr;
-			if (entry.type == file_type::asset) {
-				thumbnail = entry.asset->get_thumbnail();
-				if (!thumbnail) {
-					if (entry.asset->get_type() == "mesh") {
-						thumbnail = m_mesh_thumbnail->get_void_ptr_id();
-					} else if (entry.asset->get_type() == "material") {
-						thumbnail = m_material_thumbnail->get_void_ptr_id();
-					} else {
-						thumbnail = m_missing_thumbnail->get_void_ptr_id();
-					}
-				}
-			} else if (entry.type == file_type::folder) {
-				thumbnail = m_folder_thumbnail->get_void_ptr_id();
-			} else if (entry.type == file_type::other) {
-				thumbnail = m_missing_thumbnail->get_void_ptr_id();
-			}
 			ImGui::SetCursorPos(cursor_pos + thumbnail_margin);
 			// For some reason ImGui textures are flipped, so we adjust uvs manually here
 			ImGui::Image(thumbnail, thumbnail_size, ImVec2(0,1), ImVec2(1,0));
@@ -540,13 +565,18 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		
 		// Deselect everything if window background is clicked without any modifier keys
 		if (!any_entry_was_clicked && !ctrl_held && !shift_held
-			&& ImGui::IsMouseReleased(ImGuiMouseButton_Left)
 			&& ImGui::IsWindowHovered()
 		) {
-			// We arent in the for i loop anymore but j is kept for consistency with above
-			for (int j = 0; j < m_browser_entries.size(); ++j) {
-				m_browser_entries[j].selected = false;
+			if (left_clicked) {
+				// We arent in the for i loop anymore but j is kept for consistency with above
+				for (int j = 0; j < m_browser_entries.size(); ++j) {
+					m_browser_entries[j].selected = false;
+				}
 			}
+			if (right_clicked) {
+
+			}
+
 		}
 
 		ImGui::PopStyleColor(2);
@@ -620,5 +650,23 @@ void fields_engine::asset_manager::browse_to_directory(std::filesystem::path&& t
 	}
 	m_browser_current_directory = move(target);
 	m_browser_needs_refresh = true;
+}
+void* fields_engine::asset_manager::get_thumbnail(file_entry const& entry) {
+	if (entry.type == file_type::asset) {
+		if (void* thumbnail = entry.asset->get_thumbnail()) {
+			return thumbnail;
+		} else if (entry.asset->get_type() == "mesh") {
+			return m_mesh_thumbnail->get_void_ptr_id();
+		} else if (entry.asset->get_type() == "material") {
+			return m_material_thumbnail->get_void_ptr_id();
+		} else {
+			return m_missing_thumbnail->get_void_ptr_id();
+		}
+	} else if (entry.type == file_type::folder) {
+		return m_folder_thumbnail->get_void_ptr_id();
+	} else if (entry.type == file_type::other) {
+		return m_missing_thumbnail->get_void_ptr_id();
+	}
+	return nullptr;
 }
 #endif // EDITOR

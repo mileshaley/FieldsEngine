@@ -71,6 +71,8 @@ namespace fields_engine {
 			file_type type;
 			bool selected;
 		};
+		void* get_thumbnail(file_entry const& entry);
+
 		vector<file_entry> m_browser_entries;
 		std::filesystem::path m_browser_current_directory = "assets";
 	
