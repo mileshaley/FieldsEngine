@@ -61,9 +61,6 @@ namespace fields_engine {
 	public:
 		bool asset_browser_window();
 	private:
-		void refresh_asset_browser();
-		void browse_to_directory(std::filesystem::path&& target);
-
 		enum class file_type : i8 { folder, asset, other };
 		struct file_entry {
 			std::filesystem::path path;
@@ -71,11 +68,15 @@ namespace fields_engine {
 			file_type type;
 			bool selected;
 		};
+
+		void refresh_asset_browser();
+		void browse_to_directory(std::filesystem::path&& target);
 		void* get_thumbnail(file_entry const& entry);
+		std::filesystem::path get_unique_filename(std::filesystem::path const& path);
+
 
 		vector<file_entry> m_browser_entries;
 		std::filesystem::path m_browser_current_directory = "assets";
-	
 		std::stack<std::filesystem::path> m_browser_back_history;
 		std::stack<std::filesystem::path> m_browser_forth_history;
 		string m_address_bar_buffer;

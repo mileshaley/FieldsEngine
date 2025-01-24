@@ -574,12 +574,32 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				}
 			}
 			if (right_clicked) {
-
+				ImGui::OpenPopup("###browser_right_click_popup");
 			}
-
 		}
 
-		ImGui::PopStyleColor(2);
+		if (ImGui::BeginPopup("###browser_right_click_popup")) {
+			if (ImGui::MenuItem(ICON_FOLDER_PLUS" Create Folder")) {
+				const string new_folder_name = (m_browser_current_directory / "New Folder").string();
+				if (!std::filesystem::exists(new_folder_name)) {
+					std::filesystem::create_directory(new_folder_name);
+				} else {
+					for (int i = 2; i < 100; ++i) {
+						const string new_folder_name_num = new_folder_name + " (" + std::to_string(i) + ")";
+						if (!std::filesystem::exists(new_folder_name_num)) {
+							std::filesystem::create_directory(new_folder_name_num);
+							break;
+						}
+					}
+				}
+				m_browser_needs_refresh = true;
+			}
+			if (ImGui::MenuItem(ICON_SQUARE_PLUS" Create Asset...")) {
+
+			}
+			ImGui::EndPopup();
+		}
+		ImGui::PopStyleColor(2); // Border & border shadow
 	}
 	ImGui::EndChild();
 	return false;
