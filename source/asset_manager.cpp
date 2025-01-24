@@ -6,7 +6,6 @@
 
 #include "precompiled.h"
 #include "asset_manager.h"
-#include <filesystem>
 #include "asset_loader.h"
 #include "context.h"
 #include "editor_manager.h"
@@ -100,7 +99,12 @@ fe::asset* fields_engine::asset_manager::add_asset(std::filesystem::path const& 
 #if EDITOR
 
 namespace fields_engine {
-	struct asset_browser_callback_wrapper {
+	struct asset_browser_callbacks {
+		static constexpr ImGuiInputTextFlags address_bar_input_flags
+			= ImGuiInputTextFlags_NoHorizontalScroll
+			| ImGuiInputTextFlags_EnterReturnsTrue
+			| ImGuiInputTextFlags_AutoSelectAll
+			| ImGuiInputTextFlags_CallbackResize;
 		static int address_bar_input_callback(ImGuiInputTextCallbackData* data) {
 			asset_manager& manager = *reinterpret_cast<asset_manager*>(data->UserData);
 			if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
@@ -110,11 +114,27 @@ namespace fields_engine {
 			return 0;
 		}
 
+		static constexpr ImGuiInputTextFlags search_bar_input_flags
+			= ImGuiInputTextFlags_NoHorizontalScroll
+			| ImGuiInputTextFlags_CallbackResize;
 		static int search_bar_input_callback(ImGuiInputTextCallbackData* data) {
 			asset_manager& manager = *reinterpret_cast<asset_manager*>(data->UserData);
 			if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
 				manager.m_search_bar_buffer.resize(data->BufTextLen, '\0');
 				data->Buf = manager.m_search_bar_buffer.data();
+			}
+			return 0;
+		}
+
+		static constexpr ImGuiInputTextFlags rename_input_flags
+			= ImGuiInputTextFlags_NoHorizontalScroll
+			| ImGuiInputTextFlags_EnterReturnsTrue
+			| ImGuiInputTextFlags_CallbackResize;
+		static int rename_input_callback(ImGuiInputTextCallbackData* data) {
+			asset_manager& manager = *reinterpret_cast<asset_manager*>(data->UserData);
+			if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
+				manager.m_rename_buffer.resize(data->BufTextLen, '\0');
+				data->Buf = manager.m_rename_buffer.data();
 			}
 			return 0;
 		}
@@ -129,12 +149,13 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		(entry_size.x - thumbnail_size.x) / 2
 	};
 	constexpr float pad_between = 15;
+	constexpr float name_side_padding = 7;
 	constexpr ImVec2 name_text_offset{
-		7,
+		name_side_padding,
 		5 + thumbnail_margin.y + thumbnail_size.y
 	};
 	constexpr ImVec2 type_text_offset{
-		name_text_offset.x,
+		name_side_padding,
 		name_text_offset.y + 17
 	};
 	constexpr float offscreen_tolerance = 0.1f;
@@ -147,16 +168,6 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	const ImVec2 init_cursor_pos = ImGui::GetCursorPos();
 
 	// Address bar
-
-	constexpr ImGuiInputTextFlags address_bar_input_flags
-		= ImGuiInputTextFlags_NoHorizontalScroll
-		| ImGuiInputTextFlags_EnterReturnsTrue
-		| ImGuiInputTextFlags_AutoSelectAll
-		| ImGuiInputTextFlags_CallbackResize;
-		//| ImGuiInputTextFlags_CallbackEdit
-		//| ImGuiInputTextFlags_CallbackCompletion
-		//| ImGuiInputTextFlags_CallbackHistory;
-
 
 	constexpr float address_bar_height = 30;
 	constexpr float address_bar_rounding = 3;
@@ -182,8 +193,8 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				"###asset_browser_address_bar_input", 
 				m_address_bar_buffer.data(), 
 				m_address_bar_buffer.size() + 1,
-				address_bar_input_flags,
-				asset_browser_callback_wrapper::address_bar_input_callback,
+				asset_browser_callbacks::address_bar_input_flags,
+				asset_browser_callbacks::address_bar_input_callback,
 				this
 		)) {
 			// Attempt to go to the directory the user typed
@@ -312,9 +323,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 
 	// Search bar
 
-	constexpr ImGuiInputTextFlags search_bar_input_flags
-		= ImGuiInputTextFlags_NoHorizontalScroll
-		| ImGuiInputTextFlags_CallbackResize;
+
 	const string search_hint = ICON_MAGNIFYING_GLASS" Search " 
 		+ m_browser_current_directory.filename().string();
 	const ImVec2 search_avail = ImGui::GetContentRegionAvail();
@@ -325,8 +334,8 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		search_hint.c_str(),
 		m_search_bar_buffer.data(),
 		m_search_bar_buffer.size() + 1,
-		search_bar_input_flags,
-		asset_browser_callback_wrapper::search_bar_input_callback,
+		asset_browser_callbacks::search_bar_input_flags,
+		asset_browser_callbacks::search_bar_input_callback,
 		this
 	)) {
 		m_browser_needs_refresh = true;
@@ -371,11 +380,11 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		bool any_entry_was_clicked = false;
 
 		for (int i = 0; i < m_browser_entries.size(); ++i) {
-			file_entry const& entry = m_browser_entries[i];
+			file_entry& entry = m_browser_entries[i];
 			ImGui::PushID(&entry);
 			const ImVec2 cursor_pos = ImGui::GetCursorPos();
 			// Selection & button display logic
-			bool& selected = m_browser_entries[i].selected;
+			bool& selected = entry.selected;
 
 			bool folder_hovered = selected;
 			bool folder_clicked = false;
@@ -390,7 +399,8 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				= ImGuiButtonFlags_MouseButtonLeft
 				| ImGuiButtonFlags_MouseButtonRight;
 
-			void* thumbnail = get_thumbnail(entry);
+
+			void* const thumbnail = get_thumbnail(entry);
 
 			// Show the button border if the entry type is 
 			// a selected or hovered folder, or any other type in any state
@@ -460,7 +470,9 @@ bool fields_engine::asset_manager::asset_browser_window() {
 
 					}
 					if (ImGui::MenuItem(ICON_I_CURSOR" Rename", "F2")) {
-
+						m_rename_state = rename_state::activated;
+						m_rename_idx = i;
+						m_rename_buffer = entry.path.stem().stem().string();
 					}
 					if (ImGui::MenuItem(ICON_SQUARE_PLUS" Duplicate", "Ctrl+D")) {
 						for (int i = 2; i < 100; ++i) {
@@ -523,7 +535,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				}
 			}
 
-			// Entry info display logic
+			// Entry type
 
 			ImGui::SetCursorPos(cursor_pos + type_text_offset);
 			if (entry.type == file_type::asset) {
@@ -539,15 +551,53 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				);
 			}
 
+			// Entry rename/name
+
 			ImGui::SetCursorPos(cursor_pos + name_text_offset);
-			// Assets have type info in their name and we do not want to display it
-			if (entry.type == file_type::asset) {
-				ImGui::Text(ellipsis_compress_middle(
-					entry.path.stem().stem().string(), name_compress_max).c_str());
+			if (i == m_rename_idx && 
+				(m_rename_state == rename_state::activated || m_rename_state == rename_state::active)
+			) {
+				ImGui::SetNextItemWidth(entry_size.x - name_side_padding * 2);
+				if (ImGui::InputText(
+					"###asset_browser_rename_input",
+					m_rename_buffer.data(),
+					m_rename_buffer.size() + 1,
+					asset_browser_callbacks::rename_input_flags,
+					asset_browser_callbacks::rename_input_callback,
+					this
+				)) {
+					if (entry.type == file_type::asset) {
+						auto it = m_assets.find(m_rename_buffer);
+						if (it == m_assets.end()) {
+							/// TODO: Implement
+						}
+					} else {
+						//if (!std::filesystem::exists(entry.path.string().replace(entry.path.string().find())))
+					}
+
+					m_rename_idx = -1;
+					m_rename_state = rename_state::inactive;
+				} 
+
+				if (m_rename_state == rename_state::activated) {
+					ImGui::SetKeyboardFocusHere(-1);
+					m_rename_state = rename_state::active;
+				} else if (ImGui::IsItemDeactivated()) {
+					m_rename_idx = -1;
+					m_rename_state = rename_state::inactive;
+				}
 			} else {
-				ImGui::Text(ellipsis_compress_middle(
-					entry.path.filename().string(), name_compress_max).c_str());
+				if (entry.type == file_type::asset) {
+					// Assets have type info in their name and we do not want to display it
+					ImGui::Text(ellipsis_compress_middle(
+						entry.path.stem().stem().string(), name_compress_max).c_str());
+				} else {
+					ImGui::Text(ellipsis_compress_middle(
+						entry.path.filename().string(), name_compress_max).c_str());
+				}
 			}
+
+			// Entry thumbnail
 
 			ImGui::SetCursorPos(cursor_pos + thumbnail_margin);
 			// For some reason ImGui textures are flipped, so we adjust uvs manually here
@@ -632,7 +682,7 @@ void fields_engine::asset_manager::refresh_asset_browser() {
 			}
 			m_browser_entries.push_back(file_entry{
 				path, nullptr, file_type::other
-				});
+			});
 		}
 	} else {
 		std::filesystem::recursive_directory_iterator curr_directory(m_browser_current_directory);

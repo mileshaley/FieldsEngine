@@ -72,7 +72,6 @@ namespace fields_engine {
 		void refresh_asset_browser();
 		void browse_to_directory(std::filesystem::path&& target);
 		void* get_thumbnail(file_entry const& entry);
-		std::filesystem::path get_unique_filename(std::filesystem::path const& path);
 
 
 		vector<file_entry> m_browser_entries;
@@ -81,6 +80,8 @@ namespace fields_engine {
 		std::stack<std::filesystem::path> m_browser_forth_history;
 		string m_address_bar_buffer;
 		string m_search_bar_buffer;
+		string m_rename_buffer;
+		int m_rename_idx = -1;
 		int m_prev_entry_clicked = -1; // For shift multi-select
 		bool m_browser_needs_refresh = true;
 		// We make sure that the user doesn't acidentally make an
@@ -92,7 +93,12 @@ namespace fields_engine {
 			active,
 		} m_address_bar_state = address_bar_state::inactive;
 
-		friend struct asset_browser_callback_wrapper;
+		enum class rename_state : i8 {
+			inactive = 0,
+			activated,
+			active,
+		} m_rename_state = rename_state::inactive;
+		friend struct asset_browser_callbacks;
 
 		/// TODO: Relocate
 		box<vis::texture> m_mesh_thumbnail = nullptr;
