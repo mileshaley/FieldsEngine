@@ -80,7 +80,7 @@ void fields_engine::vis::texture::load(json const& in) {
     vector<u8> raw_data = base64::decode_into<vector<u8>>(in["raw"]);
     int num_channels = -1;
     stbi_set_flip_vertically_on_load(true);
-    stbi_uc* image_data = stbi_load_from_memory(raw_data.data(), raw_data.size(),
+    stbi_uc* image_data = stbi_load_from_memory(raw_data.data(), int(raw_data.size()),
         &m_size.x, &m_size.y, &num_channels, 0);
     if (image_data == nullptr) {
         return;

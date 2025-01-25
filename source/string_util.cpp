@@ -17,7 +17,7 @@
 
 fe::string fields_engine::ellipsis_compress_middle(string_view str, int char_max) {
 	constexpr string_view ellipsis("...");
-	const int len(str.size());
+	const int len = int(str.size());
 	const int diff(len - char_max);
 	if (diff <= 0) { return string(str); }
 	// Favor showing an extra character on the left
