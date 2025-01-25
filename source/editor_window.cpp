@@ -6,7 +6,7 @@
 
 #include "precompiled.h"
 #include "editor_window.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 
 fields_engine::editor::editor_window::editor_window(string_view name, callback_t const& callback, editor_icon icon)
 	: m_name(name)

@@ -9,9 +9,9 @@
 #include "asset_loader.h"
 #include "context.h"
 #include "editor_manager.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 #include "string_util.h"
-#include "imgui_internal.h"
+#include "imgui/imgui_internal.h"
 
 #include "texture.h"
 

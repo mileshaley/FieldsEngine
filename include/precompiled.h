@@ -23,7 +23,7 @@
 
 #ifdef EDITOR
 #define IMGUI_DEFINE_MATH_OPERATORS
-#include "imgui.h"
+#include "imgui/imgui.h"
 #endif // EDITOR
 
 #include "serial_conversion.h"

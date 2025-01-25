@@ -6,7 +6,7 @@
 
 #include "precompiled.h"
 #include "input.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 #include <iostream>
 #include "window_handle.h"
 #include "context.h"
