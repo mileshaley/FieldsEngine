@@ -8,7 +8,7 @@
 #include "mesh_import.h"
 
 #include <filesystem>
-#include "rapidobj/include/rapidobj/rapidobj.hpp"
+#include "rapidobj/rapidobj.hpp"
 #include "vector_util.h"
 
 #include <iostream>
