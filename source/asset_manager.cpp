@@ -390,7 +390,6 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			bool folder_clicked = false;
 			if (entry.type == file_type::folder && !folder_hovered) {
 				folder_clicked = ImGui::InvisibleButton("", entry_size);
-				//ImGui::Selectable("", false, 0, entry_size);
 				folder_hovered = ImGui::IsItemHovered();
 				ImGui::SetCursorPos(cursor_pos);
 			}
