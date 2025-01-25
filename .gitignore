@@ -401,3 +401,6 @@ FodyWeavers.xsd
 /enc_temp_folder
 /test_assets
 build/
+*.vcxproj
+*.sln
+*.filters
