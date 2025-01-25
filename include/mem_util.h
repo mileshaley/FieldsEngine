@@ -30,7 +30,7 @@ namespace fields_engine {
     }
 
     // Specialized for one-dimensional array of T
-    template<typename T, std::enable_if_t<std::is_array_v<T> and std::extent_v<T> == 0, int> = 0>
+    template<typename T, std::enable_if_t< std::is_array_v<T> && !std::extent_v<T>, int> = 0>
     FE_NODISCARD inline box<T> make_box(const size_t size) {
         using element_type = std::remove_extent_t<T>;
         return box<T>(new element_type[size]());

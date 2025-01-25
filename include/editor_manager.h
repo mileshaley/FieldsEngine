@@ -62,7 +62,7 @@ namespace fields_engine::editor {
 		void reset_style() const;
 
 	private:
-		entity* m_selected_ent;
+		entity* m_selected_ent = nullptr;
 		//vector<entity*> m_selected_ents;
 
 		// Game window
