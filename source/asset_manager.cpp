@@ -4,7 +4,7 @@
  * File: asset_manager.cpp                                                   *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "asset_manager.h"
 #include "asset_loader.h"
 #include "context.h"

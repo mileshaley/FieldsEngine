@@ -4,7 +4,7 @@
  * File: mesh_import.cpp                                                     *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "mesh_import.h"
 
 #include <filesystem>

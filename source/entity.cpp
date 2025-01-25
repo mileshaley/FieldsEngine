@@ -4,7 +4,7 @@
  * File: entity.cpp                                                          *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "entity.h"
 #include "spatial_component.h"
 

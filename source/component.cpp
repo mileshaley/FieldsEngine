@@ -4,7 +4,7 @@
  * File: component.cpp                                                       *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "component.h"
 #include "entity.h"
 

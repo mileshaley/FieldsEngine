@@ -4,7 +4,7 @@
  * File: camera_component.cpp                                                *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "camera_component.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "context.h"

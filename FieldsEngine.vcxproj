@@ -62,7 +62,7 @@
     <ClCompile Include="source\mesh_component.cpp" />
     <ClCompile Include="source\mesh.cpp" />
     <ClCompile Include="source\camera_controller.cpp" />
-    <ClCompile Include="source\precompiled.cpp">
+    <ClCompile Include="source\fields_engine.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugEditor|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -121,7 +121,7 @@
     <ClInclude Include="include\mesh_component.h" />
     <ClInclude Include="include\mesh.h" />
     <ClInclude Include="include\camera_controller.h" />
-    <ClInclude Include="include\precompiled.h" />
+    <ClInclude Include="include\fields_engine.h" />
     <ClInclude Include="include\scene.h" />
     <ClInclude Include="include\shader.h" />
     <ClInclude Include="include\spatial_component.h" />
@@ -315,7 +315,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>fields_engine.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)\include;$(ProjectDir)\external</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
@@ -336,7 +336,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>fields_engine.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)\include;$(ProjectDir)\external</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
@@ -359,7 +359,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>fields_engine.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)\include;$(ProjectDir)\external</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
@@ -384,7 +384,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>fields_engine.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)\include;$(ProjectDir)\external</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>

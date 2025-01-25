@@ -4,7 +4,7 @@
  * File: editor_icons.cpp													 *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "editor_icons.h"
 #include <fstream>
 #include "text.h"

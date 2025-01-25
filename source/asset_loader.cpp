@@ -4,7 +4,7 @@
  * File: asset_loader.cpp                                                    *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "asset_loader.h"
 #include <filesystem>
 #include <fstream>

@@ -4,7 +4,7 @@
  * File: editor_window.cpp													 *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "editor_window.h"
 #include "imgui/imgui.h"
 

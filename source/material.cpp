@@ -4,7 +4,7 @@
  * File: material.cpp                                                        
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "material.h"
 
 #include "serial_conversion.h"

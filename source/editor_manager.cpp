@@ -4,7 +4,7 @@
  * File: editor_manager.cpp													 *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "editor_manager.h"
 
 #if EDITOR

@@ -4,7 +4,7 @@
  * File: camera_controller.cpp                                               *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "camera_controller.h"
 #include "context.h"
 #include "input.h"

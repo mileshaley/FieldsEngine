@@ -4,7 +4,7 @@
  * File: mesh_component.cpp                                                  * 
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "mesh_component.h"
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"

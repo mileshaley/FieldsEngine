@@ -4,7 +4,7 @@
  * File: scene.cpp                                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "scene.h"
 #include "shader.h"
 #include "mesh_component.h"

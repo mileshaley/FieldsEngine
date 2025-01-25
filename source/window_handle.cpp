@@ -4,7 +4,7 @@
  * File: window_handle.cpp                                                   *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "window_handle.h"
 
 #if FE_USING_GLFW
