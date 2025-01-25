@@ -400,3 +400,4 @@ FodyWeavers.xsd
 *.ini
 /enc_temp_folder
 /test_assets
+build/
