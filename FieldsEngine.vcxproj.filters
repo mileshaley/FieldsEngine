@@ -18,31 +18,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="libraries\includes\imGui\imgui.cpp">
+    <ClCompile Include="external\includes\imGui\imgui.cpp">
       <Filter>libraries\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="libraries\includes\imGui\imgui_demo.cpp">
+    <ClCompile Include="external\includes\imGui\imgui_demo.cpp">
       <Filter>libraries\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="libraries\includes\imGui\imgui_draw.cpp">
+    <ClCompile Include="external\includes\imGui\imgui_draw.cpp">
       <Filter>libraries\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="libraries\includes\imGui\imgui_impl_glfw.cpp">
+    <ClCompile Include="external\includes\imGui\imgui_impl_glfw.cpp">
       <Filter>libraries\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="libraries\includes\imGui\imgui_impl_opengl3.cpp">
+    <ClCompile Include="external\includes\imGui\imgui_impl_opengl3.cpp">
       <Filter>libraries\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="libraries\includes\imGui\imgui_stdlib.cpp">
+    <ClCompile Include="external\includes\imGui\imgui_stdlib.cpp">
       <Filter>libraries\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="libraries\includes\imGui\imgui_tables.cpp">
+    <ClCompile Include="external\includes\imGui\imgui_tables.cpp">
       <Filter>libraries\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="libraries\includes\imGui\imgui_widgets.cpp">
+    <ClCompile Include="external\includes\imGui\imgui_widgets.cpp">
       <Filter>libraries\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="libraries\glad.cpp">
+    <ClCompile Include="external\glad.cpp">
       <Filter>libraries</Filter>
     </ClCompile>
     <ClCompile Include="source\stubs\stub.cpp">
@@ -82,34 +82,34 @@
     <ClCompile Include="source\editor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="libraries\includes\imGui\imconfig.h">
+    <ClInclude Include="external\includes\imGui\imconfig.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="libraries\includes\imGui\imgui.h">
+    <ClInclude Include="external\includes\imGui\imgui.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="libraries\includes\imGui\imgui_impl_glfw.h">
+    <ClInclude Include="external\includes\imGui\imgui_impl_glfw.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="libraries\includes\imGui\imgui_impl_opengl3.h">
+    <ClInclude Include="external\includes\imGui\imgui_impl_opengl3.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="libraries\includes\imGui\imgui_impl_opengl3_loader.h">
+    <ClInclude Include="external\includes\imGui\imgui_impl_opengl3_loader.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="libraries\includes\imGui\imgui_internal.h">
+    <ClInclude Include="external\includes\imGui\imgui_internal.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="libraries\includes\imGui\imgui_stdlib.h">
+    <ClInclude Include="external\includes\imGui\imgui_stdlib.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="libraries\includes\imGui\imstb_rectpack.h">
+    <ClInclude Include="external\includes\imGui\imstb_rectpack.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="libraries\includes\imGui\imstb_textedit.h">
+    <ClInclude Include="external\includes\imGui\imstb_textedit.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="libraries\includes\imGui\imstb_truetype.h">
+    <ClInclude Include="external\includes\imGui\imstb_truetype.h">
       <Filter>libraries\imgui</Filter>
     </ClInclude>
     <ClInclude Include="source\stubs\stub.h">

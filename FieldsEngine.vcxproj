@@ -35,15 +35,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="libraries\glad.cpp" />
-    <ClCompile Include="libraries\includes\imGui\imgui.cpp" />
-    <ClCompile Include="libraries\includes\imGui\imgui_demo.cpp" />
-    <ClCompile Include="libraries\includes\imGui\imgui_draw.cpp" />
-    <ClCompile Include="libraries\includes\imGui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="libraries\includes\imGui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="libraries\includes\imGui\imgui_stdlib.cpp" />
-    <ClCompile Include="libraries\includes\imGui\imgui_tables.cpp" />
-    <ClCompile Include="libraries\includes\imGui\imgui_widgets.cpp" />
+    <ClCompile Include="external\glad.cpp" />
+    <ClCompile Include="external\imgui\imgui.cpp" />
+    <ClCompile Include="external\imgui\imgui_demo.cpp" />
+    <ClCompile Include="external\imgui\imgui_draw.cpp" />
+    <ClCompile Include="external\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="external\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="external\imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="external\imgui\imgui_tables.cpp" />
+    <ClCompile Include="external\imgui\imgui_widgets.cpp" />
     <ClCompile Include="source\application.cpp" />
     <ClCompile Include="source\asset.cpp" />
     <ClCompile Include="source\camera_component.cpp" />
@@ -89,16 +89,16 @@
     <ClCompile Include="source\window_handle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="libraries\includes\imGui\imconfig.h" />
-    <ClInclude Include="libraries\includes\imGui\imgui.h" />
-    <ClInclude Include="libraries\includes\imGui\imgui_impl_glfw.h" />
-    <ClInclude Include="libraries\includes\imGui\imgui_impl_opengl3.h" />
-    <ClInclude Include="libraries\includes\imGui\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="libraries\includes\imGui\imgui_internal.h" />
-    <ClInclude Include="libraries\includes\imGui\imgui_stdlib.h" />
-    <ClInclude Include="libraries\includes\imGui\imstb_rectpack.h" />
-    <ClInclude Include="libraries\includes\imGui\imstb_textedit.h" />
-    <ClInclude Include="libraries\includes\imGui\imstb_truetype.h" />
+    <ClInclude Include="external\imgui\imconfig.h" />
+    <ClInclude Include="external\imgui\imgui.h" />
+    <ClInclude Include="external\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="external\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="external\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="external\imgui\imgui_internal.h" />
+    <ClInclude Include="external\imgui\imgui_stdlib.h" />
+    <ClInclude Include="external\imgui\imstb_rectpack.h" />
+    <ClInclude Include="external\imgui\imstb_textedit.h" />
+    <ClInclude Include="external\imgui\imstb_truetype.h" />
     <ClInclude Include="include\application.h" />
     <ClInclude Include="include\asset.h" />
     <ClInclude Include="include\camera_component.h" />
@@ -232,24 +232,24 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExternalIncludePath>$(SolutionDir)libraries\includes;$(VC_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)libraries\includes\imGui;$(ProjectDir)libraries\includes\sdl3-develop\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)libraries;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)external\includes;$(VC_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>$(ProjectDir)external\imgui;$(ProjectDir)libraries\sdl3;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)external;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugEditor|x64'">
-    <ExternalIncludePath>$(SolutionDir)libraries\includes;$(VC_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)libraries\includes\imGui;$(ProjectDir)libraries\includes\sdl3-develop\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)libraries;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)external\includes;$(VC_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>$(ProjectDir)external\imgui;$(ProjectDir)libraries\sdl3;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)external;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ExternalIncludePath>$(SolutionDir)libraries\includes;$(VC_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)libraries\includes\imGui;$(ProjectDir)libraries\includes\sdl3-develop\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)libraries;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)external\includes;$(VC_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>$(ProjectDir)external\imgui;$(ProjectDir)libraries\sdl3;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)external;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseEditor|x64'">
-    <ExternalIncludePath>$(SolutionDir)libraries\includes;$(VC_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
-    <IncludePath>$(ProjectDir)libraries\includes\imGui;$(ProjectDir)libraries\includes\sdl3-develop\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)libraries;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)external\includes;$(VC_IncludePath);$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>$(ProjectDir)external\imgui;$(ProjectDir)libraries\sdl3;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)external;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -316,15 +316,15 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include;$(ProjectDir)\external;$(ProjectDir)external\imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>external/glfw/glfw3.lib;opengl32.lib;external/sdl3/SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(ProjectDir)libraries\dynamic\SDL3.dll" "$(OutDir)"</Command>
+      <Command>copy "$(ProjectDir)external\sdl3\SDL3.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugEditor|x64'">
@@ -336,15 +336,15 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include;$(ProjectDir)\external;$(ProjectDir)external\imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>external/glfw/glfw3.lib;opengl32.lib;external/sdl3/SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(ProjectDir)libraries\dynamic\SDL3.dll" "$(OutDir)"</Command>
+      <Command>copy "$(ProjectDir)external\sdl3\SDL3.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -358,17 +358,17 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include;$(ProjectDir)\external;$(ProjectDir)external\imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>external/glfw/glfw3.lib;opengl32.lib;external/sdl3/SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(ProjectDir)libraries\dynamic\SDL3.dll" "$(OutDir)"</Command>
+      <Command>copy "$(ProjectDir)external\sdl3\SDL3.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseEditor|x64'">
@@ -382,17 +382,17 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\include;$(ProjectDir)\external;$(ProjectDir)external\imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>external/glfw/glfw3.lib;opengl32.lib;external/sdl3/SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(ProjectDir)libraries\dynamic\SDL3.dll" "$(OutDir)"</Command>
+      <Command>copy "$(ProjectDir)external\sdl3\SDL3.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
