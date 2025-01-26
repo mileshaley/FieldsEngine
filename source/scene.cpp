@@ -163,6 +163,37 @@ static fe::box<fe::entity> make_snowman() {
 		tr.set_local_scale({ scale, scale, scale });
 		mesh_component* pm1 = m1.get();
 		pm0->attach_spatial_component(move(m1));
+		{ // Button 1
+			box<mesh_component> b1 = make_box<mesh_component>();
+			b1->set_mesh(eye_mesh);
+			b1->set_material(get_asset<vis::material>("hat"));
+			transform& tr = b1->ref_transform();
+			tr.set_local_position({ 0, 0.53f, -0.15f });
+			tr.set_local_scale({ 0.18f, 0.18f, 0.02f });
+			tr.set_local_rotation({ 90, -4, 0 });
+			pm1->attach_spatial_component(move(b1));
+		}
+		{ // Button 2
+			box<mesh_component> b2 = make_box<mesh_component>();
+			b2->set_mesh(eye_mesh);
+			b2->set_material(get_asset<vis::material>("hat"));
+			transform& tr = b2->ref_transform();
+			tr.set_local_position({ 0, 0.53f, 0.09f });
+			tr.set_local_scale({ 0.18f, 0.18f, 0.02f });
+			tr.set_local_rotation({ 90, -65, 0 });
+			pm1->attach_spatial_component(move(b2));
+		}
+		{ // Button 3
+			box<mesh_component> b3 = make_box<mesh_component>();
+			b3->set_mesh(eye_mesh);
+			b3->set_material(get_asset<vis::material>("hat"));
+			transform& tr = b3->ref_transform();
+			tr.set_local_position({ 0, 0.53f, 0.32f });
+			tr.set_local_scale({ 0.18f, 0.18f, 0.02f });
+			tr.set_local_rotation({ 90, 22, 0 });
+			pm1->attach_spatial_component(move(b3));
+		}
+
 		{ // Scarf
 			box<mesh_component> m2 = make_box<mesh_component>();
 			m2->set_mesh(cube_mesh);
