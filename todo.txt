@@ -1,9 +1,0 @@
-- Determine style (offset braces, capital fn names and class names, prepend private vars with _ and use camelCase for all vars)
-		  determine[file name case, case for modules (is it different?);
-
-- Utility to convert between cases like SCREAMING_SNAKE_CASE <-> snake_case <-> PascalCase
-- File system watcher
-
-- Context accessor friend macro: allow certain things to be uniformly accessed for a single context with context() and the context accessor/manager would handle setting the pointer
-
-- script to generate files from stub/template

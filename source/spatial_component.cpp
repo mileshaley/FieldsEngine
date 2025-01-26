@@ -4,7 +4,7 @@
  * File: spatial_component.cpp                                               *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "spatial_component.h"
 #include "entity.h"
 

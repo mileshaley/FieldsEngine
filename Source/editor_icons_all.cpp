@@ -1,8 +1,8 @@
 // Generated
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "editor_icons_all.h"
 
-namespace fields_engine {
+namespace fields_engine::editor {
 	using eii = editor_icon_info;
 	const std::array<editor_icon_info, 1347> all_editor_icons = {
 		eii{ ICON_ADDRESS_BOOK, "address_book", "Address book" },
@@ -1353,4 +1353,4 @@ namespace fields_engine {
 		eii{ ICON_YEN_SIGN, "yen_sign", "Yen sign" },
 		eii{ ICON_YIN_YANG, "yin_yang", "Yin yang" },
 	};
-} // namespace fields_editor
+} // namespace fields_editor::editor

@@ -4,7 +4,7 @@
  * File: mesh.cpp                                                            *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "mesh.h"
 
 #include "glad/glad.h"

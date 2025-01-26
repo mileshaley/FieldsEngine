@@ -4,7 +4,7 @@
  * File: graphics.cpp                                                        *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "graphics.h"
 #include "glad/glad.h"
 #include "shader.h"

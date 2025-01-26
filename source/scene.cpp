@@ -4,7 +4,7 @@
  * File: scene.cpp                                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "scene.h"
 #include "shader.h"
 #include "mesh_component.h"
@@ -15,11 +15,11 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "context.h"
 #include "application.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 #include "entity.h"
 #include "camera_component.h"
 #include "camera_controller.h"
-#include "editor.h"
+#include "editor_manager.h"
 #include <random>
 #include "texture.h"
 #include "mesh.h"
@@ -30,6 +30,7 @@
 #include <iostream>
 #include <fstream>
 #include "texture_import.h"
+#include "mesh_import.h"
 #include "base64/base64.hpp"
 
 fields_engine::scene::scene() {
@@ -400,7 +401,7 @@ void fields_engine::scene::startup() {
 		box<mesh_component> m = make_box<mesh_component>();
 		m->set_mesh(*get_asset<vis::mesh>("nutcracker"));
 		m->set_material(get_asset<vis::material>("nose"));
-	
+
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ -5, -5, 2 });
@@ -411,7 +412,7 @@ void fields_engine::scene::startup() {
 		box<mesh_component> m = make_box<mesh_component>();
 		m->set_mesh(*get_asset<vis::mesh>("bed"));
 		m->set_material(get_asset<vis::material>("grass"));
-	
+
 		transform& tr = m->ref_transform();
 		const float scale = 1;
 		tr.set_local_position({ -5, -5, 0.75f });
@@ -431,7 +432,7 @@ void fields_engine::scene::startup() {
 	//	test_file.write(reinterpret_cast<char*>(raw_data.data()), raw_data.size());
 	//	test_file.close();
 	//}
-	
+
 	//{
 	//	json out_json{};
 	//	out_json["data"] = vis_texture_import("test_assets/miles.png");
@@ -439,7 +440,7 @@ void fields_engine::scene::startup() {
 	//	out << std::setw(2) << out_json << std::endl;
 	//	out.close();
 	//}
-	
+
 	//{ // Bear
 	//	box<mesh_component> m = make_box<mesh_component>();
 	//	m->set_mesh(*get_asset<vis::mesh>("bear"));
@@ -451,7 +452,29 @@ void fields_engine::scene::startup() {
 	//	tr.set_local_scale({ 1, 1, 1 });
 	//	auto& ent = m_entities.emplace_back(make_box<entity>("Bear", move(m)));
 	//}
+
+#if 0
+	{
+		std::ofstream out_file("assets/gluncher.mesh.fea");
+		json out{ {"data", import_vis_mesh("test_assets/Gluncher.obj")}};
+		out_file << out.dump() << std::endl;
+		out_file.close();
+	}
+#elif 0
+	{ // Tester
+		box<mesh_component> m = make_box<mesh_component>();
+		m->set_mesh(*get_asset<vis::mesh>("gluncher"));
+		m->set_material(get_asset<vis::material>("nose"));
 	
+		transform& tr = m->ref_transform();
+		const float scale = 1;
+		tr.set_local_position({ -4, -4, 1 });
+		tr.set_local_scale({ 1, 1, 1 });
+		auto& ent = m_entities.emplace_back(make_box<entity>("Tester", move(m)));
+	
+	}
+#endif
+
 	{ // Ground
 		box<mesh_component> m = make_box<mesh_component>();
 		m->set_mesh(cube_mesh);
@@ -706,7 +729,7 @@ bool fields_engine::scene::display_window() {
 	modif |= ImGui::ColorPicker3("Background color", &m_background_color.x);
 	modif |= ImGui::ColorPicker3("Light color", &m_light_color.x);
 	modif |= ImGui::ColorPicker3("Ambient color", &m_ambient_color.x);
-	editor& edit = context<editor>();
+	editor::editor_manager& edit = context<editor::editor_manager>();
 	const entity* curr_selected = edit.get_selected_entity();
 	for (box<entity> const& ent : m_entities) {
 		// This assumes that all entities in the scene have unique names

@@ -4,7 +4,7 @@
  * File: shader.cpp                                                          *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "shader.h"
 #include "glad/glad.h"
 #include <iostream>

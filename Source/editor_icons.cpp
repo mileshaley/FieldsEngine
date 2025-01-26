@@ -4,12 +4,12 @@
  * File: editor_icons.cpp													 *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "editor_icons.h"
 #include <fstream>
 #include "text.h"
 
-namespace fields_engine::impl {
+namespace fields_engine::editor::impl {
 	void generate_all_icons_file(const char* dest_pathname, const char* src_filename) {
 		std::ifstream in(src_filename);
 		string token = "";
@@ -40,7 +40,7 @@ namespace fields_engine::impl {
 			"#pragma once\n\n"
 			"#if EDITOR"
 			"#include \"editor_icons.h\"\n\n"
-			"namespace fields_engine {\n"
+			"namespace fields_engine::editor {\n"
 				"\textern const std::array<editor_icon_info, "
 					<< count << "> all_editor_icons;\n"
 			"} // namespace fields_editor\n";
@@ -56,7 +56,7 @@ namespace fields_engine::impl {
 					<< count << "> all_editor_icons = {\n"
 				<< info_str <<
 				"\t};\n"
-			"} // namespace fields_editor\n"
+			"} // namespace fields_engine::editor\n"
 			"#endif // EDITOR\n";
 	}
 } // namespace fields_engine::impl

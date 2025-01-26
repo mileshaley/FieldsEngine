@@ -399,4 +399,8 @@ FodyWeavers.xsd
 
 *.ini
 /enc_temp_folder
-/temp
+/test_assets
+build/
+*.vcxproj
+*.sln
+*.filters

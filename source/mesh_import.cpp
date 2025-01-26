@@ -4,11 +4,11 @@
  * File: mesh_import.cpp                                                     *
 \*~-------------------------------------------------------------------------~*/
 
-#include "precompiled.h"
+#include "fields_engine.h"
 #include "mesh_import.h"
 
 #include <filesystem>
-#include "rapidobj/include/rapidobj/rapidobj.hpp"
+#include "rapidobj/rapidobj.hpp"
 #include "vector_util.h"
 
 #include <iostream>
@@ -41,6 +41,7 @@ fe::json fields_engine::import_vis_mesh(std::filesystem::path const& in_path) {
         auto& shapes = result.shapes;
         for (auto const& shape : shapes) {
             auto const& indices = shape.mesh.indices;
+            //if (indices.empty()) { continue; }
             const int first_idx = int(out_triangles.size());
             for (size_t i = 0; i < indices.size(); ++i) {
                 rapidobj::Index const& index = indices[i];
@@ -76,11 +77,16 @@ fe::json fields_engine::import_vis_mesh(std::filesystem::path const& in_path) {
                 }
             }
             // We assume all material ids are the same and the mesh has been sectioned by material
-            out_sections.push_back({
-                {"first_index", first_idx},
-                {"index_count", int(out_triangles.size())},
-                {"material_index", shape.mesh.material_ids[0]} 
-            });
+            
+            json section{};
+            section["first_index"] = first_idx;
+            section["index_count"] = static_cast<int>(out_triangles.size() - first_idx);
+            if (shape.mesh.material_ids.empty()) {
+                section["material_index"] = 0;
+            } else {
+                section["material_index"] = shape.mesh.material_ids[0];
+            }
+            out_sections.push_back(section);
         }
 
         return out;
