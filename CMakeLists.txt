@@ -86,6 +86,13 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     $<$<CONFIG:ReleaseEditor>:/MD>
 )
 
+# Treat warnings as errors
+if(MSVC)
+  target_compile_options(${PROJECT_NAME} PRIVATE /W3 /WX)
+else()
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror)
+endif()
+
 # Add precompiled header to the executable
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${PCH_HEADER})
 

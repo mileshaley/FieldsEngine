@@ -57,7 +57,7 @@ namespace fields_engine {
 
 		vector<box<entity>> m_entities;
 		vector<camera_component*> m_cameras;
-		camera_component* m_active_camera;
+		camera_component* m_active_camera = nullptr;
 	};
 
 } // namespace fields_engine
