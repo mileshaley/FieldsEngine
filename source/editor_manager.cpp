@@ -258,12 +258,14 @@ void fields_engine::editor::editor_manager::set_selected_entity(entity* new_sele
 \*~-------------------------------------------------------------------------~*/
 
 bool fields_engine::editor::editor_manager::game_window() {
-	const ImVec2 size = ImGui::GetWindowSize();
+	/// TODO: This is janky, fix it
+	const ImVec2 size = ImGui::GetContentRegionMax() - ImVec2{ 30, 30 };
 	m_game_window_size = { size.x, size.y };
+	ImGui::SetCursorPos(ImGui::GetCursorPos());
 	ImGui::Image(
 		(ImTextureID)(i64)m_frame_buffer.get_texture_id(),
 		{ size },
-	// Flip the uvs for ImGui
+		// Flip the uvs for ImGui
 		{ 0, 1 },
 		{ 1, 0 }
 	);

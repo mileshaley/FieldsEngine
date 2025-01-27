@@ -725,14 +725,16 @@ void fields_engine::scene::shutdown() {
 #ifdef EDITOR
 bool fields_engine::scene::display_window() {
 	bool modif = false;
-	modif |= ImGui::DragFloat3("Light Position", &m_light_pos.x);
-	modif |= ImGui::ColorPicker3("Background color", &m_background_color.x);
-	modif |= ImGui::ColorPicker3("Light color", &m_light_color.x);
-	modif |= ImGui::ColorPicker3("Ambient color", &m_ambient_color.x);
+	if (ImGui::CollapsingHeader("Atmospheric")) {
+		modif |= ImGui::DragFloat3("Light Position", &m_light_pos.x);
+		modif |= ImGui::ColorPicker3("Background color", &m_background_color.x);
+		modif |= ImGui::ColorPicker3("Light color", &m_light_color.x);
+		modif |= ImGui::ColorPicker3("Ambient color", &m_ambient_color.x);
+	}
 	editor::editor_manager& edit = context<editor::editor_manager>();
 	const entity* curr_selected = edit.get_selected_entity();
 	for (box<entity> const& ent : m_entities) {
-		// This assumes that all entities in the scene have unique names
+		// We assume that all entities in the scene have unique names
 		if (ImGui::Selectable(ent->get_name().c_str(), ent.get() == curr_selected)) {
 			edit.set_selected_entity(ent.get());
 		}
