@@ -13,4 +13,4 @@
 #define FE ::fe::
 #define FIELDS_ENGINE
 #define FE_NODISCARD [[nodiscard]]
-#define FE_FALLTHROUGH [[fallthrough]]
+#define FE_FALLTHROUGH [[fallthrough]];

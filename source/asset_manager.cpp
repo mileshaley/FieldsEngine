@@ -362,6 +362,46 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		const bool left_clicked = ImGui::IsMouseReleased(ImGuiMouseButton_Left);
 		const bool right_clicked = ImGui::IsMouseReleased(ImGuiMouseButton_Right);
 
+		// Undo
+		if (ctrl_held && ImGui::IsKeyReleased(ImGuiKey_Z) && ImGui::IsWindowFocused()) {
+			if (shift_held) {
+				if (!m_undo_history.at_top()) {
+					undo const& redo = m_undo_history.top();
+					switch (redo.action) {
+					case undo::move_file: FE_FALLTHROUGH
+					case undo::rename_file:
+						std::filesystem::rename(redo.orig_path, redo.new_path);
+						break;
+					case undo::delete_file:
+						std::filesystem::remove(redo.orig_path);
+						break;
+					case undo::create_file:
+						/// TODO: Implement
+						break;
+					}
+					m_undo_history.scroll_up();
+					m_browser_needs_refresh = true;
+				}
+			} else if (!m_undo_history.at_bottom()) {
+				undo const& undo = m_undo_history.top();
+				switch (undo.action) {
+				case undo::move_file: FE_FALLTHROUGH
+				case undo::rename_file:
+					std::filesystem::rename(undo.new_path, undo.orig_path);
+					break;
+				case undo::delete_file:
+					/// TODO: Implement
+					break;
+				case undo::create_file:
+					std::filesystem::remove(undo.orig_path);
+					break;
+				}
+				m_undo_history.scroll_down();
+				m_browser_needs_refresh = true;
+			}
+		}
+
+
 		// We only need to do this at most once per frame
 		// Notice how we are checking for click and not release
 		if (m_browser_wait_for_mouse_trigger
@@ -461,7 +501,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 
 				if (ImGui::BeginPopup(asset_right_click_popup_label)) {
 					if (ImGui::MenuItem(ICON_PEN_TO_SQUARE" Edit")) {
-
+						/// TODO: Implement
 					}
 					if (ImGui::MenuItem(ICON_I_CURSOR" Rename", "F2")) {
 						m_rename_state = rename_state::activated;
@@ -483,7 +523,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 						m_browser_needs_refresh = true;
 					}
 					if (ImGui::MenuItem(ICON_TRASH_CAN" Delete", "Del")) {
-
+						/// TODO: Implement
 					}
 					ImGui::EndPopup();
 				} // Popup
@@ -505,23 +545,23 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				ImGui::EndDragDropSource();
 			} // Drag drop source
 
-			if (entry.type == file_type::folder) {
-				if (ImGui::BeginDragDropTarget()) {
-					if (const ImGuiPayload* payload = ImGui::GetDragDropPayload()) {
-						if (string(payload->DataType).substr(0, 3) == "ab_") {
-							std::filesystem::path src_path = string((const char*)payload->Data, payload->DataSize);
-							if (std::filesystem::exists(src_path)) {
-								if (ImGui::AcceptDragDropPayload(payload->DataType)) {
-									std::filesystem::rename(src_path, entry.path / src_path.filename());
-									m_browser_needs_refresh = true;
-									// Not worth figuring out how to change the history if you move a folder, just reset it
-									m_browser_history.clear();
-								}
+			if (entry.type == file_type::folder && ImGui::BeginDragDropTarget()) {
+				if (const ImGuiPayload* payload = ImGui::GetDragDropPayload()) {
+					if (string(payload->DataType).substr(0, 3) == "ab_") {
+						std::filesystem::path src_path = string((const char*)payload->Data, payload->DataSize);
+						if (std::filesystem::exists(src_path)) {
+							if (ImGui::AcceptDragDropPayload(payload->DataType)) {
+								std::filesystem::path new_path = entry.path / src_path.filename();
+								std::filesystem::rename(src_path, new_path);
+								m_undo_history.push(undo{ undo::move_file, move(src_path), move(new_path) });
+								m_browser_needs_refresh = true;
+								// Not worth figuring out how to change the history if you move a folder, just reset it
+								reset_browser_history();
 							}
 						}
 					}
-					ImGui::EndDragDropTarget();
 				}
+				ImGui::EndDragDropTarget();
 			}
 
 			// Entry type
@@ -624,9 +664,10 @@ bool fields_engine::asset_manager::asset_browser_window() {
 					std::filesystem::create_directory(new_folder_name);
 				} else {
 					for (int i = 2; i < 100; ++i) {
-						const string new_folder_name_num = new_folder_name + " (" + std::to_string(i) + ")";
-						if (!std::filesystem::exists(new_folder_name_num)) {
-							std::filesystem::create_directory(new_folder_name_num);
+						const std::filesystem::path new_folder_path = new_folder_name + " (" + std::to_string(i) + ")";
+						if (!std::filesystem::exists(new_folder_path)) {
+							std::filesystem::create_directory(new_folder_path);
+							m_undo_history.push(undo{undo::create_file, move(new_folder_path)});
 							break;
 						}
 					}
@@ -634,7 +675,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				m_browser_needs_refresh = true;
 			}
 			if (ImGui::MenuItem(ICON_SQUARE_PLUS" Create Asset...")) {
-
+				/// TODO: Implement
 			}
 			ImGui::EndPopup();
 		}
@@ -704,6 +745,12 @@ void fields_engine::asset_manager::refresh_asset_browser() {
 
 void fields_engine::asset_manager::browse_to_directory(std::filesystem::path&& target) {
 	m_browser_history.emplace(move(target));
+	m_browser_needs_refresh = true;
+}
+void fields_engine::asset_manager::reset_browser_history() {
+	std::filesystem::path temp(move(m_browser_history.top()));
+	m_browser_history.clear();
+	m_browser_history.push(move(temp));
 	m_browser_needs_refresh = true;
 }
 void* fields_engine::asset_manager::get_thumbnail(file_entry const& entry) {

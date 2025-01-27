@@ -71,11 +71,41 @@ namespace fields_engine {
 
 		void refresh_asset_browser();
 		void browse_to_directory(std::filesystem::path&& target);
+		void reset_browser_history();
 		void* get_thumbnail(file_entry const& entry);
 
 
+		enum class undo_action {
+			move_file,
+			rename_file,
+			delete_file,
+			create_file,
+		};
+
+		struct undo {
+			enum undo_action{
+				move_file,
+				rename_file,
+				delete_file,
+				create_file,
+			} action;
+			
+			std::filesystem::path orig_path;
+			std::filesystem::path new_path;
+
+			//union {
+			//	struct move {
+			//		std::filesystem::path orig_path;
+			//		std::filesystem::path new_path;
+			//	};
+			//	std::filesystem::path deleted_path;
+			//	std::filesystem::path created_path;
+			//};
+		};
+
 		vector<file_entry> m_browser_entries;
 		scroll_stack<std::filesystem::path> m_browser_history{ "assets" };
+		scroll_stack<undo> m_undo_history;
 		string m_address_bar_buffer;
 		string m_search_bar_buffer;
 		string m_rename_buffer;
