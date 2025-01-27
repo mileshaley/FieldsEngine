@@ -285,7 +285,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	}
 	ImGui::SetItemTooltip("Refresh browser for new items");
 
-	const bool no_back_history = m_browser_history.at_bottom();
+	const bool no_back_history = m_browser_history.bottom_distance() < 2;
 	const bool no_forth_history = m_browser_history.at_top();
 	if (no_back_history) {
 		ImGui::BeginDisabled();
@@ -297,7 +297,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	}
 	if (no_back_history) {
 		ImGui::EndDisabled();
-	} else if (!m_browser_history.at_bottom() && ImGui::BeginItemTooltip()) {
+	} else if (m_browser_history.bottom_distance() >= 2 && ImGui::BeginItemTooltip()) {
 		ImGui::Text(("Back to " + m_browser_history[m_browser_history.top_index() - 1].filename().string()).c_str());
 		ImGui::EndTooltip();
 	}
@@ -311,7 +311,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	}
 	if (no_forth_history) {
 		ImGui::EndDisabled();
-	} else if (!m_browser_history.at_top() && ImGui::BeginItemTooltip()){
+	} else if (!m_browser_history.at_top() && ImGui::BeginItemTooltip()) {
 		ImGui::Text(("Forward to " + m_browser_history[m_browser_history.top_index() + 1].filename().string()).c_str());
 		ImGui::EndTooltip();
 	}

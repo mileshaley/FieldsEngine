@@ -143,25 +143,25 @@ namespace fields_engine {
 			return m_end_offset > m_data.size();
 		}
 
-	private:
-		inline void truncate() {
-			if (m_end_offset <= 1) { return; }
-
-			//if (at_bottom()) {
-			//	// In the scenario that we want to truncate from the bottom, just reset
-			//	// since top_index
-			//	m_data.clear();
-			//} else 
-			{
-				m_data.erase(m_data.begin() + (top_index() + 1), m_data.end());
-			}
-			m_end_offset = 1;
-			
+		FE_NODISCARD i64 top_distance() const noexcept {
+			return static_cast<i64>(m_end_offset) - 1ll;
 		}
+
+		FE_NODISCARD i64 bottom_distance() const noexcept {
+			return top_index() + 1;
+		}
+
+		inline void truncate() {
+			if (m_end_offset > 1) {
+				m_data.erase(m_data.begin() + bottom_distance(), m_data.end());
+				m_end_offset = 1;
+			}
+		}
+	private:
 
 		container_type m_data;
 		// Defaults to 1 and cannot go lower than 1
-		// should be subtracted from end() of m_data
+		// Should be subtracted from end() of m_data
 		size_t m_end_offset; 
 	};
 
