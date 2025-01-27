@@ -14,7 +14,7 @@
 #include "context.h" // For convenience functions
 
 #include <filesystem>
-#include <stack>
+#include "scroll_stack.h"
 
 namespace fields_engine::vis {
 	class texture;
@@ -75,9 +75,7 @@ namespace fields_engine {
 
 
 		vector<file_entry> m_browser_entries;
-		std::filesystem::path m_browser_current_directory = "assets";
-		std::stack<std::filesystem::path> m_browser_back_history;
-		std::stack<std::filesystem::path> m_browser_forth_history;
+		scroll_stack<std::filesystem::path> m_browser_history{ "assets" };
 		string m_address_bar_buffer;
 		string m_search_bar_buffer;
 		string m_rename_buffer;

@@ -404,3 +404,4 @@ build/
 *.vcxproj
 *.sln
 *.filters
+*.user
