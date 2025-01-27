@@ -7,18 +7,20 @@ project(FieldsEngine) # No versioning yet
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Define the source, include, and external directories
+# Define the source, include, and external, and other directories
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/source)
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
-
-# Precompiled header
-set(PCH_HEADER ${INCLUDE_DIR}/fields_engine.h)
+#set(STUB_DIR ${CMAKE_SOURCE_DIR}/stub)
 
 # Recursively get all .cpp and .h files from source, include, and external directories
 file(GLOB_RECURSE SOURCE_FILES ${SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE INCLUDE_FILES ${INCLUDE_DIR}/*.h)
 file(GLOB_RECURSE EXTERNAL_FILES ${EXTERNAL_DIR}/*/*.cpp ${EXTERNAL_DIR}/*/*.h)
+#file(GLOB_RECURSE STUB_FILES ${STUB_DIR}/*.cpp ${STUB_DIR}/*.h)
+
+# Precompiled header
+set(PCH_HEADER ${INCLUDE_DIR}/fields_engine.h)
 
 # Create the primary executable
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${INCLUDE_FILES} ${EXTERNAL_FILES})
@@ -112,21 +114,4 @@ set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 source_group(TREE ${SOURCE_DIR} PREFIX "Source Files" FILES ${SOURCE_FILES})
 source_group(TREE ${INCLUDE_DIR} PREFIX "Include Files" FILES ${INCLUDE_FILES})
 source_group(TREE ${EXTERNAL_DIR} PREFIX "External Files" FILES ${EXTERNAL_FILES})
-
-
-
-# Custom commands to regenerate build system when source files change
-#file(GLOB_RECURSE ALL_FILES ${SOURCE_DIR}/* ${INCLUDE_DIR}/* ${EXTERNAL_DIR}/*)
-#add_custom_target(
-#    REGEN
-#    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/CMakeFiles/regen.cmake
-#    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-#    COMMENT "Regenerating build system"
-#)
-#set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/CMakeFiles/regen.cmake)
-
-
-
-
-
-#set(CMAKE_SUPPRESS_REGENERATION true)
+#source_group(TREE ${STUB_DIR} PREFIX "Stub Files" FILES ${STUB_DIR})
