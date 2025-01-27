@@ -92,15 +92,6 @@ namespace fields_engine {
 			
 			std::filesystem::path orig_path;
 			std::filesystem::path new_path;
-
-			//union {
-			//	struct move {
-			//		std::filesystem::path orig_path;
-			//		std::filesystem::path new_path;
-			//	};
-			//	std::filesystem::path deleted_path;
-			//	std::filesystem::path created_path;
-			//};
 		};
 
 		vector<file_entry> m_browser_entries;

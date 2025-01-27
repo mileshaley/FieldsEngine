@@ -626,10 +626,6 @@ void fields_engine::scene::startup() {
 	}
 	m_entities.emplace_back(make_snowman());
 
-
-
-
-
 	for (box<entity> const& ent : m_entities) {
 		ent->init();
 	}
@@ -705,9 +701,9 @@ void fields_engine::scene::draw() const {
 	for (box<entity> const& ent : m_entities) {
 		//if (!after && ent->get_name() == "Direction Indicator") {
 		//	glDepthRange(0, 0.001);
-		//
-		//	glClear(GL_DEPTH_BUFFER_BIT);
 		//	after = true;
+		//
+		//	///glClear(GL_DEPTH_BUFFER_BIT);
 		//}
 		ent->draw(*m_shader);
 	}

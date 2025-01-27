@@ -180,6 +180,9 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		ImGui::ColorConvertFloat4ToU32({0,0,0,1}), 
 		address_bar_rounding
 	);
+
+	bool modif = false;
+
 	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 10, 0 });
 	if (m_address_bar_state == address_bar_state::activated
 		|| m_address_bar_state == address_bar_state::active
@@ -347,13 +350,13 @@ bool fields_engine::asset_manager::asset_browser_window() {
 	// File viewer
 
 	if (ImGui::BeginChild("asset_browser_child")) {
-
+		// Setup for restoring button outlines
 		ImGuiStyle const& style = ImGui::GetStyle();
-		// Make outlines visible
 		ImVec4 border = style.Colors[ImGuiCol_Border];
 		ImVec4 border_shadow = style.Colors[ImGuiCol_BorderShadow];
 		border.w = border.z;
 		border_shadow.w = border.z;
+		// Make outlines visible
 		ImGui::PushStyleColor(ImGuiCol_Border, border);
 		ImGui::PushStyleColor(ImGuiCol_BorderShadow, border_shadow);
 
@@ -442,7 +445,6 @@ bool fields_engine::asset_manager::asset_browser_window() {
 				// If we change selected this iteration we still want to revert the color change
 				const bool was_selected = selected;
 				if (was_selected) {
-					//ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.5f,1.0f,1.0f }); // Blue
 					ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.8f,0.45f,1.0f }); // Green
 				}
 
@@ -474,7 +476,6 @@ bool fields_engine::asset_manager::asset_browser_window() {
 						m_prev_entry_clicked = i;
 					} else if (right_clicked) {
 						ImGui::OpenPopup(asset_right_click_popup_label);
-
 					}
 					// Remember the last click for any type of click
 					any_entry_was_clicked = true;
@@ -664,7 +665,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 					std::filesystem::create_directory(new_folder_name);
 				} else {
 					for (int i = 2; i < 100; ++i) {
-						const std::filesystem::path new_folder_path = new_folder_name + " (" + std::to_string(i) + ")";
+						std::filesystem::path new_folder_path = new_folder_name + " (" + std::to_string(i) + ")";
 						if (!std::filesystem::exists(new_folder_path)) {
 							std::filesystem::create_directory(new_folder_path);
 							m_undo_history.push(undo{undo::create_file, move(new_folder_path)});
@@ -682,7 +683,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		ImGui::PopStyleColor(2); // Border & border shadow
 	}
 	ImGui::EndChild();
-	return false;
+	return modif;
 }
 
 void fields_engine::asset_manager::refresh_asset_browser() {
