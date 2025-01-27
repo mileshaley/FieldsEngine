@@ -109,9 +109,9 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 # Organize files into filters for Visual Studio
-source_group(TREE ${SOURCE_DIR} PREFIX "Source" FILES ${SOURCE_FILES})
-source_group(TREE ${INCLUDE_DIR} PREFIX "Include" FILES ${INCLUDE_FILES})
-source_group(TREE ${EXTERNAL_DIR} PREFIX "External" FILES ${EXTERNAL_FILES})
+source_group(TREE ${SOURCE_DIR} PREFIX "Source Files" FILES ${SOURCE_FILES})
+source_group(TREE ${INCLUDE_DIR} PREFIX "Include Files" FILES ${INCLUDE_FILES})
+source_group(TREE ${EXTERNAL_DIR} PREFIX "External Files" FILES ${EXTERNAL_FILES})
 
 
 
