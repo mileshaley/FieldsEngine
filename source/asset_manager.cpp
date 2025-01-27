@@ -366,6 +366,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		if (ctrl_held && ImGui::IsKeyReleased(ImGuiKey_Z) && ImGui::IsWindowFocused()) {
 			if (shift_held) {
 				if (!m_undo_history.at_top()) {
+					m_undo_history.scroll_up();
 					undo const& redo = m_undo_history.top();
 					switch (redo.action) {
 					case undo::move_file: FE_FALLTHROUGH
@@ -379,7 +380,6 @@ bool fields_engine::asset_manager::asset_browser_window() {
 						/// TODO: Implement
 						break;
 					}
-					m_undo_history.scroll_up();
 					m_browser_needs_refresh = true;
 				}
 			} else if (!m_undo_history.at_bottom()) {

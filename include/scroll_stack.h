@@ -97,8 +97,10 @@ namespace fields_engine {
 			return m_data[top_index()];
 		}
 
-		inline FE_NODISCARD size_t top_index() const noexcept {
-			return m_data.size() - m_end_offset;
+		// Returns an index such that scrollstack[top_index()] == scrollstack.top()
+		// Can be -1 if the stack is scrolled to the very bottom
+		inline FE_NODISCARD i64 top_index() const noexcept {
+			return static_cast<i64>(m_data.size()) - m_end_offset;
 		}
 
 		inline void push(T const& val) {
@@ -130,7 +132,7 @@ namespace fields_engine {
 
 		inline void scroll_down(size_t offset = 1) noexcept {
 			m_end_offset += offset;
-			FE_ASSERT(m_end_offset <= m_data.size(), "Scrolled before the beginning of data");
+			FE_ASSERT(m_end_offset <= m_data.size() + 1, "Scrolled before the beginning of data");
 		}
 
 		FE_NODISCARD bool at_top() const noexcept {
@@ -138,15 +140,23 @@ namespace fields_engine {
 		}
 
 		FE_NODISCARD bool at_bottom() const noexcept {
-			return m_end_offset >= m_data.size();
+			return m_end_offset > m_data.size();
 		}
 
 	private:
 		inline void truncate() {
-			if (m_end_offset > 1) {
-				m_data.erase(m_data.begin() + top_index() + 1, m_data.end());
-				m_end_offset = 1;
+			if (m_end_offset <= 1) { return; }
+
+			//if (at_bottom()) {
+			//	// In the scenario that we want to truncate from the bottom, just reset
+			//	// since top_index
+			//	m_data.clear();
+			//} else 
+			{
+				m_data.erase(m_data.begin() + (top_index() + 1), m_data.end());
 			}
+			m_end_offset = 1;
+			
 		}
 
 		container_type m_data;
