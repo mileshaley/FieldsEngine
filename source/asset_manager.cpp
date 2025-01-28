@@ -526,42 +526,49 @@ bool fields_engine::asset_manager::asset_browser_window() {
 					}
 					ImGui::EndPopup();
 				} // Popup
+
+				constexpr ImGuiDragDropFlags_ drag_drop_accept_flags
+					= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
+
+				if (ImGui::BeginDragDropSource()) {
+					string path_str = entry.path.string();
+					if (entry.type == file_type::asset) {
+						ImGui::SetDragDropPayload("ab_asset", path_str.c_str(), path_str.size());
+					} else if (entry.type == file_type::folder) {
+						ImGui::SetDragDropPayload("ab_folder", path_str.c_str(), path_str.size());
+					} else if (entry.type == file_type::other) {
+						ImGui::SetDragDropPayload("ab_other", path_str.c_str(), path_str.size());
+					}
+					ImGui::Image(thumbnail, { 80,80 }, ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Text(entry.path.string().c_str());
+					ImGui::EndDragDropSource();
+				} // Drag drop source
+
+				if (entry.type == file_type::folder && ImGui::BeginDragDropTarget()) {
+					if (const ImGuiPayload* payload = ImGui::GetDragDropPayload()) {
+						if (string(payload->DataType).substr(0, 3) == "ab_") {
+							std::filesystem::path src_path = string((const char*)payload->Data, payload->DataSize);
+							if (std::filesystem::exists(src_path)) {
+								if (ImGui::AcceptDragDropPayload(payload->DataType, drag_drop_accept_flags)) {
+									std::filesystem::path new_path = entry.path / src_path.filename();
+									std::filesystem::rename(src_path, new_path);
+									m_undo_history.push(undo{ undo::move_file, move(src_path), move(new_path) });
+									m_browser_needs_refresh = true;
+									// Not worth figuring out how to change the history if you move a folder, just reset it
+									reset_browser_history();
+								}
+							}
+						}
+					}
+					ImGui::EndDragDropTarget();
+				}
 			} // Any file or hovered folder
 
 			// Allow drag drop
 
-			if (ImGui::BeginDragDropSource()) {
-					string path_str = entry.path.string();
-				if (entry.type == file_type::asset) {
-					ImGui::SetDragDropPayload("ab_asset", path_str.c_str(), path_str.size());
-				} else if (entry.type == file_type::folder) {
-					ImGui::SetDragDropPayload("ab_folder", path_str.c_str(), path_str.size());
-				} else if (entry.type == file_type::other) {
-					ImGui::SetDragDropPayload("ab_other", path_str.c_str(), path_str.size());
-				}
-				ImGui::Image(thumbnail, { 80,80 }, ImVec2(0, 1), ImVec2(1, 0));
-				ImGui::Text(entry.path.string().c_str());
-				ImGui::EndDragDropSource();
-			} // Drag drop source
 
-			if (entry.type == file_type::folder && ImGui::BeginDragDropTarget()) {
-				if (const ImGuiPayload* payload = ImGui::GetDragDropPayload()) {
-					if (string(payload->DataType).substr(0, 3) == "ab_") {
-						std::filesystem::path src_path = string((const char*)payload->Data, payload->DataSize);
-						if (std::filesystem::exists(src_path)) {
-							if (ImGui::AcceptDragDropPayload(payload->DataType)) {
-								std::filesystem::path new_path = entry.path / src_path.filename();
-								std::filesystem::rename(src_path, new_path);
-								m_undo_history.push(undo{ undo::move_file, move(src_path), move(new_path) });
-								m_browser_needs_refresh = true;
-								// Not worth figuring out how to change the history if you move a folder, just reset it
-								reset_browser_history();
-							}
-						}
-					}
-				}
-				ImGui::EndDragDropTarget();
-			}
+
+
 
 			// Entry type
 
