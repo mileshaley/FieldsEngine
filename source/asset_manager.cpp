@@ -279,7 +279,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 		}
 	}
 	
-	// Left of search buttons
+	// Left of search bar
 
 	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 0, 40 });
 	constexpr ImVec2 search_button_size{ address_bar_height, address_bar_height };
@@ -425,11 +425,9 @@ bool fields_engine::asset_manager::asset_browser_window() {
 			bool& selected = entry.selected;
 
 			bool folder_hovered = selected;
-			bool folder_clicked = false;
 			if (entry.type == file_type::folder && !folder_hovered) {
-				folder_clicked = ImGui::InvisibleButton("", entry_size);
-				folder_hovered = ImGui::IsItemHovered();
-				ImGui::SetCursorPos(cursor_pos);
+				const ImVec2 real_pos = cursor_pos + ImGui::GetWindowPos();
+				folder_hovered = ImGui::IsMouseHoveringRect(real_pos, real_pos + entry_size);
 			}
 
 			constexpr ImGuiButtonFlags entry_button_flags
@@ -450,7 +448,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 
 				const char* asset_right_click_popup_label = "###asset_right_click_popup";
 
-				if (ImGui::ButtonEx("", entry_size, entry_button_flags) || folder_clicked
+				if (ImGui::ButtonEx("", entry_size, entry_button_flags)
 					&& !m_browser_wait_for_mouse_trigger
 				) {
 					if (left_clicked) {

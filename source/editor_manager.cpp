@@ -439,8 +439,8 @@ void fields_engine::editor::editor_manager::reset_style() const {
     colors[ImGuiCol_PopupBg]               = {0.14f, 0.14f, 0.14f, 0.95f};
     //colors[ImGuiCol_Border]                = {0.39f, 0.39f, 0.39f, 0.39f};
     //colors[ImGuiCol_BorderShadow]          = {0.00f, 0.00f, 0.00f, 0.24f};
-    colors[ImGuiCol_Border]                = {0.39f, 0.39f, 0.39f, 0};
-    colors[ImGuiCol_BorderShadow]          = {0.00f, 0.00f, 0.00f, 0};
+    colors[ImGuiCol_Border]                = {0.39f, 0.39f, 0.39f, 0}; // Invisible
+    colors[ImGuiCol_BorderShadow]          = {0.00f, 0.00f, 0.00f, 0}; // Invisible
     colors[ImGuiCol_FrameBg]               = {0.20f, 0.20f, 0.20f, 0.54f};
     colors[ImGuiCol_FrameBgHovered]        = {0.19f, 0.19f, 0.19f, 0.54f};
     colors[ImGuiCol_FrameBgActive]         = {0.20f, 0.22f, 0.23f, 1.00f};
