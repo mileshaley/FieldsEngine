@@ -21,6 +21,9 @@
 #include "scene.h"
 #include "context.h"
 #include "entity.h"
+#include <fstream>
+
+#include <iostream>
 
 /*~-------------------------------------------------------------------------~*\
  * Editor Manager Definitions                                                *
@@ -97,6 +100,12 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 		"Game View",
 		std::bind(&editor_manager::game_window, this),
 		ICON_GAMEPAD
+	));
+
+	add_window(make_box<editor_window>(
+		"Editor Styler",
+		std::bind(&editor_manager::style_window, this),
+		ICON_PALLET
 	));
 }
 void fields_engine::editor::editor_manager::tick(float dt) {
@@ -278,6 +287,88 @@ bool fields_engine::editor::editor_manager::game_window() {
 bool fields_engine::editor::editor_manager::inspect_window() {
 	if (m_selected_ent == nullptr) { return false; }
 	return m_selected_ent->display();
+}
+
+bool fields_engine::editor::editor_manager::style_window() {
+	bool modif = false;
+	/// TODO: this is a trainwreck, fix eventually (low priority)
+	static int slot = 0;
+	ImGui::DragInt("Slot", &slot, 1, 0, 9999);
+	if (ImGui::Button("  Save  ")) {
+		write_style(slot);
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("  Load  ")) {
+		read_style(slot);
+	}
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImVec4* colors = style.Colors;
+
+	// Don't judge me.
+	static const char* color_names[ImGuiCol_COUNT] = {
+		"Text",
+		"TextDisabled",
+		"WindowBg",
+		"ChildBg",
+		"PopupBg",
+		"Border",
+		"BorderShadow",
+		"FrameBg",
+		"FrameBgHovered",
+		"FrameBgActive",
+		"TitleBg",
+		"TitleBgActive",
+		"TitleBgCollapsed",
+		"MenuBarBg",
+		"ScrollbarBg",
+		"ScrollbarGrab",
+		"ScrollbarGrabHovered",
+		"ScrollbarGrabActive",
+		"CheckMark",
+		"SliderGrab",
+		"SliderGrabActive",
+		"Button",
+		"ButtonHovered",
+		"ButtonActive",
+		"Header",
+		"HeaderHovered",
+		"HeaderActive",
+		"Separator",
+		"SeparatorHovered",
+		"SeparatorActive",
+		"ResizeGrip",
+		"ResizeGripHovered",
+		"ResizeGripActive",
+		"Tab",
+		"TabHovered",
+		"TabActive",
+		"TabUnfocused",
+		"TabUnfocusedActive",
+		"DockingPreview",
+		"DockingEmptyBg",
+		"PlotLines",
+		"PlotLinesHovered",
+		"PlotHistogram",
+		"PlotHistogramHovered",
+		"TableHeaderBg",
+		"TableBorderStrong",
+		"TableBorderLight",
+		"TableRowBg",
+		"TableRowBgAlt",
+		"TextSelectedBg",
+		"DragDropTarget",
+		"NavHighlight",
+		"NavWindowingHighlight",
+		"NavWindowingDimBg",
+		"ModalWindowDimBg"
+	};
+
+	for (int i = 0; i < ImGuiCol_COUNT; ++i) {
+		modif |= ImGui::ColorEdit4(color_names[i], &colors[i].x);
+	}
+
+	return false;
 }
 
 bool fields_engine::editor::editor_manager::root_window() {
@@ -488,6 +579,39 @@ void fields_engine::editor::editor_manager::reset_style() const {
     colors[ImGuiCol_NavWindowingHighlight] = {0.28f, 0.28f, 0.28f, 0.29f};
     colors[ImGuiCol_NavWindowingDimBg]     = {0.28f, 0.28f, 0.28f, 0.29f};
     colors[ImGuiCol_ModalWindowDimBg]      = {0.28f, 0.28f, 0.28f, 0.29f};
+}
+
+void fields_engine::editor::editor_manager::read_style(int slot) const {
+	std::ifstream in_file("test_assets/editor_style" + std::to_string(slot) + ".json");
+	if (!in_file) { return; }
+	json in;
+	in = json::parse(in_file);
+	json const& in_colors = in.at("colors");
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImVec4* colors = style.Colors;
+
+	for (int i = 0; i < ImGuiCol_COUNT; ++i) {
+		const vec4 color = in_colors[i].get<vec4>();
+		colors[i] = { color.r, color.g, color.b, color.a };
+	}
+}
+
+void fields_engine::editor::editor_manager::write_style(int slot) const {
+	ImGuiStyle const& style = ImGui::GetStyle();
+	ImVec4 const* colors = style.Colors;
+	std::ofstream out_file("test_assets/editor_style" + std::to_string(slot) + ".json");
+	if (!out_file) { return; }
+	json out;
+	json& out_colors = out["colors"];
+
+	for (int i = 0; i < ImGuiCol_COUNT; ++i) {
+		ImVec4 const& color = colors[i];
+		out_colors.push_back(vec4{ color.x, color.y, color.z, color.w });
+	}
+
+	out_file << std::setw(4) << out << std::endl;
+	out_file.close();
 }
 
 #endif // EDITOR

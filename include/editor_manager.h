@@ -56,10 +56,13 @@ namespace fields_engine::editor {
 		bool game_window();
 		//bool scene_window();
 		bool inspect_window();
+		bool style_window();
 		bool root_window();
 
 	private: // Helpers
 		void reset_style() const;
+		void read_style(int slot = 0) const;
+		void write_style(int slot = 0) const;
 
 	private:
 		entity* m_selected_ent = nullptr;
