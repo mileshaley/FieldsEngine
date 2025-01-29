@@ -22,14 +22,18 @@
 
 #ifdef EDITOR
 #define IMGUI_DEFINE_MATH_OPERATORS
+#define IM_VEC2_CLASS_EXTRA \
+	constexpr ImVec2(::glm::vec2 vec) : x(vec.x), y(vec.y) {} \
+	constexpr operator ::glm::vec2() const { return { x, y }; }
+#define IM_VEC4_CLASS_EXTRA \
+	constexpr ImVec4(::glm::vec4 const& vec) : x(vec.x), y(vec.y), z(vec.z), w(vec.w) {} \
+	constexpr operator ::glm::vec4() const { return { x, y, z, w }; }
 #include "imgui/imgui.h"
 #endif // EDITOR
 
 #include "serial_conversion.h"
 #include "fields_engine_defines.h"
 #include "mem_util.h"
-
-//#include "serial_conversion.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Application Platform Defines                                              *

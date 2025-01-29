@@ -539,7 +539,7 @@ bool fields_engine::asset_manager::asset_browser_window() {
 					} else if (entry.type == file_type::other) {
 						ImGui::SetDragDropPayload("ab_other", path_str.c_str(), path_str.size());
 					}
-					ImGui::Image(thumbnail, { 80,80 }, ImVec2(0, 1), ImVec2(1, 0));
+					ImGui::Image(thumbnail, { 80,80 }, vec2(0, 1), vec2(1, 0));
 					ImGui::Text(entry.path.string().c_str());
 					ImGui::EndDragDropSource();
 				} // Drag drop source
