@@ -34,7 +34,8 @@ namespace fields_engine::editor {
 		~asset_browser();
 
 	public: // Interface
-		bool asset_browser_window();
+		bool display_window();
+
 	private: // Implementation
 		enum class file_type : i8 { folder, asset, other };
 		struct file_entry {
@@ -44,11 +45,10 @@ namespace fields_engine::editor {
 			bool selected;
 		};
 
-		void refresh_asset_browser();
+		void refresh();
 		void browse_to_directory(std::filesystem::path&& target);
-		void reset_browser_history();
+		void reset_directory_history();
 		void* get_thumbnail(file_entry const& entry);
-
 
 		enum class undo_action {
 			move_file,
@@ -69,18 +69,18 @@ namespace fields_engine::editor {
 			std::filesystem::path new_path;
 		};
 
-		vector<file_entry> m_browser_entries;
-		scroll_stack<std::filesystem::path> m_browser_history{ "assets" };
+		vector<file_entry> m_entries;
+		scroll_stack<std::filesystem::path> m_directory_history{ "assets" };
 		scroll_stack<undo> m_undo_history;
 		string m_address_bar_buffer;
 		string m_search_bar_buffer;
 		string m_rename_buffer;
 		int m_rename_idx = -1;
 		int m_prev_entry_clicked = -1; // For shift multi-select
-		bool m_browser_needs_refresh = true;
+		bool m_need_refresh = true;
 		// We make sure that the user doesn't acidentally make an
 		// extra on-release input after double clicking a folder
-		bool m_browser_wait_for_mouse_trigger = false;
+		bool m_wait_for_mouse_trigger = false;
 		enum class address_bar_state : i8 {
 			inactive = 0,
 			activated,
