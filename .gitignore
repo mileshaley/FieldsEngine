@@ -405,3 +405,4 @@ build/
 *.sln
 *.filters
 *.user
+BuildVS.bat
