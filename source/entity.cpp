@@ -97,6 +97,41 @@ void fields_engine::entity::exit() {
 	}
 }
 
+void fields_engine::entity::read(json const& in) {
+	m_name = in["name"];
+	auto root_it = in.find("root");
+	FE_ASSERT(root_it != in.end(), "Root components are required for all entities");
+	json const& in_root = *root_it;
+	attach_spatial_component(make_from_type_name<spatial_component>(in_root["type"]));
+	m_root_component->read_all(in_root);
+	auto basic_it = in.find("basic_components");
+	if (basic_it != in.end()) {
+		for (json in_basic : *basic_it) {
+			box<component> basic =
+				make_from_type_name<spatial_component>(in_basic["type"]);
+			component* p_basic = basic.get();
+			attach_basic_component(move(basic));
+			p_basic->read(in_basic);
+		}
+	}
+	
+}
+
+void fields_engine::entity::write(json& out) const {
+	out["name"] = m_name;
+	json& out_root = out["root"];
+	out_root["type"] = m_root_component->get_type_name();
+	m_root_component->write_all(out_root);
+	if (!m_basic_components.empty()) {
+		json& out_basics = out["basic_components"] = json::array();
+		for (box<component> const& basic : m_basic_components) {
+			json& out_basic = out_basics.emplace_back();
+			out_basic["type"] = basic->get_type_name();
+			basic->write(out_basic);
+		}
+	}
+}
+
 #ifdef EDITOR
 bool fields_engine::entity::display() {
 	bool modif = false;

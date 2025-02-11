@@ -42,6 +42,14 @@ fields_engine::transform::transform(transform const& other)
 	, m_owner(nullptr)
 {}
 
+void fields_engine::transform::read(json const& in) {
+	m_data = in;
+}
+
+void fields_engine::transform::write(json& out) const {
+	out = m_data;
+}
+
 #ifdef EDITOR
 bool fields_engine::transform::display() {
 	constexpr int x_off = 36;
@@ -227,6 +235,19 @@ fe::vec3 fields_engine::transform::get_local_up_vector() const {
 /*~-------------------------------------------------------------------------~*\
  * Transform Related Function Definitions                                    *
 \*~-------------------------------------------------------------------------~*/
+
+void fields_engine::from_json(json const& in, transform_data& out) {
+	out.position = in.at("position");
+	out.rotation = in.at("rotation");
+	out.scale = in.at("scale");
+}
+
+void fields_engine::to_json(json& out, transform_data const& in) {
+	out["position"] = in.position;
+	out["rotation"] = in.rotation;
+	out["scale"] = in.scale;
+}
+
 
 fe::vec3 fields_engine::matrix_decompose_position(mat4 const& mat) {
 	return mat[3];

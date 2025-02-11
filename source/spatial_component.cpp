@@ -42,31 +42,51 @@ void fields_engine::spatial_component::dirtify_transforms() const {
 }
 
 void fields_engine::spatial_component::init_all() {
-	init();
+	init(); // Virtual
 	for (spatial_component* child : m_children) {
 		child->init_all();
 	}
 }
 
 void fields_engine::spatial_component::tick_all(float dt) {
-	tick(dt);
+	tick(dt); // Virtual
 	for (spatial_component* child : m_children) {
 		child->tick_all(dt);
 	}
 }
 
 void fields_engine::spatial_component::draw_all(vis::shader const& shader) const {
-	draw(shader);
+	draw(shader); // Virtual
 	for (spatial_component const* child : m_children) {
 		child->draw_all(shader);
 	}
 }
 
 void fields_engine::spatial_component::exit_all() {
+	// Reverse order of all operations in init_all()
 	for (auto it = m_children.rbegin(); it != m_children.rend(); ++it) {
 		(*it)->exit_all();
 	}
-	exit();
+	exit(); // Virtual
+}
+
+void fields_engine::spatial_component::read_all(json const& in) {
+	read(in); // Virtual
+
+}
+
+void fields_engine::spatial_component::write_all(json& out) const {
+	write(out); // Virtual
+	m_transform.write(out["transform"]);
+
+	if (!m_children.empty()) {
+		json& out_children = out["children"];
+		for (spatial_component const* child : m_children) {
+			json& out_child = out_children.emplace_back();
+			out_child["type"] = child->get_type_name();
+			child->write_all(out_child);
+		}
+	}
 }
 
 #ifdef EDITOR

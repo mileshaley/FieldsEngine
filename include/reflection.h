@@ -46,12 +46,18 @@ namespace fields_engine {
 
 	template<class T>
 	void register_type(string const& type_name) {
+		auto& type_records = impl::get_type_records();
 		FE_ASSERT(
-			impl::get_type_records().find(type_name) == impl::get_type_records().end(),
-			"Type multiply registered. Each type should be registered once only."
+			type_records.find(type_name) == type_records.end(),
+			"Type multiply registered. Each type should be registered only once."
 		);
-		impl::get_type_records().emplace(
-			type_name, make_box<impl::type_record<T>>());
+		type_records.emplace(type_name, make_box<impl::type_record<T>>());
+	}
+
+	template<class T>
+	box<T> make_from_type_name(string const& type_name) {
+		auto& type_records = impl::get_type_records();
+		return box<T>{ static_cast<T*>(type_records.at(type_name)->make()) };
 	}
 
 

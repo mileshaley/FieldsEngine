@@ -33,6 +33,9 @@ namespace fields_engine {
 		void draw_all(vis::shader const& shader) const;
 		void exit_all();
 
+		void read_all(json const& in);
+		void write_all(json& out) const;
+
 #ifdef EDITOR
 		virtual bool display() override;
 #endif // EDITOR
@@ -45,12 +48,6 @@ namespace fields_engine {
 
 		transform      & ref_transform()       { return m_transform; }
 		transform const& ref_transform() const { return m_transform; }
-
-		//void deep_resolve_clone_relations(
-		//	spatial_component* original_root, 
-		//	vector<box<component>> const& original,
-		//	vector<box<component>> const& comps
-		//);
 
 		void deep_copy_into_entity(entity& other_owner) const;
 

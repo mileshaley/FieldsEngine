@@ -29,6 +29,9 @@ namespace fields_engine {
 		quat rotation;
 	};
 
+	void from_json(json const& in, transform_data& out);
+	void to_json(json& out, transform_data const& in);
+
 /*~-------------------------------------------------------------------------~*\
  * Transform Class                                                           *
 \*~-------------------------------------------------------------------------~*/
@@ -45,6 +48,9 @@ namespace fields_engine {
 
 		transform(transform_data const& data);
 		transform(transform const& other);
+
+		void read(json const& in);
+		void write(json& out) const;
 
 #ifdef EDITOR
 		bool display();

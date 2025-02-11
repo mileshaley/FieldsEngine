@@ -43,6 +43,9 @@ namespace fields_engine {
 		void draw(vis::shader const& shader) const;
 		void exit();
 
+		void read(json const& in);
+		void write(json& out) const;
+
 #ifdef EDITOR
 		//static bool display_window();
 		bool display();

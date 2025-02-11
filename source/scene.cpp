@@ -629,6 +629,14 @@ void fields_engine::scene::startup() {
 	for (box<entity> const& ent : m_entities) {
 		ent->init();
 	}
+
+	json out = json::array();
+	for (box<entity> const& ent : m_entities) {
+		out.emplace_back();
+		ent->write(out.back());
+	}
+	std::ofstream out_file("assets/scene.json");
+	out_file << std::setw(4) << out << std::endl;
 }
 
 void fields_engine::scene::tick(float dt) {
