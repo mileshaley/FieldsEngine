@@ -35,8 +35,8 @@
 
 fields_engine::scene::scene() {
 	m_shader = make_box<vis::shader>();
-	m_shader->add("lighting.vert", GL_VERTEX_SHADER);
-	m_shader->add("lighting.frag", GL_FRAGMENT_SHADER);
+	m_shader->add("shaders/lighting.vert", GL_VERTEX_SHADER);
+	m_shader->add("shaders/lighting.frag", GL_FRAGMENT_SHADER);
 	glBindAttribLocation(m_shader->id(), 0, "vertex");
 	glBindAttribLocation(m_shader->id(), 1, "vertexNormal");
 	glBindAttribLocation(m_shader->id(), 2, "vertexTexture");
