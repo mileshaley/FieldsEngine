@@ -50,6 +50,98 @@ namespace fields_engine::vis {
         }
     }
 
+    template<glm::length_t L, typename T, glm::qualifier Q>
+    static void copy_unflatten_vec_buf(json const& in, vector<vec<L, T, Q>>& out) {
+        for (int i = 0; i < in.size(); i += L) {
+            if constexpr (L == 2) {
+                out.push_back(vec<L, T, Q>(in[i], in[i + 1]));
+            } else if constexpr (L == 3) {
+                out.push_back(vec<L, T, Q>(in[i], in[i + 1], in[i + 2]));
+            } else if constexpr (L == 4) {
+                out.push_back(vec<L, T, Q>(in[i], in[i + 1], in[i + 2], in[1 + 3]));
+            }
+        }
+    }
+
+    void mesh::read(json const& in) {
+        auto prim_it = in.find("primitive");
+        if (prim_it != in.end()) {
+            m_prim_type = static_cast<mesh::primitive_type>((*prim_it)["type"]);
+            switch (m_prim_type) {
+            case mesh::primitive_type::cube:
+                add_cube();
+                break;
+            case mesh::primitive_type::cylinder:
+                add_cylinder((*prim_it)["divisions"], (*prim_it)["height"]);
+                break;
+            case mesh::primitive_type::pyramid:
+                add_pyramid((*prim_it)["divisions"], (*prim_it)["height"]);
+                break;
+            case mesh::primitive_type::sphere:
+                add_sphere((*prim_it)["divisions"]);
+                break;
+            default:
+                /// TODO: Handle this error properly
+                FE_FAILED_ASSERT("Failed to read unknown primitive mesh type");
+            }
+
+            generate();
+        } else {
+
+            json const& in_positions = in["positions"];
+            json const& in_normals = in["normals"];
+            json const& in_tex_uvs = in["tex_uvs"];
+            json const& in_tangents = in["tangents"]; /// Empty for now
+            json const& in_triangles = in["triangles"];
+            json const& in_sections = in["sections"];
+
+            copy_unflatten_vec_buf(in_positions, m_positions);
+            copy_unflatten_vec_buf(in_normals, m_normals);
+            copy_unflatten_vec_buf(in_tex_uvs, m_tex_uvs);
+            copy_unflatten_vec_buf(in_tangents, m_tangents);
+            copy_unflatten_vec_buf(in_triangles, m_triangles);
+
+            for (int i = 0; i < in_sections.size(); ++i) {
+                m_sections.push_back(mesh::section{
+                   in_sections[i]["first_index"],
+                   in_sections[i]["index_count"],
+                   in_sections[i]["material_index"]
+                });
+            }
+
+            generate();
+        }
+
+#if EDITOR
+        auto default_mat_it = in.find("default_material");
+        if (default_mat_it != in.end()) {
+            m_default_material = get_asset<material>(*default_mat_it);
+        }
+#endif
+    }
+
+    void mesh::write(json& out) const {
+        if (m_prim_type == mesh::primitive_type::none) {
+            /// TODO: Write vertices here
+            return;
+        }
+        json& prim_json = out["primitive"];
+        prim_json["type"] = static_cast<int>(m_prim_type);
+        switch (m_prim_type) {
+        case mesh::primitive_type::cylinder:
+            out["divisions"] = m_divisions;
+            out["height"] = m_height;
+            break;
+        case mesh::primitive_type::pyramid:
+            out["divisions"] = m_divisions;
+            out["height"] = m_height;
+            break;
+        case mesh::primitive_type::sphere:
+            out["divisions"] = m_divisions;
+            break;
+        }
+    }
+
     void mesh::draw() const {
         glBindVertexArray(m_vao_id);
         VIS_VERIFY;
@@ -381,99 +473,3 @@ namespace fields_engine::vis {
         tris_for_quad({ i, i + 1, i + 2, i + 3 });
     }
 } // namespace fields_engine::vis
-
-namespace fields_engine::vis {
-    template<glm::length_t L, typename T, glm::qualifier Q>
-    static void copy_unflatten_vec_buf(json const& in, vector<vec<L,T,Q>>& out) {
-        for (int i = 0; i < in.size(); i += L) {
-            if constexpr (L == 2) {
-                out.push_back(vec<L, T, Q>(in[i], in[i + 1]));
-            } else if constexpr (L == 3) {
-                out.push_back(vec<L, T, Q>(in[i], in[i + 1], in[i + 2]));
-            } else if constexpr (L == 4) {
-                out.push_back(vec<L, T, Q>(in[i], in[i + 1], in[i + 2], in[1 + 3]));
-            }
-        }
-    }
-} // namespace fields_engine::vis
-
-void fields_engine::vis::from_json(json const& in, mesh& out) {
-    out.reset();
-
-    auto prim_it = in.find("primitive");
-    if (prim_it != in.end()) {
-        out.m_prim_type = static_cast<mesh::primitive_type>((*prim_it)["type"]);
-        switch (out.m_prim_type) {
-        case mesh::primitive_type::cube:
-            out.add_cube();
-            break;
-        case mesh::primitive_type::cylinder:
-            out.add_cylinder((*prim_it)["divisions"], (*prim_it)["height"]);
-            break;
-        case mesh::primitive_type::pyramid:
-            out.add_pyramid((*prim_it)["divisions"], (*prim_it)["height"]);
-            break;
-        case mesh::primitive_type::sphere:
-            out.add_sphere((*prim_it)["divisions"]);
-            break;
-        default:
-            /// TODO: Handle this error properly
-            FE_FAILED_ASSERT("Failed to read unknown primitive mesh type");
-        }
-
-        out.generate();
-    } else {
-        
-        json const& in_positions = in["positions"];
-        json const& in_normals = in["normals"];
-        json const& in_tex_uvs = in["tex_uvs"];
-        json const& in_tangents = in["tangents"]; /// Empty for now
-        json const& in_triangles = in["triangles"];
-        json const& in_sections = in["sections"];
-
-        copy_unflatten_vec_buf(in_positions, out.m_positions);
-        copy_unflatten_vec_buf(in_normals, out.m_normals);
-        copy_unflatten_vec_buf(in_tex_uvs, out.m_tex_uvs);
-        copy_unflatten_vec_buf(in_tangents, out.m_tangents);
-        copy_unflatten_vec_buf(in_triangles, out.m_triangles);
-
-        for (int i = 0; i < in_sections.size(); ++i) {
-            out.m_sections.push_back(mesh::section{
-               in_sections[i]["first_index"],
-               in_sections[i]["index_count"],
-               in_sections[i]["material_index"]
-            });
-        }
-
-        out.generate();
-    }
-
-#if EDITOR
-    auto default_mat_it = in.find("default_material"); 
-    if (default_mat_it != in.end()) {
-        out.m_default_material = get_asset<material>(*default_mat_it);
-    }
-#endif
-}
-
-void fields_engine::vis::to_json(json& out, mesh const& in) {
-    if (in.m_prim_type == mesh::primitive_type::none) {
-        /// TODO: Write vertices here
-        return;
-    }
-    json& prim_json = out["primitive"];
-    prim_json["type"] = static_cast<int>(in.m_prim_type);
-    switch (in.m_prim_type) {
-    case mesh::primitive_type::cylinder:
-        out["divisions"] = in.m_divisions;
-        out["height"] = in.m_height;
-        break;
-    case mesh::primitive_type::pyramid:
-        out["divisions"] = in.m_divisions;
-        out["height"] = in.m_height;
-        break;
-    case mesh::primitive_type::sphere:
-        out["divisions"] = in.m_divisions;
-        break;
-    }
-}

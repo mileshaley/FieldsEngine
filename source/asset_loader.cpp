@@ -36,7 +36,7 @@ void* fields_engine::asset_loader::load_asset(
 		return mat;
 	} else if (type == "mesh") {
 		vis::mesh* mesh = new vis::mesh();
-		*mesh = data;
+		mesh->read(data);
 		return mesh;
 	} else if (type == "texture") {
 		vis::texture* texture = new vis::texture();

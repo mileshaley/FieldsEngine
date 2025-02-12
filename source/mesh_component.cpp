@@ -53,3 +53,11 @@ void fields_engine::mesh_component::draw(vis::shader const& shader) const {
         m_mesh->draw();
     }
 }
+
+void fields_engine::mesh_component::read(json const& in) {
+
+}
+
+void fields_engine::mesh_component::write(json& out) const {
+    
+}

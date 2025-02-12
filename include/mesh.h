@@ -10,6 +10,8 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+#include "asset.h" // Inheritance
+
 namespace fields_engine::vis {
 	class material;
 } // namespace fields_engine::vis
@@ -20,7 +22,7 @@ namespace fields_engine::vis {
 
 namespace fields_engine::vis {
 
-	class mesh {
+	class mesh : public asset_base {
 	public:
 		enum class primitive_type {
 			none,
@@ -34,6 +36,9 @@ namespace fields_engine::vis {
 		mesh(mesh const& other);
 		~mesh();
 
+		virtual void read(json const& in) override;
+		virtual void write(json& out) const override;
+
 		void draw() const;
 
 		void generate();
@@ -44,10 +49,6 @@ namespace fields_engine::vis {
 		void add_sphere(int subdivisions);
 		void add_cylinder(int sides = 16, float height = 1.0f);
 		void add_pyramid(int sides = 4, float height = 1.0f);
-
-
-		friend void from_json(json const& in, mesh& out);
-		friend void to_json(json& out, mesh const& in);
 
 #if EDITOR // Editor data
 		material* m_default_material;
