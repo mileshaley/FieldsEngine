@@ -76,7 +76,7 @@ fields_engine::vis::texture::~texture() {
     VIS_VERIFY;
 }
 
-void fields_engine::vis::texture::load(json const& in) {
+void fields_engine::vis::texture::read(json const& in) {
     vector<u8> raw_data = base64::decode_into<vector<u8>>(in["raw"]);
     int num_channels = -1;
     stbi_set_flip_vertically_on_load(true);
@@ -90,6 +90,10 @@ void fields_engine::vis::texture::load(json const& in) {
     m_downscale_filter = in["downscale_filter"];
     generate(image_data);
     stbi_image_free(image_data);
+}
+
+void fields_engine::vis::texture::write(json& out) const {
+    /// TODO: Implement. This probably can wait because editing textures in engine is low prio
 }
 
 fe::ivec2 fields_engine::vis::texture::get_size() const {

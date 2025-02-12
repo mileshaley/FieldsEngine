@@ -10,6 +10,8 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+#include "asset.h" // Inheritance
+
 namespace fields_engine::vis {
 	class texture;
 	class shader;
@@ -21,22 +23,19 @@ namespace fields_engine::vis {
 
 namespace fields_engine::vis {
 
-	class material {
+	class material : public asset_base {
 	public:
 		material();
 		material(material const& other);
 
-		void use(shader const& shader) const;
+		virtual void read(json const& in) override;
+		virtual void write(json& out) const override;
 
+		void use(shader const& shader) const;
 
 		void set_texture(texture const* new_texture);
 		void set_normal_texture(texture const* new_normal_texture);
 
-		friend void from_json(json const& in, material& out);
-		friend void to_json(json& out, material const& in);
-
-
-	//private:
 		float m_shininess;
 		vec3 m_diffuse;
 		vec3 m_specular;

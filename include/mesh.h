@@ -34,7 +34,7 @@ namespace fields_engine::vis {
 
 		mesh();
 		mesh(mesh const& other);
-		~mesh();
+		virtual ~mesh() override;
 
 		virtual void read(json const& in) override;
 		virtual void write(json& out) const override;

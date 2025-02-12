@@ -38,6 +38,35 @@ fields_engine::vis::material::material(material const& other)
 {
 }
 
+void fields_engine::vis::material::read(json const& in) {
+    TRY_JSON_READ(m_diffuse, in, "diffuse");
+    TRY_JSON_READ(m_specular, in, "specular");
+    TRY_JSON_READ(m_shininess, in, "shininess");
+
+    auto tex_it = in.find("texture");
+    if (tex_it != in.end()) {
+        set_texture(
+            context<asset_manager>().get_asset(*tex_it)->get_data<vis::texture>());
+    }
+
+    auto norm_tex_it = in.find("normal_texture");
+    if (norm_tex_it != in.end()) {
+        set_normal_texture(
+            context<asset_manager>().get_asset(*norm_tex_it)->get_data<vis::texture>());
+    }
+}
+
+void fields_engine::vis::material::write(json& out) const {
+    out["diffuse"] = m_diffuse;
+    out["specular"] = m_specular;
+    out["shininess"] = m_shininess;
+    if (m_texture) {
+        /// TODO: Implement this
+        //out["texture"] = *in.m_texture;
+        //out["normal_texture"] = *in.m_texture;
+    }
+}
+
 void fields_engine::vis::material::use(shader const& shader) const {
     // Material settings for shader
     int loc = shader.uniform_location("diffuse");
@@ -85,36 +114,4 @@ void fields_engine::vis::material::set_texture(texture const* new_texture) {
 
 void fields_engine::vis::material::set_normal_texture(texture const* new_normal_texture) {
 	m_normal_texture = new_normal_texture;
-}
-
-/*~-------------------------------------------------------------------------~*\
- * Material Friend Definitions                                               *
-\*~-------------------------------------------------------------------------~*/
-
-void fields_engine::vis::from_json(json const& in, material& out) {
-	TRY_JSON_READ(out.m_diffuse, in, "diffuse");
-	TRY_JSON_READ(out.m_specular, in, "specular");
-	TRY_JSON_READ(out.m_shininess, in, "shininess");
-    auto tex_it = in.find("texture");
-    if (tex_it != in.end()) {
-        out.set_texture(
-            context<asset_manager>().get_asset(*tex_it)->get_data<vis::texture>());
-    }
-
-    auto norm_tex_it = in.find("normal_texture");
-    if (norm_tex_it != in.end()) {
-        out.set_normal_texture(
-            context<asset_manager>().get_asset(*norm_tex_it)->get_data<vis::texture>());
-    }
-}
-
-void fields_engine::vis::to_json(json& out, material const& in) {
-    out["diffuse"] = in.m_diffuse;
-    out["specular"] = in.m_specular;
-    out["shininess"] = in.m_shininess;
-    if (in.m_texture) {
-        /// TODO: Implement this
-        //out["texture"] = *in.m_texture;
-        //out["normal_texture"] = *in.m_texture;
-    }
 }

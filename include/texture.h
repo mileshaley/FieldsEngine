@@ -10,6 +10,8 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+#include "asset.h" // Inheritance
+
 namespace std::filesystem {
 	class path;
 } // namespace std::filesystem
@@ -22,14 +24,16 @@ namespace fields_engine::vis {
 
 
 
-	class texture {
+	class texture : public asset_base {
 	public:
 		texture();
 		texture(texture&& other) noexcept;
 		texture(std::filesystem::path const& file);
-		~texture();
+		virtual ~texture() override;
 
-		void load(json const& in);
+
+		virtual void read(json const& in) override;
+		virtual void write(json& out) const override;
 
 		ivec2 get_size() const;
 
