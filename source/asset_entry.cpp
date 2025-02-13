@@ -45,6 +45,7 @@ bool fields_engine::asset_entry::load() {
 
 	m_asset = make_from_type_name<asset>(string(get_type()));
 	if (!m_asset) { return false; }
+	m_asset->set_asset_entry(this);
 	m_asset->read(in.at("data"));
 
 	return true;

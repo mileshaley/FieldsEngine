@@ -12,6 +12,10 @@
 
 #include "reflection.h" // FE_REFLECT_BODY
 
+namespace fields_engine {
+	class asset_entry;
+} // namespace fields_engine
+
 /*~-------------------------------------------------------------------------~*\
  * Asset Class                                                               *
 \*~-------------------------------------------------------------------------~*/
@@ -24,18 +28,17 @@ namespace fields_engine {
 		asset();
 		virtual ~asset();
 
+		void set_asset_entry(asset_entry* entry);
+
 		virtual void read(json const& in) = 0;
 		virtual void write(json& out) const = 0;
 
-		void set_name(string const& name);
-		void set_type(type_name const& type);
 
+		asset_entry& get_asset_entry();
 		string const& get_name() const;
-		type_name const& get_type() const;
 
 	private:
-		string m_name;
-		type_name m_type;
+		asset_entry* m_entry;
 	};
 
 } // namespace fields_engine
