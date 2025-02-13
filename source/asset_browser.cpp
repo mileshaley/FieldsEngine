@@ -87,7 +87,6 @@ namespace fields_engine::editor {
 }
 
 bool fields_engine::editor::asset_browser::display_window() {
-	return false;
 	constexpr ImVec2 entry_size{ 120, 156 };
 	constexpr ImVec2 thumbnail_size{ 100, 100 };
 	constexpr ImVec2 thumbnail_margin{
@@ -474,6 +473,8 @@ bool fields_engine::editor::asset_browser::display_window() {
 					ImGui::EndPopup();
 				} // Popup
 
+				// Allow drag drop
+
 				constexpr ImGuiDragDropFlags_ drag_drop_accept_flags
 					= ImGuiDragDropFlags_AcceptNoDrawDefaultRect;
 
@@ -511,12 +512,6 @@ bool fields_engine::editor::asset_browser::display_window() {
 				}
 			} // Any file or hovered folder
 
-			// Allow drag drop
-
-
-
-
-
 			// Entry type
 
 			ImGui::SetCursorPos(cursor_pos + type_text_offset);
@@ -524,7 +519,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 				// entry.asset is guaranteed to be non-null
 				ImGui::TextColored(
 					ImVec4(1, 1, 1, 0.65f), // Transparent white
-					entry.asset->get_type().c_str()
+					entry.asset->path.stem().extension().string().c_str() + 1 // I'm sorry
 				);
 			} else if (entry.type == file_type::other) {
 				ImGui::TextColored(
@@ -659,7 +654,7 @@ void fields_engine::editor::asset_browser::refresh() {
 				auto it = manager.m_assets.find(path.stem().string());
 				if (it != manager.m_assets.end()) {
 					m_entries.push_back(file_entry{
-						path, it->second.asset.get(), file_type::asset
+						path, &it->second, file_type::asset
 					});
 					continue;
 				}
@@ -680,7 +675,7 @@ void fields_engine::editor::asset_browser::refresh() {
 				auto it = manager.m_assets.find(path.stem().string());
 				if (it != manager.m_assets.end()) {
 					m_entries.push_back(file_entry{
-						path, it->second.asset.get(), file_type::asset
+						path, &it->second, file_type::asset
 						});
 					continue;
 				}
@@ -708,23 +703,25 @@ void fields_engine::editor::asset_browser::reset_directory_history() {
 	m_need_refresh = true;
 }
 void* fields_engine::editor::asset_browser::get_thumbnail(file_entry const& entry) {
-	return m_missing_thumbnail->get_void_ptr_id();
+	if (entry.type == file_type::asset) {
+		//if (void* thumbnail = entry.asset->get_thumbnail()) {
+		//	return thumbnail;
+		//} else 
+		const string type = entry.asset->path.stem().extension().string();
+		if (type == ".mesh") {
+			return m_mesh_thumbnail->get_void_ptr_id();
+		} else if (type == ".material") {
+			return m_material_thumbnail->get_void_ptr_id();
+		} else {
+			return m_missing_thumbnail->get_void_ptr_id();
+		}
+		return m_missing_thumbnail->get_void_ptr_id();
 
-	//if (entry.type == file_type::asset) {
-	//	if (void* thumbnail = entry.asset->get_thumbnail()) {
-	//		return thumbnail;
-	//	} else if (entry.asset->get_type() == "mesh") {
-	//		return m_mesh_thumbnail->get_void_ptr_id();
-	//	} else if (entry.asset->get_type() == "material") {
-	//		return m_material_thumbnail->get_void_ptr_id();
-	//	} else {
-	//		return m_missing_thumbnail->get_void_ptr_id();
-	//	}
-	//} else if (entry.type == file_type::folder) {
-	//	return m_folder_thumbnail->get_void_ptr_id();
-	//} else if (entry.type == file_type::other) {
-	//	return m_missing_thumbnail->get_void_ptr_id();
-	//}
-	//return nullptr;
+	} else if (entry.type == file_type::folder) {
+		return m_folder_thumbnail->get_void_ptr_id();
+	} else if (entry.type == file_type::other) {
+		return m_missing_thumbnail->get_void_ptr_id();
+	}
+	return nullptr;
 }
 #endif // EDITOR
