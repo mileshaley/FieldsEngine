@@ -20,7 +20,15 @@
  * Entity Definitions                                                        *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::entity::entity(string_view name) 
+fields_engine::entity::entity() 
+	: m_name()
+	, m_basic_components()
+	, m_spatial_components()
+	, m_root_component(nullptr)
+{
+}
+
+fields_engine::entity::entity(string_view name)
 	: entity(name, make_box<spatial_component>())
 {
 }
@@ -98,7 +106,7 @@ void fields_engine::entity::exit() {
 }
 
 void fields_engine::entity::read(json const& in) {
-	m_name = in["name"];
+	m_name = in.at("name");
 	auto root_it = in.find("root");
 	FE_ASSERT(root_it != in.end(), "Root components are required for all entities");
 	json const& in_root = *root_it;

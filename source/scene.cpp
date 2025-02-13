@@ -43,7 +43,7 @@ fields_engine::scene::scene() {
 	m_shader->finalize();	
 }
 
-fields_engine::scene::~scene() {}
+fields_engine::scene::~scene() = default;
 
 //#include <fstream>
 //static void save_material(fe::vis::material const& mat, fe::string const& name) {
@@ -311,6 +311,20 @@ static fe::box<fe::entity> make_tree(unsigned top_segments = 3) {
 }
 
 void fields_engine::scene::startup() {
+	std::ifstream in_file("scene.json");
+	const json in = json::parse(in_file);
+	m_entities.reserve(in.size());
+
+	for (json const& in_ent : in) {
+		box<entity>& ent = m_entities.emplace_back(make_box<entity>());
+		ent->read(in_ent);
+	}
+
+	for (box<entity> const& ent : m_entities) {
+		ent->init();
+	}
+	
+	return;
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> pos_range(-50, 50);
@@ -634,7 +648,7 @@ void fields_engine::scene::startup() {
 		out.emplace_back();
 		ent->write(out.back());
 	}
-	std::ofstream out_file("assets/scene.json");
+	std::ofstream out_file("scene.json");
 	out_file << std::setw(4) << out << std::endl;
 }
 

@@ -71,8 +71,18 @@ void fields_engine::spatial_component::exit_all() {
 }
 
 void fields_engine::spatial_component::read_all(json const& in) {
+	m_transform.read(in.at("transform"));
 	read(in); // Virtual
+	auto children_it = in.find("children");
+	if (children_it != in.end()) {
+		json const& in_children = *children_it;
 
+		for (json const& in_child : in_children) {
+			spatial_component& child = attach_spatial_component(
+				make_from_type_name<spatial_component>(in_child.at("type")));
+			child.read_all(in_child);
+		}
+	}
 }
 
 void fields_engine::spatial_component::write_all(json& out) const {

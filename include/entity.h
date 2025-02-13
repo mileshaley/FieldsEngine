@@ -29,6 +29,7 @@ namespace fields_engine {
 
 	class entity {
 	public:
+		entity();
 		/// TODO: Remove name constructors
 		entity(string_view name);
 		entity(string_view name, box<spatial_component>&& root_component);
