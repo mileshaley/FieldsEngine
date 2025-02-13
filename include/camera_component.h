@@ -31,6 +31,9 @@ namespace fields_engine {
 		virtual void tick(float dt) override;
 		virtual void exit() override;
 
+		virtual void read(json const& in) override;
+		virtual void write(json& out) const override;
+
 #ifdef EDITOR
 		virtual bool display() override;
 #endif // EDITOR

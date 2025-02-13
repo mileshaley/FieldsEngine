@@ -7,7 +7,6 @@
 #include "fields_engine.h"
 #include "camera_component.h"
 #include "glm/gtc/matrix_transform.hpp"
-#include "context.h"
 #include "scene.h"
 #include "application.h"
 
@@ -43,6 +42,22 @@ void fields_engine::camera_component::tick(float dt) {
 
 void fields_engine::camera_component::exit() {
 	context<scene>().unregister_camera(this);
+}
+
+void fields_engine::camera_component::read(json const& in) {
+	m_zoom = in.at("zoom");
+	m_fov = in.at("fov");
+	m_near = in.at("near");
+	m_far = in.at("far");
+	m_orthographic = in.at("orthographic");
+}
+
+void fields_engine::camera_component::write(json& out) const {
+	out["zoom"] = m_zoom;
+	out["fov"] = m_fov;
+	out["near"] = m_near;
+	out["far"] = m_far;
+	out["orthographic"] = m_orthographic;
 }
 
 #ifdef EDITOR

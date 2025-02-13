@@ -19,13 +19,13 @@
  * Serial Conversion Helper Macros                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#define TRY_JSON_READ(AssignedVar, SourceJson, PropertyName)          \
-	{                                                                 \
-		auto generated_json_iterator = SourceJson.find(PropertyName); \
-		if (generated_json_iterator != SourceJson.end()) {            \
-			AssignedVar = *generated_json_iterator;                   \
-		}                                                             \
-	}
+#define TRY_JSON_READ(AssignedVar, SourceJson, PropertyName)			\
+	{																	\
+		auto generated_json_iterator = SourceJson.find(PropertyName);	\
+		if (generated_json_iterator != SourceJson.end()) {				\
+			AssignedVar = *generated_json_iterator;						\
+		}																\
+	}																	\
 
 /*~-------------------------------------------------------------------------~*\
  * Serial Conversion Functions                                               *
