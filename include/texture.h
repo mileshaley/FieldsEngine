@@ -25,6 +25,7 @@ namespace fields_engine::vis {
 
 
 	class texture : public asset_base {
+		FE_REFLECT_BODY(texture);
 	public:
 		texture();
 		texture(texture&& other) noexcept;

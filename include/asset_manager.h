@@ -28,6 +28,11 @@ namespace fields_engine::editor {
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
+	class asset_entry {
+	public:
+		box<asset_base> asset;
+		std::filesystem::path path;
+	};
 
 	class asset_manager {
 	public:
@@ -35,15 +40,12 @@ namespace fields_engine {
 		~asset_manager();
 
 		bool startup();
-
 		bool shutdown();
 
-		// Get an asset and load it if it hasn't already been
-		// Returns null in the case of nonexistent/invalid asset
-		asset* get_asset(string const& asset_name);
-		// Get an asset and load it if it hasn't already been
+		asset_base* get_loaded_asset(string const& name, type_name const& type);
+
 		// Returns null in the case of nonexistent/invali asset
-		asset const* get_asset(string const& asset_name) const;
+		asset_entry* get_asset_entry(string const& name, type_name const& type);
 
 		//asset* get_or_create_asset(string const& asset_name);
 
@@ -55,10 +57,10 @@ namespace fields_engine {
 		// Add a new asset
 		// Returns a pointer to the created asset on success
 		// Returns nullptr if asset with that name already exists or couldn't be created
-		asset* add_asset(std::filesystem::path const& new_asset_path);
+		asset_entry* add_asset(std::filesystem::path const& new_asset_path);
 
 	private:
-		unordered_map<string, asset> m_assets;
+		unordered_map<string, asset_entry> m_assets;
 
 #if EDITOR
 		box<editor::asset_browser> m_asset_browser;
@@ -75,11 +77,15 @@ namespace fields_engine {
 namespace fields_engine {
 
 	template<typename T>
-	inline T* get_asset(string const& asset_name) {
-		if (asset* a = context<asset_manager>().get_asset(asset_name)) {
-			return a->get_data<T>();
-		}
-		return nullptr;
+	inline T* get_asset(string const& name) {
+		return static_cast<T*>(
+			context<asset_manager>().get_loaded_asset(name, type_name(T::static_type_name())));
+	}
+
+	template<typename T>
+	inline T* get_asset(string const& name, string_view type) {
+		return static_cast<T*>(
+			context<asset_manager>().get_loaded_asset(name, type_name(type)));
 	}
 
 } // namespace fields_engine

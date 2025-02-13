@@ -87,6 +87,7 @@ namespace fields_engine::editor {
 }
 
 bool fields_engine::editor::asset_browser::display_window() {
+	return false;
 	constexpr ImVec2 entry_size{ 120, 156 };
 	constexpr ImVec2 thumbnail_size{ 100, 100 };
 	constexpr ImVec2 thumbnail_margin{
@@ -537,7 +538,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 			ImGui::SetCursorPos(cursor_pos + name_text_offset);
 			if (i == m_rename_idx &&
 				(m_rename_state == rename_state::activated || m_rename_state == rename_state::active)
-				) {
+			) {
 				ImGui::SetNextItemWidth(entry_size.x - name_side_padding * 2);
 				if (ImGui::InputText(
 					"###asset_browser_rename_input",
@@ -598,7 +599,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 		// Deselect everything if window background is clicked without any modifier keys
 		if (!any_entry_was_clicked && !ctrl_held && !shift_held
 			&& ImGui::IsWindowHovered()
-			) {
+		) {
 			if (left_clicked) {
 				// We arent in the for i loop anymore but j is kept for consistency with above
 				for (int j = 0; j < m_entries.size(); ++j) {
@@ -655,11 +656,11 @@ void fields_engine::editor::asset_browser::refresh() {
 				continue;
 			}
 			if (path.extension() == ".fea") {
-				auto it = manager.m_assets.find(path.stem().stem().string());
+				auto it = manager.m_assets.find(path.stem().string());
 				if (it != manager.m_assets.end()) {
 					m_entries.push_back(file_entry{
-						path, &it->second, file_type::asset
-						});
+						path, it->second.asset.get(), file_type::asset
+					});
 					continue;
 				}
 			}
@@ -676,10 +677,10 @@ void fields_engine::editor::asset_browser::refresh() {
 				continue;
 			}
 			if (path.extension() == ".fea") {
-				auto it = manager.m_assets.find(path.stem().stem().string());
+				auto it = manager.m_assets.find(path.stem().string());
 				if (it != manager.m_assets.end()) {
 					m_entries.push_back(file_entry{
-						path, &it->second, file_type::asset
+						path, it->second.asset.get(), file_type::asset
 						});
 					continue;
 				}
@@ -707,21 +708,23 @@ void fields_engine::editor::asset_browser::reset_directory_history() {
 	m_need_refresh = true;
 }
 void* fields_engine::editor::asset_browser::get_thumbnail(file_entry const& entry) {
-	if (entry.type == file_type::asset) {
-		if (void* thumbnail = entry.asset->get_thumbnail()) {
-			return thumbnail;
-		} else if (entry.asset->get_type() == "mesh") {
-			return m_mesh_thumbnail->get_void_ptr_id();
-		} else if (entry.asset->get_type() == "material") {
-			return m_material_thumbnail->get_void_ptr_id();
-		} else {
-			return m_missing_thumbnail->get_void_ptr_id();
-		}
-	} else if (entry.type == file_type::folder) {
-		return m_folder_thumbnail->get_void_ptr_id();
-	} else if (entry.type == file_type::other) {
-		return m_missing_thumbnail->get_void_ptr_id();
-	}
-	return nullptr;
+	return m_missing_thumbnail->get_void_ptr_id();
+
+	//if (entry.type == file_type::asset) {
+	//	if (void* thumbnail = entry.asset->get_thumbnail()) {
+	//		return thumbnail;
+	//	} else if (entry.asset->get_type() == "mesh") {
+	//		return m_mesh_thumbnail->get_void_ptr_id();
+	//	} else if (entry.asset->get_type() == "material") {
+	//		return m_material_thumbnail->get_void_ptr_id();
+	//	} else {
+	//		return m_missing_thumbnail->get_void_ptr_id();
+	//	}
+	//} else if (entry.type == file_type::folder) {
+	//	return m_folder_thumbnail->get_void_ptr_id();
+	//} else if (entry.type == file_type::other) {
+	//	return m_missing_thumbnail->get_void_ptr_id();
+	//}
+	//return nullptr;
 }
 #endif // EDITOR

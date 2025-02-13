@@ -24,6 +24,7 @@ namespace fields_engine::vis {
 namespace fields_engine::vis {
 
 	class material : public asset_base {
+		FE_REFLECT_BODY(material);
 	public:
 		material();
 		material(material const& other);

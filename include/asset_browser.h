@@ -19,7 +19,7 @@ namespace fields_engine {
 	namespace vis {
 		class texture;
 	} // namespace vis
-	class asset;
+	class asset_base;
 }
 
 /*~-------------------------------------------------------------------------~*\
@@ -40,7 +40,7 @@ namespace fields_engine::editor {
 		enum class file_type : i8 { folder, asset, other };
 		struct file_entry {
 			std::filesystem::path path;
-			asset* asset; // So we save some string manipulation and retrieval for assets
+			asset_base* asset; // So we save some string manipulation and retrieval for assets
 			file_type type;
 			bool selected;
 		};

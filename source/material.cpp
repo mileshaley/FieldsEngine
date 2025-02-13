@@ -45,14 +45,13 @@ void fields_engine::vis::material::read(json const& in) {
 
     auto tex_it = in.find("texture");
     if (tex_it != in.end()) {
-        set_texture(
-            context<asset_manager>().get_asset(*tex_it)->get_data<vis::texture>());
+        set_texture(get_asset<vis::texture>(*tex_it));
     }
 
     auto norm_tex_it = in.find("normal_texture");
     if (norm_tex_it != in.end()) {
-        set_normal_texture(
-            context<asset_manager>().get_asset(*norm_tex_it)->get_data<vis::texture>());
+        set_normal_texture(get_asset<vis::texture>(*norm_tex_it));
+
     }
 }
 

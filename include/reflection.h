@@ -13,6 +13,37 @@
 #include "fields_engine.h"
 
 /*~-------------------------------------------------------------------------~*\
+ * Reflection Defines                                                        *
+\*~-------------------------------------------------------------------------~*/
+
+#define FE_REFLECT_BODY(Class)                                              \
+	public:																	\
+		static inline string_view static_type_name() {                      \
+			static constexpr string_view name( #Class );			        \
+			return name;											        \
+		}																	\
+		static inline fe::impl::type_registerer<Class>                      \
+			internal_##Class##_type_registerer{static_type_name()};         \
+		virtual string_view get_type_name() const /* override */ {				\
+			return static_type_name();										\
+		}																	\
+	private:																\
+
+//#define FE_REFLECT_BASE_BODY(Class)											\
+//	private:                                                                \
+//		static inline string_view static_type_name() {                      \
+//			static constexpr string_view name( #Class );			        \
+//			return name;											        \
+//		}																	\
+//	public:																	\
+//		static inline fe::impl::type_registerer<Class>                      \
+//			internal_##Class##_type_registerer{static_type_name()};         \
+//		virtual string_view get_type_name() const {							\
+//			return static_type_name();										\
+//		}																	\
+//	private:																\
+
+/*~-------------------------------------------------------------------------~*\
  * Reflection Functions                                                      *
 \*~-------------------------------------------------------------------------~*/
 
@@ -33,7 +64,11 @@ namespace fields_engine {
 		public:
 			type_record() {}
 			virtual void* make() {
-				return new T();
+				if constexpr (std::is_abstract_v<T>) {
+					return nullptr;
+				} else {
+					return new T();
+				}
 			}
 		};
 
@@ -55,26 +90,17 @@ namespace fields_engine {
 	}
 
 	template<class T>
-	box<T> make_from_type_name(string const& type_name) {
+	box<T> make_from_type_name(type_name const& type) {
 		auto& type_records = impl::get_type_records();
-		return box<T>{ static_cast<T*>(type_records.at(type_name)->make()) };
+		return box<T>{ static_cast<T*>(type_records.at(type)->make()) };
 	}
 
-
 	namespace impl {
-		template<class T, class = void>
+		template<class T>
 		class type_registerer {
 		public:
 			type_registerer(string_view type_name) {
 				register_type<T>(string(type_name));
-			}
-		};
-
-		template<class T>
-		class type_registerer<T, std::void_t<decltype(T::static_type_name())>> {
-		public:
-			type_registerer() {
-				register_type<T>(string(T::static_type_name()));
 			}
 		};
 	} // namespace impl

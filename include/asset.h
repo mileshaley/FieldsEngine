@@ -10,6 +10,8 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
+#include "polymorphic.h" // Convenience for children of asset_base
+
 namespace std::filesystem {
 	class path;
 } // namespace std::filesystem
@@ -21,6 +23,7 @@ namespace std::filesystem {
 namespace fields_engine {
 
 	class asset_base {
+		FE_REFLECT_BODY(asset_base);
 	public:
 		asset_base();
 		virtual ~asset_base();

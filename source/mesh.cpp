@@ -12,6 +12,7 @@
 #include "graphics.h"
 #include "error.h"
 #include "asset_manager.h"
+#include "material.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Mesh Definitions                                                          *

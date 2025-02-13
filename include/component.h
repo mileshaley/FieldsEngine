@@ -16,8 +16,7 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include "polymorphic.h"
-#include "transform.h"
+#include "polymorphic.h" // Convenience for child components
 
 namespace fields_engine {
 	class entity;
@@ -34,7 +33,7 @@ namespace fields_engine {
 namespace fields_engine {
 
 	class component {
-		FE_DEFINING_CLASS_BODY(component);
+		FE_CLASS_BASE_BODY(component);
 
 		component();
 		component(component const& other);
