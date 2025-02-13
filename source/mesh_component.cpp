@@ -12,6 +12,7 @@
 #include "shader.h"
 #include "texture.h"
 #include "mesh.h"
+#include "asset_manager.h"
 
 fields_engine::mesh_component::mesh_component()
 	: spatial_component()
@@ -48,16 +49,30 @@ void fields_engine::mesh_component::draw(vis::shader const& shader) const {
         /// TODO: hand
     }
 
-    /// TODO: remove the possibility that m_mesh is null
+    /// TODO: remove the possibility for m_mesh to be null
     if (m_mesh) {
         m_mesh->draw();
     }
 }
 
 void fields_engine::mesh_component::read(json const& in) {
+    auto mesh_it = in.find("mesh");
+    if (mesh_it != in.end()) {
+        m_mesh = get_asset<vis::mesh>(*mesh_it);
+    }
 
+    auto material_it = in.find("material");
+    if (material_it != in.end()) {
+        m_material = get_asset<vis::material>(*material_it);
+    }
 }
 
 void fields_engine::mesh_component::write(json& out) const {
-    
+    if (m_mesh) {
+        out["mesh"] = m_mesh->get_name();
+    }
+
+    if (m_material) {
+        out["material"] = m_material->get_name();
+    }
 }

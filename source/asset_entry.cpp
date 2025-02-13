@@ -30,7 +30,9 @@ fields_engine::asset_entry::~asset_entry() = default;
 void fields_engine::asset_entry::set_path(std::filesystem::path const& path) {
 	m_path = path;
 	m_str_id = m_path.stem().string();
-	m_str_id_separator_offset = int(m_str_id.rfind('.'));
+	const size_t separator_offset = m_str_id.rfind('.');
+	FE_ASSERT(separator_offset != string::npos, "Asset file missing name & type separator");
+	m_str_id_separator_offset = static_cast<int>(separator_offset);
 	m_name = m_str_id.substr(0, m_str_id_separator_offset);
 }
 
