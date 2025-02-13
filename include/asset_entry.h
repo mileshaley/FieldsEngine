@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~* 
- * File: asset_loader.h                                                      *
+ * File: asset_entry.h                                                       *
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
@@ -14,36 +14,25 @@ namespace std::filesystem {
 	class path;
 } // namespace std::filesystem
 
+namespace fields_engine {
+	class asset_base;
+} // namespace fields_engine
+
 /*~-------------------------------------------------------------------------~*\
- * Asset Loader Class                                                        *
+ * Asset Entry Class                                                         *
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
 
-	class asset_loader {
+	class asset_entry {
 	public:
-		asset_loader();
-		~asset_loader();
+		box<asset_base> asset;
+		std::filesystem::path path;
 
-		template<class T, class LoadingFn>
-		bool register_type(type_name const& type, LoadingFn const& loader) {
-			/// TODO: Implement
-			return false;
-		}
+#if EDITOR
+		void* get_thumbnail() const;
+#endif // EDITOR
 
-		/// TODO: Make not static
-		static void* load_asset(
-			json const& data,
-			type_name const& type
-		);// const;
-
-		/// TODO: Use or remove this
-		void unload_asset(
-			void* loaded_asset,
-			type_name const& type
-		) const;
-
-	private:
-	};
+	}; // class asset_entry
 
 } // namespace fields_engine

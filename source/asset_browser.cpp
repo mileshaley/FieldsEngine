@@ -10,7 +10,7 @@
 #if EDITOR
 
 #include "asset_manager.h"
-#include "asset_loader.h"
+#include "asset_entry.h"
 #include "context.h"
 #include "editor_manager.h"
 #include "imgui/imgui.h"
@@ -21,7 +21,6 @@
 /*~-------------------------------------------------------------------------~*\
  * Asset Browser Definitions                                                 *
 \*~-------------------------------------------------------------------------~*/
-
 
 fields_engine::editor::asset_browser::asset_browser() {
 	context<editor::editor_manager>().add_window(make_box<editor::editor_window>(

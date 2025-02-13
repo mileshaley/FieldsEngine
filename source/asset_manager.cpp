@@ -6,8 +6,8 @@
 
 #include "fields_engine.h"
 #include "asset_manager.h"
-#include "asset_loader.h"
 #include "asset_browser.h"
+#include "asset_entry.h"
 #include "reflection.h"
 #include <fstream>
 

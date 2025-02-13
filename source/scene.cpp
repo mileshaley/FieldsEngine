@@ -24,7 +24,6 @@
 #include "texture.h"
 #include "mesh.h"
 #include "spatial_component.h"
-#include "asset_loader.h"
 
 /// TODO: Remove
 #include <iostream>

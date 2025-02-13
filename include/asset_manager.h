@@ -13,26 +13,25 @@
 #include "asset.h"
 #include "context.h" // For convenience functions
 
-namespace fields_engine::vis {
-	class texture;
-} // namespace fields_engine::vis
+namespace fields_engine {
+	namespace vis {
+		class texture;
+	} // namespace vis
 
 #if EDITOR
-namespace fields_engine::editor {
-	class asset_browser;
-} // namespace fields_engine:editor
+	namespace editor {
+		class asset_browser;
+	} // namespace editor
 #endif // EDITOR
+
+	class asset_entry;
+} // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
  * Asset Manager Class                                                       *
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
-	class asset_entry {
-	public:
-		box<asset_base> asset;
-		std::filesystem::path path;
-	};
 
 	class asset_manager {
 	public:
