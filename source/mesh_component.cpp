@@ -73,6 +73,6 @@ void fields_engine::mesh_component::write(json& out) const {
     }
 
     if (m_material) {
-        out["material"] = m_mesh->get_name();
+        out["material"] = m_material->get_name();
     }
 }
