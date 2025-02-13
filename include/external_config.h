@@ -7,7 +7,7 @@
 #pragma once
 
 /*~-------------------------------------------------------------------------~*\
- * External Configuration Defines & Includes                                 *
+ * External Configuration Macros                                             *
 \*~-------------------------------------------------------------------------~*/
 
 #define IMGUI_DEFINE_MATH_OPERATORS

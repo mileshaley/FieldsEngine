@@ -32,7 +32,7 @@
 #include "context.h"
 
 /*~-------------------------------------------------------------------------~*\
- * Application Platform Defines                                              *
+ * Application Platform Macros                                               *
 \*~-------------------------------------------------------------------------~*/
 
 // Choose which platform layer Fields Engine should use
