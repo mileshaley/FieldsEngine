@@ -518,7 +518,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 				// entry.asset is guaranteed to be non-null
 				ImGui::TextColored(
 					ImVec4(1, 1, 1, 0.65f), // Transparent white
-					entry.asset->path.stem().extension().string().c_str() + 1 // I'm sorry
+					entry.asset->get_type().data()
 				);
 			} else if (entry.type == file_type::other) {
 				ImGui::TextColored(
@@ -706,10 +706,10 @@ void* fields_engine::editor::asset_browser::get_thumbnail(file_entry const& entr
 		//if (void* thumbnail = entry.asset->get_thumbnail()) {
 		//	return thumbnail;
 		//} else 
-		const string type = entry.asset->path.stem().extension().string();
-		if (type == ".mesh") {
+		const string_view type = entry.asset->get_type();
+		if (type == "mesh") {
 			return m_mesh_thumbnail->get_void_ptr_id();
-		} else if (type == ".material") {
+		} else if (type == "material") {
 			return m_material_thumbnail->get_void_ptr_id();
 		} else {
 			return m_missing_thumbnail->get_void_ptr_id();

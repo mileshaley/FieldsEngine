@@ -46,16 +46,7 @@ fe::asset* fields_engine::asset_manager::get_loaded_asset(
 ) {
 	asset_entry* entry = get_asset_entry(name, type);
 	if (entry == nullptr) { return nullptr; }
-
-	if (entry->asset == nullptr) {
-		std::ifstream in_file(entry->path);
-		if (!in_file) { return nullptr; }
-		json in = json::parse(in_file, nullptr, false);
-		if (in.is_discarded()) { return nullptr; }
-		entry->asset = make_from_type_name<asset>(type);
-		entry->asset->read(in.at("data"));
-	}
-	return entry->asset.get();
+	return entry->get_load_asset();
 }
 
 fe::asset_entry* fields_engine::asset_manager::get_asset_entry(
@@ -74,7 +65,7 @@ fe::asset_entry* fields_engine::asset_manager::add_asset(std::filesystem::path c
 	string key = new_asset_path.stem().string();
 	const auto [it, success] = m_assets.try_emplace(
 		move(key),
-		asset_entry{ nullptr, new_asset_path }
+		new_asset_path
 	);
 	if (it == m_assets.end()) { return nullptr; }
 	return &it->second;
