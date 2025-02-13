@@ -76,7 +76,6 @@ fe::asset_entry* fields_engine::asset_manager::add_asset(std::filesystem::path c
 		move(key),
 		asset_entry{ nullptr, new_asset_path }
 	);
-	/// TODO: Determine if success is returned on element already exists, if not, this needs to change
-	if (success) { return &it->second; } 
-	else { return nullptr; }
+	if (it == m_assets.end()) { return nullptr; }
+	return &it->second;
 }
