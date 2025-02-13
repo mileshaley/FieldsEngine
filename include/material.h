@@ -23,7 +23,7 @@ namespace fields_engine::vis {
 
 namespace fields_engine::vis {
 
-	class material : public asset_base {
+	class material : public asset {
 		FE_REFLECT_BODY(material);
 	public:
 		material();

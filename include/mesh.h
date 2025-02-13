@@ -22,7 +22,7 @@ namespace fields_engine::vis {
 
 namespace fields_engine::vis {
 
-	class mesh : public asset_base {
+	class mesh : public asset {
 		FE_REFLECT_BODY(mesh);
 	public:
 		enum class primitive_type {

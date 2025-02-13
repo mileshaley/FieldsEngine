@@ -18,11 +18,11 @@
 
 namespace fields_engine {
 
-	class asset_base {
-		FE_REFLECT_BODY(asset_base);
+	class asset {
+		FE_REFLECT_BODY(asset);
 	public:
-		asset_base();
-		virtual ~asset_base();
+		asset();
+		virtual ~asset();
 
 		virtual void read(json const& in) = 0;
 		virtual void write(json& out) const = 0;

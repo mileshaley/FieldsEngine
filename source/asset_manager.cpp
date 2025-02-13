@@ -41,7 +41,7 @@ bool fields_engine::asset_manager::shutdown() {
 	return true;
 }
 
-fe::asset_base* fields_engine::asset_manager::get_loaded_asset(
+fe::asset* fields_engine::asset_manager::get_loaded_asset(
 	string const& name, type_name const& type
 ) {
 	asset_entry* entry = get_asset_entry(name, type);
@@ -52,7 +52,7 @@ fe::asset_base* fields_engine::asset_manager::get_loaded_asset(
 		if (!in_file) { return nullptr; }
 		json in = json::parse(in_file, nullptr, false);
 		if (in.is_discarded()) { return nullptr; }
-		entry->asset = make_from_type_name<asset_base>(type);
+		entry->asset = make_from_type_name<asset>(type);
 		entry->asset->read(in.at("data"));
 	}
 	return entry->asset.get();

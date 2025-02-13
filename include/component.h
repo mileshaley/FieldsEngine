@@ -7,7 +7,7 @@
 #pragma once
 
 /*~-------------------------------------------------------------------------~*\
- * Component Defines                                                         * 
+ * Component Macros                                                          * 
 \*~-------------------------------------------------------------------------~*/
 
 #define FE_GEN_COMPONENT(p_subclass, p_parclass) FE_CLASS_BODY(p_subclass, p_parclass)

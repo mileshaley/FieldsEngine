@@ -13,7 +13,7 @@
 #include "reflection.h"
 
 /*~-------------------------------------------------------------------------~*\
- * Polymorphism Defines                                                      *
+ * Polymorphism Macros                                                       *
 \*~-------------------------------------------------------------------------~*/
 
 /// TODO: Make the last access specifier in these macros the 

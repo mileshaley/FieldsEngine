@@ -41,7 +41,7 @@ namespace fields_engine {
 		bool startup();
 		bool shutdown();
 
-		asset_base* get_loaded_asset(string const& name, type_name const& type);
+		asset* get_loaded_asset(string const& name, type_name const& type);
 
 		// Returns null in the case of nonexistent/invali asset
 		asset_entry* get_asset_entry(string const& name, type_name const& type);

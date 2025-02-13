@@ -15,7 +15,7 @@ namespace std::filesystem {
 } // namespace std::filesystem
 
 namespace fields_engine {
-	class asset_base;
+	class asset;
 } // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
@@ -26,7 +26,7 @@ namespace fields_engine {
 
 	class asset_entry {
 	public:
-		box<asset_base> asset;
+		box<asset> asset;
 		std::filesystem::path path;
 
 #if EDITOR
