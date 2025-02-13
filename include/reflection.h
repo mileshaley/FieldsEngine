@@ -13,7 +13,7 @@
 #include "fields_engine.h"
 
 /*~-------------------------------------------------------------------------~*\
- * Reflection Defines                                                        *
+ * Reflection Macro                                                       *
 \*~-------------------------------------------------------------------------~*/
 
 #define FE_REFLECT_BODY(Class)                                              \
@@ -24,24 +24,10 @@
 		}																	\
 		static inline fe::impl::type_registerer<Class>                      \
 			internal_##Class##_type_registerer{static_type_name()};         \
-		virtual string_view get_type_name() const /* override */ {				\
+		virtual string_view get_type_name() const /* override */ {			\
 			return static_type_name();										\
 		}																	\
 	private:																\
-
-//#define FE_REFLECT_BASE_BODY(Class)											\
-//	private:                                                                \
-//		static inline string_view static_type_name() {                      \
-//			static constexpr string_view name( #Class );			        \
-//			return name;											        \
-//		}																	\
-//	public:																	\
-//		static inline fe::impl::type_registerer<Class>                      \
-//			internal_##Class##_type_registerer{static_type_name()};         \
-//		virtual string_view get_type_name() const {							\
-//			return static_type_name();										\
-//		}																	\
-//	private:																\
 
 /*~-------------------------------------------------------------------------~*\
  * Reflection Functions                                                      *

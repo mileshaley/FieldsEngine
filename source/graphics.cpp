@@ -13,7 +13,6 @@
 #include "glm/gtx/transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "mesh.h"
-#include "error.h"
 
 void fields_engine::vis::check_error(string_view file, int line) {
 	GLenum error = glGetError();

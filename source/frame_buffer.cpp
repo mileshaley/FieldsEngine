@@ -8,7 +8,6 @@
 #include "frame_buffer.h"
 #include "graphics.h"
 #include "glad/glad.h"
-#include "error.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Frame Buffer Definitions                                                  *

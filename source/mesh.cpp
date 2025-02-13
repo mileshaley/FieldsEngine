@@ -10,7 +10,6 @@
 #include "glad/glad.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "graphics.h"
-#include "error.h"
 #include "asset_manager.h"
 #include "material.h"
 

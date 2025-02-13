@@ -7,7 +7,7 @@
 #pragma once
 
 /*~-------------------------------------------------------------------------~*\
- * Common Includes                                                           *
+ * Common Includes                                                           * 
 \*~-------------------------------------------------------------------------~*/
 
 
@@ -28,6 +28,8 @@
 #include "serial_conversion.h"
 #include "fields_engine_defines.h"
 #include "mem_util.h"
+#include "error.h" // Assert
+#include "context.h"
 
 /*~-------------------------------------------------------------------------~*\
  * Application Platform Defines                                              *
@@ -85,6 +87,7 @@ namespace fields_engine {
 	using glm::mat2;
 	using glm::mat3;
 	using glm::mat4;
+
 	using glm::vec;
 	
 	using glm::vec1;
@@ -111,15 +114,9 @@ namespace fields_engine {
 	using std::set;
 	using std::unordered_set;
 
-	/// TODO: Make a Fields Engine map type
+	/// TODO: Use a more specialized map type
 
 	using std::unordered_map;
-
-
-/*~-------------------------------------------------------------------------~*\
- * Utility Type Aliases                                                      *
-\*~-------------------------------------------------------------------------~*/
-
 
 /*~-------------------------------------------------------------------------~*\
  * Move Semantics Function Aliases                                           *

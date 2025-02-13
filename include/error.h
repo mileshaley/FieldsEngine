@@ -5,15 +5,8 @@
 \*~-------------------------------------------------------------------------~*/
 
 #pragma once
-#include <stdexcept>
 
-/// TODO: STL_ASSERT here is a placeholder, change it
+/// TODO: Implement our own assert and not use _STL_ASSERT
 
 #define FE_ASSERT(cond, message) _STL_ASSERT(cond, message);
 #define FE_FAILED_ASSERT(message) _STL_ASSERT(false, message);
-
-namespace fields_engine {
-
-	using std::runtime_error;
-
-} // namespace fields_engine
