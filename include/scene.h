@@ -28,9 +28,11 @@ namespace fields_engine {
 
 	class scene {
 	public:
-
 		scene();
 		~scene();
+
+		void read();
+		void write() const;
 
 		void startup();
 		void tick(float dt);
@@ -52,7 +54,6 @@ namespace fields_engine {
 		box<vis::shader> m_shader;
 
 	private:
-		// { 0.1f, 0.1f, 0.1f, 1 } // Gray
 		vec4 m_background_color = { 0.55f, 0.75f, 1.0f, 1 };
 
 		vector<box<entity>> m_entities;
