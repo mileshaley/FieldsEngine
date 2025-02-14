@@ -29,6 +29,15 @@ namespace fields_engine {
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine::editor {
+
+	enum class font_type {
+		regular = 0, // Includes icons
+		bold,
+		monospace,
+		internal_icon, // Do not use
+		font_type_count
+	};
+
 	class editor_manager {
 	public:
 		editor_manager(window_handle& win);
@@ -52,6 +61,7 @@ namespace fields_engine::editor {
 
 		editor::editor_window& add_window(own<editor_window>&& new_win);
 
+
 	private: // Windows
 		bool game_window();
 		//bool scene_window();
@@ -65,6 +75,7 @@ namespace fields_engine::editor {
 		void write_style(int slot = 0) const;
 
 	private:
+		/// TODO: Implement a more generic selection system that can handle different types and amounts
 		entity* m_selected_ent = nullptr;
 		//vector<entity*> m_selected_ents;
 
@@ -80,8 +91,8 @@ namespace fields_engine::editor {
 		vis::frame_buffer m_frame_buffer;
 		vector<own<editor_window>> m_windows;
 		ImGuiContext* m_gui_context;
-		vector<ImFont*> m_fonts;
 		vector<int> m_recent_windows;
+		array<ImFont*, size_t(font_type::font_type_count)> m_fonts;
 	};
 
 } // namespace fields_engine::editor

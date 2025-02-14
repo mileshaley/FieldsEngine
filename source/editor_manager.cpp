@@ -42,14 +42,17 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	// Setup fonts with icon font
-	std::filesystem::path fonts_path("engine_assets");
-	fonts_path /= "fonts";
+	const std::filesystem::path fonts_path = std::filesystem::path("engine_assets") / "fonts";
 	const float font_size = 17.0f;
+
 	// Add default font so we can merge in icon font
-	m_fonts.emplace_back(io.Fonts->AddFontFromFileTTF(
-		(fonts_path / "RobotoMono-Regular.ttf").string().c_str(), font_size
-	));
-	
+	m_fonts[size_t(font_type::regular)] = io.Fonts->AddFontFromFileTTF(
+		(fonts_path / "Montserrat" / "static" / "Montserrat-Medium.ttf").string().c_str(),
+		font_size,
+		nullptr,
+		io.Fonts->GetGlyphRangesDefault()
+	);
+
 	// MUST have persistent lifetime, hence static
 	// We want to treat this like a const wchar_t*
 	static constexpr ImWchar iconRanges[3] = { 
@@ -62,10 +65,20 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 	icon_config.GlyphMinAdvanceX = font_size;
 	icon_config.GlyphOffset.y = 1.0f;
 
-	m_fonts.emplace_back(io.Fonts->AddFontFromFileTTF(
+	m_fonts[size_t(font_type::internal_icon)] = (io.Fonts->AddFontFromFileTTF(
 		(fonts_path / FA_SOLID_ICON_FONT_FILENAME).string().c_str(),
-		font_size, &icon_config, iconRanges
+		16.0f, 
+		&icon_config, 
+		iconRanges
 	));
+
+	// Add other fonts now that icon font has been merged
+	m_fonts[size_t(font_type::monospace)] = io.Fonts->AddFontFromFileTTF(
+		(fonts_path / "RobotoMono-Regular.ttf").string().c_str(), 
+		font_size,
+		nullptr,
+		io.Fonts->GetGlyphRangesDefault()
+	);
 
 	ImGui_ImplGlfw_InitForOpenGL(win.handle, true);
 	ImGui_ImplOpenGL3_Init("#version 430");

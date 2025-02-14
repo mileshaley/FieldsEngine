@@ -13,6 +13,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <array>
 #include <vector>
 #include <string>
 #include <set>
@@ -110,6 +111,7 @@ namespace fields_engine {
 	using std::string;
 	using string_cr = string const&;
 	using std::string_view;
+	using std::array;
 	using std::vector;
 	using std::set;
 	using std::unordered_set;
