@@ -152,7 +152,10 @@ void fields_engine::scene::shutdown() {
 }
 
 #ifdef EDITOR
+extern bool& should_swap_app_context();
+
 bool fields_engine::scene::display_window() {
+
 	bool modif = false;
 	editor::editor_manager& edit = context<editor::editor_manager>();
 	if (ImGui::Button("   Load from file   ")) {
@@ -164,6 +167,10 @@ bool fields_engine::scene::display_window() {
 	ImGui::SameLine();
 	if (ImGui::Button("   Save to file   ")) {
 		write();
+	}
+	ImGui::NewLine();
+	if (ImGui::Button("   Swap app context   ")) {
+		should_swap_app_context() = true;
 	}
 	if (ImGui::CollapsingHeader("Atmospheric")) {
 		modif |= ImGui::DragFloat3("Light Position", &m_light_pos.x);

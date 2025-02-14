@@ -104,12 +104,16 @@ bool fields_engine::application::startup() {
 }
 
 
+extern bool swap_app_context();
 
 void fields_engine::application::run() {
 	m_running = true;
 
 	m_prev_time = glfwGetTime();
 	while (m_running) {
+		if (swap_app_context()) {
+			break;
+		}
 		const double new_time = glfwGetTime();
 		m_delta_time = float(new_time - m_prev_time);
 		m_prev_time = new_time;

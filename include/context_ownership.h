@@ -16,6 +16,8 @@
  * Unique Pointer Context Ownership Class                                    *
 \*~-------------------------------------------------------------------------~*/
 
+#define TEST_CTX_REPL true ||
+
 namespace fields_engine {
 
 	using namespace fields_engine;
@@ -28,7 +30,7 @@ namespace fields_engine {
 			: m_ptr(move(ptr))
 		{
 			T*& current = impl::context_storage<type>::ptr;
-			if (current == nullptr) {
+			if (TEST_CTX_REPL current == nullptr) {
 				current = m_ptr.get();
 				impl::context_storage<type>::initialize();
 			}
@@ -51,6 +53,18 @@ namespace fields_engine {
 				impl::context_storage<type>::initialize();
 			}
 			m_ptr = move(rhs);
+			return *this;
+		}
+
+		inline box_context& operator=(box_context&& rhs) noexcept {
+			type*& current = impl::context_storage<type>::ptr;
+			if (current == m_ptr.get()) {
+				current = rhs.get();
+			} else if (current == nullptr) {
+				current = rhs.get();
+				impl::context_storage<type>::initialize();
+			}
+			m_ptr = move(rhs.m_ptr);
 			return *this;
 		}
 
@@ -91,7 +105,7 @@ namespace fields_engine {
 			: m_data(std::forward<Ts>(args)...)
 		{
 			type*& current = impl::context_storage<type>::ptr;
-			if (current == nullptr) {
+			if (TEST_CTX_REPL current == nullptr) {
 				current = &m_data;
 				impl::context_storage<type>::initialize();
 			}
