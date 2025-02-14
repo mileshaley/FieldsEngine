@@ -47,7 +47,7 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 
 	// Add default font so we can merge in icon font
 	m_fonts[size_t(font_type::regular)] = io.Fonts->AddFontFromFileTTF(
-		(fonts_path / "Montserrat" / "static" / "Montserrat-Medium.ttf").string().c_str(),
+		(fonts_path / "Montserrat" / "Montserrat-Medium.ttf").string().c_str(),
 		font_size,
 		nullptr,
 		io.Fonts->GetGlyphRangesDefault()
@@ -74,18 +74,17 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 
 	// Add other fonts now that icon font has been merged
 	m_fonts[size_t(font_type::monospace)] = io.Fonts->AddFontFromFileTTF(
-		(fonts_path / "RobotoMono-Regular.ttf").string().c_str(), 
+		(fonts_path / "RobotoMono" / "RobotoMono-Regular.ttf").string().c_str(),
 		font_size,
 		nullptr,
 		io.Fonts->GetGlyphRangesDefault()
 	);
 
+
 	ImGui_ImplGlfw_InitForOpenGL(win.handle, true);
 	ImGui_ImplOpenGL3_Init("#version 430");
 
-	reset_style();
-
-	//ImGui::SetNextWindowSize({ 300.0f, 500.0f });
+	reset_style();;
 
 	add_window(make_own<editor_window>(
 		"Root", std::bind(&editor_manager::root_window, this), ICON_FACE_SMILE)).close();
@@ -409,6 +408,10 @@ bool fields_engine::editor::editor_manager::root_window() {
 fe::editor::editor_window& fields_engine::editor::editor_manager::add_window(own<editor_window>&& new_win) {
 	m_recent_windows.push_back(int(m_windows.size()));
 	return *m_windows.emplace_back(move(new_win));
+}
+
+ImFont const* fields_engine::editor::editor_manager::get_font_handle(font_type font) const {
+	return m_fonts[static_cast<size_t>(font)];
 }
 
 void fields_engine::editor::editor_manager::reset_style() const {

@@ -61,6 +61,7 @@ namespace fields_engine::editor {
 
 		editor::editor_window& add_window(own<editor_window>&& new_win);
 
+		ImFont const* get_font_handle(font_type font) const;
 
 	private: // Windows
 		bool game_window();
