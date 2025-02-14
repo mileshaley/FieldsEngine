@@ -62,7 +62,7 @@ namespace fields_engine {
 		unordered_map<string, asset_entry> m_assets;
 
 #if EDITOR
-		box<editor::asset_browser> m_asset_browser;
+		own<editor::asset_browser> m_asset_browser;
 		friend class editor::asset_browser;
 #endif // EDITOR
 	};

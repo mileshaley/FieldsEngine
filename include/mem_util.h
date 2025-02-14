@@ -17,28 +17,29 @@
 namespace fields_engine {
 
 /*~-------------------------------------------------------------------------~*\
- * Box Alias & Functions                                                     *
+ * Own Alias & Functions                                                     *
 \*~-------------------------------------------------------------------------~*/
 
+    // Equivalent to unique_ptr, signifies ownership of a dynamically allocated object
     template<typename T>
-    using box = std::unique_ptr<T>;
+    using own = std::unique_ptr<T>;
 
     // Specialized for scalar T 
     template<typename T, typename... ArgTs, std::enable_if_t<!std::is_array_v<T>, int> = 0>
-    FE_NODISCARD inline box<T> make_box(ArgTs&&... args) {
-        return box<T>(new T(std::forward<ArgTs>(args)...));
+    FE_NODISCARD inline own<T> make_own(ArgTs&&... args) {
+        return own<T>(new T(std::forward<ArgTs>(args)...));
     }
 
     // Specialized for one-dimensional array of T
     template<typename T, std::enable_if_t< std::is_array_v<T> && !std::extent_v<T>, int> = 0>
-    FE_NODISCARD inline box<T> make_box(const size_t size) {
+    FE_NODISCARD inline own<T> make_own(const size_t size) {
         using element_type = std::remove_extent_t<T>;
-        return box<T>(new element_type[size]());
+        return own<T>(new element_type[size]());
     }
 
     // Do not allow multi-dimensional array of T
     template<typename T, typename... ArgTs, std::enable_if_t<std::extent_v<T> != 0, int> = 0>
-    void make_box(ArgTs&&...) = delete;
+    void make_own(ArgTs&&...) = delete;
 
 /*~-------------------------------------------------------------------------~*\
  * Move Semantics Functions                                                  *

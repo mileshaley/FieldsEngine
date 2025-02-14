@@ -23,19 +23,18 @@
 \*~-------------------------------------------------------------------------~*/
 
 fields_engine::editor::asset_browser::asset_browser() {
-	context<editor::editor_manager>().add_window(make_box<editor::editor_window>(
+	context<editor::editor_manager>().add_window(make_own<editor::editor_window>(
 		"Asset Browser",
 		std::bind(&asset_browser::display_window, this),
 		ICON_FOLDER
 	));
-	m_missing_thumbnail = make_box<vis::texture>(string_view("engine_assets/missing_asset_thumbnail.png"));
-	m_mesh_thumbnail = make_box<vis::texture>(string_view("engine_assets/mesh_asset_thumbnail.png"));
-	m_material_thumbnail = make_box<vis::texture>(string_view("engine_assets/material_asset_thumbnail.png"));
-	m_folder_thumbnail = make_box<vis::texture>(string_view("engine_assets/folder_thumbnail.png"));
+	m_missing_thumbnail = make_own<vis::texture>(string_view("engine_assets/missing_asset_thumbnail.png"));
+	m_mesh_thumbnail = make_own<vis::texture>(string_view("engine_assets/mesh_asset_thumbnail.png"));
+	m_material_thumbnail = make_own<vis::texture>(string_view("engine_assets/material_asset_thumbnail.png"));
+	m_folder_thumbnail = make_own<vis::texture>(string_view("engine_assets/folder_thumbnail.png"));
 	refresh();
 }
 
-/// TODO: Remove the asset browser window from the editor manager
 fields_engine::editor::asset_browser::~asset_browser() = default;
 
 /*~-------------------------------------------------------------------------~*\

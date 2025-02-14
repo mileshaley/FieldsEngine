@@ -74,14 +74,14 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 
 	//ImGui::SetNextWindowSize({ 300.0f, 500.0f });
 
-	add_window(make_box<editor_window>(
+	add_window(make_own<editor_window>(
 		"Root", std::bind(&editor_manager::root_window, this), ICON_FACE_SMILE)).close();
 
-	add_window(make_box<editor_window>(
+	add_window(make_own<editor_window>(
 		"Inspect", std::bind(&editor_manager::inspect_window, this), ICON_MAGNIFYING_GLASS));
 
 	// Add the window and then set its callback after since it needs to access data inside the window
-	editor_window* demo_window = &add_window(make_box<editor_window>(
+	editor_window* demo_window = &add_window(make_own<editor_window>(
 		"ImGui Demo", editor_window::callback_t{}, ICON_INFO));
 	demo_window->set_callback([demo_window]() {
 		ImGui::SetWindowHiddendAndSkipItemsForCurrentFrame(ImGui::GetCurrentWindow());
@@ -90,19 +90,19 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 	});
 	demo_window->close();
 
-	add_window(make_box<editor_window>(
+	add_window(make_own<editor_window>(
 		"Scene", 
 		std::bind(&scene::display_window, &context<scene>()),
 		ICON_MOUNTAIN_SUN
 	));
 
-	add_window(make_box<editor_window>(
+	add_window(make_own<editor_window>(
 		"Game View",
 		std::bind(&editor_manager::game_window, this),
 		ICON_GAMEPAD
 	));
 
-	add_window(make_box<editor_window>(
+	add_window(make_own<editor_window>(
 		"Editor Styler",
 		std::bind(&editor_manager::style_window, this),
 		ICON_PALLET
@@ -381,7 +381,7 @@ bool fields_engine::editor::editor_manager::root_window() {
 	modif |= icon_selector_popup(m_new_window_icon);
 
 	if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
-		add_window(make_box<editor_window>(
+		add_window(make_own<editor_window>(
 			m_new_window_buf, do_nothing, m_new_window_icon));
 		m_new_window_buf.clear();
 		modif = true;
@@ -393,7 +393,7 @@ bool fields_engine::editor::editor_manager::root_window() {
  * Editor Helper Definitions                                                 *
 \*~-------------------------------------------------------------------------~*/
 
-fe::editor::editor_window& fields_engine::editor::editor_manager::add_window(box<editor_window>&& new_win) {
+fe::editor::editor_window& fields_engine::editor::editor_manager::add_window(own<editor_window>&& new_win) {
 	m_recent_windows.push_back(int(m_windows.size()));
 	return *m_windows.emplace_back(move(new_win));
 }

@@ -12,8 +12,8 @@
 #include <Windows.h>
 
 /// TODO: Remove context swap testing stuff
-static fe::box_context<fe::application>*& app_context_location() {
-	static fe::box_context<fe::application>* p_app_context = nullptr;
+static fe::own_context<fe::application>*& app_context_location() {
+	static fe::own_context<fe::application>* p_app_context = nullptr;
 	return p_app_context;
 }
 
@@ -29,7 +29,7 @@ bool swap_app_context() {
 	}
 	should_swap = false;
 
-	static fe::box_context<fe::application> second_context = fe::make_box<fe::application>();
+	static fe::own_context<fe::application> second_context = fe::make_own<fe::application>();
 	static bool first = true;
 
 	if (first) {
@@ -46,7 +46,7 @@ int main() {
 	using namespace fields_engine;
 	//std::cout << "Fields Engine Startup" << std::endl;
 	{
-		box_context<application> app{make_box<application>()};
+		own_context<application> app{make_own<application>()};
 		app_context_location() = &app;
 
 		if (!app->startup()) {

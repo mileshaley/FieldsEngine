@@ -55,9 +55,9 @@ namespace fields_engine {
 		local_context<window_handle> m_window;
 		local_context<input_manager> m_input_manager;
 		local_context<asset_manager> m_asset_manager;
-		box_context<scene> m_scene;
+		own_context<scene> m_scene;
 #if EDITOR
-		box_context<editor::editor_manager> m_editor{nullptr};
+		own_context<editor::editor_manager> m_editor{nullptr};
 #endif // EDITOR
 		bool m_running;
 	};

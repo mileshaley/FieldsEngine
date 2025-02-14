@@ -51,12 +51,12 @@ namespace fields_engine {
 		vec3 m_light_pos = { 9, 9, 11 };
 		vec3 m_light_color = { 3.5f, 3.5f, 3.5f };
 		vec3 m_ambient_color = { 0.2f, 0.2f, 0.2f };
-		box<vis::shader> m_shader;
+		own<vis::shader> m_shader;
 
 	private:
 		vec4 m_background_color = { 0.55f, 0.75f, 1.0f, 1 };
 
-		vector<box<entity>> m_entities;
+		vector<own<entity>> m_entities;
 		vector<camera_component*> m_cameras;
 		camera_component* m_active_camera = nullptr;
 	};

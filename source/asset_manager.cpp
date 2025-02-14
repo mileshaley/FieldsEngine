@@ -28,7 +28,7 @@ bool fields_engine::asset_manager::startup() {
 		add_asset(file);
 	}
 #if EDITOR
-	m_asset_browser = make_box<editor::asset_browser>();
+	m_asset_browser = make_own<editor::asset_browser>();
 #endif // EDITOR
 	return true;
 }

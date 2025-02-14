@@ -50,7 +50,7 @@ namespace fields_engine::editor {
 		entity* get_selected_entity();
 		void set_selected_entity(entity* new_selected);
 
-		editor::editor_window& add_window(box<editor_window>&& new_win);
+		editor::editor_window& add_window(own<editor_window>&& new_win);
 
 	private: // Windows
 		bool game_window();
@@ -78,7 +78,7 @@ namespace fields_engine::editor {
 		editor_icon m_new_window_icon = ICON_ELLIPSIS_VERTICAL;
 		// Editor
 		vis::frame_buffer m_frame_buffer;
-		vector<box<editor_window>> m_windows;
+		vector<own<editor_window>> m_windows;
 		ImGuiContext* m_gui_context;
 		vector<ImFont*> m_fonts;
 		vector<int> m_recent_windows;

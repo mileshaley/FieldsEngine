@@ -49,23 +49,23 @@ namespace fields_engine {
 		// Primary template. Does a simple copy
 		template<typename T, class = void>
 		struct clone_helper {
-			static inline box<T> clone(T const& source) {
-				return make_box<T>(source);
+			static inline own<T> clone(T const& source) {
+				return make_own<T>(source);
 			}
 		};
 		// Specialized for classes with non-static internal_clone() function
 		template<typename T>
 		struct clone_helper<T, std::void_t<decltype(std::declval<T>().internal_clone())>> {
-			static inline box<T> clone(T const& source) {
-				return box<T>(static_cast<T*>(source.internal_clone()));
+			static inline own<T> clone(T const& source) {
+				return own<T>(static_cast<T*>(source.internal_clone()));
 			}
 		};
 	} // namespace impl
 
 	// Virtually clones a generic cloneable object as its real type and returns it
-	// as a box<T> given that T <= the real type
+	// as a own<T> given that T <= the real type
 	template<class T>
-	inline box<T> clone(T const& source) {
+	inline own<T> clone(T const& source) {
 		return impl::clone_helper<T>::clone(source);
 	}
 

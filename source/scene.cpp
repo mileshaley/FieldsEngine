@@ -21,7 +21,7 @@
 #include <fstream>
 
 fields_engine::scene::scene() {
-	m_shader = make_box<vis::shader>();
+	m_shader = make_own<vis::shader>();
 	m_shader->add("shaders/lighting.vert", GL_VERTEX_SHADER);
 	m_shader->add("shaders/lighting.frag", GL_FRAGMENT_SHADER);
 	glBindAttribLocation(m_shader->id(), 0, "vertex");
@@ -39,14 +39,14 @@ void fields_engine::scene::read() {
 	m_entities.reserve(in.size());
 
 	for (json const& in_ent : in) {
-		box<entity>& ent = m_entities.emplace_back(make_box<entity>());
+		own<entity>& ent = m_entities.emplace_back(make_own<entity>());
 		ent->read(in_ent);
 	}
 }
 
 void fields_engine::scene::write() const {
 	json out = json::array();
-	for (box<entity> const& ent : m_entities) {
+	for (own<entity> const& ent : m_entities) {
 		out.emplace_back();
 		ent->write(out.back());
 	}
@@ -57,7 +57,7 @@ void fields_engine::scene::write() const {
 void fields_engine::scene::startup() {
 	read();
 
-	for (box<entity> const& ent : m_entities) {
+	for (own<entity> const& ent : m_entities) {
 		ent->init();
 	}
 }
@@ -69,7 +69,7 @@ void fields_engine::scene::tick(float dt) {
 			if (m_entities[i]->get_name().find("nowm") != string::npos) {
 				for (int j = 0; j < m_entities.size(); ++j) {
 					if (m_entities[j]->get_name().find("amera") != string::npos) {
-						auto& new_ent = m_entities.emplace_back(make_box<entity>(*m_entities[i]));
+						auto& new_ent = m_entities.emplace_back(make_own<entity>(*m_entities[i]));
 						new_ent->ref_transform().set_local_position(m_entities[j]->ref_transform().get_local_position());
 						goto done;
 					}
@@ -79,7 +79,7 @@ void fields_engine::scene::tick(float dt) {
 	}
 	done:
 
-	for (box<entity> const& ent : m_entities) {
+	for (own<entity> const& ent : m_entities) {
 		ent->tick(dt);
 	}
 }
@@ -129,7 +129,7 @@ void fields_engine::scene::draw() const {
 
 	//bool after = false;
 	//glDepthRange(0.001, 1.0);
-	for (box<entity> const& ent : m_entities) {
+	for (own<entity> const& ent : m_entities) {
 		//if (!after && ent->get_name() == "Direction Indicator") {
 		//	glDepthRange(0, 0.001);
 		//	after = true;
@@ -144,7 +144,7 @@ void fields_engine::scene::draw() const {
 }
 
 void fields_engine::scene::shutdown() {
-	for (box<entity> const& ent : m_entities) {
+	for (own<entity> const& ent : m_entities) {
 		ent->exit();
 	}
 	m_entities.clear();
@@ -179,7 +179,7 @@ bool fields_engine::scene::display_window() {
 		modif |= ImGui::ColorEdit3("Ambient color", &m_ambient_color.x);
 	}
 	const entity* curr_selected = edit.get_selected_entity();
-	for (box<entity> const& ent : m_entities) {
+	for (own<entity> const& ent : m_entities) {
 		// We assume that all entities in the scene have unique names
 		if (ImGui::Selectable(ent->get_name().c_str(), ent.get() == curr_selected)) {
 			edit.set_selected_entity(ent.get());
@@ -206,5 +206,3 @@ void fields_engine::scene::unregister_camera(camera_component* cam) {
 		}
 	}
 }
-
-

@@ -40,7 +40,7 @@ namespace fields_engine {
 		virtual bool display() override;
 #endif // EDITOR
 
-		spatial_component& attach_spatial_component(box<spatial_component>&& comp);
+		spatial_component& attach_spatial_component(own<spatial_component>&& comp);
 		void adopt_owned_component(spatial_component* new_child);
 
 		void set_parent(spatial_component* new_parent);

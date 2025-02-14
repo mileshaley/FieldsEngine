@@ -105,7 +105,7 @@ bool fields_engine::spatial_component::display() {
 }
 #endif // EDITOR
 
-fe::spatial_component& fields_engine::spatial_component::attach_spatial_component(box<spatial_component>&& comp) {
+fe::spatial_component& fields_engine::spatial_component::attach_spatial_component(own<spatial_component>&& comp) {
 	spatial_component* comp_ptr = comp.get();
 	adopt_owned_component(comp.get());
 	get_owner()->acquire_spatial_component(move(comp));
@@ -126,7 +126,7 @@ fe::spatial_component* fields_engine::spatial_component::get_parent() const {
 }
 
 void fields_engine::spatial_component::deep_copy_into_entity(entity& other_owner) const {
-	box<spatial_component> new_root = clone(*this);
+	own<spatial_component> new_root = clone(*this);
 	// Relies on attach's ability to either set as root or attach to root	
 	spatial_component& root =
 		other_owner.attach_spatial_component(move(new_root));
@@ -136,7 +136,7 @@ void fields_engine::spatial_component::deep_copy_into_entity(entity& other_owner
 }
 
 void fields_engine::spatial_component::deep_copy_into_entity_aux(entity& other_owner, spatial_component& other_parent) const {
-	box<spatial_component> comp = clone(*this);
+	own<spatial_component> comp = clone(*this);
 	spatial_component* comp_ptr = comp.get();
 	other_owner.acquire_spatial_component(move(comp));
 	other_parent.adopt_owned_component(comp_ptr);

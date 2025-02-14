@@ -42,7 +42,7 @@ void fields_engine::vis::shader::add(const char* filename, int type) const {
         int length = 0;
         glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &length);
         VIS_VERIFY;
-        box<char[]> buffer = make_box<char[]>(size_t(length));
+        own<char[]> buffer = make_own<char[]>(size_t(length));
         glGetShaderInfoLog(shader_id, length, nullptr, buffer.get());
         VIS_VERIFY;
         /// TODO: use proper error logger
@@ -62,7 +62,7 @@ void fields_engine::vis::shader::finalize() const {
         int length = 0;
         glGetProgramiv(m_program_id, GL_INFO_LOG_LENGTH, &length);
         VIS_VERIFY;
-        box<char[]> buffer = make_box<char[]>(size_t(length));
+        own<char[]> buffer = make_own<char[]>(size_t(length));
         glGetProgramInfoLog(m_program_id, length, nullptr, buffer.get());
         VIS_VERIFY;
         /// TODO: use proper error logger

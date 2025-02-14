@@ -22,11 +22,11 @@ namespace fields_engine {
 
 	using namespace fields_engine;
 	template<class T>
-	class box_context {
+	class own_context {
 	public:
 		using type = impl::remove_all_t<T>;
 
-		inline box_context(box<type>&& ptr)
+		inline own_context(own<type>&& ptr)
 			: m_ptr(move(ptr))
 		{
 			T*& current = impl::context_storage<type>::ptr;
@@ -36,14 +36,14 @@ namespace fields_engine {
 			}
 		}
 
-		inline ~box_context() {
+		inline ~own_context() {
 			type*& current = impl::context_storage<type>::ptr;
 			if (current == m_ptr.get()) {
 				current = nullptr;
 			}
 		}
 
-		inline box_context& operator=(box<type>&& rhs) {
+		inline own_context& operator=(own<type>&& rhs) {
 			type*& current = impl::context_storage<type>::ptr;
 			if (current == m_ptr.get()) {
 				current = rhs.get();
@@ -56,7 +56,7 @@ namespace fields_engine {
 			return *this;
 		}
 
-		inline box_context& operator=(box_context&& rhs) noexcept {
+		inline own_context& operator=(own_context&& rhs) noexcept {
 			type*& current = impl::context_storage<type>::ptr;
 			if (current == m_ptr.get()) {
 				current = rhs.get();
@@ -69,7 +69,7 @@ namespace fields_engine {
 		}
 
 		inline void reset(type* new_ptr = nullptr) {
-			*this = box<type>(new_ptr);
+			*this = own<type>(new_ptr);
 		}
 
 		inline void use() {
@@ -88,7 +88,7 @@ namespace fields_engine {
 		}
 
 	private:
-		box<type> m_ptr;
+		own<type> m_ptr;
 	};
 
 /*~-------------------------------------------------------------------------~*\

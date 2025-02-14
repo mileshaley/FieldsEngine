@@ -49,7 +49,7 @@ namespace fields_engine {
 #endif // EDITOR
 
 	private:
-		box<asset> m_asset;
+		own<asset> m_asset;
 #if EDITOR
 		/// TODO: Make this (or textures in general) less wasteful
 		vis::texture m_thumbnail;
