@@ -410,7 +410,7 @@ fe::editor::editor_window& fields_engine::editor::editor_manager::add_window(own
 	return *m_windows.emplace_back(move(new_win));
 }
 
-ImFont const* fields_engine::editor::editor_manager::get_font_handle(font_type font) const {
+ImFont* fields_engine::editor::editor_manager::get_font_handle(font_type font) {
 	return m_fonts[static_cast<size_t>(font)];
 }
 
