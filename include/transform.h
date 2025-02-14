@@ -6,7 +6,6 @@
 
 #pragma once
 
-
 /*~-------------------------------------------------------------------------~*\
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
@@ -18,36 +17,36 @@ namespace fields_engine {
 } // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
- * Transform Data Structure                                                  *
+ * Transform Data                                                            *
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
 
-	struct transform_data {
+	struct transform {
 		vec3 position;
 		vec3 scale;
 		quat rotation;
 	};
 
-	void from_json(json const& in, transform_data& out);
-	void to_json(json& out, transform_data const& in);
+	void from_json(json const& in, transform& out);
+	void to_json(json& out, transform const& in);
 
 /*~-------------------------------------------------------------------------~*\
- * Transform Class                                                           *
+ * Transformer Class                                                         *
 \*~-------------------------------------------------------------------------~*/
 
 	// Lazy, only recalculates matrix when necessary
-	class transform {
+	class transformer {
 		static constexpr mat4 identity{1};
 	public:
-		transform(
+		transformer(
 			vec3 const& position = { 0, 0, 0 }, 
 			vec3 const& scale    = { 1, 1, 1 },
 			vec3 const& rotation = { 0, 0, 0,}
 		);
 
-		transform(transform_data const& data);
-		transform(transform const& other);
+		transformer(transform const& data);
+		transformer(transformer const& other);
 
 		void read(json const& in);
 		void write(json& out) const;
@@ -71,12 +70,12 @@ namespace fields_engine {
 		void set_local_rotation(vec3 const& new_rotation);
 		void set_local_rotation(quat const& new_rotation);
 
-		transform_data get_world_transform() const;
+		transform get_world_transform() const;
 		vec3 get_world_position() const;
 		vec3 get_world_scale() const;
 		quat get_world_rotation() const;
 
-		transform_data const& get_local_transform() const;
+		transform const& get_local_transform() const;
 		vec3 const& get_local_position() const;
 		vec3 const& get_local_scale() const;
 		quat const& get_local_rotation() const;
@@ -85,7 +84,7 @@ namespace fields_engine {
 		vec3 get_local_right_vector() const;
 		vec3 get_local_up_vector() const;
 	private:
-		transform_data m_data;
+		transform m_data;
 		mutable bool m_dirty = true;
 		mutable mat4 m_matrix;
 		const spatial_component* m_owner;
@@ -100,6 +99,6 @@ namespace fields_engine {
 	vec3 matrix_decompose_rotation(mat4 const& mat, vec3 const& scale);
 	vec3 matrix_decompose_scale(mat4 const& mat);
 
-	void matrix_decompose(mat4 const& mat, transform_data& out_data);
+	void matrix_decompose(mat4 const& mat, transform& out_data);
 
 } // namespace fields_engine

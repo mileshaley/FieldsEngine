@@ -179,10 +179,10 @@ fe::string& fields_engine::entity::ref_name() {
 	return m_name;
 }
 
-fe::transform& fields_engine::entity::ref_transform() {
+fe::transformer& fields_engine::entity::ref_transform() {
 	return m_root_component->ref_transform();
 }
-fe::transform const& fields_engine::entity::ref_transform() const {
+fe::transformer const& fields_engine::entity::ref_transform() const {
 	return m_root_component->ref_transform();
 }
 

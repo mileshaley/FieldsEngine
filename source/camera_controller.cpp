@@ -45,7 +45,7 @@ void fields_engine::camera_controller::tick(float dt) {
 
 	// Allow panning with middle click
 	if (in.is_button_held(GLFW_MOUSE_BUTTON_3, true)) {
-		transform& tr = get_owner()->ref_transform();
+		transformer& tr = get_owner()->ref_transform();
 		// TODO: make dynamic, possibly using the distance to the middle clicked object
 		vec2 delta = in.get_delta_mouse_move() * 0.0085f;
 		const vec3 up = tr.get_local_forward_vector();
@@ -66,7 +66,7 @@ void fields_engine::camera_controller::tick(float dt) {
 		};
 
 		if (delta.x || delta.y || delta.z) {
-			transform& tr = get_owner()->ref_transform();
+			transformer& tr = get_owner()->ref_transform();
 
 			vec3 forward = tr.get_local_up_vector();
 			vec3 right = tr.get_local_right_vector();
@@ -90,7 +90,7 @@ void fields_engine::camera_controller::tick(float dt) {
 		};
 
 		if (delta.x || delta.y || delta.z) {
-			transform& tr = get_owner()->ref_transform();
+			transformer& tr = get_owner()->ref_transform();
 			quat const& rot = tr.get_local_rotation();
 			vec3 move = glm::normalize(rot * vec3(delta)) * m_speed * dt;
 
@@ -99,7 +99,7 @@ void fields_engine::camera_controller::tick(float dt) {
 	}
 
 	if (in.did_mouse_move()) {
-		transform& tr = get_owner()->ref_transform();
+		transformer& tr = get_owner()->ref_transform();
 		vec2 delta = -in.get_delta_mouse_move() * m_sensitivity;
 		if (m_invert_look_y) {
 			delta.y *= -1;

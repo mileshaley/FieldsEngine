@@ -34,10 +34,10 @@ fields_engine::spatial_component::spatial_component(spatial_component const& oth
  * Spatial Component Definitions                                             *
 \*~-------------------------------------------------------------------------~*/
 
-void fields_engine::spatial_component::dirtify_transforms() const {
+void fields_engine::spatial_component::dirtify_transformers() const {
 	m_transform.set_only_this_dirty();
 	for (spatial_component* child : m_children) {
-		child->dirtify_transforms();
+		child->dirtify_transformers();
 	}
 }
 

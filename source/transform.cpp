@@ -1,7 +1,7 @@
 /*~-------------------------------------------------------------------------~*\
  * FIELDS ENGINE                                                             *
  *~-------------------------------------------------------------------------~*
- * File: transform.cpp                                                       *
+ * File: transformer.cpp                                                     *
 \*~-------------------------------------------------------------------------~*/
 
 #include "fields_engine.h"
@@ -14,10 +14,10 @@
 #include "editor_icons.h"
 
 /*~-------------------------------------------------------------------------~*\
- * Transform Definitions                                                     *
+ * Transformer Definitions                                                   *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::transform::transform(
+fields_engine::transformer::transformer(
 	vec3 const& position, 
 	vec3 const& scale,
 	vec3 const& rotation
@@ -28,30 +28,30 @@ fields_engine::transform::transform(
 	, m_owner(nullptr)
 {}
 
-fields_engine::transform::transform(transform_data const& data)
+fields_engine::transformer::transformer(transform const& data)
 	: m_data(data)
 	, m_matrix(1)
 	, m_dirty(true)
 	, m_owner(nullptr)
 {}
 
-fields_engine::transform::transform(transform const& other)
+fields_engine::transformer::transformer(transformer const& other)
 	: m_data(other.m_data)
 	, m_matrix(1)
 	, m_dirty(true)
 	, m_owner(nullptr)
 {}
 
-void fields_engine::transform::read(json const& in) {
+void fields_engine::transformer::read(json const& in) {
 	m_data = in;
 }
 
-void fields_engine::transform::write(json& out) const {
+void fields_engine::transformer::write(json& out) const {
 	out = m_data;
 }
 
 #ifdef EDITOR
-bool fields_engine::transform::display() {
+bool fields_engine::transformer::display() {
 	constexpr int x_off = 36;
 	static bool scale_uniformly = true;
 	bool modif = false;
@@ -105,7 +105,7 @@ bool fields_engine::transform::display() {
 
 #endif
 
-void fields_engine::transform::recalculate_matrix() const {
+void fields_engine::transformer::recalculate_matrix() const {
 	constexpr mat4 identity(1);
 	m_dirty = false;
 	const spatial_component* owner_parent = m_owner->get_parent();
@@ -135,65 +135,65 @@ void fields_engine::transform::recalculate_matrix() const {
 
 }
 
-void fields_engine::transform::set_owner(const spatial_component* new_owner) {
+void fields_engine::transformer::set_owner(const spatial_component* new_owner) {
 	m_owner = new_owner;
 }
 
-const fe::spatial_component* fields_engine::transform::get_owner() const {
+const fe::spatial_component* fields_engine::transformer::get_owner() const {
 	return m_owner;
 }
 
-void fields_engine::transform::set_dirty() const {
+void fields_engine::transformer::set_dirty() const {
 	m_dirty = true;
 	if (m_owner) {
-		m_owner->dirtify_transforms();
+		m_owner->dirtify_transformers();
 	}
 }
 
-void fields_engine::transform::set_only_this_dirty() const {
+void fields_engine::transformer::set_only_this_dirty() const {
 	m_dirty = true;
 }
 
-fe::mat4 const& fields_engine::transform::world_matrix() const {
+fe::mat4 const& fields_engine::transformer::world_matrix() const {
 	if (m_dirty) {
 		recalculate_matrix();
 	}
 	return m_matrix;
 }
 
-void fields_engine::transform::set_local_position(fe::vec3 const& new_position) {
+void fields_engine::transformer::set_local_position(fe::vec3 const& new_position) {
 	m_data.position = new_position;
 	set_dirty();
 }
-void fields_engine::transform::set_local_scale(fe::vec3 const& new_scale) {
+void fields_engine::transformer::set_local_scale(fe::vec3 const& new_scale) {
 	m_data.scale = new_scale;
 	set_dirty();
 }
-void fields_engine::transform::set_local_rotation(vec3 const& new_rotation) {
+void fields_engine::transformer::set_local_rotation(vec3 const& new_rotation) {
 	m_data.rotation = glm::radians(new_rotation);
 	set_dirty();
 }
 
-void fields_engine::transform::set_local_rotation(quat const& new_rotation) {
+void fields_engine::transformer::set_local_rotation(quat const& new_rotation) {
 	m_data.rotation = new_rotation;
 	set_dirty();
 }
 
-fe::transform_data fields_engine::transform::get_world_transform() const {
-	transform_data out;
+fe::transform fields_engine::transformer::get_world_transform() const {
+	transform out;
 	matrix_decompose(m_matrix, out);
 	return out;
 }
 
-fe::vec3 fields_engine::transform::get_world_position() const {
+fe::vec3 fields_engine::transformer::get_world_position() const {
 	return matrix_decompose_position(m_matrix);
 }
 
-fe::vec3 fields_engine::transform::get_world_scale() const {
+fe::vec3 fields_engine::transformer::get_world_scale() const {
 	return matrix_decompose_scale(m_matrix);
 }
 
-fe::quat fields_engine::transform::get_world_rotation() const {
+fe::quat fields_engine::transformer::get_world_rotation() const {
 	glm::vec3 rot = matrix_decompose_rotation(m_matrix);
 	float angle_x = glm::radians(rot.x); // Convert degrees to radians
 	float angle_y = glm::radians(rot.y);
@@ -206,29 +206,29 @@ fe::quat fields_engine::transform::get_world_rotation() const {
 	return q_z * q_y * q_x;
 }
 
-fe::transform_data const& fields_engine::transform::get_local_transform() const {
+fe::transform const& fields_engine::transformer::get_local_transform() const {
 	return m_data;
 }
 
-fe::vec3 const& fields_engine::transform::get_local_position() const {
+fe::vec3 const& fields_engine::transformer::get_local_position() const {
 	return m_data.position;
 }
-fe::vec3 const& fields_engine::transform::get_local_scale() const {
+fe::vec3 const& fields_engine::transformer::get_local_scale() const {
 	return m_data.scale;
 }
-fe::quat const& fields_engine::transform::get_local_rotation() const {
+fe::quat const& fields_engine::transformer::get_local_rotation() const {
 	return m_data.rotation;
 }
 
-fe::vec3 fields_engine::transform::get_local_right_vector() const {
+fe::vec3 fields_engine::transformer::get_local_right_vector() const {
 	return m_data.rotation * vec3{ 1, 0, 0 };
 }
 
-fe::vec3 fields_engine::transform::get_local_forward_vector() const {
+fe::vec3 fields_engine::transformer::get_local_forward_vector() const {
 	return m_data.rotation * vec3{ 0, 1, 0 };
 }
 
-fe::vec3 fields_engine::transform::get_local_up_vector() const {
+fe::vec3 fields_engine::transformer::get_local_up_vector() const {
 	return m_data.rotation * vec3{ 0, 0, 1 };
 }
 
@@ -236,13 +236,13 @@ fe::vec3 fields_engine::transform::get_local_up_vector() const {
  * Transform Related Function Definitions                                    *
 \*~-------------------------------------------------------------------------~*/
 
-void fields_engine::from_json(json const& in, transform_data& out) {
+void fields_engine::from_json(json const& in, transform& out) {
 	out.position = in.at("position");
 	out.rotation = in.at("rotation");
 	out.scale = in.at("scale");
 }
 
-void fields_engine::to_json(json& out, transform_data const& in) {
+void fields_engine::to_json(json& out, transform const& in) {
 	out["position"] = in.position;
 	out["rotation"] = in.rotation;
 	out["scale"] = in.scale;
@@ -281,7 +281,7 @@ fe::vec3 fields_engine::matrix_decompose_scale(mat4 const& mat) {
 	};
 }
 
-void fields_engine::matrix_decompose(mat4 const& mat, transform_data& out_data) {
+void fields_engine::matrix_decompose(mat4 const& mat, transform& out_data) {
 	out_data.position = matrix_decompose_position(mat);
 	out_data.scale = matrix_decompose_scale(mat);
 	out_data.rotation = matrix_decompose_rotation(mat, out_data.scale);

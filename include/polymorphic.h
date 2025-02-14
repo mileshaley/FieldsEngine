@@ -63,7 +63,7 @@ namespace fields_engine {
 	} // namespace impl
 
 	// Virtually clones a generic cloneable object as its real type and returns it
-	// as a own<T> given that T <= the real type
+	// as an own<T> given that T <= the real type
 	template<class T>
 	inline own<T> clone(T const& source) {
 		return impl::clone_helper<T>::clone(source);

@@ -26,7 +26,7 @@ namespace fields_engine {
 
 		FE_GEN_COMPONENT(spatial_component, component);
 
-		void dirtify_transforms() const;
+		void dirtify_transformers() const;
 		
 		void init_all();
 		void tick_all(float dt);
@@ -46,15 +46,15 @@ namespace fields_engine {
 		void set_parent(spatial_component* new_parent);
 		spatial_component* get_parent() const;
 
-		transform      & ref_transform()       { return m_transform; }
-		transform const& ref_transform() const { return m_transform; }
+		transformer      & ref_transform()       { return m_transform; }
+		transformer const& ref_transform() const { return m_transform; }
 
 		void deep_copy_into_entity(entity& other_owner) const;
 
 	private:
 		void deep_copy_into_entity_aux(entity& other_owner, spatial_component& other_parent) const;
 
-		transform m_transform;
+		transformer m_transform;
 		spatial_component* m_parent;
 		vector<spatial_component*> m_children;
 	};

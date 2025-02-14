@@ -56,8 +56,8 @@ namespace fields_engine {
 		string const& get_name() const;
 		string& ref_name();
 
-		transform& ref_transform();
-		transform const& ref_transform() const;
+		transformer& ref_transform();
+		transformer const& ref_transform() const;
 
 		component& attach_basic_component(own<component>&& comp);
 		// Set as or attach to root

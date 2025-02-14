@@ -73,7 +73,7 @@ bool fields_engine::camera_component::display() {
 #endif // EDITOR
 
 void fields_engine::camera_component::recalculate_view_matrix() {
-	transform const& tr = ref_transform();
+	transformer const& tr = ref_transform();
 	m_world_view_matrix = glm::inverse(tr.world_matrix());
 }
 
