@@ -16,7 +16,7 @@
  * Polymorphism Macros                                                       *
 \*~-------------------------------------------------------------------------~*/
 
-/// TODO: Make the last access specifier in these macros the 
+/// TODO: Make the last access specifier in these macros private
 
 // Use within every polymorphic class's body
 #define FE_CLASS_BODY(Class, Super)                                     \

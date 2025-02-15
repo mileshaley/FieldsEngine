@@ -4,8 +4,11 @@
  * File: editor.cpp                                                          *
 \*~-------------------------------------------------------------------------~*/
 
+
 #include "fields_engine.h"
 #include "editor.h"
+
+#if EDITOR
 
 /*~-------------------------------------------------------------------------~*\
  * Editor Definitions                                                        *
@@ -18,3 +21,7 @@ void fields_engine::editor::push_font(font_type font, editor_manager& manager) {
 void fields_engine::editor::pop_font() {
 	ImGui::PopFont();
 }
+
+
+
+#endif // EDITOR
