@@ -42,8 +42,6 @@ namespace fields_engine {
 		
 		virtual void init() {}
 		virtual void tick(float dt) {}
-		/// TODO: Put draw in spatial_component
-		virtual void draw(vis::shader const& shader) const {}
 		virtual void exit() {}
 
 		virtual void read(json const& in) {}

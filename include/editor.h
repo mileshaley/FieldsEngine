@@ -67,7 +67,7 @@ namespace fields_engine::editor {
 	) {
 		push_font(font_type::monospace, manager);
 		ImGui::DragFloat3
-		return DragScalarN(label.data(), impl::imgui_datatype<T>, &data.x, L, range.step, &v_min, &v_max, "%.3f", flags);
+		return DragScalarN(label.data(), impl::imgui_datatype_v<T>, &data.x, L, range.step, &v_min, &v_max, "%.3f", flags);
 		pop_font();
 	}
 

@@ -91,9 +91,9 @@ void fields_engine::entity::draw(vis::shader const& shader) const {
 	glUniform1i(loc, 5);
 	VIS_VERIFY;
 
-	for (own<component> const& comp : m_basic_components) {
-		comp->draw(shader);
-	}
+	//for (own<component> const& comp : m_basic_components) {
+	//	comp->draw(shader);
+	//}
 	m_root_component->draw_all(shader);
 }
 

@@ -22,6 +22,4 @@ void fields_engine::editor::pop_font() {
 	ImGui::PopFont();
 }
 
-
-
 #endif // EDITOR

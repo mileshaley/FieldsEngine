@@ -26,6 +26,8 @@ namespace fields_engine {
 
 		FE_GEN_COMPONENT(spatial_component, component);
 
+		virtual void draw(vis::shader const& shader) const {}
+
 		void dirtify_transformers() const;
 		
 		void init_all();
