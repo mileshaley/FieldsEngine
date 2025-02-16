@@ -28,7 +28,7 @@ namespace fields_engine {
 		camera_controller();
 		camera_controller(camera_controller const& other);
 
-		FE_GEN_COMPONENT(camera_controller, component);
+		FE_CLASS_BODY(camera_controller, component);
 
 #if EDITOR
 		bool display() override;

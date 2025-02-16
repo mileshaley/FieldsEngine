@@ -15,19 +15,18 @@
 #include "asset_manager.h"
 
 fields_engine::mesh_component::mesh_component()
-	: spatial_component()
+	: physical_component()
     , m_mesh(nullptr)
     , m_material(nullptr)
 {}
 
 fields_engine::mesh_component::mesh_component(mesh_component const& other)
-    : spatial_component(other)
+    : physical_component(other)
     , m_mesh(other.m_mesh)
     , m_material(other.m_material)
-{
-}
+{}
 
-fields_engine::mesh_component::~mesh_component() {}
+fields_engine::mesh_component::~mesh_component() = default;
 
 void fields_engine::mesh_component::draw(vis::shader const& shader) const {
     const mat4& matrix = ref_transform().world_matrix();

@@ -24,7 +24,7 @@ namespace fields_engine {
 		spatial_component();
 		spatial_component(spatial_component const& other);
 
-		FE_GEN_COMPONENT(spatial_component, component);
+		FE_CLASS_BODY(spatial_component, component);
 
 		virtual void draw(vis::shader const& shader) const {}
 

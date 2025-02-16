@@ -10,7 +10,7 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include "spatial_component.h" // Inheritance
+#include "physical_component.h" // Inheritance
 #include "material.h"
 
 namespace fields_engine::vis {
@@ -23,13 +23,13 @@ namespace fields_engine::vis {
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
-	class mesh_component : public spatial_component {
+	class mesh_component : public physical_component {
 	public:
 		mesh_component();
 		mesh_component(mesh_component const& other);
 		~mesh_component();
 
-		FE_GEN_COMPONENT(mesh_component, spatial_component);
+		FE_CLASS_BODY(mesh_component, spatial_component);
 
 		virtual void draw(vis::shader const& shader) const override;
 

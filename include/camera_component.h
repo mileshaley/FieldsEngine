@@ -24,8 +24,7 @@ namespace fields_engine {
 		camera_component();
 		camera_component(camera_component const& other);
 
-		FE_GEN_COMPONENT(camera_component, spatial_component);
-
+		FE_CLASS_BODY(camera_component, spatial_component);
 
 		virtual void init() override;
 		virtual void tick(float dt) override;
