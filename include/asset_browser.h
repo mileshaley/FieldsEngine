@@ -37,6 +37,8 @@ namespace fields_engine::editor {
 		bool display_window();
 
 	private: // Implementation
+		//display_address_bar();
+
 		enum class file_type : i8 { folder, asset, other };
 		struct file_entry {
 			std::filesystem::path path;
@@ -99,7 +101,7 @@ namespace fields_engine::editor {
 		own<vis::texture> m_material_thumbnail = nullptr;
 		own<vis::texture> m_missing_thumbnail = nullptr;
 		own<vis::texture> m_folder_thumbnail = nullptr;
-	};
+	}; // class asset_browser
 
 } // namespace fields_engine::editor
 

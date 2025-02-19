@@ -123,13 +123,13 @@ bool fields_engine::editor::asset_browser::display_window() {
 		ImGui::ColorConvertFloat4ToU32({ 0,0,0,1 }),
 		address_bar_rounding
 	);
+	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 10, 0 });
 
 	bool modif = false;
+	const bool address_bar_active = m_address_bar_state == address_bar_state::activated;
+	const bool address_bar_activated = m_address_bar_state == address_bar_state::active;
 
-	ImGui::SetCursorPos(init_cursor_pos + ImVec2{ 10, 0 });
-	if (m_address_bar_state == address_bar_state::activated
-		|| m_address_bar_state == address_bar_state::active
-		) {
+	if (address_bar_active || address_bar_activated) {
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, invisible);
 		ImGui::PushItemWidth(content_max.x - 20);
 		// Increase the height of the text input to roughly match that of the buttons
@@ -203,7 +203,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 						// If the button is pressed and we aren't trying to move to the current directory
 						if (ImGui::Selectable(entry.path().filename().string().c_str())
 							&& entry.path().filename() != curr_directory.filename()
-							) {
+						) {
 							browse_to_directory(std::filesystem::path(entry.path()));
 							break;
 						}
@@ -216,7 +216,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 		ImGui::SameLine();
 		if (ImGui::InvisibleButton("###asset_browser_address_bar_activate",
 			ImVec2{ content_max.x, address_bar_height })
-			) {
+		) {
 			m_address_bar_buffer = curr_directory.string();
 			m_address_bar_state = address_bar_state::activated;
 		}
@@ -308,8 +308,11 @@ bool fields_engine::editor::asset_browser::display_window() {
 		const bool left_clicked = ImGui::IsMouseReleased(ImGuiMouseButton_Left);
 		const bool right_clicked = ImGui::IsMouseReleased(ImGuiMouseButton_Right);
 
-		// Undo
-		if (ctrl_held && ImGui::IsKeyReleased(ImGuiKey_Z) && ImGui::IsWindowFocused()) {
+		const auto undo_inputted = [&]() {
+			return ctrl_held && ImGui::IsKeyReleased(ImGuiKey_Z);
+		};
+
+		if (undo_inputted() && ImGui::IsWindowFocused()) {
 			if (shift_held) {
 				if (!m_undo_history.at_top()) {
 					m_undo_history.scroll_up();
@@ -350,9 +353,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 
 		// We only need to do this at most once per frame
 		// Notice how we are checking for click and not release
-		if (m_wait_for_mouse_trigger
-			&& ImGui::IsMouseClicked(ImGuiMouseButton_Left)
-			) {
+		if (m_wait_for_mouse_trigger && ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
 			m_wait_for_mouse_trigger = false;
 		}
 
@@ -389,11 +390,9 @@ bool fields_engine::editor::asset_browser::display_window() {
 					ImGui::PushStyleColor(ImGuiCol_Border, { 0.3f,0.8f,0.45f,1.0f }); // Green
 				}
 
-				const char* asset_right_click_popup_label = "###asset_right_click_popup";
+				const char* asset_popup_label = "###asset_right_click_popup";
 
-				if (ImGui::ButtonEx("", entry_size, entry_button_flags)
-					&& !m_wait_for_mouse_trigger
-					) {
+				if (ImGui::ButtonEx("", entry_size, entry_button_flags) && !m_wait_for_mouse_trigger) {
 					if (left_clicked) {
 						if (shift_held) {
 							// There is no way to deselect with shift click
@@ -416,7 +415,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 						}
 						m_prev_entry_clicked = i;
 					} else if (right_clicked) {
-						ImGui::OpenPopup(asset_right_click_popup_label);
+						ImGui::OpenPopup(asset_popup_label);
 					}
 					// Remember the last click for any type of click
 					any_entry_was_clicked = true;
@@ -430,6 +429,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 						/// TODO: This branch should open specific editor for this type
 					}
 				}
+
 				if (was_selected) {
 					ImGui::PopStyleColor(); // Border
 				}
@@ -441,7 +441,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 				} // Item tooltip
 
 
-				if (ImGui::BeginPopup(asset_right_click_popup_label)) {
+				if (ImGui::BeginPopup(asset_popup_label)) {
 					if (ImGui::MenuItem(ICON_PEN_TO_SQUARE" Edit")) {
 						/// TODO: Implement
 					}
