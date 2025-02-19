@@ -22,16 +22,18 @@
  * Asset Browser Definitions                                                 *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::editor::asset_browser::asset_browser() {
+fields_engine::editor::asset_browser::asset_browser()
+	: m_missing_thumbnail("engine_assets/missing_asset_thumbnail.png")
+	, m_mesh_thumbnail("engine_assets/mesh_asset_thumbnail.png")
+	, m_material_thumbnail("engine_assets/material_asset_thumbnail.png")
+	, m_folder_thumbnail("engine_assets/folder_thumbnail.png")
+{
 	context<editor::editor_manager>().add_window(make_own<editor::editor_window>(
 		"Asset Browser",
 		std::bind(&asset_browser::display_window, this),
 		ICON_FOLDER
 	));
-	m_missing_thumbnail = make_own<vis::texture>(string_view("engine_assets/missing_asset_thumbnail.png"));
-	m_mesh_thumbnail = make_own<vis::texture>(string_view("engine_assets/mesh_asset_thumbnail.png"));
-	m_material_thumbnail = make_own<vis::texture>(string_view("engine_assets/material_asset_thumbnail.png"));
-	m_folder_thumbnail = make_own<vis::texture>(string_view("engine_assets/folder_thumbnail.png"));
+
 	refresh();
 }
 
@@ -707,18 +709,18 @@ void* fields_engine::editor::asset_browser::get_thumbnail(file_entry const& entr
 		//} else 
 		const string_view type = entry.asset->get_type();
 		if (type == "mesh") {
-			return m_mesh_thumbnail->get_void_ptr_id();
+			return m_mesh_thumbnail.get_void_ptr_id();
 		} else if (type == "material") {
-			return m_material_thumbnail->get_void_ptr_id();
+			return m_material_thumbnail.get_void_ptr_id();
 		} else {
-			return m_missing_thumbnail->get_void_ptr_id();
+			return m_missing_thumbnail.get_void_ptr_id();
 		}
-		return m_missing_thumbnail->get_void_ptr_id();
+		return m_missing_thumbnail.get_void_ptr_id();
 
 	} else if (entry.type == file_type::folder) {
-		return m_folder_thumbnail->get_void_ptr_id();
+		return m_folder_thumbnail.get_void_ptr_id();
 	} else if (entry.type == file_type::other) {
-		return m_missing_thumbnail->get_void_ptr_id();
+		return m_missing_thumbnail.get_void_ptr_id();
 	}
 	return nullptr;
 }

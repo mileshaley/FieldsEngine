@@ -14,13 +14,11 @@
 
 #include <filesystem>
 #include "scroll_stack.h"
+#include "texture.h"
 
 namespace fields_engine {
-	namespace vis {
-		class texture;
-	} // namespace vis
 	class asset_entry;
-}
+} // nemasepcae fields_engine
 
 /*~-------------------------------------------------------------------------~*\
  * Asset Browser Class                                                       *
@@ -97,10 +95,10 @@ namespace fields_engine::editor {
 		friend struct asset_browser_callbacks;
 
 		/// TODO: Relocate
-		own<vis::texture> m_mesh_thumbnail = nullptr;
-		own<vis::texture> m_material_thumbnail = nullptr;
-		own<vis::texture> m_missing_thumbnail = nullptr;
-		own<vis::texture> m_folder_thumbnail = nullptr;
+		vis::texture m_mesh_thumbnail;
+		vis::texture m_material_thumbnail;
+		vis::texture m_missing_thumbnail;
+		vis::texture m_folder_thumbnail;
 	}; // class asset_browser
 
 } // namespace fields_engine::editor
