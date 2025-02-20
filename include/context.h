@@ -23,13 +23,13 @@ namespace fields_engine {
 			static inline T* ptr;
 
 			static inline void initialize() {
-#ifdef DEBUG
+#ifdef _DEBUG
 				initialized_src() = true;
 #endif // DEBUG
 			}
 
 			static inline void verify() {
-#ifdef DEBUG
+#ifdef _DEBUG
 				if (ptr == nullptr) {
 					if (initialized_src()) {
 						FE_FAILED_ASSERT("Context was once established became null at some point before accessing");
@@ -41,7 +41,7 @@ namespace fields_engine {
 #endif // DEBUG
 			}
 		private:
-#ifdef DEBUG
+#ifdef _DEBUG
 			static bool& initialized_src() {
 				static bool initialized = false;
 				return initialized;

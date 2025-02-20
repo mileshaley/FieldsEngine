@@ -57,9 +57,9 @@ set(CMAKE_SHARED_LINKER_FLAGS_RELEASEEDITOR ${CMAKE_SHARED_LINKER_FLAGS_RELEASE}
 
 # Define compiler preprocessor definitions for the all configurations
 target_compile_definitions(${PROJECT_NAME} PRIVATE 
-    $<$<CONFIG:Debug>:_DEBUG>
-    $<$<CONFIG:Release>:NDEBUG>
-    $<$<CONFIG:DebugEditor>:_DEBUG;EDITOR>
+    $<$<CONFIG:Debug>:_DEBUG;DEBUG>
+    $<$<CONFIG:Release>:NDEBUG;>
+    $<$<CONFIG:DebugEditor>:_DEBUG;DEBUG;EDITOR>
     $<$<CONFIG:ReleaseEditor>:NDEBUG;EDITOR>
 )
 

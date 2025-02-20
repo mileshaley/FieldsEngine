@@ -8,7 +8,7 @@
 
 #include "glm/glm.hpp"
 
-#ifdef DEBUG
+#ifdef _DEBUG
 #define VIS_VERIFY ::fields_engine::vis::check_error(__FILE__, __LINE__);
 #else // ^^^ defined(DEBUG) / !defined(DEBUG) vvv
 #define VIS_VERIFY
