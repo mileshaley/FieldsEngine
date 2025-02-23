@@ -6,7 +6,13 @@
 
 #pragma once
 
-/// TODO: Implement our own assert and not use _STL_ASSERT
+/// TODO: Make our own assert
+#include <cassert>
 
-#define FE_ASSERT(cond, message) _STL_ASSERT(cond, message);
-#define FE_FAILED_ASSERT(message) _STL_ASSERT(false, message);
+#ifdef _DEBUG
+#define FE_ASSERT(cond, message) assert(cond && message)
+#define FE_FAILED_ASSERT(message) assert(!message)
+#else // ^^^ defined(_DEBUG) / !defined(_DEBUG) vvv
+#define FE_ASSERT(cond, message)
+#define FE_FAILED_ASSERT(message)
+#endif // !defined(_DEBUG)
