@@ -70,7 +70,7 @@ namespace fields_engine::editor {
 		};
 
 		vector<file_entry> m_entries;
-		scroll_stack<std::filesystem::path> m_directory_history{ "assets" };
+		scroll_stack<std::filesystem::path> m_directory_history;
 		scroll_stack<undo> m_undo_history;
 		string m_address_bar_buffer;
 		string m_search_bar_buffer;

@@ -24,7 +24,7 @@
 
 fields_engine::editor::asset_browser::asset_browser()
 	: m_entries()
-	, m_directory_history()
+	, m_directory_history{ "assets" }
 	, m_undo_history()
 	, m_address_bar_buffer()
 	, m_search_bar_buffer()
@@ -179,7 +179,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 		std::filesystem::path const& curr_directory = m_directory_history.top();
 		vector<std::filesystem::path> directories(curr_directory.begin(), curr_directory.end());
 		// Index into directories
-		const int num_directories(directories.size());
+		const int num_directories = int(directories.size());
 		for (int i = 0; i < num_directories; ++i) {
 			// If the button is pressed and we aren't trying to move to the current directory
 			if (ImGui::Button(directories[i].string().c_str(), ImVec2{ 0, address_bar_height })

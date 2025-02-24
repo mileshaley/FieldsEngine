@@ -225,7 +225,7 @@ bool fields_engine::editor::editor_manager::icon_selector_popup(editor_icon& sel
 		ImGui::InputTextWithHint("###Search Icon", "Search for an icon", &search);
 		if (ImGui::BeginTable("Icon Selection Table", num_cols, ImGuiTableFlags_SizingStretchSame)) {
 			int pos = 0;
-			const int all_icons_count(all_editor_icons.size());
+			const int all_icons_count = int(all_editor_icons.size());
 			for (int i = 0; i < all_icons_count; ++i) {
 				editor_icon_info const& icon_info = all_editor_icons[i];
 				if (!text::is_relevant(icon_info.pretty_name, search)) {
