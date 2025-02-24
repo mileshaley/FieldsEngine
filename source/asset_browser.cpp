@@ -645,23 +645,17 @@ void fields_engine::editor::asset_browser::refresh() {
 		for (std::filesystem::directory_entry const& entry : curr_directory) {
 			std::filesystem::path const& path = entry.path();
 			if (entry.is_directory()) {
-				m_entries.push_back(file_entry{
-					path, nullptr, file_type::folder
-					});
+				m_entries.push_back({ path, nullptr, file_type::folder });
 				continue;
 			}
 			if (path.extension() == ".fea") {
 				auto it = manager.m_assets.find(path.stem().string());
 				if (it != manager.m_assets.end()) {
-					m_entries.push_back(file_entry{
-						path, &it->second, file_type::asset
-					});
+					m_entries.push_back({ path, &it->second, file_type::asset });
 					continue;
 				}
 			}
-			m_entries.push_back(file_entry{
-				path, nullptr, file_type::other
-				});
+			m_entries.push_back({ path, nullptr, file_type::other });
 		}
 	} else {
 		std::filesystem::recursive_directory_iterator curr_directory(m_directory_history.top());
@@ -680,15 +674,20 @@ void fields_engine::editor::asset_browser::refresh() {
 					continue;
 				}
 			}
-			m_entries.push_back(file_entry{
-				path, nullptr, file_type::other
-				});
+			m_entries.push_back({ path, nullptr, file_type::other });
 		}
 	}
 
 	std::sort(m_entries.begin(), m_entries.end(),
 		[](file_entry const& l, file_entry const& r) {
-		return int(l.type) < int(r.type);
+			if (int(l.type) < int(r.type)) {
+				return true;
+			} else if (l.type == file_type::asset && r.type == file_type::asset) {
+				const string l_type = l.path.stem().extension().string();
+				const string r_type = r.path.stem().extension().string();
+				return std::lexicographical_compare(l_type.begin(), l_type.end(), r_type.begin(), r_type.end());
+			}
+			return false;
 	});
 }
 
