@@ -7,14 +7,12 @@
 #include "fields_engine.h"
 #include "mesh_import.h"
 
-#include <filesystem>
 #include "rapidobj/rapidobj.hpp"
 #include "vector_util.h"
-
 #include <iostream>
 
 /*~-------------------------------------------------------------------------~*\
- * Mesh Mmport Definitions                                                   *
+ * Mesh Import Definitions                                                   *
 \*~-------------------------------------------------------------------------~*/
 
 fe::json fields_engine::import_vis_mesh(std::filesystem::path const& in_path) {
@@ -31,7 +29,9 @@ fe::json fields_engine::import_vis_mesh(std::filesystem::path const& in_path) {
         json& out_positions = (out["positions"] = json::array());
         json& out_normals   = (out["normals"] = json::array());
         json& out_tex_uvs   = (out["tex_uvs"] = json::array());
-        json& out_tangents  = (out["tangents"] = json::array()); /// Empty for now
+        /// TODO: This is always empty, use it
+        json& out_tangents  = (out["tangents"] = json::array());
+        (void)out_tangents;
         json& out_sections  = (out["sections"] = json::array());
         json& out_triangles = (out["triangles"] = json::array());
 

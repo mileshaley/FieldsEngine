@@ -22,12 +22,13 @@ fields_engine::camera_component::camera_component()
 
 fields_engine::camera_component::camera_component(camera_component const& other) 
 	: spatial_component(other)
+	, m_world_view_matrix(other.m_world_view_matrix)
+	, m_world_proj_matrix(other.m_world_proj_matrix)
 	, m_zoom(other.m_zoom)
 	, m_fov(other.m_fov)
 	, m_near(other.m_near)
 	, m_far(other.m_far)
-	, m_world_view_matrix(other.m_world_view_matrix)
-	, m_world_proj_matrix(other.m_world_proj_matrix)
+	, m_orthographic(false)
 {
 }
 

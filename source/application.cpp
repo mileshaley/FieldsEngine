@@ -31,12 +31,17 @@
 \*~-------------------------------------------------------------------------~*/
 
 fields_engine::application::application() 
-	: m_window{nullptr}
-	, m_scene{nullptr}
-	, m_win_size{1000, 800}
-	, m_running(false)
+	: m_prev_time(0)
 	, m_delta_time(0)
-	, m_prev_time(0)
+	, m_running(false)
+	, m_win_size(1000, 800)
+	, m_window(nullptr)
+	, m_input_manager()
+	, m_asset_manager()
+	, m_scene(nullptr)
+#if EDITOR
+	, m_editor(nullptr)
+#endif
 {}
 
 // Fulfil dependencies on member destructors

@@ -31,9 +31,16 @@
 
 fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 	: m_gui_context(ImGui::CreateContext())
+	, m_frame_buffer(ivec2{ 1920, 1080 })
 	, m_fonts()
 	, m_windows()
-	, m_frame_buffer(ivec2{1920, 1080})
+	, m_recent_windows()
+	, m_game_window_size(1000, 800)
+	, m_game_window_focused(true)
+	, m_game_window_hovered(true)
+	, m_new_window_buf()
+	, m_new_window_icon(ICON_ELLIPSIS_VERTICAL)
+	, m_selected_ent(nullptr)
 {
 	ImGui::SetCurrentContext(m_gui_context);
 	ImGuiIO& io = ImGui::GetIO();
@@ -150,8 +157,8 @@ void fields_engine::editor::editor_manager::tick(float dt) {
 				m_windows[m_recent_windows[i]]->menu_item();
 			}
 			ImGui::SeparatorText("All");
-			for (int i = 0; i < m_windows.size(); ++i) {
-				m_windows[i]->menu_item();
+			for (own<editor_window>& window : m_windows) {
+				window->menu_item();
 			}
 			ImGui::EndMenu();
 		}
@@ -161,8 +168,8 @@ void fields_engine::editor::editor_manager::tick(float dt) {
 	m_game_window_focused = false;
 	m_game_window_hovered = false;
 
-	for (int i = 0; i < m_windows.size(); ++i) {
-		m_windows[i]->display();
+	for (own<editor_window>& window : m_windows) {
+		window->display();
 	}
 	m_frame_buffer.unuse();
 	//if (context<input_manager>().was_button_triggered(GLFW_KEY_R)) {
@@ -188,14 +195,14 @@ fields_engine::editor::editor_manager::~editor_manager() {
 	ImGui::DestroyContext();
 }
 
-static ImVec4 rgb(int r, int g, int b) {
-	return ImVec4{
-		r / 255.0f,
-		g / 255.0f,
-		b / 255.0f,
-		1.0f
-	};
-}
+//static ImVec4 rgb(int r, int g, int b) {
+//	return ImVec4{
+//		r / 255.0f,
+//		g / 255.0f,
+//		b / 255.0f,
+//		1.0f
+//	};
+//}
 
 
 static bool do_nothing() {
@@ -218,7 +225,8 @@ bool fields_engine::editor::editor_manager::icon_selector_popup(editor_icon& sel
 		ImGui::InputTextWithHint("###Search Icon", "Search for an icon", &search);
 		if (ImGui::BeginTable("Icon Selection Table", num_cols, ImGuiTableFlags_SizingStretchSame)) {
 			int pos = 0;
-			for (int i = 0; i < all_editor_icons.size(); ++i) {
+			const int all_icons_count(all_editor_icons.size());
+			for (int i = 0; i < all_icons_count; ++i) {
 				editor_icon_info const& icon_info = all_editor_icons[i];
 				if (!text::is_relevant(icon_info.pretty_name, search)) {
 					continue;
@@ -376,7 +384,7 @@ bool fields_engine::editor::editor_manager::style_window() {
 		"ModalWindowDimBg"
 	};
 
-	for (int i = 0; i < ImGuiCol_COUNT; ++i) {
+	for (int i = 0; i < int(ImGuiCol_COUNT); ++i) {
 		modif |= ImGui::ColorEdit4(color_names[i], &colors[i].x);
 	}
 

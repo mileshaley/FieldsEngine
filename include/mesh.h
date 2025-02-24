@@ -51,9 +51,7 @@ namespace fields_engine::vis {
 		void add_cylinder(int sides = 16, float height = 1.0f);
 		void add_pyramid(int sides = 4, float height = 1.0f);
 
-#if EDITOR // Editor data
-		material* m_default_material;
-#endif // EDITOR
+
 
 	private:
 		void sequential_tris(int first_vert_index);
@@ -63,8 +61,8 @@ namespace fields_engine::vis {
 
 	private: /// TODO: Remove variables in this section
 		/// Currently used for testing primitive mesh serialization options
-		int m_divisions;
-		float m_height;
+		int m_divisions = 10;
+		float m_height = 1;
 
 	private:
 		class section {
@@ -74,16 +72,21 @@ namespace fields_engine::vis {
 			int material_index;
 		};
 
-		primitive_type m_prim_type;
-		unsigned m_vao_id;
 		vector<vec3> m_positions;
 		vector<vec2> m_tex_uvs;
 		vector<vec3> m_normals;
 		vector<vec3> m_tangents;
 		// Indices within positions, normals, tangents, and texture uvs
 		vector<vec<3, u32>> m_triangles;
-
 		vector<section> m_sections;
+
+		primitive_type m_prim_type;
+		unsigned m_vao_id;
+
+
+#if EDITOR // Editor data
+		material* m_default_material;
+#endif // EDITOR
 	}; // class mesh
 
 } // namespace fields_engine::vis

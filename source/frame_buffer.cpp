@@ -100,7 +100,7 @@ namespace fields_engine::vis {
 		VIS_VERIFY;
 
 		return usage_status{
-			int(draw_fbo_id == m_fbo_id) | (int(read_fbo_id == m_fbo_id) << 1)
+			int(draw_fbo_id == int(m_fbo_id)) | (int(read_fbo_id == int(m_fbo_id)) << 1)
 		};
 	}
 

@@ -63,37 +63,59 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     $<$<CONFIG:ReleaseEditor>:NDEBUG;EDITOR>
 )
 
-# Set compiler-specific optimization flags per-configuration
+# Set compiler-specific flags per-configuration
 if(MSVC)
+    # Apply warning flags per-configuration
+    target_compile_options(${PROJECT_NAME} PRIVATE /W3 /WX)
+
+    # Apply optimization flags per-configuration
     target_compile_options(${PROJECT_NAME} PRIVATE
         $<$<CONFIG:Debug>:/Od>
         $<$<CONFIG:Release>:/O2>
         $<$<CONFIG:DebugEditor>:/Od>
         $<$<CONFIG:ReleaseEditor>:/O2>
     )
-else()
+
+    # Apply runtime library flags per-configuration
+    target_compile_options(${PROJECT_NAME} PRIVATE 
+        $<$<CONFIG:Debug>:/MDd>
+        $<$<CONFIG:Release>:/MD>
+        $<$<CONFIG:DebugEditor>:/MDd>
+        $<$<CONFIG:ReleaseEditor>:/MD>
+    )
+else() # ^^^ MSVC / !MSVC vvv
+    # Apply warning flags per-configuration
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror)
+
+    # Apply optimization flags per-configuration
     target_compile_options(${PROJECT_NAME} PRIVATE
         $<$<CONFIG:Debug>:-O0>
-        $<$<CONFIG:Release>:-O3>
+        $<$<CONFIG:Release>:-O2>
         $<$<CONFIG:DebugEditor>:-O0>
-        $<$<CONFIG:ReleaseEditor>:-O3>
+        $<$<CONFIG:ReleaseEditor>:-O2>
     )
-endif()
+    # Apply runtime library flags per-configuration
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        $<$<CONFIG:Debug>:-D_GLIBCXX_DEBUG -fno-inline -g>
+        $<$<CONFIG:Release>:-D_NDEBUG -O2>
+        $<$<CONFIG:DebugEditor>:-D_GLIBCXX_DEBUG -fno-inline -g>
+        $<$<CONFIG:ReleaseEditor>:-D_NDEBUG -O2>
+    )
 
-# Apply runtime library flags per-configuration
-target_compile_options(${PROJECT_NAME} PRIVATE 
-    $<$<CONFIG:Debug>:/MDd>
-    $<$<CONFIG:Release>:/MD>
-    $<$<CONFIG:DebugEditor>:/MDd>
-    $<$<CONFIG:ReleaseEditor>:/MD>
-)
-
-# Treat warnings as errors
-if(MSVC)
-  target_compile_options(${PROJECT_NAME} PRIVATE /W3 /WX)
-else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror)
-endif()
+    # Apply runtime library flags per-configuration
+    #target_link_options(${PROJECT_NAME} PRIVATE 
+    #    $<$<CONFIG:Debug>:-static-libgcc -static-libstdc++>
+    #    $<$<CONFIG:Release>:-static-libgcc -static-libstdc++>
+    #    $<$<CONFIG:DebugEditor>:-static-libgcc -static-libstdc++>
+    #    $<$<CONFIG:ReleaseEditor>:-static-libgcc -static-libstdc++>
+    #)
+    target_link_options(${PROJECT_NAME} PRIVATE 
+    $<$<CONFIG:Debug>:-shared-libgcc -shared-libstdc++>
+    $<$<CONFIG:Release>:-shared-libgcc -shared-libstdc++>
+    $<$<CONFIG:DebugEditor>:-shared-libgcc -shared-libstdc++>
+    $<$<CONFIG:ReleaseEditor>:-shared-libgcc -shared-libstdc++>
+    )
+endif() # !MSVC
 
 # Add precompiled header to the executable
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${PCH_HEADER})

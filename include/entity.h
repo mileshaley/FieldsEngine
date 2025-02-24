@@ -48,7 +48,6 @@ namespace fields_engine {
 		void write(json& out) const;
 
 #ifdef EDITOR
-		//static bool display_window();
 		bool display();
 		bool component_display();
 #endif // EDITOR
@@ -71,10 +70,10 @@ namespace fields_engine {
 		void set_root(spatial_component* new_root);
 
 	private:
+		string m_name;
 		vector<own<component>> m_basic_components;
 		vector<own<spatial_component>> m_spatial_components;
 		spatial_component* m_root_component;
-		string m_name;
 	};
 
 } // namespace fields_engine

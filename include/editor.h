@@ -53,25 +53,23 @@ namespace fields_engine::editor {
 		T step = 1;
 	};
 
-	template<int Count, typename T>
-	inline bool drag(T* data, string_view label) {
-		ImGui::DragScalar(label, ImGuiDataType_Float, v, v_speed, &v_min, &v_max, format, flags);
-	}
-
-	template<glm::length_t L, typename T, glm::qualifier Q>
-	inline bool drag(
-		vec<L, T, Q>& data,
-		string_view label,
-		drag_range<T> range,
-		editor_manager& manager = context<editor_manager>()
-	) {
-		push_font(font_type::monospace, manager);
-		ImGui::DragFloat3
-		return DragScalarN(label.data(), impl::imgui_datatype_v<T>, &data.x, L, range.step, &v_min, &v_max, "%.3f", flags);
-		pop_font();
-	}
-
+	//template<int Count, typename T>
+	//inline bool drag(T* data, string_view label) {
+	//	ImGui::DragScalar(label, ImGuiDataType_Float, v, v_speed, &v_min, &v_max, format, flags);
+	//}
+	//
+	//template<glm::length_t L, typename T, glm::qualifier Q>
+	//inline bool drag(
+	//	vec<L, T, Q>& data,
+	//	string_view label,
+	//	drag_range<T> range,
+	//	editor_manager& manager = context<editor_manager>()
+	//) {
+	//	push_font(font_type::monospace, manager);
+	//	ImGui::DragFloat3
+	//	return DragScalarN(label.data(), impl::imgui_datatype_v<T>, &data.x, L, range.step, &v_min, &v_max, "%.3f", flags);
+	//	pop_font();
+	//}
 
 } // namespace fields_engine::editor
-
 #endif // EDITOR

@@ -76,7 +76,7 @@ namespace fields_engine {
 			impl::context_storage<type>::ptr = m_ptr.get();
 		}
 
-		FE_NODISCARD inline type& operator*() const noexcept(noexcept(*m_ptr)) {
+		FE_NODISCARD inline type& operator*() const noexcept(noexcept(*std::declval<type*>())) {
 			return *m_ptr;
 		}
 		FE_NODISCARD inline type* operator->() const noexcept {

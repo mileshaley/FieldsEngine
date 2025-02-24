@@ -17,6 +17,7 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <filesystem>
 #include <unordered_set>
 #include <glm/glm.hpp>
 #include "json/single_include/nlohmann/json.hpp"

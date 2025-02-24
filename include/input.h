@@ -53,8 +53,6 @@ namespace fields_engine {
 		void report_mouse_pos(vec2 delta);
 		void report_mouse_scroll(vec2 delta);
 
-
-
 	private:
 		class record {
 		public:
@@ -68,7 +66,7 @@ namespace fields_engine {
 		vec2 m_last_mouse_pos;
 		vec2 m_mouse_pos;
 		vec2 m_mouse_scroll;
-	};
+	}; // class input_manager
 
 
 	namespace input::impl {

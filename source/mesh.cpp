@@ -21,22 +21,28 @@ namespace fields_engine::vis {
 
     mesh::mesh()
         : m_positions()
-        , m_triangles()
         , m_tex_uvs()
         , m_normals()
         , m_tangents()
+        , m_triangles()
         , m_prim_type(primitive_type::none)
         , m_vao_id(0)
+#if EDITOR // Editor data
+        , m_default_material(nullptr)
+#endif // EDITOR
     {}
 
     mesh::mesh(mesh const& other)
         : m_positions(other.m_positions)
-        , m_triangles(other.m_triangles)
         , m_tex_uvs(other.m_tex_uvs)
         , m_normals(other.m_normals)
         , m_tangents(other.m_tangents)
+        , m_triangles(other.m_triangles)
         , m_prim_type(other.m_prim_type)
         , m_vao_id(0)
+#if EDITOR // Editor data
+        , m_default_material(nullptr)
+#endif // EDITOR
     {
         if (other.m_vao_id != 0) {
             generate();
@@ -52,7 +58,7 @@ namespace fields_engine::vis {
 
     template<glm::length_t L, typename T, glm::qualifier Q>
     static void copy_unflatten_vec_buf(json const& in, vector<vec<L, T, Q>>& out) {
-        for (int i = 0; i < in.size(); i += L) {
+        for (size_t i = 0; i < in.size(); i += L) {
             if constexpr (L == 2) {
                 out.push_back(vec<L, T, Q>(in[i], in[i + 1]));
             } else if constexpr (L == 3) {
@@ -80,6 +86,7 @@ namespace fields_engine::vis {
             case mesh::primitive_type::sphere:
                 add_sphere((*prim_it)["divisions"]);
                 break;
+            case primitive_type::none: FE_FALLTHROUGH
             default:
                 /// TODO: Handle this error properly
                 FE_FAILED_ASSERT("Failed to read unknown primitive mesh type");
@@ -101,7 +108,7 @@ namespace fields_engine::vis {
             copy_unflatten_vec_buf(in_tangents, m_tangents);
             copy_unflatten_vec_buf(in_triangles, m_triangles);
 
-            for (int i = 0; i < in_sections.size(); ++i) {
+            for (size_t i = 0; i < in_sections.size(); ++i) {
                 m_sections.push_back(mesh::section{
                    in_sections[i]["first_index"],
                    in_sections[i]["index_count"],
@@ -138,6 +145,11 @@ namespace fields_engine::vis {
             break;
         case mesh::primitive_type::sphere:
             out["divisions"] = m_divisions;
+            break;
+        case primitive_type::cube:
+            break;
+        case primitive_type::none: FE_FALLTHROUGH // Not possible
+        default:
             break;
         }
     }

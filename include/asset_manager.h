@@ -12,6 +12,7 @@
 
 #include "asset.h"
 #include "context.h" // For convenience functions
+#include "asset_entry.h"
 
 namespace fields_engine {
 	namespace vis {
@@ -23,8 +24,6 @@ namespace fields_engine {
 		class asset_browser;
 	} // namespace editor
 #endif // EDITOR
-
-	class asset_entry;
 } // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\

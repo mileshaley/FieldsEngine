@@ -37,9 +37,12 @@ namespace fields_engine::vis {
 		void set_texture(texture const* new_texture);
 		void set_normal_texture(texture const* new_normal_texture);
 
-		float m_shininess;
+	public: /// TODO: Make private
+
 		vec3 m_diffuse;
 		vec3 m_specular;
+		float m_shininess;
+
 	private:
 		texture const* m_texture;
 		texture const* m_normal_texture;

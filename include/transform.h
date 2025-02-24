@@ -85,8 +85,8 @@ namespace fields_engine {
 		vec3 get_local_up_vector() const;
 	private:
 		transform m_data;
-		mutable bool m_dirty = true;
 		mutable mat4 m_matrix;
+		mutable bool m_dirty = true;
 		const spatial_component* m_owner;
 	};
 

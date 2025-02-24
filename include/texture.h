@@ -12,10 +12,6 @@
 
 #include "asset.h" // Inheritance
 
-namespace std::filesystem {
-	class path;
-} // namespace std::filesystem
-
 /*~-------------------------------------------------------------------------~*\
  * Texture Class                                                             *
 \*~-------------------------------------------------------------------------~*/

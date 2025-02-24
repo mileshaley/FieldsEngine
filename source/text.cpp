@@ -96,7 +96,7 @@ namespace fields_engine::text {
 		pretty.reserve(str.length());
 		char prev = ' ';
 		bool capitalize = true;
-		for (int i = 0; i < str.length(); ++i) {
+		for (size_t i = 0; i < str.length(); ++i) {
 			char c = str[i];
 			if (c == '_' || c== ' ') {
 				if (prev == ' ') {

@@ -6,6 +6,8 @@
 
 #include "fields_engine.h"
 #include "asset_entry.h"
+#include "asset.h"
+#include "reflection.h"
 #include <fstream>
 
 /*~-------------------------------------------------------------------------~*\

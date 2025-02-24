@@ -10,8 +10,6 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include <filesystem> // Asset path
-
 #if EDITOR
 #include "texture.h" // Asset thumbnail
 #endif // EDITOR
@@ -29,7 +27,8 @@ namespace fields_engine {
 
 	class asset_entry {
 	public:
-		asset_entry(std::filesystem::path const& path);
+		explicit asset_entry(std::filesystem::path const& path);
+		//asset_entry(asset_entry const& other);
 		~asset_entry();
 
 		void set_path(std::filesystem::path const& path);

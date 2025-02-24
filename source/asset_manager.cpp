@@ -10,6 +10,7 @@
 #include "asset_entry.h"
 #include "reflection.h"
 #include <fstream>
+#include <filesystem>
 
 /*~-------------------------------------------------------------------------~*\
  * Asset Manager Definitions                                                 *

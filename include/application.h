@@ -17,9 +17,11 @@
 #include "asset_manager.h"
 
 namespace fields_engine {
+#if EDITOR
 	namespace editor {
 		class editor_manager;
 	} // namespace editor
+#endif // EDITOR
 	class scene;
 } // namespace fields_engine
 
@@ -51,14 +53,14 @@ namespace fields_engine {
 	private:
 		double m_prev_time;
 		float m_delta_time;
+		bool m_running;
 		ivec2 m_win_size;
 		local_context<window_handle> m_window;
 		local_context<input_manager> m_input_manager;
 		local_context<asset_manager> m_asset_manager;
 		own_context<scene> m_scene;
 #if EDITOR
-		own_context<editor::editor_manager> m_editor{nullptr};
+		own_context<editor::editor_manager> m_editor;
 #endif // EDITOR
-		bool m_running;
 	};
 } // namespace fields_engine

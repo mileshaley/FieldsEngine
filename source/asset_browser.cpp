@@ -23,10 +23,22 @@
 \*~-------------------------------------------------------------------------~*/
 
 fields_engine::editor::asset_browser::asset_browser()
-	: m_missing_thumbnail("engine_assets/missing_asset_thumbnail.png")
-	, m_mesh_thumbnail("engine_assets/mesh_asset_thumbnail.png")
-	, m_material_thumbnail("engine_assets/material_asset_thumbnail.png")
+	: m_entries()
+	, m_directory_history()
+	, m_undo_history()
+	, m_address_bar_buffer()
+	, m_search_bar_buffer()
+	, m_rename_buffer()
+	, m_rename_idx(-1)
+	, m_prev_entry_clicked(-1)
+	, m_need_refresh(true)
+	, m_wait_for_mouse_trigger(false)
+	, m_address_bar_state(address_bar_state::inactive)
+	, m_rename_state(rename_state::inactive)
+	, m_missing_thumbnail("engine_assets/missing_asset_thumbnail.png")
 	, m_folder_thumbnail("engine_assets/folder_thumbnail.png")
+	, m_material_thumbnail("engine_assets/material_asset_thumbnail.png")
+	, m_mesh_thumbnail("engine_assets/mesh_asset_thumbnail.png")
 {
 	context<editor::editor_manager>().add_window(make_own<editor::editor_window>(
 		"Asset Browser",
@@ -163,11 +175,12 @@ bool fields_engine::editor::asset_browser::display_window() {
 		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
 
-	} else {
+	} else { // ^^^ address_bar_active || address_bar_activated
 		std::filesystem::path const& curr_directory = m_directory_history.top();
 		vector<std::filesystem::path> directories(curr_directory.begin(), curr_directory.end());
 		// Index into directories
-		for (int i = 0; i < directories.size(); ++i) {
+		const int num_directories(directories.size());
+		for (int i = 0; i < num_directories; ++i) {
 			// If the button is pressed and we aren't trying to move to the current directory
 			if (ImGui::Button(directories[i].string().c_str(), ImVec2{ 0, address_bar_height })
 				&& directories[i] != curr_directory.filename()
@@ -192,7 +205,6 @@ bool fields_engine::editor::asset_browser::display_window() {
 			}
 			ImGui::SameLine();
 
-
 			// Directory navigation dropdown
 			if (ImGui::BeginPopup(dropdown_id.c_str())) {
 				std::filesystem::path selected_path{};
@@ -214,7 +226,6 @@ bool fields_engine::editor::asset_browser::display_window() {
 				ImGui::EndPopup();
 			}
 		}
-		const ImVec2 avail = ImGui::GetContentRegionAvail();
 		ImGui::SameLine();
 		if (ImGui::InvisibleButton("###asset_browser_address_bar_activate",
 			ImVec2{ content_max.x, address_bar_height })
@@ -363,7 +374,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 		// in case the user wants to deselect by clicking on nothing
 		bool any_entry_was_clicked = false;
 
-		for (int i = 0; i < m_entries.size(); ++i) {
+		for (int i = 0; i < int(m_entries.size()); ++i) {
 			file_entry& entry = m_entries[i];
 			ImGui::PushID(&entry);
 			const ImVec2 cursor_pos = ImGui::GetCursorPos();
@@ -410,7 +421,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 						} else if (ctrl_held) {
 							selected = !selected;
 						} else {
-							for (int j = 0; j < m_entries.size(); ++j) {
+							for (int j = 0; j < int(m_entries.size()); ++j) {
 								m_entries[j].selected = false;
 							}
 							selected = true;
@@ -597,7 +608,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 		) {
 			if (left_clicked) {
 				// We arent in the for i loop anymore but j is kept for consistency with above
-				for (int j = 0; j < m_entries.size(); ++j) {
+				for (size_t j = 0; j < m_entries.size(); ++j) {
 					m_entries[j].selected = false;
 				}
 			}

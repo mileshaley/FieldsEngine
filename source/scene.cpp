@@ -4,6 +4,10 @@
  * File: scene.cpp                                                           *
 \*~-------------------------------------------------------------------------~*/
 
+/*~-------------------------------------------------------------------------~*\
+ * Includes                                                                  *
+\*~-------------------------------------------------------------------------~*/
+
 #include "fields_engine.h"
 #include "scene.h"
 #include "shader.h"
@@ -19,6 +23,10 @@
 #include "editor_manager.h"
 #include <iostream>
 #include <fstream>
+
+/*~-------------------------------------------------------------------------~*\
+ * Scene Method Definitions                                                  *
+\*~-------------------------------------------------------------------------~*/
 
 fields_engine::scene::scene() {
 	m_shader = make_own<vis::shader>();
@@ -65,9 +73,9 @@ void fields_engine::scene::startup() {
 void fields_engine::scene::tick(float dt) {
 	/// TODO: Remove
 	if (context<input_manager>().was_button_triggered(GLFW_KEY_C)) {
-		for (int i = 0; i < m_entities.size(); ++i) {
+		for (size_t i = 0; i < m_entities.size(); ++i) {
 			if (m_entities[i]->get_name().find("nowm") != string::npos) {
-				for (int j = 0; j < m_entities.size(); ++j) {
+				for (size_t j = 0; j < m_entities.size(); ++j) {
 					if (m_entities[j]->get_name().find("amera") != string::npos) {
 						auto& new_ent = m_entities.emplace_back(make_own<entity>(*m_entities[i]));
 						new_ent->ref_transform().set_local_position(m_entities[j]->ref_transform().get_local_position());

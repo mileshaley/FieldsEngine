@@ -61,24 +61,24 @@ namespace fields_engine {
 		}
 
 	public:
-		inline FE_NODISCARD T& operator[](size_t offset) {
+		FE_NODISCARD inline T& operator[](size_t offset) {
 			return m_data[offset];
 		}
-		inline FE_NODISCARD T const& operator[](size_t offset) const {
+		FE_NODISCARD inline T const& operator[](size_t offset) const {
 			return m_data[offset];
 		}
 
 
 		// size() will always be <= true_size()
-		inline FE_NODISCARD size_t size() const noexcept {
+		FE_NODISCARD inline size_t size() const noexcept {
 			return top_index() + 1;
 		}
 
-		inline FE_NODISCARD size_t true_size() const noexcept {
+		FE_NODISCARD inline size_t true_size() const noexcept {
 			return m_data.size();
 		}
 
-		inline FE_NODISCARD bool empty() const noexcept {
+		FE_NODISCARD inline bool empty() const noexcept {
 			return m_data.empty();
 		}
 
@@ -87,17 +87,17 @@ namespace fields_engine {
 			m_end_offset = 1;
 		}
 
-		inline FE_NODISCARD T& top() noexcept {
+		FE_NODISCARD inline T& top() noexcept {
 			return m_data[top_index()];
 		}
 
-		inline FE_NODISCARD T const& top() const noexcept {
+		FE_NODISCARD inline T const& top() const noexcept {
 			return m_data[top_index()];
 		}
 
 		// Returns an index such that scrollstack[top_index()] == scrollstack.top()
 		// Can be -1 if the stack is scrolled to the very bottom
-		inline FE_NODISCARD i64 top_index() const noexcept {
+		FE_NODISCARD inline i64 top_index() const noexcept {
 			return static_cast<i64>(m_data.size()) - m_end_offset;
 		}
 
@@ -133,19 +133,19 @@ namespace fields_engine {
 			FE_ASSERT(m_end_offset <= m_data.size() + 1, "Scrolled before the beginning of data");
 		}
 
-		FE_NODISCARD bool at_top() const noexcept {
+		FE_NODISCARD inline bool at_top() const noexcept {
 			return m_end_offset <= 1;
 		}
 
-		FE_NODISCARD bool at_bottom() const noexcept {
+		FE_NODISCARD inline bool at_bottom() const noexcept {
 			return m_end_offset > m_data.size();
 		}
 
-		FE_NODISCARD i64 top_distance() const noexcept {
+		FE_NODISCARD inline i64 top_distance() const noexcept {
 			return static_cast<i64>(m_end_offset) - 1ll;
 		}
 
-		FE_NODISCARD i64 bottom_distance() const noexcept {
+		FE_NODISCARD inline i64 bottom_distance() const noexcept {
 			return top_index() + 1;
 		}
 

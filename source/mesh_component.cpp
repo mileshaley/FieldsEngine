@@ -4,6 +4,10 @@
  * File: mesh_component.cpp                                                  * 
 \*~-------------------------------------------------------------------------~*/
 
+/*~-------------------------------------------------------------------------~*\
+ * Includes                                                                  *
+\*~-------------------------------------------------------------------------~*/
+
 #include "fields_engine.h"
 #include "mesh_component.h"
 #include "glad/glad.h"
@@ -13,6 +17,10 @@
 #include "texture.h"
 #include "mesh.h"
 #include "asset_manager.h"
+
+/*~-------------------------------------------------------------------------~*\
+ * Mesh Component Method Definitions                                         *
+\*~-------------------------------------------------------------------------~*/
 
 fields_engine::mesh_component::mesh_component()
 	: physical_component()

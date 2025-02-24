@@ -47,7 +47,7 @@ void fields_engine::vis::shader::add(const char* filename, int type) const {
         VIS_VERIFY;
         /// TODO: use proper error logger
         std::cerr << "Addition failed for shader \""
-            << filename << "\": " << buffer << std::endl;
+            << filename << "\": " << string(buffer.get(), length) << std::endl;
     }
 }
 
@@ -66,7 +66,8 @@ void fields_engine::vis::shader::finalize() const {
         glGetProgramInfoLog(m_program_id, length, nullptr, buffer.get());
         VIS_VERIFY;
         /// TODO: use proper error logger
-        std::cerr << "Finalization failed for shader: " << buffer << std::endl;
+        std::cerr << "Finalization failed for shader: " 
+            << string(buffer.get(), length) << std::endl;
     }
 }
 

@@ -15,10 +15,17 @@
 #include "glad/glad.h"
 
 #define STB_IMAGE_IMPLEMENTATION
+// Deal with compiler specific pragmas here
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #include "stb/stb_image.h"
+#pragma GCC diagnostic pop
+#else // ^^^ GNUC / !GNUC vvv
+#include "stb/stb_image.h"
+#endif // !GNUC
 
 #include "base64/base64.hpp"
-#include <filesystem>
 
 /// TODO: remove when using proper error logger
 #include <iostream>
@@ -77,7 +84,7 @@ fields_engine::vis::texture::~texture() {
 }
 
 void fields_engine::vis::texture::read(json const& in) {
-    vector<u8> raw_data = base64::decode_into<vector<u8>>(in["raw"]);
+    vector<u8> raw_data = base64::decode_into<vector<u8>>(in.at("raw").get<string>());
     int num_channels = -1;
     stbi_set_flip_vertically_on_load(true);
     stbi_uc* image_data = stbi_load_from_memory(raw_data.data(), int(raw_data.size()),

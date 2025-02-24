@@ -75,25 +75,28 @@ namespace fields_engine::editor {
 		void write_style(int slot = 0) const;
 
 	private:
-		/// TODO: Implement a more generic selection system that can handle different types and amounts
-		entity* m_selected_ent = nullptr;
-		//vector<entity*> m_selected_ents;
+		// Editor
+		ImGuiContext* m_gui_context;
+		vis::frame_buffer m_frame_buffer;
+		array<ImFont*, size_t(font_type::font_type_count)> m_fonts;
+		vector<own<editor_window>> m_windows;
+
+		vector<int> m_recent_windows;
 
 		// Game window
-		ivec2 m_game_window_size = {1000, 800};
-		bool m_game_window_focused = true;
-		bool m_game_window_hovered = true;
+		ivec2 m_game_window_size;
+		bool m_game_window_focused;
+		bool m_game_window_hovered;
 
 		// Root window
 		string m_new_window_buf;
-		editor_icon m_new_window_icon = ICON_ELLIPSIS_VERTICAL;
-		// Editor
-		vis::frame_buffer m_frame_buffer;
-		vector<own<editor_window>> m_windows;
-		ImGuiContext* m_gui_context;
-		vector<int> m_recent_windows;
-		array<ImFont*, size_t(font_type::font_type_count)> m_fonts;
-	};
+		editor_icon m_new_window_icon;
+
+		/// TODO: Implement a more generic selection system that can handle different types and amounts
+		entity* m_selected_ent;
+		//vector<entity*> m_selected_ents;
+
+	}; // class editor_manager
 
 } // namespace fields_engine::editor
 

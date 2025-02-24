@@ -95,10 +95,10 @@ namespace fields_engine::editor {
 		friend struct asset_browser_callbacks;
 
 		/// TODO: Relocate
-		vis::texture m_mesh_thumbnail;
-		vis::texture m_material_thumbnail;
 		vis::texture m_missing_thumbnail;
 		vis::texture m_folder_thumbnail;
+		vis::texture m_material_thumbnail;
+		vis::texture m_mesh_thumbnail;
 	}; // class asset_browser
 
 } // namespace fields_engine::editor

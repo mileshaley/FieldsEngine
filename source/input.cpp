@@ -28,6 +28,9 @@ static constexpr int mouse_code_offset = GLFW_KEY_LAST + 1;
 namespace fields_engine::input::impl {
 	// GLFWkeyFun
 	static void key_callback(GLFWwindow* win, int key, int scan_code, int action, int mods) {
+		(void)scan_code;
+		(void)mods;
+
 		// Actions: 
 		// 0 - released
 		// 1 - triggered
@@ -90,8 +93,8 @@ namespace fields_engine::input::impl {
 
 fields_engine::input_manager::input_manager()
 	: m_button_records()
-	, m_mouse_pos(0, 0)
 	, m_last_mouse_pos(0, 0)
+	, m_mouse_pos(0, 0)
 	, m_mouse_scroll(0, 0)
 {
 }

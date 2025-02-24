@@ -6,14 +6,25 @@
 
 #pragma once
 
+/*~-------------------------------------------------------------------------~*\
+ * Includes & Forward Declarations                                           *
+\*~-------------------------------------------------------------------------~*/
+
 #include "editor_icons.h" // fe::editor_icon
 #include <functional> // callback_t
 
-class editor_manager;
+namespace fields_engine::editor {
+	class editor_manager;
+} // namespace fields_engine::editor
+
+/*~-------------------------------------------------------------------------~*\
+ * Asset Class                                                               *
+\*~-------------------------------------------------------------------------~*/
+
 namespace fields_engine::editor {
 
 	/// TODO: Add support for grouping windows by category
-
+	/// TODO: Consider making editor window a base for inherited classes (instead of using bound functions)
 	class editor_window {
 	public:
 		using callback_t = std::function<bool(void)>;
@@ -42,11 +53,11 @@ namespace fields_engine::editor {
 		FE_NODISCARD string const& get_str_id() const;
 
 	private:
-		bool m_open;
 		string m_name;
 		string m_str_id; // Trade some memory for time by precomputing the string ID
 		callback_t m_callback;
 		editor_icon m_icon;
+		bool m_open;
 	};
 
 } // namespace fields_engine::editor

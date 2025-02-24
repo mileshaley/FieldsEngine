@@ -25,11 +25,11 @@ namespace fields_engine::vis {
 namespace fields_engine {
 	class mesh_component : public physical_component {
 	public:
+		FE_CLASS_BODY(mesh_component, spatial_component);
+
 		mesh_component();
 		mesh_component(mesh_component const& other);
 		~mesh_component();
-
-		FE_CLASS_BODY(mesh_component, spatial_component);
 
 		virtual void draw(vis::shader const& shader) const override;
 
@@ -41,11 +41,9 @@ namespace fields_engine {
 		void set_mesh(vis::mesh const& new_mesh) { m_mesh = &new_mesh; }
 		vis::mesh const& get_mesh() const { return *m_mesh; }
 
-
 	private:
+		const vis::mesh* m_mesh;
 		const vis::material* m_material;
-		vis::mesh const* m_mesh;
-
 	};
 
 } // namespace fields_engine
