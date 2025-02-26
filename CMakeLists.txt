@@ -26,11 +26,8 @@ set(PCH_HEADER ${INCLUDE_DIR}/fields_engine.h)
 # Create the primary executable
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${INCLUDE_FILES} ${EXTERNAL_FILES})
 
-# Add header files
-target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
-
-# Add external dependency files
-target_include_directories(${PROJECT_NAME} PRIVATE ${EXTERNAL_DIR})
+# Add out header files and external dependency headers
+target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR} ${EXTERNAL_DIR})
 
 # Store the original CMAKE_BUILD_TYPE
 set(ORIGINAL_BUILD_TYPE ${CMAKE_BUILD_TYPE})
@@ -48,66 +45,51 @@ set(CMAKE_CXX_FLAGS_RELEASEEDITOR ${CMAKE_CXX_FLAGS_RELEASE})
 set(CMAKE_EXE_LINKER_FLAGS_RELEASEEDITOR ${CMAKE_EXE_LINKER_FLAGS_RELEASE})
 set(CMAKE_SHARED_LINKER_FLAGS_RELEASEEDITOR ${CMAKE_SHARED_LINKER_FLAGS_RELEASE})
 
-# Add compiler preprocessor definitions for each configuration
-target_compile_definitions(${PROJECT_NAME} PRIVATE 
-    $<$<CONFIG:Debug>:_DEBUG;DEBUG>
-    $<$<CONFIG:Release>:NDEBUG;>
-    $<$<CONFIG:DebugEditor>:_DEBUG;DEBUG;EDITOR>
-    $<$<CONFIG:ReleaseEditor>:NDEBUG;EDITOR>
-)
-
 # Add compiler preprocessor definitions for all configurations
 target_compile_definitions(${PROJECT_NAME} PRIVATE 
     _CRT_SECURE_NO_WARNINGS
     #IMGUI_IMPL_OPENGL_LOADER_CUSTOM="glad/glad.h"
 )
 
+# Add compiler preprocessor definitions for each configuration
+target_compile_definitions(${PROJECT_NAME} PRIVATE 
+    $<$<CONFIG:Debug>:_DEBUG;DEBUG;DEBUG-GLIBCXX>
+    $<$<CONFIG:Release>:NDEBUG;>
+    $<$<CONFIG:DebugEditor>:_DEBUG;DEBUG;GLIBCXX_DEBUG;EDITOR>
+    $<$<CONFIG:ReleaseEditor>:NDEBUG;EDITOR>
+)
+
 # Set compiler-specific flags per-configuration
 if(MSVC)
-    # Apply warning flags per-configuration
+    # Apply warning flags to all configurations
     target_compile_options(${PROJECT_NAME} PRIVATE /W3 /WX)
 
-    # Apply optimization flags per-configuration
+    # Apply flags per-configuration
     target_compile_options(${PROJECT_NAME} PRIVATE
-        $<$<CONFIG:Debug>:/Od>
-        $<$<CONFIG:Release>:/O2>
-        $<$<CONFIG:DebugEditor>:/Od>
-        $<$<CONFIG:ReleaseEditor>:/O2>
-    )
-
-    # Apply runtime library flags per-configuration
-    target_compile_options(${PROJECT_NAME} PRIVATE 
-        $<$<CONFIG:Debug>:/MDd>
-        $<$<CONFIG:Release>:/MD>
-        $<$<CONFIG:DebugEditor>:/MDd>
-        $<$<CONFIG:ReleaseEditor>:/MD>
+        $<$<CONFIG:Debug>:/Od /MDd>
+        $<$<CONFIG:Release>:/O2 /MD>
+        $<$<CONFIG:DebugEditor>:/Od /MDd>
+        $<$<CONFIG:ReleaseEditor>:/O2 /MD>
     )
 else() # ^^^ MSVC / !MSVC vvv
-    # Apply warning flags per-configuration
+    # Apply warning flags to all configurations
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror)
 
-    # Apply optimization flags per-configuration
+    # Apply flags per-configuration
     target_compile_options(${PROJECT_NAME} PRIVATE
-        $<$<CONFIG:Debug>:-O0>
+        $<$<CONFIG:Debug>:-O0 -fno-inline -g>
         $<$<CONFIG:Release>:-O2>
-        $<$<CONFIG:DebugEditor>:-O0>
+        $<$<CONFIG:DebugEditor>:-O0 -fno-inline -g>
         $<$<CONFIG:ReleaseEditor>:-O2>
-    )
-    # Apply runtime library flags per-configuration
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        $<$<CONFIG:Debug>:-D_GLIBCXX_DEBUG -fno-inline -g>
-        $<$<CONFIG:Release>:-D_NDEBUG -O2>
-        $<$<CONFIG:DebugEditor>:-D_GLIBCXX_DEBUG -fno-inline -g>
-        $<$<CONFIG:ReleaseEditor>:-D_NDEBUG -O2>
     )
 
     # Apply runtime library flags per-configuration
-    target_link_options(${PROJECT_NAME} PRIVATE 
-        $<$<CONFIG:Debug>:-static-libgcc -static-libstdc++>
-        $<$<CONFIG:Release>:-static-libgcc -static-libstdc++>
-        $<$<CONFIG:DebugEditor>:-static-libgcc -static-libstdc++>
-        $<$<CONFIG:ReleaseEditor>:-static-libgcc -static-libstdc++>
-    )
+    #target_link_options(${PROJECT_NAME} PRIVATE 
+    #    $<$<CONFIG:Debug>:-static-libgcc -static-libstdc++>
+    #    $<$<CONFIG:Release>:-static-libgcc -static-libstdc++>
+    #    $<$<CONFIG:DebugEditor>:-static-libgcc -static-libstdc++>
+    #    $<$<CONFIG:ReleaseEditor>:-static-libgcc -static-libstdc++>
+    #)
 endif() # !MSVC
 
 # Map custom configurations to standard ones for dependencies
@@ -151,4 +133,3 @@ set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 source_group(TREE ${SOURCE_DIR} PREFIX "Source Files" FILES ${SOURCE_FILES})
 source_group(TREE ${INCLUDE_DIR} PREFIX "Include Files" FILES ${INCLUDE_FILES})
 source_group(TREE ${EXTERNAL_DIR} PREFIX "External Files" FILES ${EXTERNAL_FILES})
-#source_group(TREE ${STUB_DIR} PREFIX "Stub Files" FILES ${STUB_DIR})
