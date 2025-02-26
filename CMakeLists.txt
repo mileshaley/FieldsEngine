@@ -48,12 +48,18 @@ set(CMAKE_CXX_FLAGS_RELEASEEDITOR ${CMAKE_CXX_FLAGS_RELEASE})
 set(CMAKE_EXE_LINKER_FLAGS_RELEASEEDITOR ${CMAKE_EXE_LINKER_FLAGS_RELEASE})
 set(CMAKE_SHARED_LINKER_FLAGS_RELEASEEDITOR ${CMAKE_SHARED_LINKER_FLAGS_RELEASE})
 
-# Define compiler preprocessor definitions for the all configurations
+# Add compiler preprocessor definitions for each configuration
 target_compile_definitions(${PROJECT_NAME} PRIVATE 
     $<$<CONFIG:Debug>:_DEBUG;DEBUG>
     $<$<CONFIG:Release>:NDEBUG;>
     $<$<CONFIG:DebugEditor>:_DEBUG;DEBUG;EDITOR>
     $<$<CONFIG:ReleaseEditor>:NDEBUG;EDITOR>
+)
+
+# Add compiler preprocessor definitions for all configurations
+target_compile_definitions(${PROJECT_NAME} PRIVATE 
+    _CRT_SECURE_NO_WARNINGS
+    #IMGUI_IMPL_OPENGL_LOADER_CUSTOM="glad/glad.h"
 )
 
 # Set compiler-specific flags per-configuration
@@ -121,12 +127,10 @@ add_subdirectory(${EXTERNAL_DIR}/glfw)
 # Restore original build type so our project sees the custom configurations
 set(CMAKE_BUILD_TYPE ${ORIGINAL_BUILD_TYPE})
 
-# Link libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
-
-# Link OpenGL
+# Get OpenGL
 find_package(OpenGL REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
+# Link Libraries
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw OpenGL::GL)
 
 # Add precompiled header to the executable
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${PCH_HEADER})
