@@ -104,14 +104,16 @@ else() # ^^^ MSVC / !MSVC vvv
     )
 endif() # !MSVC
 
-
-
 # Map custom configurations to standard ones for dependencies
 if(CMAKE_BUILD_TYPE MATCHES "DebugEditor")
     set(CMAKE_BUILD_TYPE Debug)
 elseif(CMAKE_BUILD_TYPE MATCHES "ReleaseEditor")
     set(CMAKE_BUILD_TYPE Release)
 endif()
+
+# Ensure GLFW uses X11 and not Wayland
+set(GLFW_BUILD_X11 ON CACHE BOOL "Enable X11 for GLFW")
+set(GLFW_BUILD_WAYLAND OFF CACHE BOOL "Disable Wayland for GLFW")
 
 # Add GLFW subdirectory
 add_subdirectory(${EXTERNAL_DIR}/glfw)
@@ -121,8 +123,6 @@ set(CMAKE_BUILD_TYPE ${ORIGINAL_BUILD_TYPE})
 
 # Link libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw opengl32)
-
-
 
 # Add precompiled header to the executable
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${PCH_HEADER})
