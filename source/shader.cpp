@@ -16,7 +16,7 @@ fields_engine::vis::shader::shader()
 	: m_program_id(glCreateProgram())
 {}
 
-void fields_engine::vis::shader::add(const char* filename, int type) const {
+void fields_engine::vis::shader::add(std::filesystem::path const& filename, int type) const {
     // Read a file's contents using fstream, stringstream, and string
     std::fstream file(filename);
     if (!file) { return; }

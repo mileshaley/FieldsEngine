@@ -11,7 +11,7 @@ namespace fields_engine::vis {
 	public:
 		shader();
 	
-		void add(const char* filename, int type) const;
+		void add(std::filesystem::path const& filename, int type) const;
 		void finalize() const;
 	
 		void use() const;

@@ -30,8 +30,9 @@
 
 fields_engine::scene::scene() {
 	m_shader = make_own<vis::shader>();
-	m_shader->add("shaders/lighting.vert", GL_VERTEX_SHADER);
-	m_shader->add("shaders/lighting.frag", GL_FRAGMENT_SHADER);
+	const std::filesystem::path shaders_folder("shaders");
+	m_shader->add(shaders_folder / "lighting.vert", GL_VERTEX_SHADER);
+	m_shader->add(shaders_folder / "lighting.frag", GL_FRAGMENT_SHADER);
 	glBindAttribLocation(m_shader->id(), 0, "vertex_position");
 	glBindAttribLocation(m_shader->id(), 1, "vertex_normal");
 	glBindAttribLocation(m_shader->id(), 2, "vertex_texture");
