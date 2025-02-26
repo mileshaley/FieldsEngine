@@ -16,14 +16,14 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 // Deal with compiler specific pragmas here
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #include "stb/stb_image.h"
 #pragma GCC diagnostic pop
-#else // ^^^ GNUC / !GNUC vvv
+#else // ^^^ gnu or clang / !gnu and !clang vvv
 #include "stb/stb_image.h"
-#endif // !GNUC
+#endif // !gnu and !clang
 
 #include "base64/base64.hpp"
 
