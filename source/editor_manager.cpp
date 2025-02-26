@@ -103,7 +103,7 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 	editor_window* demo_window = &add_window(make_own<editor_window>(
 		"ImGui Demo", editor_window::callback_t{}, ICON_INFO));
 	demo_window->set_callback([demo_window]() {
-		ImGui::SetWindowHiddendAndSkipItemsForCurrentFrame(ImGui::GetCurrentWindow());
+		//ImGui::SetWindowHiddendAndSkipItemsForCurrentFrame(ImGui::GetCurrentWindow());
 		ImGui::ShowDemoWindow(&demo_window->ref_open());
 		return false; 
 	});
@@ -134,7 +134,7 @@ void fields_engine::editor::editor_manager::tick(float dt) {
 
 	// Begin dockspace
 	
-	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
+	ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport(), ImGuiDockNodeFlags_None);
 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
@@ -326,7 +326,7 @@ bool fields_engine::editor::editor_manager::style_window() {
 	ImVec4* colors = style.Colors;
 
 	// Don't judge me.
-	static const char* color_names[ImGuiCol_COUNT] = {
+	static const char* color_names[] = {
 		"Text",
 		"TextDisabled",
 		"WindowBg",
@@ -384,7 +384,7 @@ bool fields_engine::editor::editor_manager::style_window() {
 		"ModalWindowDimBg"
 	};
 
-	for (int i = 0; i < int(ImGuiCol_COUNT); ++i) {
+	for (int i = 0; i < int(sizeof(color_names) / sizeof(*color_names)); ++i) {
 		modif |= ImGui::ColorEdit4(color_names[i], &colors[i].x);
 	}
 

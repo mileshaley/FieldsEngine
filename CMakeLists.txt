@@ -122,7 +122,11 @@ add_subdirectory(${EXTERNAL_DIR}/glfw)
 set(CMAKE_BUILD_TYPE ${ORIGINAL_BUILD_TYPE})
 
 # Link libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw opengl32)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+
+# Link OpenGL
+find_package(OpenGL REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 
 # Add precompiled header to the executable
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${PCH_HEADER})

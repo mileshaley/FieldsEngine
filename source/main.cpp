@@ -9,8 +9,6 @@
 #include "application.h"
 #include "context.h"
 
-#include <Windows.h>
-
 /// TODO: Remove context swap testing stuff
 static fe::own_context<fe::application>*& app_context_location() {
 	static fe::own_context<fe::application>* p_app_context = nullptr;

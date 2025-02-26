@@ -498,7 +498,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 					} else if (entry.type == file_type::other) {
 						ImGui::SetDragDropPayload("ab_other", path_str.c_str(), path_str.size());
 					}
-					ImGui::Image(thumbnail, { 80,80 }, vec2(0, 1), vec2(1, 0));
+					ImGui::Image(ImTextureID(thumbnail), { 80,80 }, vec2(0, 1), vec2(1, 0));
 					ImGui::Text(entry.path.string().c_str());
 					ImGui::EndDragDropSource();
 				} // Drag drop source
@@ -590,7 +590,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 
 			ImGui::SetCursorPos(cursor_pos + thumbnail_margin);
 			// For some reason ImGui textures are flipped, so we adjust uvs manually here
-			ImGui::Image(thumbnail, thumbnail_size, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image(ImTextureID(thumbnail), thumbnail_size, ImVec2(0, 1), ImVec2(1, 0));
 			// We want to check if the next item will be put offscreen
 			if (cursor_pos.x + (2.0f - offscreen_tolerance) * entry_size.x + pad_between > content_max.x) {
 				// Start a new line
