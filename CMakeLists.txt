@@ -5,19 +5,20 @@ project(FieldsEngine) # No versioning yet
 
 # Set C++ language standard
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Define the source, include, and external, and other directories
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/source)
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
-#set(STUB_DIR ${CMAKE_SOURCE_DIR}/stub)
 
 # Recursively get all .cpp and .h files from source, include, and external directories
 file(GLOB_RECURSE SOURCE_FILES ${SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE INCLUDE_FILES ${INCLUDE_DIR}/*.h)
 file(GLOB_RECURSE EXTERNAL_FILES ${EXTERNAL_DIR}/*/*.cpp ${EXTERNAL_DIR}/*/*.h)
-#file(GLOB_RECURSE STUB_FILES ${STUB_DIR}/*.cpp ${STUB_DIR}/*.h)
 
 # Precompiled header
 set(PCH_HEADER ${INCLUDE_DIR}/fields_engine.h)
@@ -31,16 +32,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
 # Add external dependency files
 target_include_directories(${PROJECT_NAME} PRIVATE ${EXTERNAL_DIR})
 
-# Set the location of the libraries
-set(GLFW_LIB_PATH ${EXTERNAL_DIR}/glfw)
-set(SDL3_LIB_PATH ${EXTERNAL_DIR}/sdl3)
-
-# Specify the libraries to link
-target_link_libraries(${PROJECT_NAME} PRIVATE 
-    ${GLFW_LIB_PATH}/glfw3.lib  # Linking GLFW
-    opengl32                    # Linking OpenGL
-    ${SDL3_LIB_PATH}/SDL3.lib   # Linking SDL3
-)
+# Store the original CMAKE_BUILD_TYPE
+set(ORIGINAL_BUILD_TYPE ${CMAKE_BUILD_TYPE})
 
 # Define configurations
 set(CMAKE_CONFIGURATION_TYPES Debug Release DebugEditor ReleaseEditor)
@@ -103,19 +96,33 @@ else() # ^^^ MSVC / !MSVC vvv
     )
 
     # Apply runtime library flags per-configuration
-    #target_link_options(${PROJECT_NAME} PRIVATE 
-    #    $<$<CONFIG:Debug>:-static-libgcc -static-libstdc++>
-    #    $<$<CONFIG:Release>:-static-libgcc -static-libstdc++>
-    #    $<$<CONFIG:DebugEditor>:-static-libgcc -static-libstdc++>
-    #    $<$<CONFIG:ReleaseEditor>:-static-libgcc -static-libstdc++>
-    #)
     target_link_options(${PROJECT_NAME} PRIVATE 
-    $<$<CONFIG:Debug>:-shared-libgcc -shared-libstdc++>
-    $<$<CONFIG:Release>:-shared-libgcc -shared-libstdc++>
-    $<$<CONFIG:DebugEditor>:-shared-libgcc -shared-libstdc++>
-    $<$<CONFIG:ReleaseEditor>:-shared-libgcc -shared-libstdc++>
+        $<$<CONFIG:Debug>:-static-libgcc -static-libstdc++>
+        $<$<CONFIG:Release>:-static-libgcc -static-libstdc++>
+        $<$<CONFIG:DebugEditor>:-static-libgcc -static-libstdc++>
+        $<$<CONFIG:ReleaseEditor>:-static-libgcc -static-libstdc++>
     )
 endif() # !MSVC
+
+
+
+# Map custom configurations to standard ones for dependencies
+if(CMAKE_BUILD_TYPE MATCHES "DebugEditor")
+    set(CMAKE_BUILD_TYPE Debug)
+elseif(CMAKE_BUILD_TYPE MATCHES "ReleaseEditor")
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+# Add GLFW subdirectory
+add_subdirectory(${EXTERNAL_DIR}/glfw)
+
+# Restore original build type so our project sees the custom configurations
+set(CMAKE_BUILD_TYPE ${ORIGINAL_BUILD_TYPE})
+
+# Link libraries
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw opengl32)
+
+
 
 # Add precompiled header to the executable
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${PCH_HEADER})
