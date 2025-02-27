@@ -57,6 +57,8 @@ namespace fields_engine {
 		// Returns nullptr if asset with that name already exists or couldn't be created
 		asset_entry* add_asset(std::filesystem::path const& new_asset_path);
 
+
+		void use_context();
 	private:
 		unordered_map<string, asset_entry> m_assets;
 

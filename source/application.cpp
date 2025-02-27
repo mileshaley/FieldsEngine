@@ -108,17 +108,10 @@ bool fields_engine::application::startup() {
 	return true;
 }
 
-
-extern bool swap_app_context();
-
 void fields_engine::application::run() {
-	m_running = true;
-
 	m_prev_time = glfwGetTime();
+	m_running = true;
 	while (m_running) {
-		if (swap_app_context()) {
-			break;
-		}
 		const double new_time = glfwGetTime();
 		m_delta_time = float(new_time - m_prev_time);
 		m_prev_time = new_time;
@@ -127,19 +120,14 @@ void fields_engine::application::run() {
 
 		glfwPollEvents();
 
-		/// update logic goes here
 		glfwGetFramebufferSize(m_window->handle, &m_win_size.x, &m_win_size.y);
 		//glViewport(0, 0, m_win_size.x, m_win_size.y);
 		//VIS_VERIFY;
 		m_scene->tick(m_delta_time);
 		m_scene->draw();
-		
-
-		/// draw logic goes here
 
 #if EDITOR
 		m_editor->tick(m_delta_time);
-		//m_editor->ref_frame_buffer().swap();
 #endif
 
 #if FE_USING_GLFW
@@ -149,9 +137,9 @@ void fields_engine::application::run() {
 #endif // FE_USING_SDL3
 
 #if FE_USING_GLFW
-m_running = !glfwWindowShouldClose(m_window->handle);
+		m_running = !glfwWindowShouldClose(m_window->handle);
 #elif FE_USING_SDL3
-m_running; /// using input
+		m_running; /// using input
 #endif // FE_USING_SDL3
 	}
 }
@@ -174,12 +162,15 @@ bool fields_engine::application::shutdown() {
 	return true;
 }
 
-void fields_engine::application::use() const {
-#if FE_USING_GLFW
-	glfwMakeContextCurrent(m_window->handle);
-#elif FE_USING_SDL3
-	///
-#endif // FE_USING_SDL3
+void fields_engine::application::use_context() {
+	m_window.use();
+	m_input_manager.use();
+#if EDITOR
+	m_editor.use();
+#endif // EDITOR
+	m_asset_manager.use();
+	m_scene.use();
+
 }
 
 fe::input_manager& fields_engine::application::ref_input_manager() {

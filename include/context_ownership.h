@@ -16,13 +16,37 @@
  * Unique Pointer Context Ownership Class                                    *
 \*~-------------------------------------------------------------------------~*/
 
-#define TEST_CTX_REPL true ||
-
 namespace fields_engine {
 
-	using namespace fields_engine;
+	namespace impl {
+		template<typename T, class = void>
+		class use_context {
+		public:
+			static inline constexpr bool has_propagator = false;
+
+			static inline void propagate(T*) {}
+			static inline void propagate_unchecked(T&) {}
+		};
+
+		template<typename T>
+		class use_context<T, std::enable_if_t<std::is_same_v<decltype(&T::use_context), void(T::*)()>>> {
+		public:
+			static inline bool constexpr has_propagator = true;
+
+			static inline void propagate(T* context) {
+				if (context != nullptr) {
+					propagate_unchecked(*context);
+				}
+			}
+			static inline void propagate_unchecked(T& context) {
+				context.use_context();
+			}
+		};
+
+	} // namespace impl
+
 	template<class T>
-	class own_context {
+	class own_context/**/ {
 	public:
 		using type = impl::remove_all_t<T>;
 
@@ -30,7 +54,7 @@ namespace fields_engine {
 			: m_ptr(move(ptr))
 		{
 			T*& current = impl::context_storage<type>::ptr;
-			if (TEST_CTX_REPL current == nullptr) {
+			if (current == nullptr) {
 				current = m_ptr.get();
 				impl::context_storage<type>::initialize();
 			}
@@ -74,6 +98,7 @@ namespace fields_engine {
 
 		inline void use() {
 			impl::context_storage<type>::ptr = m_ptr.get();
+			impl::use_context<T>::propagate(m_ptr.get());
 		}
 
 		FE_NODISCARD inline type& operator*() const noexcept(noexcept(*std::declval<type*>())) {
@@ -105,7 +130,7 @@ namespace fields_engine {
 			: m_data(std::forward<Ts>(args)...)
 		{
 			type*& current = impl::context_storage<type>::ptr;
-			if (TEST_CTX_REPL current == nullptr) {
+			if (current == nullptr) {
 				current = &m_data;
 				impl::context_storage<type>::initialize();
 			}
@@ -120,6 +145,7 @@ namespace fields_engine {
 
 		inline void use() {
 			impl::context_storage<type>::ptr = &m_data;
+			impl::use_context<T>::propagate_unchecked(m_data);
 		}
 
 		FE_NODISCARD inline type* operator->() noexcept {

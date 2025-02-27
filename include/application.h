@@ -17,7 +17,7 @@
 #include "asset_manager.h"
 
 namespace fields_engine {
-#if EDITOR
+#ifdef EDITOR
 	namespace editor {
 		class editor_manager;
 	} // namespace editor
@@ -39,11 +39,10 @@ namespace fields_engine {
 		void run();
 		bool shutdown();
 
-		// Use this window as the primary one
-		void use() const;
+		void use_context();
 		input_manager& ref_input_manager();
 		window_handle& get_window_handle();
-#if EDITOR
+#ifdef EDITOR
 		editor::editor_manager& ref_editor();
 #endif // EDITOR
 
@@ -59,7 +58,7 @@ namespace fields_engine {
 		local_context<input_manager> m_input_manager;
 		local_context<asset_manager> m_asset_manager;
 		own_context<scene> m_scene;
-#if EDITOR
+#ifdef EDITOR
 		own_context<editor::editor_manager> m_editor;
 #endif // EDITOR
 	};

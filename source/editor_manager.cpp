@@ -185,7 +185,11 @@ void fields_engine::editor::editor_manager::tick(float dt) {
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
-		context<application>().use();
+#if FE_USING_GLFW
+		glfwMakeContextCurrent(context<application>().get_window_handle().handle);
+#elif FE_USING_SDL3
+		///
+#endif // FE_USING_SDL3
 	}
 }
 

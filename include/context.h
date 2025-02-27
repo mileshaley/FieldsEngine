@@ -38,7 +38,7 @@ namespace fields_engine {
 						FE_FAILED_ASSERT("Context was never established, check that the type is correct");
 					}
 				}
-#endif // DEBUG
+#endif // _DEBUG
 			}
 		private:
 #ifdef _DEBUG
@@ -46,7 +46,7 @@ namespace fields_engine {
 				static bool initialized = false;
 				return initialized;
 			}
-#endif // DEBUG
+#endif // _DEBUG
 		};
 
 		/// TODO: Relocate

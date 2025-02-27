@@ -71,3 +71,9 @@ fe::asset_entry* fields_engine::asset_manager::add_asset(std::filesystem::path c
 	if (it == m_assets.end()) { return nullptr; }
 	return &it->second;
 }
+
+void fields_engine::asset_manager::use_context() {
+#if EDITOR
+	//m_asset_browser.use();
+#endif // EDITOR
+}
