@@ -314,6 +314,67 @@ bool fields_engine::editor::editor_manager::inspect_window() {
 	return m_selected_ent->display();
 }
 
+static const char* color_names[ImGuiCol_::ImGuiCol_COUNT] = {
+	"ImGuiCol_Text",
+	"ImGuiCol_TextDisabled",
+	"ImGuiCol_WindowBg",					// Background of normal windows
+	"ImGuiCol_ChildBg",						// Background of child windows
+	"ImGuiCol_PopupBg",						// Background of popups, menus, tooltips windows
+	"ImGuiCol_Border",
+	"ImGuiCol_BorderShadow",
+	"ImGuiCol_FrameBg",						// Background of checkbox, radio button, plot, slider, text input
+	"ImGuiCol_FrameBgHovered",
+	"ImGuiCol_FrameBgActive",
+	"ImGuiCol_TitleBg",						// Title bar
+	"ImGuiCol_TitleBgActive",				// Title bar when focused
+	"ImGuiCol_TitleBgCollapsed",			// Title bar when collapsed
+	"ImGuiCol_MenuBarBg",
+	"ImGuiCol_ScrollbarBg",
+	"ImGuiCol_ScrollbarGrab",
+	"ImGuiCol_ScrollbarGrabHovered",
+	"ImGuiCol_ScrollbarGrabActive",
+	"ImGuiCol_CheckMark",					// Checkbox tick and RadioButton circle
+	"ImGuiCol_SliderGrab",
+	"ImGuiCol_SliderGrabActive",
+	"ImGuiCol_Button",
+	"ImGuiCol_ButtonHovered",
+	"ImGuiCol_ButtonActive",
+	"ImGuiCol_Header",						// Header* colors are used for CollapsingHeader, TreeNode, Selectable, MenuItem
+	"ImGuiCol_HeaderHovered",
+	"ImGuiCol_HeaderActive",
+	"ImGuiCol_Separator",
+	"ImGuiCol_SeparatorHovered",
+	"ImGuiCol_SeparatorActive",
+	"ImGuiCol_ResizeGrip",					// Resize grip in lower-right and lower-left corners of windows.
+	"ImGuiCol_ResizeGripHovered",
+	"ImGuiCol_ResizeGripActive",
+	"ImGuiCol_TabHovered",					// Tab background, when hovered
+	"ImGuiCol_Tab",							// Tab background, when tab-bar is focused & tab is unselected
+	"ImGuiCol_TabSelected",					// Tab background, when tab-bar is focused & tab is selected
+	"ImGuiCol_TabSelectedOverline",			// Tab horizontal overline, when tab-bar is focused & tab is selected
+	"ImGuiCol_TabDimmed",					// Tab background, when tab-bar is unfocused & tab is unselected
+	"ImGuiCol_TabDimmedSelected",			// Tab background, when tab-bar is unfocused & tab is selected
+	"ImGuiCol_TabDimmedSelectedOverline",   //..horizontal overline, when tab-bar is unfocused & tab is selected
+	"ImGuiCol_DockingPreview",				// Preview overlay color when about to docking something
+	"ImGuiCol_DockingEmptyBg",				// Background color for empty node (e.g. CentralNode with no window docked into it)
+	"ImGuiCol_PlotLines",
+	"ImGuiCol_PlotLinesHovered",
+	"ImGuiCol_PlotHistogram",
+	"ImGuiCol_PlotHistogramHovered",
+	"ImGuiCol_TableHeaderBg",				// Table header background
+	"ImGuiCol_TableBorderStrong",			// Table outer and header borders (prefer using Alpha=1.0 here)
+	"ImGuiCol_TableBorderLight",			// Table inner borders (prefer using Alpha=1.0 here)
+	"ImGuiCol_TableRowBg",					// Table row background (even rows)
+	"ImGuiCol_TableRowBgAlt",				// Table row background (odd rows)
+	"ImGuiCol_TextLink",					// Hyperlink color
+	"ImGuiCol_TextSelectedBg",
+	"ImGuiCol_DragDropTarget",				// Rectangle highlighting a drop target
+	"ImGuiCol_NavCursor",					// Color of keyboard/gamepad navigation cursor/rectangle, when visible
+	"ImGuiCol_NavWindowingHighlight",		// Highlight window when using CTRL+TAB
+	"ImGuiCol_NavWindowingDimBg",			// Darken/colorize entire screen behind the CTRL+TAB window list, when active
+	"ImGuiCol_ModalWindowDimBg",			// Darken/colorize entire screen behind a modal window, when one is active
+};
+
 bool fields_engine::editor::editor_manager::style_window() {
 	bool modif = false;
 	/// TODO: this is a trainwreck, fix eventually (low priority)
@@ -330,70 +391,11 @@ bool fields_engine::editor::editor_manager::style_window() {
 	ImGuiStyle& style = ImGui::GetStyle();
 	ImVec4* colors = style.Colors;
 
-	// Don't judge me.
-	static const char* color_names[] = {
-		"Text",
-		"TextDisabled",
-		"WindowBg",
-		"ChildBg",
-		"PopupBg",
-		"Border",
-		"BorderShadow",
-		"FrameBg",
-		"FrameBgHovered",
-		"FrameBgActive",
-		"TitleBg",
-		"TitleBgActive",
-		"TitleBgCollapsed",
-		"MenuBarBg",
-		"ScrollbarBg",
-		"ScrollbarGrab",
-		"ScrollbarGrabHovered",
-		"ScrollbarGrabActive",
-		"CheckMark",
-		"SliderGrab",
-		"SliderGrabActive",
-		"Button",
-		"ButtonHovered",
-		"ButtonActive",
-		"Header",
-		"HeaderHovered",
-		"HeaderActive",
-		"Separator",
-		"SeparatorHovered",
-		"SeparatorActive",
-		"ResizeGrip",
-		"ResizeGripHovered",
-		"ResizeGripActive",
-		"Tab",
-		"TabHovered",
-		"TabActive",
-		"TabUnfocused",
-		"TabUnfocusedActive",
-		"DockingPreview",
-		"DockingEmptyBg",
-		"PlotLines",
-		"PlotLinesHovered",
-		"PlotHistogram",
-		"PlotHistogramHovered",
-		"TableHeaderBg",
-		"TableBorderStrong",
-		"TableBorderLight",
-		"TableRowBg",
-		"TableRowBgAlt",
-		"TextSelectedBg",
-		"DragDropTarget",
-		"NavHighlight",
-		"NavWindowingHighlight",
-		"NavWindowingDimBg",
-		"ModalWindowDimBg"
-	};
-
-	for (int i = 0; i < int(sizeof(color_names) / sizeof(*color_names)); ++i) {
+	for (int i = 0; i < ImGuiCol_COUNT; ++i) {
 		modif |= ImGui::ColorEdit4(color_names[i], &colors[i].x);
 	}
 
-	return false;
+	return modif;
 }
 
 bool fields_engine::editor::editor_manager::root_window() {
@@ -611,32 +613,29 @@ void fields_engine::editor::editor_manager::reset_style() const {
 }
 
 void fields_engine::editor::editor_manager::read_style(int slot) const {
-	std::ifstream in_file("test_assets/editor_style" + std::to_string(slot) + ".json");
+	std::ifstream in_file(std::filesystem::path("test_assets") / ("editor_style" + std::to_string(slot) + ".json"));
 	if (!in_file) { return; }
-	json in;
-	in = json::parse(in_file);
+	const json in(json::parse(in_file));
 	json const& in_colors = in.at("colors");
 
 	ImGuiStyle& style = ImGui::GetStyle();
 	ImVec4* colors = style.Colors;
 
 	for (int i = 0; i < ImGuiCol_COUNT; ++i) {
-		const vec4 color = in_colors[i].get<vec4>();
-		colors[i] = { color.r, color.g, color.b, color.a };
+		colors[i] = in_colors[color_names[i]].get<vec4>();
 	}
 }
 
 void fields_engine::editor::editor_manager::write_style(int slot) const {
 	ImGuiStyle const& style = ImGui::GetStyle();
 	ImVec4 const* colors = style.Colors;
-	std::ofstream out_file("test_assets/editor_style" + std::to_string(slot) + ".json");
+	std::ofstream out_file(std::filesystem::path("test_assets") / ("editor_style" + std::to_string(slot) + ".json"));
 	if (!out_file) { return; }
 	json out;
 	json& out_colors = out["colors"];
-
-	for (int i = 0; i < ImGuiCol_COUNT; ++i) {
-		ImVec4 const& color = colors[i];
-		out_colors.push_back(vec4{ color.x, color.y, color.z, color.w });
+	constexpr int num_colors = sizeof(color_names) / sizeof(color_names[0]);
+	for (int i = 0; i < num_colors; ++i) {
+		out_colors[color_names[i]] = vec4(colors[i]);
 	}
 
 	out_file << std::setw(4) << out << std::endl;
