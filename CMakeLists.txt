@@ -82,14 +82,6 @@ else() # ^^^ MSVC / !MSVC vvv
         $<$<CONFIG:DebugEditor>:-O0 -fno-inline -g>
         $<$<CONFIG:ReleaseEditor>:-O2>
     )
-
-    # Apply runtime library flags per-configuration
-    #target_link_options(${PROJECT_NAME} PRIVATE 
-    #    $<$<CONFIG:Debug>:-static-libgcc -static-libstdc++>
-    #    $<$<CONFIG:Release>:-static-libgcc -static-libstdc++>
-    #    $<$<CONFIG:DebugEditor>:-static-libgcc -static-libstdc++>
-    #    $<$<CONFIG:ReleaseEditor>:-static-libgcc -static-libstdc++>
-    #)
 endif() # !MSVC
 
 # Map custom configurations to standard ones for dependencies
