@@ -35,10 +35,10 @@ fields_engine::editor::asset_browser::asset_browser()
 	, m_wait_for_mouse_trigger(false)
 	, m_address_bar_state(address_bar_state::inactive)
 	, m_rename_state(rename_state::inactive)
-	, m_missing_thumbnail("engine_assets/missing_asset_thumbnail.png")
-	, m_folder_thumbnail("engine_assets/folder_thumbnail.png")
-	, m_material_thumbnail("engine_assets/material_asset_thumbnail.png")
-	, m_mesh_thumbnail("engine_assets/mesh_asset_thumbnail.png")
+	, m_missing_thumbnail(std::filesystem::path("engine_assets") / "missing_asset_thumbnail.png")
+	, m_folder_thumbnail(std::filesystem::path("engine_assets") / "folder_thumbnail.png")
+	, m_material_thumbnail(std::filesystem::path("engine_assets") / "material_asset_thumbnail.png")
+	, m_mesh_thumbnail(std::filesystem::path("engine_assets") / "mesh_asset_thumbnail.png")
 {
 	context<editor::editor_manager>().add_window(make_own<editor::editor_window>(
 		"Asset Browser",
@@ -257,7 +257,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 	if (no_back_history) {
 		ImGui::EndDisabled();
 	} else if (m_directory_history.bottom_distance() >= 2 && ImGui::BeginItemTooltip()) {
-		ImGui::Text(("Back to " + m_directory_history[m_directory_history.top_index() - 1].filename().string()).c_str());
+		ImGui::Text("Back to %s", m_directory_history[m_directory_history.top_index() - 1].filename().string().c_str());
 		ImGui::EndTooltip();
 	}
 	if (no_forth_history) {
@@ -271,7 +271,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 	if (no_forth_history) {
 		ImGui::EndDisabled();
 	} else if (!m_directory_history.at_top() && ImGui::BeginItemTooltip()) {
-		ImGui::Text(("Forward to " + m_directory_history[m_directory_history.top_index() + 1].filename().string()).c_str());
+		ImGui::Text("Forward to %s", m_directory_history[m_directory_history.top_index() + 1].filename().string().c_str());
 		ImGui::EndTooltip();
 	}
 	ImGui::SameLine();
@@ -499,7 +499,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 						ImGui::SetDragDropPayload("ab_other", path_str.c_str(), path_str.size());
 					}
 					ImGui::Image(ImTextureID(thumbnail), { 80,80 }, vec2(0, 1), vec2(1, 0));
-					ImGui::Text(entry.path.string().c_str());
+					ImGui::Text("%s", entry.path.string().c_str());
 					ImGui::EndDragDropSource();
 				} // Drag drop source
 
@@ -530,6 +530,7 @@ bool fields_engine::editor::asset_browser::display_window() {
 				// entry.asset is guaranteed to be non-null
 				ImGui::TextColored(
 					ImVec4(1, 1, 1, 0.65f), // Transparent white
+					"%s",
 					entry.asset->get_type().data()
 				);
 			} else if (entry.type == file_type::other) {
@@ -578,10 +579,10 @@ bool fields_engine::editor::asset_browser::display_window() {
 			} else {
 				if (entry.type == file_type::asset) {
 					// Assets have type info in their name and we do not want to display it
-					ImGui::Text(ellipsis_compress_middle(
+					ImGui::Text("%s", ellipsis_compress_middle(
 						entry.path.stem().stem().string(), name_compress_max).c_str());
 				} else {
-					ImGui::Text(ellipsis_compress_middle(
+					ImGui::Text("%s", ellipsis_compress_middle(
 						entry.path.filename().string(), name_compress_max).c_str());
 				}
 			}

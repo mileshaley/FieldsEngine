@@ -89,7 +89,7 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 
 
 	ImGui_ImplGlfw_InitForOpenGL(win.handle, true);
-	ImGui_ImplOpenGL3_Init("#version 430");
+	ImGui_ImplOpenGL3_Init("#version 330");
 
 	reset_style();;
 
@@ -222,7 +222,8 @@ bool fields_engine::editor::editor_manager::icon_selector_popup(editor_icon& sel
 
 	const float width = ImGui::GetContentRegionAvail().x;
 	constexpr float min_width = 20;
-	const int num_cols = int(std::ceilf(width / min_width));
+	
+	const int num_cols = int(glm::ceil(width / min_width));
 	bool changed = false;
 	if (ImGui::BeginPopup("icon_selector_popup")) {
 		static string search = "";

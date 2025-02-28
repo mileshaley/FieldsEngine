@@ -143,7 +143,7 @@ void fields_engine::entity::write(json& out) const {
 #ifdef EDITOR
 bool fields_engine::entity::display() {
 	bool modif = false;
-	ImGui::Text(m_name.c_str());
+	ImGui::Text("%s", m_name.c_str());
 
 	for (own<spatial_component> const& comp : m_spatial_components) {
 		ImGui::PushID(comp.get());
