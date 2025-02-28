@@ -75,7 +75,7 @@ bool fields_engine::camera_component::display() {
 
 void fields_engine::camera_component::recalculate_view_matrix() {
 	transformer const& tr = ref_transform();
-	m_world_view_matrix = glm::inverse(tr.world_matrix());
+	m_world_view_matrix = glm::inverse(glm::rotate(tr.world_matrix(), glm::radians(90.0f), {1,0,0}));
 }
 
 void fields_engine::camera_component::recalculate_proj_matrix() {

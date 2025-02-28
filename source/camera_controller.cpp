@@ -41,42 +41,41 @@ bool fields_engine::camera_controller::display() {
 
 void fields_engine::camera_controller::tick(float dt) {
 	constexpr glm::mat4 identity(1);
-	input_manager const& in = context<input_manager>();
+	input_manager const& input = context<input_manager>();
 
 	// Allow panning with middle click
-	if (in.is_button_held(GLFW_MOUSE_BUTTON_3, true)) {
+	if (input.is_button_held(GLFW_MOUSE_BUTTON_3, true)) {
 		transformer& tr = get_owner()->ref_transform();
 		// TODO: make dynamic, possibly using the distance to the middle clicked object
-		vec2 delta = in.get_delta_mouse_move() * 0.0085f;
+		vec2 delta = input.get_delta_mouse_move() * 0.0085f;
 		const vec3 up = tr.get_local_forward_vector();
 		const vec3 right = tr.get_local_right_vector();
 		tr.set_local_position(tr.get_local_position() + right * -delta.x + up * delta.y);
 	}
 
 	// Lock all inputs besides panning behind right click hold
-	if (!in.is_button_held(GLFW_MOUSE_BUTTON_2, true)) {
+	if (!input.is_button_held(GLFW_MOUSE_BUTTON_2, true)) {
 		return;
 	}
 
 	if (m_mode == mode::pitch_yaw) {
 		const ivec3 delta{
-			int(in.is_button_held(GLFW_KEY_S)) - int(in.is_button_held(GLFW_KEY_W)),
-			int(in.is_button_held(GLFW_KEY_D)) - int(in.is_button_held(GLFW_KEY_A)),
-			int(in.is_button_held(GLFW_KEY_SPACE)) - int(in.is_button_held(GLFW_KEY_LEFT_SHIFT))
+			int(input.is_button_held(GLFW_KEY_D)) - int(input.is_button_held(GLFW_KEY_A)),
+			int(input.is_button_held(GLFW_KEY_W)) - int(input.is_button_held(GLFW_KEY_S)),
+			int(input.is_button_held(GLFW_KEY_SPACE)) - int(input.is_button_held(GLFW_KEY_LEFT_SHIFT))
 		};
 
 		if (delta.x || delta.y || delta.z) {
 			transformer& tr = get_owner()->ref_transform();
-
-			vec3 forward = tr.get_local_up_vector();
+			vec3 forward = tr.get_local_forward_vector();
 			vec3 right = tr.get_local_right_vector();
 			forward.z = 0;
 			right.z = 0;
 			forward = glm::normalize(forward);
 			right = glm::normalize(right);
 			vec3 move 
-				= forward * float(delta.x) 
-				+ right * float(delta.y) 
+				= right * float(delta.x) 
+				+ forward * float(delta.y) 
 				+ vec3{ 0, 0, delta.z };
 			move = glm::normalize(move) * m_speed * dt;
 
@@ -84,9 +83,9 @@ void fields_engine::camera_controller::tick(float dt) {
 		}
 	} else if (m_mode == mode::all_axes) {
 		const ivec3 delta{
-			int(in.is_button_held(GLFW_KEY_D)) - int(in.is_button_held(GLFW_KEY_A)),
-			int(in.is_button_held(GLFW_KEY_SPACE)) - int(in.is_button_held(GLFW_KEY_LEFT_SHIFT)),
-			int(in.is_button_held(GLFW_KEY_S)) - int(in.is_button_held(GLFW_KEY_W))
+			int(input.is_button_held(GLFW_KEY_D)) - int(input.is_button_held(GLFW_KEY_A)),
+			int(input.is_button_held(GLFW_KEY_W)) - int(input.is_button_held(GLFW_KEY_S)),
+			int(input.is_button_held(GLFW_KEY_SPACE)) - int(input.is_button_held(GLFW_KEY_LEFT_SHIFT)),
 		};
 
 		if (delta.x || delta.y || delta.z) {
@@ -98,9 +97,9 @@ void fields_engine::camera_controller::tick(float dt) {
 		}
 	}
 
-	if (in.did_mouse_move()) {
+	if (input.did_mouse_move()) {
 		transformer& tr = get_owner()->ref_transform();
-		vec2 delta = -in.get_delta_mouse_move() * m_sensitivity;
+		vec2 delta = -input.get_delta_mouse_move() * m_sensitivity;
 		if (m_invert_look_y) {
 			delta.y *= -1;
 		}
