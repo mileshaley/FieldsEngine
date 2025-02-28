@@ -11,7 +11,7 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "graphics.h"
-#include "glfw/glfw3.h"
+#include "glfw/include/GLFW/glfw3.h"
 #include "application.h"
 #include <filesystem>
 #include "imgui/imgui_stdlib.h"

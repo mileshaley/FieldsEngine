@@ -10,7 +10,7 @@
 
 /// TODO: remove
 #include "glad/glad.h"
-#include "glfw/glfw3.h"
+#include "glfw/include/GLFW/glfw3.h"
 #include "glm/gtx/transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "shader.h"

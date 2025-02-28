@@ -17,7 +17,7 @@
 #endif // EDITOR
 
 #if FE_USING_GLFW
-#include "glfw/glfw3.h"
+#include "glfw/include/GLFW/glfw3.h"
 #elif FE_USING_SDL3
 #include "SDL3/SDL.h"
 #endif // FE_USING_SDL3

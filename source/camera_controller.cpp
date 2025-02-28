@@ -9,7 +9,7 @@
 #include "context.h"
 #include "input.h"
 #include "application.h"
-#include "glfw/glfw3.h"
+#include "glfw/include/GLFW/glfw3.h"
 #include "entity.h"
 #include "glm/gtc/matrix_transform.hpp"
 
