@@ -40,9 +40,13 @@ namespace fields_engine::editor {
 
 	class editor_manager {
 	public:
-		editor_manager(window_handle& win);
+		editor_manager();
+
+		void startup(window_handle& win);
 		void tick(float dt);
+		void shutdown();
 		~editor_manager();
+
 
 
 		static void open_icon_selector();

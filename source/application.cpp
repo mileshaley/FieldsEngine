@@ -101,9 +101,11 @@ bool fields_engine::application::startup() {
 	vis::impl::initialize();
 
 	m_project = make_own<project>(std::filesystem::path("."));
-	m_scene = make_own<scene>();
+	if (!m_project) { return false; }
 #if EDITOR
-	m_editor = make_own<editor::editor_manager>(m_window.get());
+	m_editor = make_own<editor::editor_manager>();
+	if (!m_editor) { return false; }
+	m_editor->startup(m_window.get());
 #endif // EDITOR
 	m_asset_manager->startup();
 
@@ -111,19 +113,19 @@ bool fields_engine::application::startup() {
 		return false;
 	}
 
+	//std::ifstream scene_file(std::filesystem::path("assets") 
+	//	/ (proj_settings.default_scene_name + ".level.fea")
+	//);
+	//if (!scene_file) {
+	//	return false;
+	//}
+	//const json scene_in(json::parse(scene_file, nullptr, false));
+	//if (scene_in.is_discarded()) {
+	//	return false;
+	//}
 	project_settings& proj_settings = m_project->get_settings();
-	std::ifstream scene_file(std::filesystem::path("assets") 
-		/ (proj_settings.default_scene_name + ".level.fea")
-	);
-	if (!scene_file) {
-		return false;
-	}
-	const json scene_in(json::parse(scene_file, nullptr, false));
-	if (scene_in.is_discarded()) {
-		return false;
-	}
-
-	m_scene->read(scene_in);
+	m_scene = get_asset<scene>(proj_settings.default_scene_name);
+	if (!m_scene) { return false; }
 	m_scene->startup();
 
 	return true;
@@ -171,7 +173,7 @@ bool fields_engine::application::shutdown() {
 #if EDITOR
 	m_editor.reset();
 #endif
-	m_scene.reset();
+	m_scene = nullptr;
 	m_project.reset();
 	m_input_manager->shutdown();
 	m_asset_manager->shutdown();
@@ -192,7 +194,7 @@ void fields_engine::application::use_context() {
 	m_editor.use();
 #endif // EDITOR
 	m_asset_manager.use();
-	m_scene.use();
+	//m_scene.use();
 	m_project.use();
 }
 

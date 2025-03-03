@@ -10,7 +10,7 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include "transform.h"
+#include "asset.h"
 
 namespace fields_engine {
 	class entity;
@@ -26,13 +26,14 @@ namespace fields_engine {
 
 namespace fields_engine {
 
-	class scene {
+	class scene : public asset {
+		FE_REFLECT_BODY(scene);
 	public:
 		scene();
-		~scene();
+		virtual ~scene() override;
 
-		void read(json const& in);
-		void write(json& out) const;
+		virtual void read(json const& in) override;
+		virtual void write(json& out) const override;
 
 		void startup();
 		void tick(float dt);

@@ -29,7 +29,7 @@
  * Editor Manager Definitions                                                *
 \*~-------------------------------------------------------------------------~*/
 
-fields_engine::editor::editor_manager::editor_manager(window_handle& win)
+fields_engine::editor::editor_manager::editor_manager()
 	: m_gui_context(ImGui::CreateContext())
 	, m_frame_buffer(ivec2{ 1920, 1080 })
 	, m_fonts()
@@ -41,8 +41,12 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 	, m_new_window_buf()
 	, m_new_window_icon(ICON_ELLIPSIS_VERTICAL)
 	, m_selected_ent(nullptr)
-{
-	ImGui::SetCurrentContext(m_gui_context);
+{}
+
+fields_engine::editor::editor_manager::~editor_manager() = default;
+
+void fields_engine::editor::editor_manager::startup(window_handle& win) {
+ImGui::SetCurrentContext(m_gui_context);
 	ImGuiIO& io = ImGui::GetIO();
 
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
@@ -109,11 +113,7 @@ fields_engine::editor::editor_manager::editor_manager(window_handle& win)
 	});
 	demo_window->close();
 
-	add_window(make_own<editor_window>(
-		"Scene", 
-		std::bind(&scene::display_window, &context<scene>()),
-		ICON_MOUNTAIN_SUN
-	));
+
 
 	add_window(make_own<editor_window>(
 		"Game View",
@@ -193,7 +193,7 @@ void fields_engine::editor::editor_manager::tick(float dt) {
 	}
 }
 
-fields_engine::editor::editor_manager::~editor_manager() {
+void fields_engine::editor::editor_manager::shutdown() {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -207,7 +207,6 @@ fields_engine::editor::editor_manager::~editor_manager() {
 //		1.0f
 //	};
 //}
-
 
 static bool do_nothing() {
 	return false;

@@ -61,6 +61,14 @@ void fields_engine::scene::write(json& out) const {
 }
 
 void fields_engine::scene::startup() {
+
+#ifdef EDITOR
+	context<editor::editor_manager>().add_window(make_own<editor::editor_window>(
+		"Scene",
+		std::bind(&scene::display_window, this),
+		ICON_MOUNTAIN_SUN
+	));
+#endif // EDITOR
 	for (own<entity> const& ent : m_entities) {
 		ent->init();
 	}

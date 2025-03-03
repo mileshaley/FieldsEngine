@@ -39,6 +39,7 @@ void fields_engine::asset_entry::set_path(std::filesystem::path const& path) {
 }
 
 bool fields_engine::asset_entry::load() {
+	/// TODO: Remove this redundant check
 	if (!std::filesystem::exists(m_path)) {
 		return false;
 	}

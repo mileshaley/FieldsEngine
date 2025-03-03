@@ -59,7 +59,7 @@ namespace fields_engine {
 		local_context<input_manager> m_input_manager;
 		local_context<asset_manager> m_asset_manager;
 		own_context<project> m_project;
-		own_context<scene> m_scene;
+		manage_context<scene> m_scene;
 #ifdef EDITOR
 		own_context<editor::editor_manager> m_editor;
 #endif // EDITOR

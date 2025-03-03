@@ -12,9 +12,7 @@
 
 #include "context.h"
 
-/*~-------------------------------------------------------------------------~*\
- * Unique Pointer Context Ownership Class                                    *
-\*~-------------------------------------------------------------------------~*/
+
 
 namespace fields_engine {
 
@@ -44,6 +42,10 @@ namespace fields_engine {
 		};
 
 	} // namespace impl
+
+/*~-------------------------------------------------------------------------~*\
+ * Unique Pointer Context Ownership Class                                    *
+\*~-------------------------------------------------------------------------~*/
 
 	template<class T>
 	class own_context/**/ {
@@ -101,6 +103,10 @@ namespace fields_engine {
 			impl::use_context<T>::propagate(m_ptr.get());
 		}
 
+		FE_NODISCARD inline bool operator!() const noexcept {
+			return m_ptr == nullptr;
+		}
+
 		FE_NODISCARD inline type& operator*() const noexcept(noexcept(*std::declval<type*>())) {
 			return *m_ptr;
 		}
@@ -114,6 +120,79 @@ namespace fields_engine {
 
 	private:
 		own<type> m_ptr;
+	};
+
+/*~-------------------------------------------------------------------------~*\
+ * Non-Owning Pointer Context Manegement Class                               *
+\*~-------------------------------------------------------------------------~*/
+
+	template<class T>
+	class manage_context {
+	public:
+		using type = impl::remove_all_t<T>;
+
+		inline manage_context(type* ptr)
+			: m_ptr(ptr) {
+			T*& current = impl::context_storage<type>::ptr;
+			if (current == nullptr) {
+				current = m_ptr;
+				impl::context_storage<type>::initialize();
+			}
+		}
+
+		inline ~manage_context() {
+			type*& current = impl::context_storage<type>::ptr;
+			if (current == m_ptr) {
+				current = nullptr;
+			}
+		}
+
+		inline manage_context& operator=(type* rhs) {
+			type*& current = impl::context_storage<type>::ptr;
+			if (current == m_ptr) {
+				current = rhs;
+			} else if (current == nullptr) {
+				current = rhs;
+				impl::context_storage<type>::initialize();
+			}
+			m_ptr = rhs;
+			return *this;
+		}
+
+		inline manage_context& operator=(manage_context&& rhs) noexcept {
+			type*& current = impl::context_storage<type>::ptr;
+			if (current == m_ptr) {
+				current = rhs;
+			} else if (current == nullptr) {
+				current = rhs;
+				impl::context_storage<type>::initialize();
+			}
+			m_ptr = rhs.m_ptr;
+			return *this;
+		}
+
+		inline void use() {
+			impl::context_storage<type>::ptr = m_ptr;
+			impl::use_context<T>::propagate(m_ptr);
+		}
+
+		FE_NODISCARD inline bool operator!() const noexcept {
+			return m_ptr == nullptr;
+		}
+
+		FE_NODISCARD inline type& operator*() const noexcept(noexcept(*std::declval<type*>())) {
+			return *m_ptr;
+		}
+		FE_NODISCARD inline type* operator->() const noexcept {
+			return m_ptr;
+		}
+
+		FE_NODISCARD inline type* get() const noexcept {
+			return m_ptr;
+		}
+
+	private:
+		type* m_ptr;
 	};
 
 /*~-------------------------------------------------------------------------~*\
