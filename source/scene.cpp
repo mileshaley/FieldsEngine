@@ -172,11 +172,12 @@ bool fields_engine::scene::display_window() {
 		modif = true;
 		edit.set_selected_entity(nullptr);
 		shutdown();
+		reload();
 		startup();
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("   Save to file   ")) {
-		//write();
+		save();
 	}
 	ImGui::BeginDisabled();
 	if (ImGui::Button("   Swap app context   ")) {
@@ -188,6 +189,13 @@ bool fields_engine::scene::display_window() {
 		modif |= ImGui::ColorEdit3("Ambient color", &m_ambient_color.x);
 		modif |= ImGui::ColorEdit3("Light color", &m_light_color.x);
 		modif |= ImGui::DragFloat3("Light Position", &m_light_pos.x);
+	}
+	ImGui::SeparatorText("Entities");
+	if (ImGui::Button(ICON_SQUARE_PLUS" Add Enttity")) {
+		/// TODO: Add mechanism for avoiding duplicate entity names
+		if (own<entity> new_entity = make_own<entity>("New Entity")) {
+			m_entities.emplace_back(move(new_entity));
+		}
 	}
 	const entity* curr_selected = edit.get_selected_entity();
 	for (own<entity> const& ent : m_entities) {

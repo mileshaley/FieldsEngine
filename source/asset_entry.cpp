@@ -38,6 +38,10 @@ void fields_engine::asset_entry::set_path(std::filesystem::path const& path) {
 	m_name = m_str_id.substr(0, m_str_id_separator_offset);
 }
 
+std::filesystem::path const& fields_engine::asset_entry::get_path() const {
+	return m_path;
+}
+
 bool fields_engine::asset_entry::load() {
 	/// TODO: Remove this redundant check
 	if (!std::filesystem::exists(m_path)) {

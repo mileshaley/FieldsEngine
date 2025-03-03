@@ -32,12 +32,13 @@ namespace fields_engine {
 		~asset_entry();
 
 		void set_path(std::filesystem::path const& path);
-
+		std::filesystem::path const& get_path() const;
 		bool load();
 
 		bool is_loaded() const;
 		asset* get_load_asset();
 		asset* get_asset_unchecked();
+
 
 		string const& get_str_id() const;
 		string const& get_name() const;

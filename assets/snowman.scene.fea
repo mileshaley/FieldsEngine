@@ -1,2723 +1,2723 @@
 {
-"data":[
-    {
-        "name": "Tree0",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -11.0,
-                    -15.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree1",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -37.0,
-                    -27.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree2",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -38.0,
-                    29.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree3",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -25.0,
-                    -31.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree4",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    45.0,
-                    -5.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree5",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -32.0,
-                    3.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree6",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -37.0,
-                    -33.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree7",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -45.0,
-                    42.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree8",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    39.0,
-                    -19.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree9",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    41.0,
-                    -41.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree10",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -47.0,
-                    -33.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree11",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    47.0,
-                    44.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree12",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    23.0,
-                    44.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree13",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -37.0,
-                    -34.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree14",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -3.0,
-                    -50.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree15",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -34.0,
-                    40.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree16",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    42.0,
-                    30.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree17",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    38.0,
-                    45.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree18",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -43.0,
-                    -40.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Tree19",
-        "root": {
-            "children": [
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            5.0,
-                            5.0,
-                            5.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.200000047683716
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            4.199999809265137,
-                            4.199999809265137,
-                            4.199999809265137
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "needle",
-                    "mesh": "tree_top",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            4.400000095367432
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            3.4000000953674316,
-                            3.4000000953674316,
-                            3.4000000953674316
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "wood",
-            "mesh": "tree_trunk",
-            "transform": {
-                "position": [
-                    -39.0,
-                    -14.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "basic_components": [
-            {
-                "type": "camera_controller"
-            }
-        ],
-        "name": "Camera",
-        "root": {
-            "far": 5000.0,
-            "fov": 90.0,
-            "near": 0.25,
-            "orthographic": false,
-            "transform": {
-                "position": [
-                    6.153759956359863,
-                    -12.995818138122559,
-                    10.287303924560547
-                ],
-                "rotation": [
-                    0.21626555919647217,
-                    0.04399982467293739,
-                    -0.19445164501667023,
-                    -0.9557566046714783
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "camera_component",
-            "zoom": 1.0
-        }
-    },
-    {
-        "name": "Nutcracker",
-        "root": {
-            "material": "nose",
-            "mesh": "nutcracker",
-            "transform": {
-                "position": [
-                    -5.0,
-                    -5.0,
-                    2.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Bed",
-        "root": {
-            "material": "grass",
-            "mesh": "bed",
-            "transform": {
-                "position": [
-                    -5.0,
-                    -5.0,
-                    0.75
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Ground",
-        "root": {
-            "material": "grass",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    0.0,
-                    0.0,
-                    -1.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    200.0,
-                    200.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Mound",
-        "root": {
-            "material": "fround",
-            "mesh": "mound",
-            "transform": {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    20.0,
-                    20.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Direction Indicator",
-        "root": {
-            "children": [
-                {
-                    "material": "x",
-                    "mesh": "cube",
-                    "transform": {
-                        "position": [
-                            2.0999999046325684,
-                            0.0,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            2.0,
-                            2.0,
-                            2.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "y",
-                    "mesh": "cube",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            2.0999999046325684,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            2.0,
-                            2.0,
-                            2.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                },
-                {
-                    "material": "z",
-                    "mesh": "cube",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            2.0999999046325684
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            2.0,
-                            2.0,
-                            2.0
-                        ]
-                    },
-                    "type": "mesh_component"
-                }
-            ],
-            "material": "d",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    10.0,
-                    0.0,
-                    3.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Vx",
-        "root": {
-            "material": "x",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    14.0,
-                    0.0,
-                    3.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Vy",
-        "root": {
-            "material": "y",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    10.0,
-                    4.0,
-                    3.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Vz",
-        "root": {
-            "material": "z",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    10.0,
-                    0.0,
-                    7.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Wx",
-        "root": {
-            "material": "x",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    16.0,
-                    0.0,
-                    3.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    0.5,
-                    0.5,
-                    0.5
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Wy",
-        "root": {
-            "material": "y",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    10.0,
-                    6.0,
-                    3.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    0.5,
-                    0.5,
-                    0.5
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Wz",
-        "root": {
-            "material": "z",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    10.0,
-                    0.0,
-                    9.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    0.5,
-                    0.5,
-                    0.5
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Cx",
-        "root": {
-            "material": "x",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    18.0,
-                    0.0,
-                    3.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    0.25,
-                    0.25,
-                    0.25
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Cy",
-        "root": {
-            "material": "y",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    10.0,
-                    8.0,
-                    3.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    0.25,
-                    0.25,
-                    0.25
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Cz",
-        "root": {
-            "material": "z",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    10.0,
-                    0.0,
-                    11.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "scale": [
-                    0.25,
-                    0.25,
-                    0.25
-                ]
-            },
-            "type": "mesh_component"
-        }
-    },
-    {
-        "name": "Snowman",
-        "root": {
-            "children": [
-                {
-                    "children": [
-                        {
-                            "material": "hat",
-                            "mesh": "eye",
-                            "transform": {
-                                "position": [
-                                    0.0,
-                                    0.5299999713897705,
-                                    -0.15000000596046448
-                                ],
-                                "rotation": [
-                                    0.7066760063171387,
-                                    -0.024677669629454613,
-                                    0.024677669629454613,
-                                    0.7066760063171387
-                                ],
-                                "scale": [
-                                    0.18000000715255737,
-                                    0.18000000715255737,
-                                    0.019999999552965164
-                                ]
-                            },
-                            "type": "mesh_component"
-                        },
-                        {
-                            "material": "hat",
-                            "mesh": "eye",
-                            "transform": {
-                                "position": [
-                                    0.0,
-                                    0.5299999713897705,
-                                    0.09000000357627869
-                                ],
-                                "rotation": [
-                                    0.5963677763938904,
-                                    -0.37992820143699646,
-                                    0.37992820143699646,
-                                    0.5963677763938904
-                                ],
-                                "scale": [
-                                    0.18000000715255737,
-                                    0.18000000715255737,
-                                    0.019999999552965164
-                                ]
-                            },
-                            "type": "mesh_component"
-                        },
-                        {
-                            "material": "hat",
-                            "mesh": "eye",
-                            "transform": {
-                                "position": [
-                                    0.0,
-                                    0.5299999713897705,
-                                    0.3199999928474426
-                                ],
-                                "rotation": [
-                                    0.6941152215003967,
-                                    0.1349223405122757,
-                                    -0.1349223405122757,
-                                    0.6941152215003967
-                                ],
-                                "scale": [
-                                    0.18000000715255737,
-                                    0.18000000715255737,
-                                    0.019999999552965164
-                                ]
-                            },
-                            "type": "mesh_component"
-                        },
-                        {
-                            "material": "scarf",
-                            "mesh": "cube",
-                            "transform": {
-                                "position": [
-                                    0.0,
-                                    0.0,
-                                    0.6000000238418579
-                                ],
-                                "rotation": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ],
-                                "scale": [
-                                    0.800000011920929,
-                                    0.800000011920929,
-                                    0.20000000298023224
-                                ]
-                            },
-                            "type": "mesh_component"
-                        },
-                        {
-                            "children": [
-                                {
-                                    "children": [
-                                        {
-                                            "material": "nose",
-                                            "mesh": "carrot",
-                                            "transform": {
-                                                "position": [
-                                                    0.0,
-                                                    0.0,
-                                                    0.25
-                                                ],
-                                                "rotation": [
-                                                    0.0,
-                                                    0.0,
-                                                    0.0,
-                                                    1.0
-                                                ],
-                                                "scale": [
-                                                    0.3499999940395355,
-                                                    0.3499999940395355,
-                                                    1.0
-                                                ]
-                                            },
-                                            "type": "mesh_component"
-                                        },
-                                        {
-                                            "material": "hat",
-                                            "mesh": "eye",
-                                            "transform": {
-                                                "position": [
-                                                    0.25,
-                                                    -0.25,
-                                                    -0.23000000417232513
-                                                ],
-                                                "rotation": [
-                                                    0.0,
-                                                    0.0,
-                                                    0.0,
-                                                    1.0
-                                                ],
-                                                "scale": [
-                                                    0.25,
-                                                    0.25,
-                                                    0.05000000074505806
-                                                ]
-                                            },
-                                            "type": "mesh_component"
-                                        },
-                                        {
-                                            "material": "hat",
-                                            "mesh": "eye",
-                                            "transform": {
-                                                "position": [
-                                                    -0.25,
-                                                    -0.25,
-                                                    -0.23000000417232513
-                                                ],
-                                                "rotation": [
-                                                    0.0,
-                                                    0.0,
-                                                    0.0,
-                                                    1.0
-                                                ],
-                                                "scale": [
-                                                    0.25,
-                                                    0.25,
-                                                    0.05000000074505806
-                                                ]
-                                            },
-                                            "type": "mesh_component"
-                                        }
-                                    ],
-                                    "transform": {
-                                        "position": [
-                                            0.0,
-                                            0.75,
-                                            0.07500000298023224
-                                        ],
-                                        "rotation": [
-                                            -0.7071067690849304,
-                                            0.0,
-                                            0.0,
-                                            0.7071067690849304
-                                        ],
-                                        "scale": [
-                                            1.0,
-                                            1.0,
-                                            1.0
-                                        ]
-                                    },
-                                    "type": "spatial_component"
-                                },
-                                {
-                                    "children": [
-                                        {
-                                            "material": "hat",
-                                            "mesh": "cube",
-                                            "transform": {
-                                                "position": [
-                                                    0.0,
-                                                    0.0,
-                                                    4.75
-                                                ],
-                                                "rotation": [
-                                                    0.0,
-                                                    0.0,
-                                                    0.0,
-                                                    1.0
-                                                ],
-                                                "scale": [
-                                                    0.6700000166893005,
-                                                    0.6700000166893005,
-                                                    8.670000076293945
-                                                ]
-                                            },
-                                            "type": "mesh_component"
-                                        }
-                                    ],
-                                    "material": "hat",
-                                    "mesh": "cube",
-                                    "transform": {
-                                        "position": [
-                                            0.0,
-                                            0.0,
-                                            0.5699999928474426
-                                        ],
-                                        "rotation": [
-                                            0.0,
-                                            0.0,
-                                            0.0,
-                                            1.0
-                                        ],
-                                        "scale": [
-                                            1.5,
-                                            1.5,
-                                            0.15000000596046448
-                                        ]
-                                    },
-                                    "type": "mesh_component"
-                                }
+    "data": [
+        {
+            "name": "Tree0",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
                             ],
-                            "material": "snow",
-                            "mesh": "cube",
-                            "transform": {
-                                "position": [
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ],
-                                "rotation": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ],
-                                "scale": [
-                                    0.75,
-                                    0.75,
-                                    0.75
-                                ]
-                            },
-                            "type": "mesh_component"
-                        }
-                    ],
-                    "material": "snow",
-                    "mesh": "cube",
-                    "transform": {
-                        "position": [
-                            0.0,
-                            0.0,
-                            0.75
-                        ],
-                        "rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "scale": [
-                            0.75,
-                            0.75,
-                            0.75
-                        ]
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
                     },
-                    "type": "mesh_component"
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -11.0,
+                        -15.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree1",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -37.0,
+                        -27.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree2",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -38.0,
+                        29.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree3",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -25.0,
+                        -31.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree4",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        45.0,
+                        -5.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree5",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -32.0,
+                        3.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree6",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -37.0,
+                        -33.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree7",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -45.0,
+                        42.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree8",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        39.0,
+                        -19.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree9",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        41.0,
+                        -41.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree10",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -47.0,
+                        -33.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree11",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        47.0,
+                        44.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree12",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        23.0,
+                        44.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree13",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -37.0,
+                        -34.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree14",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -3.0,
+                        -50.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree15",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -34.0,
+                        40.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree16",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        42.0,
+                        30.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree17",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        38.0,
+                        45.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree18",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -43.0,
+                        -40.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Tree19",
+            "root": {
+                "children": [
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                5.0,
+                                5.0,
+                                5.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.200000047683716
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                4.199999809265137,
+                                4.199999809265137,
+                                4.199999809265137
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "needle",
+                        "mesh": "tree_top",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                4.400000095367432
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                3.4000000953674316,
+                                3.4000000953674316,
+                                3.4000000953674316
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
+                ],
+                "material": "wood",
+                "mesh": "tree_trunk",
+                "transform": {
+                    "position": [
+                        -39.0,
+                        -14.0,
+                        4.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "basic_components": [
+                {
+                    "type": "camera_controller"
                 }
             ],
-            "material": "snow",
-            "mesh": "cube",
-            "transform": {
-                "position": [
-                    0.0,
-                    0.0,
-                    0.800000011920929
+            "name": "Camera",
+            "root": {
+                "far": 5000.0,
+                "fov": 90.0,
+                "near": 0.25,
+                "orthographic": false,
+                "transform": {
+                    "position": [
+                        0.18480002880096436,
+                        -13.348880767822266,
+                        14.93548583984375
+                    ],
+                    "rotation": [
+                        0.3578742444515228,
+                        -0.01875520497560501,
+                        0.04885874316096306,
+                        -0.9322946667671204
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "camera_component",
+                "zoom": 1.0
+            }
+        },
+        {
+            "name": "Nutcracker",
+            "root": {
+                "material": "nose",
+                "mesh": "nutcracker",
+                "transform": {
+                    "position": [
+                        -5.0,
+                        -5.0,
+                        2.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Bed",
+            "root": {
+                "material": "grass",
+                "mesh": "bed",
+                "transform": {
+                    "position": [
+                        -5.0,
+                        -5.0,
+                        0.75
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Ground",
+            "root": {
+                "material": "grass",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        0.0,
+                        0.0,
+                        -1.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        200.0,
+                        200.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Mound",
+            "root": {
+                "material": "fround",
+                "mesh": "mound",
+                "transform": {
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        20.0,
+                        20.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Direction Indicator",
+            "root": {
+                "children": [
+                    {
+                        "material": "x",
+                        "mesh": "cube",
+                        "transform": {
+                            "position": [
+                                2.0999999046325684,
+                                0.0,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                2.0,
+                                2.0,
+                                2.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "y",
+                        "mesh": "cube",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                2.0999999046325684,
+                                0.0
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                2.0,
+                                2.0,
+                                2.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    },
+                    {
+                        "material": "z",
+                        "mesh": "cube",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                2.0999999046325684
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                2.0,
+                                2.0,
+                                2.0
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
                 ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                "material": "d",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        10.0,
+                        0.0,
+                        3.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Vx",
+            "root": {
+                "material": "x",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        14.0,
+                        0.0,
+                        3.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Vy",
+            "root": {
+                "material": "y",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        10.0,
+                        4.0,
+                        3.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Vz",
+            "root": {
+                "material": "z",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        10.0,
+                        0.0,
+                        7.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Wx",
+            "root": {
+                "material": "x",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        16.0,
+                        0.0,
+                        3.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Wy",
+            "root": {
+                "material": "y",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        10.0,
+                        6.0,
+                        3.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Wz",
+            "root": {
+                "material": "z",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        10.0,
+                        0.0,
+                        9.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.5,
+                        0.5,
+                        0.5
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Cx",
+            "root": {
+                "material": "x",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        18.0,
+                        0.0,
+                        3.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.25,
+                        0.25,
+                        0.25
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Cy",
+            "root": {
+                "material": "y",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        10.0,
+                        8.0,
+                        3.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.25,
+                        0.25,
+                        0.25
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Cz",
+            "root": {
+                "material": "z",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        10.0,
+                        0.0,
+                        11.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        0.25,
+                        0.25,
+                        0.25
+                    ]
+                },
+                "type": "mesh_component"
+            }
+        },
+        {
+            "name": "Snowman",
+            "root": {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "material": "hat",
+                                "mesh": "eye",
+                                "transform": {
+                                    "position": [
+                                        0.0,
+                                        0.5299999713897705,
+                                        -0.15000000596046448
+                                    ],
+                                    "rotation": [
+                                        0.7066760063171387,
+                                        -0.024677669629454613,
+                                        0.024677669629454613,
+                                        0.7066760063171387
+                                    ],
+                                    "scale": [
+                                        0.18000000715255737,
+                                        0.18000000715255737,
+                                        0.019999999552965164
+                                    ]
+                                },
+                                "type": "mesh_component"
+                            },
+                            {
+                                "material": "hat",
+                                "mesh": "eye",
+                                "transform": {
+                                    "position": [
+                                        0.0,
+                                        0.5299999713897705,
+                                        0.09000000357627869
+                                    ],
+                                    "rotation": [
+                                        0.5963677763938904,
+                                        -0.37992820143699646,
+                                        0.37992820143699646,
+                                        0.5963677763938904
+                                    ],
+                                    "scale": [
+                                        0.18000000715255737,
+                                        0.18000000715255737,
+                                        0.019999999552965164
+                                    ]
+                                },
+                                "type": "mesh_component"
+                            },
+                            {
+                                "material": "hat",
+                                "mesh": "eye",
+                                "transform": {
+                                    "position": [
+                                        0.0,
+                                        0.5299999713897705,
+                                        0.3199999928474426
+                                    ],
+                                    "rotation": [
+                                        0.6941152215003967,
+                                        0.1349223405122757,
+                                        -0.1349223405122757,
+                                        0.6941152215003967
+                                    ],
+                                    "scale": [
+                                        0.18000000715255737,
+                                        0.18000000715255737,
+                                        0.019999999552965164
+                                    ]
+                                },
+                                "type": "mesh_component"
+                            },
+                            {
+                                "material": "scarf",
+                                "mesh": "cube",
+                                "transform": {
+                                    "position": [
+                                        0.0,
+                                        0.0,
+                                        0.6000000238418579
+                                    ],
+                                    "rotation": [
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        1.0
+                                    ],
+                                    "scale": [
+                                        0.800000011920929,
+                                        0.800000011920929,
+                                        0.20000000298023224
+                                    ]
+                                },
+                                "type": "mesh_component"
+                            },
+                            {
+                                "children": [
+                                    {
+                                        "children": [
+                                            {
+                                                "material": "nose",
+                                                "mesh": "carrot",
+                                                "transform": {
+                                                    "position": [
+                                                        0.0,
+                                                        0.0,
+                                                        0.25
+                                                    ],
+                                                    "rotation": [
+                                                        0.0,
+                                                        0.0,
+                                                        0.0,
+                                                        1.0
+                                                    ],
+                                                    "scale": [
+                                                        0.3499999940395355,
+                                                        0.3499999940395355,
+                                                        1.0
+                                                    ]
+                                                },
+                                                "type": "mesh_component"
+                                            },
+                                            {
+                                                "material": "hat",
+                                                "mesh": "eye",
+                                                "transform": {
+                                                    "position": [
+                                                        0.25,
+                                                        -0.25,
+                                                        -0.23000000417232513
+                                                    ],
+                                                    "rotation": [
+                                                        0.0,
+                                                        0.0,
+                                                        0.0,
+                                                        1.0
+                                                    ],
+                                                    "scale": [
+                                                        0.25,
+                                                        0.25,
+                                                        0.05000000074505806
+                                                    ]
+                                                },
+                                                "type": "mesh_component"
+                                            },
+                                            {
+                                                "material": "hat",
+                                                "mesh": "eye",
+                                                "transform": {
+                                                    "position": [
+                                                        -0.25,
+                                                        -0.25,
+                                                        -0.23000000417232513
+                                                    ],
+                                                    "rotation": [
+                                                        0.0,
+                                                        0.0,
+                                                        0.0,
+                                                        1.0
+                                                    ],
+                                                    "scale": [
+                                                        0.25,
+                                                        0.25,
+                                                        0.05000000074505806
+                                                    ]
+                                                },
+                                                "type": "mesh_component"
+                                            }
+                                        ],
+                                        "transform": {
+                                            "position": [
+                                                0.0,
+                                                0.75,
+                                                0.07500000298023224
+                                            ],
+                                            "rotation": [
+                                                -0.7071067690849304,
+                                                0.0,
+                                                0.0,
+                                                0.7071067690849304
+                                            ],
+                                            "scale": [
+                                                1.0,
+                                                1.0,
+                                                1.0
+                                            ]
+                                        },
+                                        "type": "spatial_component"
+                                    },
+                                    {
+                                        "children": [
+                                            {
+                                                "material": "hat",
+                                                "mesh": "cube",
+                                                "transform": {
+                                                    "position": [
+                                                        0.0,
+                                                        0.0,
+                                                        4.75
+                                                    ],
+                                                    "rotation": [
+                                                        0.0,
+                                                        0.0,
+                                                        0.0,
+                                                        1.0
+                                                    ],
+                                                    "scale": [
+                                                        0.6700000166893005,
+                                                        0.6700000166893005,
+                                                        8.670000076293945
+                                                    ]
+                                                },
+                                                "type": "mesh_component"
+                                            }
+                                        ],
+                                        "material": "hat",
+                                        "mesh": "cube",
+                                        "transform": {
+                                            "position": [
+                                                0.0,
+                                                0.0,
+                                                0.5699999928474426
+                                            ],
+                                            "rotation": [
+                                                0.0,
+                                                0.0,
+                                                0.0,
+                                                1.0
+                                            ],
+                                            "scale": [
+                                                1.5,
+                                                1.5,
+                                                0.15000000596046448
+                                            ]
+                                        },
+                                        "type": "mesh_component"
+                                    }
+                                ],
+                                "material": "snow",
+                                "mesh": "cube",
+                                "transform": {
+                                    "position": [
+                                        0.0,
+                                        0.0,
+                                        1.0
+                                    ],
+                                    "rotation": [
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        1.0
+                                    ],
+                                    "scale": [
+                                        0.75,
+                                        0.75,
+                                        0.75
+                                    ]
+                                },
+                                "type": "mesh_component"
+                            }
+                        ],
+                        "material": "snow",
+                        "mesh": "cube",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.0,
+                                0.75
+                            ],
+                            "rotation": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "scale": [
+                                0.75,
+                                0.75,
+                                0.75
+                            ]
+                        },
+                        "type": "mesh_component"
+                    }
                 ],
-                "scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "type": "mesh_component"
+                "material": "snow",
+                "mesh": "cube",
+                "transform": {
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.800000011920929
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "type": "mesh_component"
+            }
         }
-    }
-]
+    ]
 }

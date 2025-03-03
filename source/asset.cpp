@@ -6,7 +6,6 @@
 
 #include "fields_engine.h"
 #include "asset.h"
-#include <filesystem>
 #include <fstream>
 #include "context.h"
 #include "asset_entry.h"
@@ -23,6 +22,21 @@ fields_engine::asset::~asset() = default;
 
 void fields_engine::asset::set_asset_entry(asset_entry* entry) {
 	m_entry = entry;
+}
+
+void fields_engine::asset::reload() {
+	std::ifstream in_file(m_entry->get_path());
+	if (!in_file) { return; }
+	const json in(json::parse(in_file));
+	read(in["data"]);
+}
+
+void fields_engine::asset::save() {
+	std::ofstream out_file(m_entry->get_path());
+	if (!out_file) { return; }
+	json out{};
+	write(out["data"]);
+	out_file << std::setw(4) << out << std::endl;
 }
 
 fe::asset_entry& fields_engine::asset::get_asset_entry() {

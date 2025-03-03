@@ -113,16 +113,6 @@ bool fields_engine::application::startup() {
 		return false;
 	}
 
-	//std::ifstream scene_file(std::filesystem::path("assets") 
-	//	/ (proj_settings.default_scene_name + ".level.fea")
-	//);
-	//if (!scene_file) {
-	//	return false;
-	//}
-	//const json scene_in(json::parse(scene_file, nullptr, false));
-	//if (scene_in.is_discarded()) {
-	//	return false;
-	//}
 	project_settings& proj_settings = m_project->get_settings();
 	m_scene = get_asset<scene>(proj_settings.default_scene_name);
 	if (!m_scene) { return false; }
