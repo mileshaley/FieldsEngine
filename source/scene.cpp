@@ -75,22 +75,6 @@ void fields_engine::scene::startup() {
 }
 
 void fields_engine::scene::tick(float dt) {
-	/// TODO: Remove
-	if (context<input_manager>().was_button_triggered(GLFW_KEY_C)) {
-		for (size_t i = 0; i < m_entities.size(); ++i) {
-			if (m_entities[i]->get_name().find("nowm") != string::npos) {
-				for (size_t j = 0; j < m_entities.size(); ++j) {
-					if (m_entities[j]->get_name().find("amera") != string::npos) {
-						auto& new_ent = m_entities.emplace_back(make_own<entity>(*m_entities[i]));
-						new_ent->ref_transform().set_local_position(m_entities[j]->ref_transform().get_local_position());
-						goto done;
-					}
-				}
-			}
-		}
-	}
-	done:
-
 	for (own<entity> const& ent : m_entities) {
 		ent->tick(dt);
 	}

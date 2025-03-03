@@ -90,10 +90,10 @@ bool fields_engine::transformer::display() {
 		ImGui::Text(m_owner->get_parent() ? "Parented" : "Unparented");
 		ImGui::BeginDisabled();
 		mat4 transposed = glm::transpose(world_matrix());
-		ImGui::DragFloat4("", &transposed[0][0]);
-		ImGui::DragFloat4("", &transposed[1][0]);
-		ImGui::DragFloat4("", &transposed[2][0]);
-		ImGui::DragFloat4("", &transposed[3][0]);
+		ImGui::DragFloat4("###tr_world_1", &transposed[0][0]);
+		ImGui::DragFloat4("###tr_world_2", &transposed[1][0]);
+		ImGui::DragFloat4("###tr_world_3", &transposed[2][0]);
+		ImGui::DragFloat4("###tr_world_4", &transposed[3][0]);
 		ImGui::EndDisabled();
 	}
 
