@@ -11,11 +11,13 @@
 #include "fields_engine.h"
 #include "application.h"
 
+#include <fstream>
 #include <iostream>
 #include "glad/glad.h"
 #include "graphics.h"
 
 #include "scene.h"
+#include "project.h"
 #if EDITOR 
 #include "editor_manager.h"
 #endif
@@ -38,6 +40,7 @@ fields_engine::application::application()
 	, m_window(nullptr)
 	, m_input_manager()
 	, m_asset_manager()
+	, m_project(nullptr)
 	, m_scene(nullptr)
 #if EDITOR
 	, m_editor(nullptr)
@@ -97,12 +100,30 @@ bool fields_engine::application::startup() {
 	input::impl::initialize_callbacks(m_window);
 	vis::impl::initialize();
 
+	m_project = make_own<project>(std::filesystem::path("."));
 	m_scene = make_own<scene>();
 #if EDITOR
 	m_editor = make_own<editor::editor_manager>(m_window.get());
 #endif // EDITOR
 	m_asset_manager->startup();
 
+	if (!m_project->startup()) {
+		return false;
+	}
+
+	project_settings& proj_settings = m_project->get_settings();
+	std::ifstream scene_file(std::filesystem::path("assets") 
+		/ (proj_settings.default_scene_name + ".level.fea")
+	);
+	if (!scene_file) {
+		return false;
+	}
+	const json scene_in(json::parse(scene_file, nullptr, false));
+	if (scene_in.is_discarded()) {
+		return false;
+	}
+
+	m_scene->read(scene_in);
 	m_scene->startup();
 
 	return true;
@@ -146,10 +167,12 @@ void fields_engine::application::run() {
 
 bool fields_engine::application::shutdown() {
 	m_scene->shutdown();
+	m_project->shutdown();
 #if EDITOR
 	m_editor.reset();
 #endif
 	m_scene.reset();
+	m_project.reset();
 	m_input_manager->shutdown();
 	m_asset_manager->shutdown();
 #if FE_USING_GLFW
@@ -170,7 +193,7 @@ void fields_engine::application::use_context() {
 #endif // EDITOR
 	m_asset_manager.use();
 	m_scene.use();
-
+	m_project.use();
 }
 
 fe::input_manager& fields_engine::application::ref_input_manager() {

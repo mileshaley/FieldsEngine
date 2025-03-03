@@ -23,6 +23,7 @@ namespace fields_engine {
 	} // namespace editor
 #endif // EDITOR
 	class scene;
+	class project;
 } // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
@@ -34,7 +35,7 @@ namespace fields_engine {
 	public:
 		application();
 		~application();
-
+		
 		bool startup();
 		void run();
 		bool shutdown();
@@ -57,6 +58,7 @@ namespace fields_engine {
 		local_context<window_handle> m_window;
 		local_context<input_manager> m_input_manager;
 		local_context<asset_manager> m_asset_manager;
+		own_context<project> m_project;
 		own_context<scene> m_scene;
 #ifdef EDITOR
 		own_context<editor::editor_manager> m_editor;

@@ -42,19 +42,16 @@ fields_engine::scene::scene() {
 
 fields_engine::scene::~scene() = default;
 
-void fields_engine::scene::read() {
-	std::ifstream in_file("scene.json");
-	const json in = json::parse(in_file);
+void fields_engine::scene::read(json const& in) {
 	m_entities.reserve(in.size());
-
 	for (json const& in_ent : in) {
 		own<entity>& ent = m_entities.emplace_back(make_own<entity>());
 		ent->read(in_ent);
 	}
 }
 
-void fields_engine::scene::write() const {
-	json out = json::array();
+void fields_engine::scene::write(json& out) const {
+	out = json::array();
 	for (own<entity> const& ent : m_entities) {
 		out.emplace_back();
 		ent->write(out.back());
@@ -64,8 +61,6 @@ void fields_engine::scene::write() const {
 }
 
 void fields_engine::scene::startup() {
-	read();
-
 	for (own<entity> const& ent : m_entities) {
 		ent->init();
 	}
@@ -173,7 +168,7 @@ bool fields_engine::scene::display_window() {
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("   Save to file   ")) {
-		write();
+		//write();
 	}
 	ImGui::BeginDisabled();
 	if (ImGui::Button("   Swap app context   ")) {

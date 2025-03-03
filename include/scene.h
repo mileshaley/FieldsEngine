@@ -31,8 +31,8 @@ namespace fields_engine {
 		scene();
 		~scene();
 
-		void read();
-		void write() const;
+		void read(json const& in);
+		void write(json& out) const;
 
 		void startup();
 		void tick(float dt);
