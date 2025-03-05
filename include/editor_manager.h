@@ -84,8 +84,8 @@ namespace fields_engine::editor {
 				}
 			}
 			return emplace_window(make_own<editor_window>(
-				name,
 				move(new_invoker),
+				name,
 				icon
 			));
 		}

@@ -56,8 +56,6 @@ void fields_engine::scene::write(json& out) const {
 		out.emplace_back();
 		ent->write(out.back());
 	}
-	std::ofstream out_file("scene.json");
-	out_file << std::setw(4) << out << std::endl;
 }
 
 void fields_engine::scene::startup() {

@@ -13,6 +13,7 @@
 \*~-------------------------------------------------------------------------~*/
 
 #include "editor_icons.h" // editor_icon
+#include <sstream>
 
 namespace fields_engine::editor {
 	class editor_window;
@@ -55,6 +56,8 @@ namespace fields_engine::editor {
 		virtual ~window_invoker() = default;
 		virtual bool invoke(editor_window& window) const = 0;
 		virtual bool equals(window_invoker const& other) const = 0;
+		virtual string get_function_id() const = 0;
+
 	};
 
 	template<class T, class ObjectGetter = context_object_getter<T>>
@@ -80,6 +83,19 @@ namespace fields_engine::editor {
 				return m_display_function == p_other->m_display_function;
 			}
 			return false;
+		}
+
+		virtual string get_function_id() const override {
+			constexpr size_t data_size(sizeof(m_display_function));
+			std::array<std::byte, data_size> data;
+			const std::byte* data_src = reinterpret_cast<const std::byte*>(&m_display_function);
+			std::copy(data_src, data_src + data_size, data.begin());
+			std::stringstream ss;
+			ss << std::hex << std::uppercase << std::setfill('0');
+			for (std::byte byte : data) {
+				ss << std::setw(2) << static_cast<int>(byte);
+			}
+			return ss.str();
 		}
 
 	private:
@@ -112,7 +128,7 @@ namespace fields_engine::editor {
 		
 
 	public:
-		editor_window(string_view name, own<window_invoker>&& function, editor_icon icon = "");
+		editor_window(own<window_invoker>&& function, string_view name, string_view icon = "");
 		editor_window(editor_window&& other) noexcept;
 
 		bool display();
@@ -134,13 +150,16 @@ namespace fields_engine::editor {
 		FE_NODISCARD window_invoker const& get_invoker() const;
 		void set_invoker(own<window_invoker>&& new_invoker);
 
+		void update_str_id();
 		FE_NODISCARD string const& get_str_id() const;
 
 	private:
 		string m_name;
-		string m_str_id; // Trade some memory for time by precomputing the string ID
-		own<window_invoker> m_callback;
-		editor_icon m_icon;
+		// Trade some memory for time by precomputing the string ID
+		string m_str_id; 
+		string m_function_id;
+		own<window_invoker> m_invoker;
+		string_view m_icon;
 		bool m_open;
 	}; // class editor_window
 

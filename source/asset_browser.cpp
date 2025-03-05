@@ -175,7 +175,7 @@ bool fields_engine::editor::asset_browser::display_window(editor_window& window)
 		ImGui::PopStyleVar();
 		ImGui::PopStyleColor();
 
-	} else { // ^^^ address_bar_active || address_bar_activated
+	} else { // ^^^ address_bar_active || address_bar_activated vvv
 		std::filesystem::path const& curr_directory = m_directory_history.top();
 		vector<std::filesystem::path> directories(curr_directory.begin(), curr_directory.end());
 		// Index into directories
