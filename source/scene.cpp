@@ -61,10 +61,12 @@ void fields_engine::scene::write(json& out) const {
 void fields_engine::scene::startup() {
 
 #ifdef EDITOR
-	context<editor::editor_manager>().add_window(
+	editor::editor_window* scene_window = context<editor::editor_manager>().add_window(
 		&scene::display_window,
 		"Scene",
-		ICON_MOUNTAIN_SUN
+		ICON_MOUNTAIN_SUN,
+		{},
+		get_name()
 	);
 #endif // EDITOR
 	for (own<entity> const& ent : m_entities) {

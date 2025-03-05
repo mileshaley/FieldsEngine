@@ -127,7 +127,7 @@ ImGui::SetCurrentContext(m_gui_context);
 	add_window(
 		&editor_manager::style_window,
 		"Editor Styler",
-		ICON_PALLET
+		ICON_PALETTE
 	);
 }
 void fields_engine::editor::editor_manager::tick(float dt) {
@@ -423,7 +423,7 @@ bool fields_engine::editor::editor_manager::root_window(editor_window& window) {
 }
 
 bool fields_engine::editor::editor_manager::demo_window(editor_window& window) {
-	ImGui::ShowDemoWindow(&window.ref_open());
+	ImGui::ShowDemoWindow(&window.get_open_flag());
 	return false;
 }
 

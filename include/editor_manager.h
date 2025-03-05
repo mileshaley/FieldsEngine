@@ -69,9 +69,20 @@ namespace fields_engine::editor {
 		template<class T, class ObjectGetter = context_object_getter<T>>
 		inline editor_window* add_window(
 			bool (T::* function)(editor_window&),
-			string_view name, 
+			string_view id_name,
 			editor_icon icon = "",
 			ObjectGetter object_getter = ObjectGetter{}
+		) {
+			return add_window(function, id_name, icon, move(object_getter), id_name);
+		}
+
+		template<class T, class ObjectGetter = context_object_getter<T>>
+		inline editor_window* add_window(
+			bool (T::* function)(editor_window&),
+			string_view id_name,
+			editor_icon icon,
+			ObjectGetter object_getter,
+			string_view display_name
 		) {
 			own<window_invoker> new_invoker = make_own<object_window_invoker<T, ObjectGetter>>(
 				function,
@@ -85,8 +96,9 @@ namespace fields_engine::editor {
 			}
 			return emplace_window(make_own<editor_window>(
 				move(new_invoker),
-				name,
-				icon
+				id_name,
+				icon,
+				display_name
 			));
 		}
 

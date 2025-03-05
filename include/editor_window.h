@@ -51,13 +51,13 @@ namespace fields_engine {
 
 namespace fields_engine::editor {
 
+	// Interface to generalize window invokers
 	class window_invoker {
 	public:
 		virtual ~window_invoker() = default;
 		virtual bool invoke(editor_window& window) const = 0;
-		virtual bool equals(window_invoker const& other) const = 0;
-		virtual string get_function_id() const = 0;
-
+		FE_NODISCARD virtual bool equals(window_invoker const& other) const = 0;
+		FE_NODISCARD virtual string get_function_id() const = 0;
 	};
 
 	template<class T, class ObjectGetter = context_object_getter<T>>
@@ -128,7 +128,13 @@ namespace fields_engine::editor {
 		
 
 	public:
-		editor_window(own<window_invoker>&& function, string_view name, string_view icon = "");
+		editor_window(
+			own<window_invoker>&& function,
+			string_view id_name,
+			string_view icon,
+			string_view display_name 
+		);
+
 		editor_window(editor_window&& other) noexcept;
 
 		bool display();
@@ -138,26 +144,34 @@ namespace fields_engine::editor {
 		void end_window() const;
 
 		/// TODO: Add shortcut support integrated with input
-
 		bool menu_item();
 
 		void open();
 		void close();
-		FE_NODISCARD bool is_open() const;
-		FE_NODISCARD bool& ref_open();
 
+		FE_NODISCARD bool is_open() const;
+		FE_NODISCARD bool& get_open_flag();
 
 		FE_NODISCARD window_invoker const& get_invoker() const;
 		void set_invoker(own<window_invoker>&& new_invoker);
 
-		void update_str_id();
-		FE_NODISCARD string const& get_str_id() const;
+		FE_NODISCARD string const& get_full_name() const;
 
-	private:
-		string m_name;
-		// Trade some memory for time by precomputing the string ID
-		string m_str_id; 
-		string m_function_id;
+		FE_NODISCARD string const& get_id_name() const;
+		FE_NODISCARD string const& get_display_name() const;
+
+		void set_icon(string_view new_icon);
+		void set_display_name(string_view new_display_name);
+		
+	private: // Helpers
+		void recalculate_full_name();
+
+	private: // Variables
+
+		string m_id_name;
+		string m_display_name;
+		// Trade some memory for time by precomputing the full string ID
+		string m_full_name; 
 		own<window_invoker> m_invoker;
 		string_view m_icon;
 		bool m_open;

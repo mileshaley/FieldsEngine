@@ -11,25 +11,29 @@
 
 #include "imgui/imgui.h"
 
+/*~-------------------------------------------------------------------------~*\
+ * Editor Window Definitions                                                 *
+\*~-------------------------------------------------------------------------~*/
+
 fields_engine::editor::editor_window::editor_window(
 	own<window_invoker>&& function, 
-	string_view name, 
-	string_view icon
-)
-	: m_name(name)
-	, m_str_id()
+	string_view id_name, 
+	string_view icon, 
+	string_view display_name
+) 
+	: m_id_name(id_name)
+	, m_display_name(display_name)
+	, m_full_name()
 	, m_invoker(move(function))
 	, m_icon(icon)
-	, m_open(true) 
+	, m_open(true)
 {
-	update_str_id();
-	m_function_id = m_invoker->get_function_id();
+	recalculate_full_name();
 }
 
 fields_engine::editor::editor_window::editor_window(editor_window&& other) noexcept
-	: m_name(move(other.m_name))
-	, m_str_id(move(other.m_str_id))
-	, m_function_id(move(other.m_function_id))
+	: m_id_name(move(other.m_id_name))
+	, m_full_name(move(other.m_full_name))
 	, m_invoker(move(other.m_invoker))
 	, m_icon(other.m_icon)
 	, m_open(std::exchange(other.m_open, false)) 
@@ -53,7 +57,7 @@ bool fields_engine::editor::editor_window::force_display() {
 }
 
 bool fields_engine::editor::editor_window::begin_window() {
-	return ImGui::Begin(m_str_id.c_str(), &m_open);
+	return ImGui::Begin(m_full_name.c_str(), &m_open);
 }
 
 void fields_engine::editor::editor_window::end_window() const {
@@ -61,7 +65,7 @@ void fields_engine::editor::editor_window::end_window() const {
 }
 
 bool fields_engine::editor::editor_window::menu_item() {
-	if (ImGui::MenuItem(m_str_id.c_str(), nullptr, &m_open)) {
+	if (ImGui::MenuItem(m_full_name.c_str(), nullptr, &m_open)) {
 		return true;
 		/// Bring to top
 	}
@@ -80,7 +84,7 @@ void fields_engine::editor::editor_window::close() {
 	m_open = false;
 }
 
-bool& fields_engine::editor::editor_window::ref_open() {
+bool& fields_engine::editor::editor_window::get_open_flag() {
 	return m_open;
 }
 
@@ -90,21 +94,40 @@ fe::editor::window_invoker const& fields_engine::editor::editor_window::get_invo
 
 void fields_engine::editor::editor_window::set_invoker(own<window_invoker>&& new_invoker) {
 	m_invoker = move(new_invoker);
-	m_function_id = m_invoker->get_function_id();
+	//m_function_id = m_invoker->get_function_id();
 }
 
-void fields_engine::editor::editor_window::update_str_id() {
-	m_str_id.clear();
+fe::string const& fields_engine::editor::editor_window::get_full_name() const {
+	return m_full_name;
+}
+
+fe::string const& fields_engine::editor::editor_window::get_id_name() const {
+	return m_id_name;
+}
+
+fe::string const& fields_engine::editor::editor_window::get_display_name() const {
+	return m_display_name;
+}
+
+void fields_engine::editor::editor_window::set_icon(string_view new_icon) {
+	m_icon = new_icon;
+	recalculate_full_name();
+}
+
+void fields_engine::editor::editor_window::set_display_name(string_view new_display_name) {
+	m_display_name = new_display_name;
+	recalculate_full_name();
+}
+
+void fields_engine::editor::editor_window::recalculate_full_name() {
+	m_full_name.clear();
 	if (!m_icon.empty()) {
-		m_str_id += m_icon;
-		m_str_id += " ";
+		m_full_name += m_icon;
+		m_full_name += " ";
 	}
-	m_str_id += m_name;
-	m_str_id += "###";
-	m_str_id += m_name;
+	m_full_name += m_display_name;
+	m_full_name += "###";
+	m_full_name += m_id_name;
 }
 
-fe::string const& fields_engine::editor::editor_window::get_str_id() const {
-	return m_str_id;
-}
 #endif // EDITOR
