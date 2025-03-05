@@ -18,6 +18,10 @@ namespace fields_engine {
 	namespace vis {
 		class shader;
 	} // namespace vis
+
+	namespace editor {
+		class editor_window;
+	} // namespace editor
 } // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
@@ -41,7 +45,7 @@ namespace fields_engine {
 		void shutdown();
 
 #ifdef EDITOR
-		bool display_window();
+		bool display_window(editor::editor_window& window);
 #endif // EDITOR
 
 		void register_camera(camera_component* cam);

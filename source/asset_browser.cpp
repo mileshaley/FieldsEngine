@@ -40,11 +40,11 @@ fields_engine::editor::asset_browser::asset_browser()
 	, m_material_thumbnail(std::filesystem::path("engine_assets") / "material_asset_thumbnail.png")
 	, m_mesh_thumbnail(std::filesystem::path("engine_assets") / "mesh_asset_thumbnail.png")
 {
-	context<editor::editor_manager>().add_window(make_own<editor::editor_window>(
+	context<editor::editor_manager>().add_window(
+		&asset_browser::display_window,
 		"Asset Browser",
-		std::bind(&asset_browser::display_window, this),
 		ICON_FOLDER
-	));
+	);
 
 	refresh();
 }
@@ -98,7 +98,7 @@ namespace fields_engine::editor {
 	};
 }
 
-bool fields_engine::editor::asset_browser::display_window() {
+bool fields_engine::editor::asset_browser::display_window(editor_window& window) {
 	constexpr ImVec2 entry_size{ 120, 156 };
 	constexpr ImVec2 thumbnail_size{ 100, 100 };
 	constexpr ImVec2 thumbnail_margin{

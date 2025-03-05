@@ -18,6 +18,7 @@
 
 fields_engine::asset_manager::asset_manager()
 	: m_assets()
+	, m_asset_browser(nullptr)
 {
 }
 

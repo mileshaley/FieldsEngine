@@ -95,37 +95,40 @@ ImGui::SetCurrentContext(m_gui_context);
 	ImGui_ImplGlfw_InitForOpenGL(win.handle, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	reset_style();;
+	reset_style();
 
-	add_window(make_own<editor_window>(
-		"Root", std::bind(&editor_manager::root_window, this), ICON_FACE_SMILE)).close();
+	editor_window* root = add_window(
+		&editor_manager::root_window,
+		"Root", 
+		ICON_FACE_SMILE
+	);
+	if (root) { root->close(); }
 
-	add_window(make_own<editor_window>(
-		"Inspect", std::bind(&editor_manager::inspect_window, this), ICON_MAGNIFYING_GLASS));
+	add_window(
+		&editor_manager::inspect_window,
+		"Inspect",
+		ICON_MAGNIFYING_GLASS
+	);
 
 	// Add the window and then set its callback after since it needs to access data inside the window
-	editor_window* demo_window = &add_window(make_own<editor_window>(
-		"ImGui Demo", editor_window::callback_t{}, ICON_INFO));
-	demo_window->set_callback([demo_window]() {
-		//ImGui::SetWindowHiddendAndSkipItemsForCurrentFrame(ImGui::GetCurrentWindow());
-		ImGui::ShowDemoWindow(&demo_window->ref_open());
-		return false; 
-	});
-	demo_window->close();
+	editor_window* demo = add_window(
+		&editor_manager::demo_window,
+		"ImGui Demo", 
+		ICON_INFO
+	);
+	if (demo) { demo->close(); }
 
-
-
-	add_window(make_own<editor_window>(
+	add_window(
+		&editor_manager::game_window,
 		"Game View",
-		std::bind(&editor_manager::game_window, this),
 		ICON_GAMEPAD
-	));
+	);
 
-	add_window(make_own<editor_window>(
+	add_window(
+		&editor_manager::style_window,
 		"Editor Styler",
-		std::bind(&editor_manager::style_window, this),
 		ICON_PALLET
-	));
+	);
 }
 void fields_engine::editor::editor_manager::tick(float dt) {
 	ImGui_ImplOpenGL3_NewFrame();
@@ -286,11 +289,15 @@ void fields_engine::editor::editor_manager::set_selected_entity(entity* new_sele
 	m_selected_ent = new_selected;
 }
 
+ImFont* fields_engine::editor::editor_manager::get_font_handle(font_type font) {
+	return m_fonts[static_cast<size_t>(font)];
+}
+
 /*~-------------------------------------------------------------------------~*\
  * Editor Hosted Windows                                                     *
 \*~-------------------------------------------------------------------------~*/
 
-bool fields_engine::editor::editor_manager::game_window() {
+bool fields_engine::editor::editor_manager::game_window(editor_window& window) {
 	/// TODO: This is janky, fix it
 	const ImVec2 size = ImGui::GetContentRegionMax() - ImVec2{ 30, 30 };
 	m_game_window_size = { size.x, size.y };
@@ -308,7 +315,7 @@ bool fields_engine::editor::editor_manager::game_window() {
 	return false;
 }
 
-bool fields_engine::editor::editor_manager::inspect_window() {
+bool fields_engine::editor::editor_manager::inspect_window(editor_window& window) {
 	if (m_selected_ent == nullptr) { return false; }
 	return m_selected_ent->display();
 }
@@ -374,7 +381,7 @@ static const char* color_names[ImGuiCol_::ImGuiCol_COUNT] = {
 	"ImGuiCol_ModalWindowDimBg",			// Darken/colorize entire screen behind a modal window, when one is active
 };
 
-bool fields_engine::editor::editor_manager::style_window() {
+bool fields_engine::editor::editor_manager::style_window(editor_window& window) {
 	bool modif = false;
 	/// TODO: this is a trainwreck, fix eventually (low priority)
 	static int slot = 0;
@@ -397,7 +404,7 @@ bool fields_engine::editor::editor_manager::style_window() {
 	return modif;
 }
 
-bool fields_engine::editor::editor_manager::root_window() {
+bool fields_engine::editor::editor_manager::root_window(editor_window& window) {
 	bool modif = ImGui::InputTextWithHint(
 		"###root_enter_new_window_name", "Enter Window Name", &m_new_window_buf);
 
@@ -406,26 +413,27 @@ bool fields_engine::editor::editor_manager::root_window() {
 	}
 	modif |= icon_selector_popup(m_new_window_icon);
 
-	if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
-		add_window(make_own<editor_window>(
-			m_new_window_buf, do_nothing, m_new_window_icon));
-		m_new_window_buf.clear();
-		modif = true;
-	}
+	//if (ImGui::Button(ICON_SQUARE_PLUS" Create window")) {
+	//	add_window(make_own<editor_window>(
+	//		m_new_window_buf, do_nothing, m_new_window_icon));
+	//	m_new_window_buf.clear();
+	//	modif = true;
+	//}
 	return modif;
+}
+
+bool fields_engine::editor::editor_manager::demo_window(editor_window& window) {
+	ImGui::ShowDemoWindow(&window.ref_open());
+	return false;
 }
 
 /*~-------------------------------------------------------------------------~*\
  * Editor Helper Definitions                                                 *
 \*~-------------------------------------------------------------------------~*/
 
-fe::editor::editor_window& fields_engine::editor::editor_manager::add_window(own<editor_window>&& new_win) {
+fe::editor::editor_window* fields_engine::editor::editor_manager::emplace_window(own<editor_window>&& new_window) {
 	m_recent_windows.push_back(int(m_windows.size()));
-	return *m_windows.emplace_back(move(new_win));
-}
-
-ImFont* fields_engine::editor::editor_manager::get_font_handle(font_type font) {
-	return m_fonts[static_cast<size_t>(font)];
+	return m_windows.emplace_back(move(new_window)).get();
 }
 
 void fields_engine::editor::editor_manager::reset_style() const {

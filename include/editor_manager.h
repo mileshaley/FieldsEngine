@@ -63,17 +63,43 @@ namespace fields_engine::editor {
 		entity* get_selected_entity();
 		void set_selected_entity(entity* new_selected);
 
-		editor::editor_window& add_window(own<editor_window>&& new_win);
-
 		ImFont* get_font_handle(font_type font);
 
+	public: // Editor Windows
+		template<class T, class ObjectGetter = context_object_getter<T>>
+		inline editor_window* add_window(
+			bool (T::* function)(editor_window&),
+			string_view name, 
+			editor_icon icon = "",
+			ObjectGetter object_getter = ObjectGetter{}
+		) {
+			own<window_invoker> new_invoker = make_own<object_window_invoker<T, ObjectGetter>>(
+				function,
+				move(object_getter)
+			);
+
+			for (own<editor_window> const& window : m_windows) {
+				if (window->get_invoker().equals(*new_invoker)) {
+					return nullptr;
+				}
+			}
+			return emplace_window(make_own<editor_window>(
+				name,
+				move(new_invoker),
+				icon
+			));
+		}
+
 	private: // Windows
-		bool game_window();
-		bool inspect_window();
-		bool style_window();
-		bool root_window();
+		bool game_window(editor_window& window);
+		bool inspect_window(editor_window& window);
+		bool style_window(editor_window& window);
+		bool root_window(editor_window& window);
+		bool demo_window(editor_window& window);
 
 	private: // Helpers
+		editor_window* emplace_window(own<editor_window>&& new_window);
+
 		void reset_style() const;
 		void read_style(int slot = 0) const;
 		void write_style(int slot = 0) const;

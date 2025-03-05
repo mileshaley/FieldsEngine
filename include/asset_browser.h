@@ -12,12 +12,14 @@
  * Includes & Forward Declarations                                           *
 \*~-------------------------------------------------------------------------~*/
 
-#include <filesystem>
 #include "scroll_stack.h"
 #include "texture.h"
 
 namespace fields_engine {
 	class asset_entry;
+	namespace editor {
+		class editor_window;
+	} // namespace editor
 } // nemasepcae fields_engine
 
 /*~-------------------------------------------------------------------------~*\
@@ -32,7 +34,7 @@ namespace fields_engine::editor {
 		~asset_browser();
 
 	public: // Interface
-		bool display_window();
+		bool display_window(editor_window& window);
 
 	private: // Implementation
 		//display_address_bar();

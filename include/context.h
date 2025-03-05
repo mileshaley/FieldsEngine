@@ -63,4 +63,14 @@ namespace fields_engine {
 		impl::context_storage<impl::remove_all_t<T>>::verify();
 		return *impl::context_storage<impl::remove_all_t<T>>::ptr;
 	}
+
+	template<class T>
+	FE_NODISCARD inline impl::remove_all_t<T>* context_unchecked() noexcept(noexcept(*std::declval<impl::remove_all_t<T>*>())) {
+		return impl::context_storage<impl::remove_all_t<T>>::ptr;
+	}
+
+	template<class T>
+	FE_NODISCARD inline bool context_active() noexcept {
+		return impl::context_storage<impl::remove_all_t<T>>::ptr != nullptr;
+	}
 } // namespace fields_engine

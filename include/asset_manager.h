@@ -11,7 +11,7 @@
 \*~-------------------------------------------------------------------------~*/
 
 #include "asset.h"
-#include "context.h" // For convenience functions
+#include "context_ownership.h"
 #include "asset_entry.h"
 
 namespace fields_engine {
@@ -63,7 +63,7 @@ namespace fields_engine {
 		unordered_map<string, asset_entry> m_assets;
 
 #if EDITOR
-		own<editor::asset_browser> m_asset_browser;
+		own_context<editor::asset_browser> m_asset_browser;
 		friend class editor::asset_browser;
 #endif // EDITOR
 	};
