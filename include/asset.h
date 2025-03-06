@@ -34,7 +34,7 @@ namespace fields_engine {
 		virtual void write(json& out) const = 0;
 
 		void reload();
-		void save();
+		void save() const;
 
 
 		asset_entry& get_asset_entry();

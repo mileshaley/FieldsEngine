@@ -159,11 +159,12 @@ void fields_engine::application::run() {
 
 bool fields_engine::application::shutdown() {
 	m_scene->shutdown();
-	m_project->shutdown();
+	m_scene = nullptr;
 #if EDITOR
+	m_editor->shutdown();
 	m_editor.reset();
 #endif
-	m_scene = nullptr;
+	m_project->shutdown();
 	m_project.reset();
 	m_input_manager->shutdown();
 	m_asset_manager->shutdown();

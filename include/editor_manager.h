@@ -134,6 +134,8 @@ namespace fields_engine::editor {
 		string m_new_window_buf;
 		editor_icon m_new_window_icon;
 
+		//json m_config;
+
 		/// TODO: Implement a more generic selection system that can handle different types and amounts
 		entity* m_selected_ent;
 		//vector<entity*> m_selected_ents;

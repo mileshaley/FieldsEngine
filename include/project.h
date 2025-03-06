@@ -25,7 +25,7 @@ namespace fields_engine {
 		bool startup();
 		bool shutdown();
 
-		project_settings& get_settings();
+		FE_NODISCARD project_settings& get_settings();
 	private:
 		std::filesystem::path m_working_directory;
 		project_settings m_settings;

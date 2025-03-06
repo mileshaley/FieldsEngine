@@ -10,6 +10,7 @@
 #ifdef EDITOR
 
 #include "imgui/imgui.h"
+#include <fstream>
 
 /*~-------------------------------------------------------------------------~*\
  * Editor Window Definitions                                                 *
@@ -38,6 +39,34 @@ fields_engine::editor::editor_window::editor_window(editor_window&& other) noexc
 	, m_icon(other.m_icon)
 	, m_open(std::exchange(other.m_open, false)) 
 {}
+
+void fields_engine::editor::editor_window::read() {
+	std::ifstream in_file((std::filesystem::path("user_data") / "editor" / "window" / m_id_name).concat(".json"));
+	if (!in_file) { return; }
+	const json in(json::parse(in_file, nullptr, false));
+	if (in.is_discarded()) { return; }
+	read(in);
+}
+
+void fields_engine::editor::editor_window::write() const {
+	const std::filesystem::path path 
+		= (std::filesystem::path("user_data") / "editor" / "window" / m_id_name).concat(".json");
+	// Ensure the directories exist
+	std::filesystem::create_directories(path.parent_path());
+	std::ofstream out_file(path);
+	if (!out_file) { return; }
+	json out;
+	write(out);
+	out_file << std::setw(4) << out << std::endl;
+}
+
+void fields_engine::editor::editor_window::read(json const& in) {
+	TRY_JSON_READ(m_open, in, "open");
+}
+
+void fields_engine::editor::editor_window::write(json& out) const {
+	out["open"] = m_open;
+}
 
 bool fields_engine::editor::editor_window::display() {
 	return m_open && force_display();

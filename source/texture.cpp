@@ -100,7 +100,7 @@ void fields_engine::vis::texture::read(json const& in) {
 }
 
 void fields_engine::vis::texture::write(json& out) const {
-    /// TODO: Implement. This probably can wait because editing textures in engine is low prio
+    /// TODO: Implement. This probably can wait because editing textures in engine is low priority
 }
 
 fe::ivec2 fields_engine::vis::texture::get_size() const {

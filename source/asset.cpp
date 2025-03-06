@@ -31,7 +31,7 @@ void fields_engine::asset::reload() {
 	read(in["data"]);
 }
 
-void fields_engine::asset::save() {
+void fields_engine::asset::save() const {
 	std::ofstream out_file(m_entry->get_path());
 	if (!out_file) { return; }
 	json out{};

@@ -125,9 +125,6 @@ namespace fields_engine::editor {
 	/// TODO: Add support for grouping windows by category
 	class editor_window {
 	public:
-		
-
-	public:
 		editor_window(
 			own<window_invoker>&& function,
 			string_view id_name,
@@ -136,6 +133,11 @@ namespace fields_engine::editor {
 		);
 
 		editor_window(editor_window&& other) noexcept;
+
+		void read();
+		void write() const;
+		void read(json const& in);
+		void write(json& out) const;
 
 		bool display();
 		bool force_display();

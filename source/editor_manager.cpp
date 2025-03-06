@@ -46,7 +46,15 @@ fields_engine::editor::editor_manager::editor_manager()
 fields_engine::editor::editor_manager::~editor_manager() = default;
 
 void fields_engine::editor::editor_manager::startup(window_handle& win) {
-ImGui::SetCurrentContext(m_gui_context);
+	//std::ifstream config_file(std::filesystem::path("user_data") / "config.json"));
+	//if (config_file) {
+	//	m_config = json::parse(config_file, nullptr, false);
+	//	if (!m_config.is_discarded()) {
+	//		
+	//	}
+	//}
+
+	ImGui::SetCurrentContext(m_gui_context);
 	ImGuiIO& io = ImGui::GetIO();
 
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
@@ -102,7 +110,6 @@ ImGui::SetCurrentContext(m_gui_context);
 		"Root", 
 		ICON_FACE_SMILE
 	);
-	if (root) { root->close(); }
 
 	add_window(
 		&editor_manager::inspect_window,
@@ -116,7 +123,6 @@ ImGui::SetCurrentContext(m_gui_context);
 		"ImGui Demo", 
 		ICON_INFO
 	);
-	if (demo) { demo->close(); }
 
 	add_window(
 		&editor_manager::game_window,
@@ -197,6 +203,9 @@ void fields_engine::editor::editor_manager::tick(float dt) {
 }
 
 void fields_engine::editor::editor_manager::shutdown() {
+	for (own<editor_window> const& window : m_windows) {
+		window->write();
+	}
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -433,7 +442,9 @@ bool fields_engine::editor::editor_manager::demo_window(editor_window& window) {
 
 fe::editor::editor_window* fields_engine::editor::editor_manager::emplace_window(own<editor_window>&& new_window) {
 	m_recent_windows.push_back(int(m_windows.size()));
-	return m_windows.emplace_back(move(new_window)).get();
+	editor_window* emplaced = m_windows.emplace_back(move(new_window)).get();
+	emplaced->read();
+	return emplaced;
 }
 
 void fields_engine::editor::editor_manager::reset_style() const {
