@@ -29,6 +29,7 @@ void fields_engine::asset::reload() {
 	if (!in_file) { return; }
 	const json in(json::parse(in_file));
 	read(in["data"]);
+	in.find("data");
 }
 
 void fields_engine::asset::save() const {

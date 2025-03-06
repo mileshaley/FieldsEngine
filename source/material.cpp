@@ -39,9 +39,9 @@ fields_engine::vis::material::material(material const& other)
 }
 
 void fields_engine::vis::material::read(json const& in) {
-    TRY_JSON_READ(m_diffuse, in, "diffuse");
-    TRY_JSON_READ(m_specular, in, "specular");
-    TRY_JSON_READ(m_shininess, in, "shininess");
+    try_read_json(m_diffuse, in, "diffuse");
+    try_read_json(m_specular, in, "specular");
+    try_read_json(m_shininess, in, "shininess");
 
     auto tex_it = in.find("texture");
     if (tex_it != in.end()) {

@@ -16,20 +16,22 @@
 #include "error.h"
 
 /*~-------------------------------------------------------------------------~*\
- * Serial Conversion Helper Macros                                           *
+ * Deserialization Functions                                                 *
 \*~-------------------------------------------------------------------------~*/
 
-#define TRY_JSON_READ(AssignedVar, SourceJson, PropertyName)			\
-	{																	\
-		auto generated_json_iterator = SourceJson.find(PropertyName);	\
-		if (generated_json_iterator != SourceJson.end()) {				\
-			AssignedVar = *generated_json_iterator;						\
-		}																\
-	}																	\
+namespace fields_engine {
+	using nlohmann::json;
 
-/*~-------------------------------------------------------------------------~*\
- * Serial Conversion Functions                                               *
-\*~-------------------------------------------------------------------------~*/
+	template<typename T, typename Key>
+	inline bool try_read_json(T& assignee, json const& in, Key const& key) noexcept {
+		auto value_iterator = in.find(key);
+		if (value_iterator != in.end()) {
+			assignee = *value_iterator;
+			return true;
+		}
+		return false;
+	}
+} // namespace fields_engine
 
 /*~-------------------------------------------------------------------------~*\
  * Math Type Conversion Functions                                            *

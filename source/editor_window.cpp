@@ -61,7 +61,7 @@ void fields_engine::editor::editor_window::write() const {
 }
 
 void fields_engine::editor::editor_window::read(json const& in) {
-	TRY_JSON_READ(m_open, in, "open");
+	try_read_json(m_open, in, "open");
 }
 
 void fields_engine::editor::editor_window::write(json& out) const {

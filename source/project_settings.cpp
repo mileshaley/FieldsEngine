@@ -12,7 +12,7 @@
 \*~-------------------------------------------------------------------------~*/
 
 void fields_engine::project_settings::read(json const& in) {
-	TRY_JSON_READ(default_scene_name, in, "default_scene_name");
+	try_read_json(default_scene_name, in, "default_scene_name");
 }
 
 void fields_engine::project_settings::write(json& out) const {
