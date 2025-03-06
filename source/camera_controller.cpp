@@ -103,11 +103,16 @@ void fields_engine::camera_controller::tick(float dt) {
 		if (m_invert_look_y) {
 			delta.y *= -1;
 		}
-		const quat new_rot 
+		const quat new_rotation
 			= glm::angleAxis(glm::radians(delta.x), vec3{ 0, 0, 1 })
 			* tr.get_local_rotation()
 			* glm::angleAxis(glm::radians(delta.y), vec3{ 1, 0, 0 });
-		tr.set_local_rotation(new_rot);
+
+		vec3 new_rotation_euler = glm::degrees(glm::eulerAngles(new_rotation));
+		constexpr float max_look_angle = 89.0f;
+		new_rotation_euler.x = glm::clamp(new_rotation_euler.x, -max_look_angle, max_look_angle);
+		
+		tr.set_local_rotation(new_rotation_euler);
 	}
 }
 
