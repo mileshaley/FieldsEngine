@@ -41,7 +41,6 @@ fields_engine::editor::editor_manager::editor_manager()
 	, m_new_window_buf()
 	, m_new_window_icon(ICON_ELLIPSIS_VERTICAL)
 	, m_ini_name((std::filesystem::path("user_data") / "editor" / "imgui.ini").string())
-	, m_selected_ent(nullptr)
 {}
 
 fields_engine::editor::editor_manager::~editor_manager() = default;
@@ -112,12 +111,6 @@ void fields_engine::editor::editor_manager::startup(window_handle& win) {
 		&editor_manager::root_window,
 		"Root", 
 		ICON_FACE_SMILE
-	);
-
-	add_window(
-		&editor_manager::inspect_window,
-		"Inspect",
-		ICON_MAGNIFYING_GLASS
 	);
 
 	// Add the window and then set its callback after since it needs to access data inside the window
@@ -289,18 +282,6 @@ fe::ivec2 fields_engine::editor::editor_manager::get_game_window_size() const {
 	return m_game_window_size;
 }
 
-fe::entity const* fields_engine::editor::editor_manager::get_selected_entity() const {
-	return m_selected_ent;
-}
-
-fe::entity* fields_engine::editor::editor_manager::get_selected_entity() {
-	return m_selected_ent;
-}
-
-void fields_engine::editor::editor_manager::set_selected_entity(entity* new_selected) {
-	m_selected_ent = new_selected;
-}
-
 ImFont* fields_engine::editor::editor_manager::get_font_handle(font_type font) {
 	return m_fonts[static_cast<size_t>(font)];
 }
@@ -327,10 +308,7 @@ bool fields_engine::editor::editor_manager::game_window(editor_window& window) {
 	return false;
 }
 
-bool fields_engine::editor::editor_manager::inspect_window(editor_window& window) {
-	if (m_selected_ent == nullptr) { return false; }
-	return m_selected_ent->display();
-}
+
 
 static const char* color_names[ImGuiCol_::ImGuiCol_COUNT] = {
 	"ImGuiCol_Text",

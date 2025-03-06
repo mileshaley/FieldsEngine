@@ -36,7 +36,7 @@ namespace fields_engine::editor {
 		monospace,
 		internal_icon, // Do not use
 		font_type_count
-	};
+	}; // enum font_type
 
 	class editor_manager {
 	public:
@@ -58,10 +58,6 @@ namespace fields_engine::editor {
 		vis::frame_buffer& ref_frame_buffer();
 
 		ivec2 get_game_window_size() const;
-
-		entity const* get_selected_entity() const;
-		entity* get_selected_entity();
-		void set_selected_entity(entity* new_selected);
 
 		ImFont* get_font_handle(font_type font);
 
@@ -104,7 +100,6 @@ namespace fields_engine::editor {
 
 	private: // Windows
 		bool game_window(editor_window& window);
-		bool inspect_window(editor_window& window);
 		bool style_window(editor_window& window);
 		bool root_window(editor_window& window);
 		bool demo_window(editor_window& window);
@@ -136,10 +131,6 @@ namespace fields_engine::editor {
 
 		const string m_ini_name;
 		//json m_config;
-
-		/// TODO: Implement a more generic selection system that can handle different types and amounts
-		entity* m_selected_ent;
-		//vector<entity*> m_selected_ents;
 
 	}; // class editor_manager
 

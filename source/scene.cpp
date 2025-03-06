@@ -59,14 +59,20 @@ void fields_engine::scene::write(json& out) const {
 }
 
 void fields_engine::scene::startup() {
-
 #ifdef EDITOR
-	editor::editor_window* scene_window = context<editor::editor_manager>().add_window(
+	editor::editor_manager& editor_manager = context<editor::editor_manager>();
+	editor_manager.add_window(
 		&scene::display_window,
 		"Scene",
 		ICON_MOUNTAIN_SUN,
 		{},
 		get_name()
+	);
+
+	editor_manager.add_window(
+		&scene::inspect_window,
+		"Inspect",
+		ICON_MAGNIFYING_GLASS
 	);
 #endif // EDITOR
 	for (own<entity> const& ent : m_entities) {
@@ -140,6 +146,7 @@ void fields_engine::scene::draw() const {
 }
 
 void fields_engine::scene::shutdown() {
+	m_selected_entities.clear();
 	for (own<entity> const& ent : m_entities) {
 		ent->exit();
 	}
@@ -154,7 +161,6 @@ bool fields_engine::scene::display_window(editor::editor_window& window) {
 	editor::editor_manager& edit = context<editor::editor_manager>();
 	if (ImGui::Button("   Load from file   ")) {
 		modif = true;
-		edit.set_selected_entity(nullptr);
 		shutdown();
 		reload();
 		startup();
@@ -163,12 +169,7 @@ bool fields_engine::scene::display_window(editor::editor_window& window) {
 	if (ImGui::Button("   Save to file   ")) {
 		save();
 	}
-	ImGui::BeginDisabled();
-	if (ImGui::Button("   Swap app context   ")) {
-
-	}
-	ImGui::EndDisabled();
-	if (ImGui::CollapsingHeader("Atmospheric")) {
+	if (ImGui::CollapsingHeader("World Settings")) {
 		modif |= ImGui::ColorEdit4("Background color", &m_background_color.x);
 		modif |= ImGui::ColorEdit3("Ambient color", &m_ambient_color.x);
 		modif |= ImGui::ColorEdit3("Light color", &m_light_color.x);
@@ -181,14 +182,41 @@ bool fields_engine::scene::display_window(editor::editor_window& window) {
 			m_entities.emplace_back(move(new_entity));
 		}
 	}
-	const entity* curr_selected = edit.get_selected_entity();
-	for (own<entity> const& ent : m_entities) {
+
+	const entity* curr_selected = nullptr;
+	if (m_selected_entities.size() == 1) {
+		curr_selected = m_selected_entities[0];
+	}
+
+	for (own<entity> const& entity : m_entities) {
 		// We assume that all entities in the scene have unique names
-		if (ImGui::Selectable(ent->get_name().c_str(), ent.get() == curr_selected)) {
-			edit.set_selected_entity(ent.get());
+		int selected_index = -1;
+		for (int i = 0; i < int(m_selected_entities.size()); ++i) {
+			if (m_selected_entities[i] == entity.get()) {
+				selected_index = i;
+				break;
+			}
+		}
+		const bool entity_already_selected = selected_index != -1;
+		if (ImGui::Selectable(entity->get_name().c_str(), entity_already_selected)) {
+			m_selected_entities.clear();
+			m_selected_entities.push_back(entity.get());
+
+			/// TODO: Uncomment this when we are supporting correct selection operations
+			//if (entity_already_selected) {
+			//	m_selected_entities.erase(m_selected_entities.begin() + selected_index);
+			//} else /* entity wasn't already selected */ {
+			//	m_selected_entities.push_back(entity.get());
+			//}
 		}
 	}
 	return modif;
+}
+bool fields_engine::scene::inspect_window(editor::editor_window& window) {
+	if (m_selected_entities.size() != 1) {
+		return false;
+	}
+	return m_selected_entities[0]->display();
 }
 #endif // EDITOR
 

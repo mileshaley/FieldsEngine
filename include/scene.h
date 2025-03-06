@@ -46,10 +46,16 @@ namespace fields_engine {
 
 #ifdef EDITOR
 		bool display_window(editor::editor_window& window);
+		bool inspect_window(editor::editor_window& window);
 #endif // EDITOR
 
 		void register_camera(camera_component* cam);
 		void unregister_camera(camera_component* cam);
+
+	private:
+#ifdef EDITOR
+		std::vector<entity*> m_selected_entities;
+#endif // EDITOR
 
 	private: /// TODO: remove variables in this section
 
