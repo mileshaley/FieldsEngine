@@ -40,6 +40,7 @@ fields_engine::editor::editor_manager::editor_manager()
 	, m_game_window_hovered(true)
 	, m_new_window_buf()
 	, m_new_window_icon(ICON_ELLIPSIS_VERTICAL)
+	, m_ini_name((std::filesystem::path("user_data") / "editor" / "imgui.ini").string())
 	, m_selected_ent(nullptr)
 {}
 
@@ -56,6 +57,8 @@ void fields_engine::editor::editor_manager::startup(window_handle& win) {
 
 	ImGui::SetCurrentContext(m_gui_context);
 	ImGuiIO& io = ImGui::GetIO();
+
+	io.IniFilename = m_ini_name.c_str();
 
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
