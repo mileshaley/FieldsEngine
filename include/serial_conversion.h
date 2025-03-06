@@ -50,14 +50,14 @@ namespace glm {
 	}
 
 	template<length_t L, typename T, qualifier Q>
-	inline void to_json(nlohmann::json& out, vec<L, T, Q> const& in) {
+	inline void to_json(fields_engine::json& out, vec<L, T, Q> const& in) {
 		for (int i = 0; i < L; ++i) {
 			out.push_back(in[i]);
 		}
 	}
 
 	template<length_t L, typename T, qualifier Q>
-	inline void from_json(nlohmann::json const& in, vec<L, T, Q>& out) {
+	inline void from_json(fields_engine::json const& in, vec<L, T, Q>& out) {
 		FE_ASSERT(in.is_array(), "Vectors must be stored in json as array type");
 		const int bound = std::min(L, length_t(in.size()));
 		for (int i = 0; i < bound; ++i) {
@@ -67,14 +67,14 @@ namespace glm {
 
 	/// TODO: Test visual orientation of matrix converters
 	template<length_t C, length_t R, typename T, qualifier Q>
-	inline void to_json(nlohmann::json& out, mat<C, R, T, Q> const& in) {
+	inline void to_json(fields_engine::json& out, mat<C, R, T, Q> const& in) {
 		for (int i = 0; i < C; ++i) {
 			out.push_back(in[i]);
 		}
 	}
 
 	template<length_t C, length_t R, typename T, qualifier Q>
-	inline void from_json(nlohmann::json const& in, mat<C, R, T, Q>& out) {
+	inline void from_json(fields_engine::json const& in, mat<C, R, T, Q>& out) {
 		FE_ASSERT(in.is_array(), "Matrices must be stored in json as array type");
 		const int bound = std::min(C, length_t(in.size()));
 		for (int i = 0; i < bound; ++i) {
@@ -83,14 +83,14 @@ namespace glm {
 	}
 
 	template<typename T, qualifier Q>
-	inline void to_json(nlohmann::json& out, qua<T, Q> const& in) {
+	inline void to_json(fields_engine::json& out, qua<T, Q> const& in) {
 		for (int i = 0; i < in.length(); ++i) {
 			out.push_back(in[i]);
 		}
 	}
 
 	template<typename T, qualifier Q>
-	inline void from_json(nlohmann::json const& in, qua<T, Q>& out) {
+	inline void from_json(fields_engine::json const& in, qua<T, Q>& out) {
 		FE_ASSERT(in.is_array() && in.size() == out.length(), 
 			"Quaternions must be stored in json as array type of length 4");
 		for (int i = 0; i < out.length(); ++i) {
