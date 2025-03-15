@@ -2,8 +2,7 @@
   "data": {
     "diffuse": [0.95, 0.95, 1.0],
     "specular": [0.7, 0.7, 0.8],
-    "shininess": 4.0,
-    "texture": "miles"
+    "shininess": 4.0
   },
   "type": "material"
 }

@@ -59,6 +59,8 @@ namespace fields_engine {
 
 
 		void use_context();
+
+		unordered_map<string, asset_entry>& get_map();
 	private:
 		unordered_map<string, asset_entry> m_assets;
 
