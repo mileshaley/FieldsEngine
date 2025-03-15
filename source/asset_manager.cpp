@@ -78,3 +78,7 @@ void fields_engine::asset_manager::use_context() {
 	//m_asset_browser.use();
 #endif // EDITOR
 }
+
+fe::unordered_map<fe::string, fe::asset_entry>& fields_engine::asset_manager::get_map() {
+	return m_assets;
+}

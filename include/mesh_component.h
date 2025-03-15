@@ -36,6 +36,10 @@ namespace fields_engine {
 		virtual void read(json const& in) override;
 		virtual void write(json& out) const override;
 
+#ifdef EDITOR
+		virtual bool display() override;
+#endif // EDITOR
+
 		void set_material(vis::material const* new_material) { m_material = new_material; }
 		vis::material const* get_material() const { return m_material; }
 		void set_mesh(vis::mesh const& new_mesh) { m_mesh = &new_mesh; }

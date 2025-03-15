@@ -83,3 +83,54 @@ void fields_engine::mesh_component::write(json& out) const {
         out["material"] = m_material->get_name();
     }
 }
+
+
+#ifdef EDITOR
+bool fields_engine::mesh_component::display() {
+    static const string none_name = "[NONE]";
+    string const& current_mesh_name = m_mesh ? m_mesh->get_name() : none_name;
+    string const& current_material_name = m_material ? m_material->get_name() : none_name;
+    bool modified = false;
+    constexpr float combo_offset_from_left = 100;
+
+    ImGui::Text("Mesh: ");
+    ImGui::SameLine(combo_offset_from_left);
+    if (ImGui::BeginCombo("###mesh_asset_combo_selector", current_mesh_name.c_str())) {
+        /// TODO: Make a way to query assets by entry type
+        auto& assets = context<asset_manager>().get_map();
+        for (auto& entry : assets) {
+            if (entry.second.get_type() != vis::mesh::static_type_name()) {
+                continue;
+            }
+            string const& asset_name = entry.second.get_name();
+            if (ImGui::Selectable(asset_name.c_str(), asset_name == current_mesh_name)) {
+                modified = true;
+                m_mesh = static_cast<const vis::mesh*>(entry.second.get_load_asset());
+                break;
+            }
+        }
+
+        ImGui::EndCombo();
+    }
+    ImGui::Text("Material: ");
+    ImGui::SameLine(combo_offset_from_left);
+    if (ImGui::BeginCombo("###material_asset_combo_selector", current_material_name.c_str())) {
+        auto& assets = context<asset_manager>().get_map();
+        for (auto& entry : assets) {
+            if (entry.second.get_type() != vis::material::static_type_name()) {
+                continue;
+            }
+            string const& asset_name = entry.second.get_name();
+            if (ImGui::Selectable(asset_name.c_str(), asset_name == current_material_name)) {
+                modified = true;
+                m_material = static_cast<const vis::material*>(entry.second.get_load_asset());
+                break;
+            }
+        }
+
+        ImGui::EndCombo();
+    }
+    modified |= super::display();
+    return modified;
+}
+#endif // EDITOR

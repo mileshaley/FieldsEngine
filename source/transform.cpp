@@ -52,21 +52,26 @@ void fields_engine::transformer::write(json& out) const {
 
 #ifdef EDITOR
 bool fields_engine::transformer::display() {
-	constexpr int x_off = 36;
-	static bool scale_uniformly = true;
 	bool modif = false;
-	ImGui::SetCursorPosX(x_off);
-	modif |= ImGui::DragFloat3("Position", &m_data.position.x);
+	constexpr float offset_from_left = 100;
+	constexpr float scale_lock_offset_from_left = offset_from_left - 30;
+
+	static bool scale_uniformly = true;
+	ImGui::Text("Position: ");
+	ImGui::SameLine(offset_from_left);
+	modif |= ImGui::DragFloat3("###Position", &m_data.position.x);
+	ImGui::Text("Scale: ");
+	ImGui::SameLine(scale_lock_offset_from_left);
 	if (ImGui::Button(scale_uniformly 
 		? ICON_LOCK"##tr_scale_lock" 
 		: ICON_LOCK_OPEN"##tr_scale_lock")
 	) {
 		scale_uniformly = !scale_uniformly;
 	}
-	ImGui::SameLine(x_off);
+	ImGui::SameLine(offset_from_left);
 	if (scale_uniformly) {
 		vec3 uni_scale = m_data.scale;
-		if (ImGui::DragFloat3("Scale", &uni_scale.x)) {
+		if (ImGui::DragFloat3("###Scale", &uni_scale.x)) {
 			modif = true;
 			if (uni_scale.x != m_data.scale.x) {
 				m_data.scale += vec3{ uni_scale.x - m_data.scale.x };
@@ -77,11 +82,12 @@ bool fields_engine::transformer::display() {
 			}
 		}
 	} else {
-		modif |= ImGui::DragFloat3("Scale", &m_data.scale.x);
+		modif |= ImGui::DragFloat3("###Scale", &m_data.scale.x);
 	}
 	vec3 euler_rot = glm::degrees(glm::eulerAngles(m_data.rotation));
-	ImGui::SetCursorPosX(x_off);
-	if (ImGui::DragFloat3("Rotation", &euler_rot.x)) {
+	ImGui::Text("Rotation: ");
+	ImGui::SameLine(offset_from_left);
+	if (ImGui::DragFloat3("###Rotation", &euler_rot.x)) {
 		modif = true;
 		m_data.rotation = quat(glm::radians(euler_rot));
 	}
