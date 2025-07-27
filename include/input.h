@@ -69,8 +69,8 @@ namespace fields_engine {
 	}; // class input_manager
 
 
-	namespace input::impl {
+	namespace input::detail {
 		void initialize_callbacks(window_handle& win);
-	} // namespace input::impl
+	} // namespace input::detail
 
 } // namespace fields_engine::input

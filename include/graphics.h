@@ -27,8 +27,8 @@ namespace fields_engine::vis {
 	void reset_frame();
 	void set_background_color(glm::vec4 const& color);
 
-	namespace impl {
+	namespace detail {
 		void initialize();
-	} // namespace impl
+	} // namespace detail
 
 } // namespace fields_engine::vis

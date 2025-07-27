@@ -97,8 +97,8 @@ bool fields_engine::application::startup() {
 	if (!m_input_manager->startup()) {
 		return false;
 	}
-	input::impl::initialize_callbacks(m_window);
-	vis::impl::initialize();
+	input::detail::initialize_callbacks(m_window);
+	vis::detail::initialize();
 
 	m_project = make_own<project>(std::filesystem::path("."));
 	if (!m_project) { return false; }

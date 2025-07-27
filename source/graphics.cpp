@@ -47,7 +47,7 @@ void fields_engine::vis::set_background_color(glm::vec4 const& color) {
 	VIS_VERIFY;
 }
 
-void fields_engine::vis::impl::initialize() {
+void fields_engine::vis::detail::initialize() {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 

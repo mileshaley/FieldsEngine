@@ -17,7 +17,7 @@
 \*~-------------------------------------------------------------------------~*/
 
 namespace fields_engine {
-	namespace impl {
+	namespace detail {
 		template<typename T>
 		struct context_storage {
 			static inline T* ptr;
@@ -56,21 +56,21 @@ namespace fields_engine {
 			std::remove_pointer_t<
 			std::remove_reference_t<
 			std::remove_cv_t<T>>>>;
-	} // namespace impl
+	} // namespace detail
 
 	template<class T>
-	FE_NODISCARD inline impl::remove_all_t<T>& context() noexcept(noexcept(*std::declval<impl::remove_all_t<T>*>())) {
-		impl::context_storage<impl::remove_all_t<T>>::verify();
-		return *impl::context_storage<impl::remove_all_t<T>>::ptr;
+	FE_NODISCARD inline detail::remove_all_t<T>& context() noexcept(noexcept(*std::declval<detail::remove_all_t<T>*>())) {
+		detail::context_storage<detail::remove_all_t<T>>::verify();
+		return *detail::context_storage<detail::remove_all_t<T>>::ptr;
 	}
 
 	template<class T>
-	FE_NODISCARD inline impl::remove_all_t<T>* context_unchecked() noexcept(noexcept(*std::declval<impl::remove_all_t<T>*>())) {
-		return impl::context_storage<impl::remove_all_t<T>>::ptr;
+	FE_NODISCARD inline detail::remove_all_t<T>* context_unchecked() noexcept(noexcept(*std::declval<detail::remove_all_t<T>*>())) {
+		return detail::context_storage<detail::remove_all_t<T>>::ptr;
 	}
 
 	template<class T>
 	FE_NODISCARD inline bool context_active() noexcept {
-		return impl::context_storage<impl::remove_all_t<T>>::ptr != nullptr;
+		return detail::context_storage<detail::remove_all_t<T>>::ptr != nullptr;
 	}
 } // namespace fields_engine

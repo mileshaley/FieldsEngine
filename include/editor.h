@@ -27,7 +27,7 @@ namespace fields_engine::editor {
 	void push_font(font_type font, editor_manager& = context<editor_manager>());
 	void pop_font();
 
-	namespace impl {
+	namespace detail {
 		template<ImGuiDataType_ Value>
 		using imgui_type_constant = std::integral_constant<ImGuiDataType_, Value>;
 		template<typename T = void> struct imgui_datatype {};
@@ -44,7 +44,7 @@ namespace fields_engine::editor {
 
 		template<typename T>
 		inline ImGuiDataType_ imgui_datatype_v = imgui_datatype<T>::value;
-	} // namespace impl
+	} // namespace detail
 
 	template<typename T>
 	struct drag_range {
@@ -67,7 +67,7 @@ namespace fields_engine::editor {
 	//) {
 	//	push_font(font_type::monospace, manager);
 	//	ImGui::DragFloat3
-	//	return DragScalarN(label.data(), impl::imgui_datatype_v<T>, &data.x, L, range.step, &v_min, &v_max, "%.3f", flags);
+	//	return DragScalarN(label.data(), detail::imgui_datatype_v<T>, &data.x, L, range.step, &v_min, &v_max, "%.3f", flags);
 	//	pop_font();
 	//}
 

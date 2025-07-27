@@ -45,7 +45,7 @@
 
 namespace fields_engine {
 
-	namespace impl {
+	namespace detail {
 		// Primary template. Does a simple copy
 		template<typename T, class = void>
 		struct clone_helper {
@@ -60,13 +60,13 @@ namespace fields_engine {
 				return own<T>(static_cast<T*>(source.internal_clone()));
 			}
 		};
-	} // namespace impl
+	} // namespace detail
 
 	// Virtually clones a generic cloneable object as its real type and returns it
 	// as an own<T> given that T <= the real type
 	template<class T>
 	inline own<T> clone(T const& source) {
-		return impl::clone_helper<T>::clone(source);
+		return detail::clone_helper<T>::clone(source);
 	}
 
 
@@ -78,7 +78,7 @@ namespace fields_engine {
 
 namespace fields_engine {
 	/// TODO: Make this get a pack of all classes in order in the hierarchy
-	namespace impl {
+	namespace detail {
 		template<class T, class = void>
 		struct deepest_super {
 			using type = T;
@@ -88,7 +88,7 @@ namespace fields_engine {
 			using type = typename deepest_super<typename T::super>::type;
 		};
 		template<class T>
-		using deepest_super_t = typename impl::deepest_super<T>::type;
+		using deepest_super_t = typename detail::deepest_super<T>::type;
 	}
 
 } // namespace fields_engine
