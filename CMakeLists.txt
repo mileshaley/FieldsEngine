@@ -53,7 +53,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 
 # Add compiler preprocessor definitions for each configuration
 target_compile_definitions(${PROJECT_NAME} PRIVATE 
-    $<$<CONFIG:Debug>:_DEBUG;DEBUG;DEBUG-GLIBCXX>
+    $<$<CONFIG:Debug>:_DEBUG;DEBUG;GLIBCXX_DEBUG>
     $<$<CONFIG:Release>:NDEBUG;>
     $<$<CONFIG:DebugEditor>:_DEBUG;DEBUG;GLIBCXX_DEBUG;EDITOR>
     $<$<CONFIG:ReleaseEditor>:NDEBUG;EDITOR>

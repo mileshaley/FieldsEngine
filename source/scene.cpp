@@ -146,7 +146,10 @@ void fields_engine::scene::draw() const {
 }
 
 void fields_engine::scene::shutdown() {
+#ifdef EDITOR
 	m_selected_entities.clear();
+#endif // EDITOR
+	
 	for (own<entity> const& ent : m_entities) {
 		ent->exit();
 	}
@@ -158,7 +161,7 @@ void fields_engine::scene::shutdown() {
 bool fields_engine::scene::display_window(editor::editor_window& window) {
 
 	bool modif = false;
-	editor::editor_manager& edit = context<editor::editor_manager>();
+	//editor::editor_manager& edit = context<editor::editor_manager>();
 	if (ImGui::Button("   Load from file   ")) {
 		modif = true;
 		shutdown();
@@ -183,10 +186,10 @@ bool fields_engine::scene::display_window(editor::editor_window& window) {
 		}
 	}
 
-	const entity* curr_selected = nullptr;
-	if (m_selected_entities.size() == 1) {
-		curr_selected = m_selected_entities[0];
-	}
+	//const entity* curr_selected = nullptr;
+	//if (m_selected_entities.size() == 1) {
+	//	curr_selected = m_selected_entities[0];
+	//}
 
 	for (own<entity> const& entity : m_entities) {
 		// We assume that all entities in the scene have unique names

@@ -112,13 +112,15 @@ void fields_engine::editor::editor_manager::startup(window_handle& win) {
 		"Root", 
 		ICON_FACE_SMILE
 	);
+	(void)root;
 
 	// Add the window and then set its callback after since it needs to access data inside the window
-	editor_window* demo = add_window(
+	[[maybe_unused]] editor_window* demo = add_window(
 		&editor_manager::demo_window,
 		"ImGui Demo", 
 		ICON_INFO
 	);
+	
 
 	add_window(
 		&editor_manager::game_window,
@@ -216,7 +218,7 @@ void fields_engine::editor::editor_manager::shutdown() {
 //	};
 //}
 
-static bool do_nothing() {
+[[maybe_unused]] static bool do_nothing() {
 	return false;
 }
 
