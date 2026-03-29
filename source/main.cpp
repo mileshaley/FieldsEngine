@@ -15,9 +15,9 @@ int main() {
 	
 	std::cout << "Target directory: "
 		<< std::filesystem::current_path().parent_path() << std::endl;
-	std::filesystem::current_path(
-		std::filesystem::current_path().parent_path()
-	);
+	//std::filesystem::current_path(
+	//	std::filesystem::current_path().parent_path()
+	//);
 
 	{
 		fe::local_context<fe::application> app{};
