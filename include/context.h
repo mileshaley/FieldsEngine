@@ -25,7 +25,7 @@ namespace fields_engine {
 			static inline void initialize() {
 #ifdef _DEBUG
 				initialized_src() = true;
-#endif // DEBUG
+#endif // _DEBUG
 			}
 
 			static inline void verify() {
